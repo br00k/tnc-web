@@ -236,10 +236,10 @@ class Webdemo_MediaController extends Webdemo_AbstractController
 		$this->_helper->layout->setLayout('tnc2011/coverage');
 		$this->view->stylesheet('min-coverage.css');
 		// @todo: move this to includes/tnc2011 !
-		$this->view->headLink()->appendStylesheet('/js/prettyPhoto/css/prettyPhoto.css');
+		//$this->view->headLink()->appendStylesheet('/js/prettyPhoto/css/prettyPhoto.css');
 		$this->view->headLink()->appendStylesheet('/js/jquery-ui/css/ui-lightness/jquery-ui.css');
 		$this->view->headScript()->appendFile('/js/jquery-ui/js/jquery-ui.min.js');
-		$this->view->headScript()->appendFile('/js/prettyPhoto/js/jquery.prettyPhoto.js');
+		//$this->view->headScript()->appendFile('/js/prettyPhoto/js/jquery.prettyPhoto.js');
 		$this->view->headScript()->appendFile('/js/coverage.js');
 
 		$yql = new YQL();
