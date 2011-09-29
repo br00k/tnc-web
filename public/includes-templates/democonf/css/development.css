@@ -1,0 +1,16 @@
+body {
+background-image: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(0.11, #E67519),
+    color-stop(0.56, #FF9036),
+    color-stop(0.82, #DDDDDD)
+) !important;
+background-image: -moz-linear-gradient(
+    left center,
+    #E67519 11%,
+    #FF9036 56%,
+    #DDDDDD 82%
+) !important;
+}

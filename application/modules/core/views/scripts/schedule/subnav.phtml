@@ -1,0 +1,29 @@
+<ul id="daysnav">
+	<? foreach ($this->days as $day): ?>
+	<?
+	$zd = new Zend_Date($day);	
+	$weekday = $zd->get('EEEE dd/MM');
+	?>
+	<? if ($this->filters['day'] == $day): ?>
+	    <li class="active"><?= $weekday ?></li>
+	<? else: ?>
+	    <li><a href="<?= $this->url(array('action' => 'list', 'day' => urlencode($day)), 'schedule') ?>" title="<?= $day ?>"><?= $weekday ?></a></li>
+	<? endif; ?>
+	<? endforeach; ?>
+	<? if ($this->filters['day'] == 'all'): ?>
+		<li class="active">All Days</li>
+	<? else: ?>
+		<li><a href="<?= $this->url(array('action' => 'list', 'day' => 'all'), 'schedule') ?>">All Days</a></li>
+	<? endif; ?>
+</ul>
+
+<ul id="view">
+<li><a href="<?= $this->url(array('action' => 'list', 'view' => 'speakers', 'day' => urlencode($this->filters['day'])), 'schedule') ?>" title="show speakers" class="person<? if ($this->filters['view'] == 'speakers'): ?>on<? endif; ?>">Show speakers</a></li>
+<li><a href="<?= $this->url(array('action' => 'list', 'view' => 'titles', 'day' => urlencode($this->filters['day'])), 'schedule') ?>" title="show titles" class="title<? if ($this->filters['view'] == 'titles'): ?>on<? endif; ?>">Show titles</a></li>
+<? if ($this->authInfo()->isLoggedIn()): ?>
+<li><a href="<?= $this->url(array('action' => 'list', 'day' => urlencode($this->filters['day']), 'personal' => ($this->personal) ? null : true ), 'schedule') ?>" title="Toggle sessions I am subscribed to" class="subscribe<? if ($this->personal): ?>on<? endif; ?>">Toggle subscribed sessions</a></li>
+<? endif; ?>
+<? if ($this->feedbackid): // if feedback id is set, then show toggler ?>
+<li id="feedbacktoggler"><a href="<?= $this->url(array('action' => 'list', 'day' => urlencode($this->filters['day']), 'f' => ($this->feedback) ? null : true ), 'schedule') ?>" title="Toggle presentation feedback" class="feedback<? if ($this->feedback): ?>on<? endif; ?>">Toggle feedback</a></li>
+<? endif; ?>
+</ul>

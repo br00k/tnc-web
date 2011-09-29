@@ -1,0 +1,50 @@
+<div id="event_details">
+<h1><?= $this->event->category . ': ' . htmlspecialchars($this->event->title) ?><? if ($this->event->closed): ?> (closed meeting)<? endif; ?>
+<? if ($this->aclCheck('event', 'save')): ?>
+<span class="metanav"> <a href="<?= $this->url(array('controller' => 'event', 'action' => 'edit', 'id' => $this->event->event_id), 'gridactions') ?>">Edit</a></span>
+<? endif; ?>
+<? if ($this->aclCheck('event', 'delete')): ?>
+<span class="metanav"><a href="<?= $this->url(array('controller' => 'event', 'action' => 'delete', 'id' => $this->event->event_id), 'gridactions') ?>"> Delete</a></span>
+<? endif; ?>
+<span class="metanav"> <a href="<?= $this->url(array('controller' => 'event', 'action' => 'export', 'id' => $this->event->event_id), 'main-module') ?>">Save to my Google calendar</a></span></h1>
+<? if ($this->event->persons): ?>
+<div id="e_persons">
+<a title="" class="person"><?= htmlspecialchars($this->event->persons) ?></a>
+</div>
+<? endif; ?>
+<? if (!$this->event->cancelled): ?>
+   	<div id="e_meta">
+   	<? if ($this->event->file_id): ?>
+    <div id="e_img">
+    	<img src="/core/file/<?= $this->event->file_id ?>" alt="<?= $this->event->title ?>" title="<?= htmlspecialchars($this->event->title) ?>" />
+    </div>
+    <? endif; ?>
+    <? if ($this->event->tstart): ?>
+    <dl class="infolist">
+        <? if (!$this->event->cancelled): ?>
+        <dt>When</dt>
+        <dd><?= $this->event->getCompleteDateTime() ?>
+        </dd>
+        <? else: ?>
+        <dt>Cancelled</dt>
+		<? endif; ?>
+
+        <? if ($this->event->location_id): ?>
+        <dt>Where</dt>
+		<dd><?= $this->event->location ?></dd>
+        <? endif; ?>
+
+        <? if ($this->event->registration): ?>
+		<dt>Registration</dt>
+		<dd><a class="emph" href="<?= $this->event->registration ?>">open</a></dd>
+        <? endif; ?>
+    </dl>
+    <? endif; ?>
+    </div>
+
+	<? if ($this->event->description): ?>
+    <div id="e_description"><?= nl2br($this->event->description) ?></div>
+    <br /><br />
+	<? endif; ?>
+</div>
+<? endif; ?>

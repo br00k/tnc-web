@@ -1,0 +1,26 @@
+<div>
+<h1><?= htmlspecialchars($this->poster->title) ?>
+<? if ($this->aclCheck('poster', 'save')): ?>
+<span class="metanav"> <a href="<?= $this->url(array('controller' => 'poster', 'action' => 'edit', 'id' => $this->poster->poster_id), 'gridactions') ?>">Edit</a></span>
+<? endif; ?>
+<? if ($this->aclCheck('poster', 'delete')): ?>
+<span class="metanav"><a href="<?= $this->url(array('controller' => 'poster', 'action' => 'delete', 'id' => $this->poster->poster_id), 'gridactions') ?>"> Delete</a></span>
+<? endif; ?></h1>
+
+<? if ($this->poster->persons): ?>
+<p>
+<a title="" class="person"><?= htmlspecialchars($this->poster->persons) ?></a>
+</p>
+<? endif; ?>
+
+<? if ($this->poster->description): ?>
+<p><?= nl2br($this->poster->description) ?></p>
+<? endif; ?>
+
+<? if ($this->poster->file_id): ?>
+<p>
+<a href="/getfile/<?= $this->poster->file_id ?>">Download file</a>
+</p>
+<? endif; ?>
+
+</div>

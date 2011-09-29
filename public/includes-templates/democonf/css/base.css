@@ -1,0 +1,629 @@
+@charset "utf-8";
+/* CSS Document */
+/*************************************************************************************
+ **										   											**
+ **				BASIS FRAMEWORK			   											**
+ **																					**
+ **	 - 	Enkele basis elementen die op elke pagina terugkomen:						**
+ **		x container div			   													**
+ **		x pageintro div					   											**
+ **		x pagebody div					   											**
+ **		x footer div					   											**
+ **	 									   											**
+ *************************************************************************************/
+body{
+	color:#818285;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	font-size:75%; /*can be set to 12px as well but then IE6 won't allow you to resize text that is defined in pixels*/
+	/*1em = 12px*/
+	background:#DDDDDD url(../gfx/layout/bg/body_tnc.jpg) no-repeat scroll center top;
+	text-align:center;
+}
+#container {
+	background-color:#FFFFFF;
+	border:1px solid #C8C8C8;
+	margin:3em auto;/*36px*/
+	padding:0 2.17em;/*26px*/
+	text-align:left;
+	width:900px; /*breedte moet ingesteld worden anders wordt volledige schermbreedte gevuld*/
+}
+#pageintro{
+	width:900px;
+}
+#ticker-search{
+	height:33px;
+	margin-top:1em;
+}
+#pagebody{
+	clear:both;
+	margin-top:1em;
+	padding-top: 1em;
+}
+#footer{
+	margin:0;
+	padding:1.2em 0;
+}
+/*************************************************************************************
+ **										   											**
+ **				NAVIGATION STRUCTURE	   											**
+ **																					**
+ **  -  3 soorten: top, bottom en sub												**
+ **										   											**
+ *************************************************************************************/
+#year{
+	float: left;
+	text-transform:uppercase;
+	color:#000;
+	margin-top:0.833em;
+	margin-bottom:1em;
+}
+#nav-main{
+	float:right;
+	margin-top:0.833em;
+}
+#section_bg{
+	/*height:60px;*/
+	width:900px;
+	/*padding-top:156px;*/
+	clear:both;
+	background:transparent url(../gfx/layout/headers/home.jpg) no-repeat scroll center top;
+}
+#logo{
+	height:156px;
+}
+#terena{
+	margin:12px;
+}
+#nav-sub{
+	height:60px;
+}
+#nav-section{
+	height:34px;
+	padding-top: 20px;
+	padding-left: 10px;
+	background:url(../gfx/layout/bg/nav-section.gif) top no-repeat;
+}
+/*************************************************************************************
+ **										   											**
+ **				NEWS TICKER AND SEARCH BAR STRUCTURE								**
+ **																					**
+ **										   											**
+ *************************************************************************************/
+#newsticker{
+	float:left;
+	height:22px;
+	width:588px;
+	padding-top:8px;
+	padding-left:10px;
+
+	background-color:#F7F8F8;
+	border-top:1px solid #c8c8c8;
+	border-bottom:1px solid #c8c8c8;
+}
+#newsticker_content {
+	border-bottom:1px solid #C8C8C8;
+	display:none;
+	height:80px;
+	padding:0 0 12px 10px;
+}
+#newsticker_container {
+	background-color:#F7F8F8;
+	left:-10px;
+	overflow:hidden;
+	position:relative;
+	top:11px;
+	width:598px;
+	z-index:5;
+}
+#searchbar{
+	background-color:#E7E7E8;
+	border-top:1px solid #C8C8C8;
+	border-bottom:1px solid #C8C8C8;
+	width:288px;
+	height:92%;
+	float:right;
+}
+/*************************************************************************************
+ **										   											**
+ **				PAGE BODY STRUCTURE													**
+ **		- default content en sidebar waarden										**
+ **										   											**
+ *************************************************************************************/
+#content{
+	width:592px;
+}
+#sidebar{
+	width:286px;
+}
+.clearer{
+	clear:both;
+}
+/*************************************************************************************
+ **										   											**
+ **				HEADINGS					   										**
+ **																					**
+ ** - Headings zijn zwart van kleur													**
+ **																					**
+ *************************************************************************************/
+h1{
+	margin-top:0;
+	color:#000;
+	font-size:1.33em; /*1.33em = 16px*/
+}
+h2{
+	color:#000;
+	font-size:1.16em; /*1.16em = 14px*/
+}
+h3{
+	font-size:1.1em;
+}
+.light{
+	color:#fff;
+}
+.toggler {
+	color:#000 !important;
+}
+/*************************************************************************************
+ **										   											**
+ **				LINKS					   											**
+ **																					**
+ **	 - Links in paragraphs hebben de kleur vd paragraph tekst en zijn underlined	**
+ **	 - Links in UL's zijn nooit underlined											**
+ **	 - Links niet in P en niet in UL kunnen een icoontje hebben (pdf download bij.)	**
+ **										   											**
+ *************************************************************************************/
+a:link		{ color:#5F5F5F;}
+a:visited	{ color:#5e5e61;}
+a:focus, a:hover, a.active	{color:#000;}
+ul a{
+	text-decoration:none;
+}
+.nav3 a {padding-right:8px;border-right: 1px solid;color:#818285;}
+.nav3 a:visited {color:#818285}
+.nav3 a:focus, .nav3 a:hover, .nav3 li.active a {color:#fff;}
+/*************************************************************************************
+ **										   											**
+ **				LISTS					   											**
+ **																					**
+ **	 - Qua Font-color, size en font-family zijn lists gelijk aan paragraph 	tekst	**
+ **	 - (UL) list maakt geen gebruik van standaard bullets, deze verwijderen			**
+ **	 - De standaard UL heeft een LI met custom bullets (>)							**
+ **										   											**
+ *************************************************************************************/
+ul{
+	list-style:none;
+	padding:0;
+	margin:0;
+}
+ul li{
+	//background:transparent url(../gfx/icons/arrow.gif) no-repeat scroll left center;
+	padding-left:8px;
+}
+ul.subnav li, #nav li, ul.mainnav li, .nav3 li{
+	background:none;
+	display:inline;
+}
+.longlist li {
+    background: url("../gfx/icons/arrow.gif") no-repeat scroll left center transparent;
+    padding-left: 8px;
+}
+ul.basic {
+    list-style: none outside none;
+    margin-left: 0;
+    padding-left: 14px;
+    text-indent: -1em;
+}
+.basic li {   
+	background: none repeat scroll 0 0 transparent;
+    padding-left: 0;
+    margin:5px 0;
+}
+.basic li:before {
+	content: "\203A \0020";
+}
+.basic li.active {
+	font-weight: bold;
+}
+.navlist {
+list-style:none outside none;
+margin:0 0 16px;
+padding:0;
+}
+
+.navlist li{
+display:inline;
+line-height:1.4em;
+list-style:square outside none;
+}
+.navlist li:before {
+	font-weight: bold;
+	content: " \B7  ";
+}
+.navlist li:first-child:before { content: ""; }
+
+dt { float: left; clear: left; width: 80px; text-align: left; }
+dt:after { content: ":"; }
+dd { margin: 0 0 0 85px; padding: 0 0 0.5em 0; }
+div.infobox {
+	border:1px solid #c8c8c8;
+	padding:10px;
+	margin:0 0 20px 0;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+}
+/* infoboxes */
+.infobox h1 {
+	font-size:14px;
+}
+div.content_left {
+	float:left;
+	width:60%;
+}
+div.content_right {
+	float:left;
+	width:30%;
+	margin-left:76px;
+}
+dl.infolist dd {
+	font-size:92%;
+	margin-bottom:12px;
+}
+/*************************************************************************************
+ **										   											**
+ **				MAIN NAV STYLE			   											**
+ **																					**
+ **	 - 																				**
+ **										   											**
+ *************************************************************************************/
+ul.mainnav {
+	width:900px;
+	height:60px;
+}
+ul.mainnav li{
+	padding:0;
+	margin:0;
+}
+a.schedule{
+	float:left;
+	height:60px;
+	width:228px;
+	overflow:hidden;
+	text-indent: -900%;
+	background: transparent url(../gfx/layout/schedule.png) top left no-repeat;
+}
+a.venue{
+	float:left;
+	width:222px;
+	height:60px;
+	overflow:hidden;
+	text-indent:-900%;
+	background: transparent url(../gfx/layout/venue.png) top left no-repeat;
+}
+a.participate{
+	float:left;
+	width:228px;
+	height:60px;
+	overflow:hidden;
+	text-indent:-900%;
+	background: transparent url(../gfx/layout/participate.png) top left no-repeat;
+}
+a.media{
+	float:left;
+	width:222px;
+	height:60px;
+	overflow:hidden;
+	text-indent:-900%;
+	background: transparent url(../gfx/layout/media.png) top left no-repeat;
+}
+ul.mainnav a:hover, ul.mainnav li.active a{
+	color:#000;
+	background-position:0px -60px;
+}
+ul#nav a.selected{
+	color:#000;
+}
+/*************************************************************************************
+ **										   											**
+ **				IMAGES					   											**
+ **																					**
+ **	 - 	Geen border, padding of margin												**
+ **										   											**
+ *************************************************************************************/
+img{
+	border:none;
+	padding:0px;
+	margin:0px;
+}
+/*************************************************************************************
+ **										   											**
+ **				TABLES					   											**
+ **																					**
+ **	 - 	De table heading moet in CAPS, links uitgelijnd zijn en zwart van kleur zijn**
+ **	 -  Alle overige aanpassingen verschillen per sectie							**
+ **										   											**
+ *************************************************************************************/
+table{
+	width:100%;
+	margin-bottom:0.5em;
+}
+th{
+	text-align:left;
+	text-transform:uppercase;
+	color:#000;
+	border-bottom:1px solid #d5d6d5;
+}
+td{
+	padding:0.2em;
+	border-bottom:1px solid #d5d6d5;
+}
+
+/**
+  *
+  * PHOTO SPECIFIC TABLE
+  * ---------------------
+  */
+table.photos{
+	margin:0;
+	padding:0;
+	border:none;
+	width:100%;
+	height:100%;
+}
+table.photos td{
+	border:0;
+	height:124px;
+	width:150px;
+	margin:0;
+	padding:8px;
+}
+table.img_grid td{
+	border:0;
+}
+ /*************************************************************************************
+ **										   											**
+ **				NEWS TICKER STYLE	   												**
+ **																					**
+ *************************************************************************************/
+#nextimg{
+ 	float:right;
+	margin-right:8px;
+ }
+#section{
+	color:#D12031;
+}
+ /*************************************************************************************
+ **										   											 **
+ **				SEARCH BOX STYLE && STRUCTURE										 **
+ **																					 **
+ *************************************************************************************/
+#terenaSearch{
+	margin-top:0.5em;
+	margin-bottom:0;
+	margin-left:0.83em;
+	padding:0;
+}
+#searchb{
+	float:right;
+}
+#searchbox {
+	width:240px;
+	border:none;
+}
+#submitsearch
+{
+	float:right;
+	margin-right:8px;
+}
+
+ /*************************************************************************************
+ **										   											 **
+ **				ROUNDED CORNER BOXES												 **
+ **																					 **
+ **		- 3 box varianten met witte achtergrond en grijze randen					 **
+ **		- media section rounded corner box											 **
+ **		- hotels section in venue													 **
+ **		- 																			 **
+ **																					 **
+ *************************************************************************************/
+div.box{
+	width:288px;
+	background:url(../gfx/layout/boxes/sides288w.gif) left top repeat-y;
+	margin-bottom:18px;
+}
+.box .body{
+	width: 252px;
+	padding:18px;
+	background: url(../gfx/layout/boxes/top288w.gif) left top no-repeat;
+}
+.box .closer{
+	width:288px;
+	height:8px;
+	background: url(../gfx/layout/boxes/bot288w.gif) left bottom no-repeat;
+}
+
+div.bigbox{
+	width:591px;
+	background:url(../gfx/layout/boxes/sides591w.gif) left top repeat-y;
+	margin-bottom:18px;
+}
+.bigbox .body{
+	width: 555px;
+	padding:18px;
+	background: url(../gfx/layout/boxes/top591w.gif) left top no-repeat;
+}
+
+.bigbox .closer{
+	width:591px;
+	height:13px;
+	background: url(../gfx/layout/boxes/bot591w.gif) left bottom no-repeat;
+}
+div.widebox{
+	width:900px;
+	background:url(../gfx/layout/boxes/sides900w.gif) top left repeat-y;
+	margin-bottom:18px;
+}
+.widebox .body{
+	width: 864px;
+		padding:18px;
+	background: url(../gfx/layout/boxes/top900w.gif) left top no-repeat;
+}
+.widebox .closer{
+	width:900px;
+	height:8px;
+	background: url(../gfx/layout/boxes/bot900w.gif) left bottom no-repeat;
+}
+abbr{
+	border:none;
+}
+/**
+  *
+  * vcard spacing
+  * -----------------------------
+  */
+div.country-name{margin-bottom:1em;}
+div.em{margin-top:1em;}
+
+.notice{
+	background:#FEFFC8 none repeat scroll 0 50%;
+	border:2px dotted #CC6633;
+	padding:7px 5px;
+}
+.navigate .pagego a:hover{
+	text-decoration:underline;
+}
+a:link.pdf, a:visited.pdf {
+	background: url(../gfx/icons/search/pdf-small.gif) left no-repeat;
+	padding: 4px 0 4px 20px;
+}
+a:link.ppt, a:visited.ppt{
+	background: url(../gfx/icons/search/ppt-small.gif) left no-repeat;
+	padding: 4px 0 4px 20px;
+}
+a:link.plain, a:visited.plain {
+	background: url(../gfx/icons/search/txt-small.gif) left no-repeat;
+	padding: 4px 0 4px 20px;
+}
+a:link.doc, a:visited.doc{
+	background: url(../gfx/icons/search/doc-small.gif) left no-repeat;
+	padding: 4px 0 4px 20px;
+}
+a:link.xls, a:visited.xls{
+	background: url(../gfx/icons/search/xls.gif) left no-repeat;
+	padding: 4px 0 4px 20px;
+}
+a:link.audio, a:visited.audio {
+	background: url(../gfx/icons/search/audio-small.png) left no-repeat;
+	padding: 4px 0 4px 20px;
+}
+a:link.image, a:visited.image {
+	background: url(../gfx/icons/search/jpg.gif) left no-repeat;
+	padding: 4px 0 4px 20px;
+}
+a:link.rss, a:visited.rss {
+	background: url(../gfx/icons/search/rss.png) left no-repeat;
+	padding: 4px 0 4px 20px;
+}
+a:link.zip {
+	background: url(../gfx/icons/search/zip-small.gif) left no-repeat;
+	padding: 4px 0 4px 20px;
+}
+ul#status_messages, .status_messages, .notice {
+	border: 2px dotted #CC6633;
+	background:#feffc8;
+	margin-left: 0;
+	padding: 7px 5px;
+	font-size: 13px;
+	margin-bottom:12px;
+}
+ul#status_messages li {
+	background-image: none;
+	margin: 0 0 0 5px;
+	line-height: 1.4em;
+}
+
+p.notice {
+	overflow: auto;
+	width: 90%;
+}
+p.notice a.left {
+	float:left;
+}
+p.notice a.right {
+	float:right;
+}
+table.form td {
+	border:none;
+}
+
+/* grid */
+table.grid {
+	background-color:#FFFFFF;
+	margin:5px 0;
+	width:100%;
+}
+table.grid thead th {
+	background-color:#f3f3f3;
+	font-weight:bold;
+	letter-spacing:1px;
+	font-size: 12px;
+	padding:0 4px;
+	text-align:left;
+}
+.grid thead th.large {
+	width: 335px;
+}
+.grid thead th.tiny {
+	width:10px;
+}
+table.grid tr {
+	height:32px;
+}
+.grid tbody tr {
+	vertical-align: top;
+}
+.grid ul {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+.grid tr.even {
+	background:#F7F7F7;
+}
+table.grid td {
+	font-weight:normal;
+	line-height:22px;
+	padding:4px;
+	border-bottom:1px solid #E5E5E5;
+}
+table.grid td.meta {
+	border:none;
+}
+table.grid p {
+	margin:0;
+}
+.pagination_control {
+	padding:10px 0;
+}
+span.metanav {font-size:11px;}
+div#registration {
+    float: left;
+    height: 0;
+    left: 810px;
+    position: relative;
+    top: -210px;
+}
+.about-core {
+	position:absolute;
+	left:0;
+	top:0;
+}
+blockquote {
+    background: url("../gfx/layout/quote_open.gif") no-repeat scroll left top transparent;
+    font-style: italic;
+    line-height: 160%;
+}
+blockquote div {
+    background: url("../gfx/layout/quote_close.gif") no-repeat scroll right bottom transparent;
+    padding: 0 40px;
+}

@@ -1,0 +1,56 @@
+@charset "utf-8";
+/* CSS Document */
+#section_bg{
+	background:url(../gfx/layout/headers/sponsors.jpg) top no-repeat;
+}
+/**
+  *
+  * Custom media boxes (streams&mp3)
+  * -----------------------------
+  */
+#schedule a{
+	background: transparent url(../gfx/layout/schedule_r.png) top left no-repeat;
+}
+#participate a{
+	background: transparent url(../gfx/layout/participate_r.png) top left no-repeat;
+}
+#content{
+	float:right;
+}
+#sidebar{
+	float:left;
+}
+div.img_name{
+	float:left;
+	width:270px;
+}
+div.description{
+	float:right;
+	width:260px;
+	padding-left:10px;
+	text-align:left;
+}
+ul.blockmenu{
+	margin:0;
+	padding:0;
+	list-style:none;
+	border-bottom:1px solid #cacbcd;
+	width:100%;
+	font-size:11px;
+}
+ul.blockmenu li{
+	border-top:1px solid #cacbcd;
+	background:none;
+	padding:0;
+}
+ul.blockmenu li a{
+	display:block;
+	height:100%;
+	margin:0;
+	padding:12px 12px;
+
+}
+ul.blockmenu li a:hover{
+	color:#000;
+	background-color:#f3f3f4;
+}

@@ -1,0 +1,27 @@
+@charset "utf-8";
+/* CSS Document */
+#section_bg{
+	background:url(../gfx/layout/headers/contacts.jpg) top no-repeat;
+}
+/**
+  *
+  * Custom media boxes (streams&mp3)
+  * -----------------------------
+  */
+#schedule a{
+	background: transparent url(../gfx/layout/schedule_r.png) top left no-repeat;
+}
+#participate a{
+	background: transparent url(../gfx/layout/participate_r.png) top left no-repeat;
+}
+/**
+  *
+  * Section specific structure
+  * -----------------------------
+  */
+#content{
+	float:right;
+}
+#sidebar{
+	float:left;
+}

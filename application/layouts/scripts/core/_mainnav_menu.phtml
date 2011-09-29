@@ -1,0 +1,16 @@
+<? $html = array() ?>
+<ul class="mainnav">
+    <? foreach ($this->container as $page): ?>
+    <li>
+    <? $active = $page->isActive() ? 'selected' : '' ?>
+    <?= '<a href="'.$page->getHref().'" class="'.$active.'">'.$page->getLabel().'</a>'; ?>
+	<?
+    if (!empty($page->pages)) {
+    	foreach ($page->pages as $subpage) {
+    		$html['subpages'][] = '<a href="'.$subpage->getHref().'" class="">'.$subpage->getLabel().'</a>';
+    	}
+    }
+	?>
+    </li>
+    <? endforeach;?>
+</ul>
