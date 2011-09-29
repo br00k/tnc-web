@@ -1,0 +1,28 @@
+Dear <?= $this->values['fname'] ?> <?= $this->values['lname'] ?>,
+<br><br>
+
+<p>Thank you for submitting your paper for consideration for the <?= $this->conferenceInfo('name') ?>. 
+On behalf of the programme committee, I regret to inform you that your paper "<?= $this->values['title'] ?>" has not been accepted for presentation.</p>
+
+<p>We had a record number of papers submitted this year and the decisions were difficult to make: there were very many papers of high quality but space in the schedule was limited.</p>
+
+<p>You may find it useful to see the following feedback about your paper from the programme committee:</p>
+
+<p>
+<hr />
+<ul>
+<? foreach ($this->values['reviews'] as $review): ?>
+<? if ($review['comments_authors']): ?>
+<li><?= $review['comments_authors'] ?></li>
+<? endif; ?>
+<? endforeach; ?>
+</ul>
+<hr />
+</p>
+
+<p>
+Sincerely,<br /><br />
+
+
+
+</p>

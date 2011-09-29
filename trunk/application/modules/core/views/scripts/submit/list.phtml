@@ -1,0 +1,138 @@
+<h1>Submissions [<?=$this->grid['rows']->count()?>]</h1>
+<?
+$submissionsReviewers = $this->grid['rows']->getNumberOfReviewers();
+
+// get all reviews of current user
+$reviews = $this->grid['rows']->getReviews($this->authInfo('user_id'));
+
+#if ($this->authInfo()->isAdmin() ):
+	$eventlogModel = new Core_Model_Eventlog();
+	$timestamps = $eventlogModel->getAllTimestamps();
+	
+	$selectValues = Zend_Registry::get('formconfig')->formdefaults->submit;
+	
+	$statusSelect = $this->formSelect('status',
+		$this->status,
+		array("onchange" => "this.form.submit();"),
+		$selectValues->status->toArray()
+	);
+	
+	$session = new Core_Model_Session();
+	$sessionValues = $session->getSessionsForSelect(null, '---');
+	
+	$sessionSelect = $this->formSelect('session_id',
+		$this->session_id,
+		array("onchange" => "this.form.submit();", "style" => "width:260px;"),
+		$sessionValues
+	);
+#endif;
+$submitSelect = $this->formSelect('submission_id',
+	$this->submission_id,
+	array("onchange" => "this.form.submit();"),
+	array(0 => 'all submissions', 1 => 'submissions that I should review')
+);
+?>
+
+<? if ($this->authInfo()->isAdmin() ): ?>
+<ul class="navlist">
+<li><a href="/core/submit/new" title="new submission">new</a></li>
+<li><a href="/core/submit/mail/1" title="<?= (isset($timestamps['mail_accepted']['timestamp'])) ?
+	'Last sent: '. $this->formatDate($timestamps['mail_accepted']['timestamp']) :
+	'There are no emails sent yet' ?>">email accepted</a></li>
+<li><a href="/core/submit/mail/2" title="<?= (isset($timestamps['mail_rejected']['timestamp'])) ?
+	'Last sent: '. $this->formatDate($timestamps['mail_rejected']['timestamp']) :
+	'There are no emails sent yet' ?>">email rejected</a></li>
+<li>
+<? if (isset($timestamps['mail_reviewers']['timestamp'])): ?>
+<a href="/core/review/mail/reminder/1" title="First emails sent: 
+<?= $this->formatDate($timestamps['mail_reviewers']['timestamp'])?>
+	">email reviewers (reminder)</a></li>	
+<? else: ?>
+<a href="/core/review/mail/" title="<?= (isset($timestamps['mail_reviewers']['timestamp'])) ?
+	'Last sent: '. $this->formatDate($timestamps['mail_reviewers']['timestamp']) :
+	'There are no emails sent yet' ?>">email reviewers</a></li>	
+<? endif; ?>
+</ul>
+<? endif; ?>
+
+<form id="filterform" action="<?= $this->url() ?>" method="post">
+<p>
+Show or <a href="<?= $this->url(array('controller'=>'submit', 'action'=>'download'), 'main-module') ?>">download</a>
+<?= $submitSelect ?><? #if ($this->authInfo()->isAdmin() ): ?> with status <?= $statusSelect ?> in session <?= $sessionSelect ?><? #endif; ?>
+</p>
+</form>
+<?
+// filter out hidden columns
+function globFilter($input)
+{
+	return !isset($input['hidden']);
+}
+$columns = array_filter($this->grid['cols'], 'globFilter');
+?>
+<? if ($this->grid['rows']->count() !== 0): ?>
+<table id="submissions" class="grid" cellspacing="0">
+<thead>
+<tr>
+<? $dir = ($this->grid['params']['dir'] === 'desc') ? 'asc' : 'desc' ?>
+<th><a href="<?= $this->url(array('order' => 'file_id', 'dir' => $dir), 'grid') ?>" title="file number">#</a></th>
+<th><a href="<?= $this->url(array('order' => 'title', 'dir' => $dir), 'grid') ?>">Title</a></th>
+<th><a href="<?= $this->url(array('order' => 'date', 'dir' => $dir), 'grid') ?>">Date</a></th>
+<th><a href="<?= $this->url(array('order' => 'organisation', 'dir' => $dir), 'grid') ?>">Organisation</a></th>
+<th><a href="<?= $this->url(array('order' => 'lname', 'dir' => $dir), 'grid') ?>">Submitter</a></th>
+<? #if ($this->authInfo()->isAdmin() ): ?>
+<th><a href="<?= $this->url(array('order' => 'status', 'dir' => $dir), 'grid') ?>">Status</a></th>
+<th><a href="<?= $this->url(array('order' => 'session_title', 'dir' => $dir), 'grid') ?>">Session</a></th>
+<? #endif; ?>
+<th><a href="<?= $this->url(array('order' => 'review_count', 'dir' => $dir), 'grid') ?>">Reviews</a></th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<? foreach ($this->grid['rows'] as $item): ?>
+  <tr class="<?= $this->cycle(array('odd', 'even'))->next() ?>">
+	<td><span class="meta"><?= $item->file_id ?></span></td>
+	<td><a name="s<?= $item->submission_id ?>" href="/getfile/<?= $item->file_id ?>"><?= htmlspecialchars($item->title) ?></a></td>
+	<td><?= $this->formatDate($item->date) ?></td>
+	<td><?= htmlspecialchars($item->organisation) ?></td>
+	<td><a href="mailto:<?=$item->email?>"><?= htmlspecialchars($item->fname.' '. $item->lname) ?></a></td>
+	<? #if ($this->authInfo()->isAdmin() ): ?>
+	<td><?= $selectValues->status->get($item->status) ?></td>
+	<td><?= htmlspecialchars($item->session_title) ?></td>
+	<? #endif; ?>
+
+	<td><a href="/core/review/list/<?= $item->{$this->grid['primary']} ?>" title="last review: <?= $this->formatDate($item->review_last) ?>">
+	<? echo $item->review_count;
+	if (isset($submissionsReviewers[$item->submission_id])) {
+		echo '<span class="meta">&nbsp;('.round($item->review_count/$submissionsReviewers[$item->submission_id],2)*100 .'%)</span>';
+	}
+	?></a></td>
+	<td>
+		<ul>
+		<li>
+		<? if ( isset($reviews[$item->submission_id]) ): ?>
+		<a class="<? if (in_array($item->{$this->grid['primary']}, $this->authInfo('submissions_to_review') )):?>important<? endif; ?>"
+		href="/core/review/edit/<?= key($reviews[$item->submission_id]) ?>">edit&nbsp;review</a>		
+		<? else: ?>
+		<a class="<? if (in_array($item->{$this->grid['primary']}, $this->authInfo('submissions_to_review') )):?>important<? endif; ?>"
+		href="/core/review/new/<?= $item->{$this->grid['primary']} ?>">review</a>
+		<? endif; ?>
+		</li>
+		<? if ($this->authInfo()->isAdmin() ): ?>
+		<li><a href="<?= $this->url(array('controller' => 'submit', 'action' => 'edit', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">edit</a></li>
+		<li><a onclick="return confirm('Do you really want to delete this submission?');" href="<?= $this->url(array('controller' => 'submit', 'action' => 'delete', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">delete</a></li>
+		<li><a href="<?= $this->url(array('controller' => 'submit', 'action' => 'reviewers', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">
+		reviewers&nbsp;<?
+			if (isset($submissionsReviewers[$item->submission_id])) {
+				echo '('.$submissionsReviewers[$item->submission_id] .')';
+			}?></a></li>
+		<? endif; ?>
+		</ul>
+	</td>
+  </tr>
+<? endforeach; ?>
+</tbody>
+</table>
+<? endif; ?>
+<? if ( ($this->grid['rows'] instanceof Zend_Paginator) && ($this->grid['rows']->getTotalItemCount() > $this->grid['rows']->getItemCountPerPage()) ): ?>
+<?= $this->paginationControl($this->grid['rows'], 'Sliding', '_paginator.phtml', array('route_name' => 'grid')); ?>
+<? endif; ?>

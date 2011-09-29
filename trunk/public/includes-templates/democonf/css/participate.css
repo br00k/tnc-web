@@ -1,0 +1,45 @@
+@charset "utf-8";
+/* CSS Document */
+#section_bg{
+	background:url(../gfx/layout/headers/participate.jpg) top no-repeat;
+}
+/**
+  *
+  * Section specific structure
+  * -----------------------------
+  */
+#content{
+	float:right;
+}
+#sidebar{
+	float:left;
+}
+
+table.overview {
+	color:#000000;
+	font-size:11px;
+	font-weight:normal;
+	line-height:14px;
+	background-color:white;
+}
+
+table.overview thead th {
+	background-color:#F5F6F6;
+	color:#000000;
+	font-size:10px;
+	font-weight:bold;
+	letter-spacing:1px;
+	padding:0 4px;
+	border:none;
+}
+
+table.overview td{
+	color:#000000;
+	font-size:11px;
+	font-weight:normal;
+	line-height:14px;
+	border:none;
+}
+table.overview tr.even {
+	background-color:#F5F6F6;
+}

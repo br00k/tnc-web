@@ -1,0 +1,11 @@
+<p>Dear admin,</p>
+
+<p>
+<?
+$url = $this->url(array('controller'=>'review', 'action'=>'list', 'id'=>$this->values['submission']['submission_id']), 'gridactions');
+?>
+A new review for "<?= $this->values['submission']['title']?>" has been added by <a href="mailto:<?=$this->values['user']['email']?>"><?= $this->values['user']['fname'] . ' ' .$this->values['user']['lname']?></a>, check it out here:
+</p>
+<p>
+<a href="<?=$url?>"><?=$url?></a>
+</p>

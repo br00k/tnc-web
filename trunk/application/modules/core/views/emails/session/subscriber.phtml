@@ -1,0 +1,16 @@
+<p>
+Hello,
+<br><br>
+You subscribed to the session called '<?= $this->values['title'] ?>'. Something about this session has changed so please follow the link below
+to check the details.
+<br><br>
+<?
+$link = $this->url(array('controller' => 'session', 'action' => 'show', 'id' => $this->values['session_id']), 'oneitem');
+?>
+<a href="<?= $link ?>"><?= $link ?></a>
+</p>
+
+<p>
+If you don't wish to receive any more updates about this session, then you should login to CORE and 
+<a href="<?= $this->url(array('controller' => 'schedule', 'action' => 'list', 'day' => 'all', 'personal' => true), 'schedule') ?>">unsubscribe</a> from the session.
+</p>

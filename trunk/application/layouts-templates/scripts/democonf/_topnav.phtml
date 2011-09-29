@@ -1,0 +1,16 @@
+<ul class="subnav">
+	<? if ($this->authInfo()->isLoggedIn()): ?>
+	<li id="Logout"><a href="<?= $this->url(array('controller' => 'user', 'action' => 'logout'), 'main-module') ?>">Sign out</a></li>
+	<? else: ?>
+	<li id="Login"><a href="<?= $this->url(array('controller' => 'user', 'action' => 'login'), 'main-module') ?>">Sign in</a></li>
+	<? endif; ?>
+</ul>
+<? if ($this->authInfo()->isLoggedIn()): ?>	
+<div class="welcomemsg">
+	Logged in as: 
+	<a href="<?=$this->url(array('controller' => 'user', 'action' => 'edit', 'id' => $this->authInfo('user_id')), 'gridactions')?>"
+		title="<?= $this->translate('Manage account details'); ?>">
+		<?=$this->authInfo('fname')." ".$this->authInfo('lname')?>
+	</a>
+</div>
+<? endif; ?>

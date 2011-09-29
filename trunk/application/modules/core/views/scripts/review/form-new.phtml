@@ -1,0 +1,9 @@
+<h1>Review: <?= $this->submission->title ?></h1>
+<div id="submission_info" class="infobox">
+
+<? $this->userinfo = true // set this if you want to display userinfo as well ?>
+<?= $this->render('/_submit_details.phtml') ?>
+
+</div>
+
+<?= $this->reviewForm ?>

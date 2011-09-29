@@ -1,0 +1,33 @@
+<div class="newsnav">
+<h1 class="light">Latest News</h1>
+<ul>
+<? foreach ($this->news as $item): ?>
+<li>
+<img class="" src="http://www.terena.org/news/img.php?file_id=<?=$item['thumb_id'] ?>" alt="[image]" />
+<div><a href="/webdemo/media/news/id/<?=$item['news_id']?>" <? if ($item['news_id'] == $this->selected['news_id']): ?>class="active"<? endif; ?>><?= $item['headline'] ?></a></div>
+</li>
+<? endforeach; ?>
+</ul>
+</div>
+<div class="news">
+   <div class="article">
+     <div class="article_start"></div>
+      <div class="ncontent">
+         <h1 id="n<?= $this->selected['news_id'] ?>" class="light"><?= $this->selected['headline'] ?></h1>
+		 <div class="nmeta">
+      	   <div><?= $this->formatDate($this->selected['publish_date'], null, 'dd/MM/YYYY') ?><br /><br /></div>
+      	   <img src="http://www.terena.org/news/img.php?file_id=<?= $this->selected['img_id'] ?>" alt="image" />
+         </div>
+         <div>
+         	<?= nl2br($this->selected['preview']) ?>
+         	</div>
+         	<div class="n<?= $item['news_id'] ?>">
+            <?= $this->selected['fullstory'] ?><br />
+		</div>
+     <div class="clearer"></div>
+     </div><!--ncontent-->
+
+     <div class="article_end"></div>
+   </div>
+</div>
+<div class="bot_crnrs"></div>

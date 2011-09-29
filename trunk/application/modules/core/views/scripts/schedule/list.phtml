@@ -1,0 +1,6 @@
+<? if ( isset($this->schedule[$this->filters['day']]) || $this->filters['day'] == 'all'): ?>
+<?= $this->render('schedule/subnav.phtml'); ?>
+<?= $this->render('schedule/schedule.phtml'); ?>
+<? else: ?>
+<p>The conference schedule is not available yet.</p>
+<? endif; ?>

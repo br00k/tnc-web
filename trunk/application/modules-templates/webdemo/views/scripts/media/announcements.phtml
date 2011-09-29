@@ -1,0 +1,25 @@
+<div id="nocol">
+
+<table class="tnc">
+<thead>
+<tr>
+    <th class="light">Date</th>
+    <th class="light">Header</th>
+    <th class="light">Message</th>
+</tr>
+</thead>
+
+<tbody class="light">
+<? foreach ($this->announcements as $announcement): ?>
+<tr class="<?= $this->cycle(array('odd', 'even'))->next() ?>">
+	<td><?= $this->formatDate($announcement['created_at'], null, 'dd/MMM/YYYY') ?></td>
+	<td><?= $announcement['header'] ?></td>
+	<td><?= $announcement['msg'] ?></td>
+</tr>
+<? endforeach; ?>
+
+</tbody>
+</table>
+
+</div>
+<div class="clearer"></div><div class="bot_crnrs"></div><div class="clearer"></div>

@@ -1,0 +1,112 @@
+<!-- schedule start -->
+<form id="programme" method="post" action="/core/session/move">
+<div><input name="action" type="hidden" value="feedback" /></div>
+<? foreach ($this->schedule as $date => $day): ?>
+<?
+$zd = new Zend_Date($date);	
+$weekday = $zd->get('EEEE dd/MM');
+?>
+<table class="schedule" cellspacing="0" cellpadding="0">
+<? if ($this->filters['day'] == 'all'): ?><caption><?= $weekday ?></caption><? endif; ?>
+	<thead>
+    <tr>
+    <? foreach ($this->timeslots[$date] as $slot): ?>
+    <? $range = $this->formatDate($slot['tstart'], null, 'H:m') . ' - ' . $this->formatDate($slot['tend'], null, 'H:m'); ?>
+	<th style="width: 20%;" <? if ($this->filters['timeslot'] == $slot['timeslot_id']): ?>class="active"<? endif; ?>><?= $range ?></th>
+	<? endforeach; // timeslots ?>
+	<th style="width: 20%;" class="eve_prog">Extra events</th>
+	</tr>
+	</thead>
+    <tbody>
+	<? $i=0; foreach ($day as $loc_id => $location): $i++; ?>
+		<tr class="location<?=$loc_id?> <? if ($this->filters['location'] == $loc_id): ?>active<? endif; ?>">
+		<? foreach ($location as $timeslot_id => $sess): ?>
+			<td <? if (isset($sess['cat_id'])): ?> class="sess_catid_<?=$sess['cat_id']?>"<? endif; ?>
+			<? if ($this->filters['timeslot'] == $timeslot_id): ?>class="active"<? endif; ?>>
+			<? if ($this->authInfo()->isAdmin()): ?>
+			<input type="checkbox" value="<?= $timeslot_id.'-'.$loc_id ?>" class="mover" name="movers[]" />
+			<? endif; ?>
+			<? if ($sess): ?>
+				<? if ($this->authInfo()->isLoggedIn()): ?>
+				<span>
+				<? if ( ($this->subscriptions) && (in_array($sess['session_id'], $this->subscriptions)) ): ?>
+				<a href="/core/session/unsubscribe/<?= $sess['session_id'] ?>/json" class="subscribeon subscriber" title="unsubscribe from this session"></a>
+				<? else: ?>
+				<a href="/core/session/subscribe/<?= $sess['session_id'] ?>/json" class="subscribe subscriber" title="subscribe to this session"></a>
+				<? endif; ?></span>
+				<? endif; //Authinfo ?>
+
+				<a class="sched_title" title="Show information about this session"
+				href="<?= $this->url(array('controller'=>'session', 'action'=>'show', 'id'=>$sess['session_id']), 'oneitem') ?>">
+				<?= $this->timeslots[$date][$timeslot_id]['number'] . $sess['loc_abbr'] . ' - ' . htmlspecialchars($sess['title']) ?></a>
+                <br /><br />
+
+				<? if ( ($this->filters['view'] == 'speakers') && ($sess['speakers']) ): ?>
+					<ul class="persons">
+						<? foreach ($sess['speakers'] as $speaker): ?>
+							<li>
+							<a class="pres_info" title="Show information about this speaker"
+							href="<?= $this->url(array('controller'=>'user', 'action'=>'show', 'id'=>$speaker['user_id']), 'oneitem') ?>">
+							<?= htmlspecialchars($speaker['fname'] .' '. $speaker['lname']) ?>
+							</a>
+							<?
+							// feedback toggler is set to true, show ratebox
+							if ($this->feedback):
+							$this->presentation_id = $speaker['presentation_id'];
+							echo $this->render('schedule/ratebox.phtml');
+							endif;
+							?>
+							</li>
+						<? endforeach; // speakers ?>
+					</ul>
+				<? elseif ( ($this->filters['view'] == 'titles') && ($sess['presentations']) ): ?>
+					<ul class="titles">
+						<? foreach ($sess['presentations'] as $pres): ?>
+							<li>
+							<a class="pres_info"
+							title="Show information about this presentation"
+							href="<?= $this->url(array('controller'=>'presentation', 'action'=>'show', 'id'=>$pres['presentation_id']), 'oneitem') ?>">
+							<?= htmlspecialchars($pres['title']) ?>
+							</a>
+							<?
+							// feedback toggler is set to true, show ratebox
+							if ($this->feedback):
+							$this->presentation_id = $pres['presentation_id'];
+							echo $this->render('schedule/ratebox.phtml');
+							endif;
+							?>
+							</li>
+						<? endforeach; // titles ?>
+					</ul>
+				<? endif; ?>
+
+			<? else: ?>
+				<? if ($this->authInfo()->isAdmin()): ?>
+					<a title="Add a new session here" href="<?=
+					$this->url(array('controller' => 'session', 'action' => 'new', 'location_id' => $loc_id, 'timeslot_id' => $timeslot_id), 'main-module') ?>">+</a>
+				<? endif; ?>
+			<? endif; ?>
+			</td>
+		<? endforeach; // timeslots ?>
+
+   		<? if ($i == 1): ?>
+			<td class="eve_prog" rowspan="<?=count($location)?>">
+				<? if ($this->aclCheck('event', 'new')): ?>
+				<a href="<?= $this->url(array('controller' => 'event', 'action' => 'new'), 'main-module') ?>">Add event</a><br /><br />
+				<? endif; ?>
+				<? if (!empty($this->events[$date])): ?>
+					<ul class="titles">
+						<? foreach ($this->events[$date] as $event): ?>
+							<li><a href="/core/event/<?= $event['event_id'] ?>"><?= htmlspecialchars($event['title']) ?></a><br /><span class="meta"><?= $event->getCompleteTime() ?></span></li>
+						<? endforeach; ?>
+					</ul>
+				<? endif; ?>
+			</td>
+   		<? endif; ?>
+    </tr>
+	<? endforeach; // locations ?>
+	</tbody>
+</table>
+<? endforeach; // days ?>
+</form>
+<!-- schedule end -->
