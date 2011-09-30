@@ -109,7 +109,7 @@ class Callbacks_Core
 	function db_query($sql, $soft = false)
 	{
 		if ( !($result = $this->db->query($sql, $soft)) ) {
-			$this->error = $this->db->error;
+			$this->error = $this->db->error;	
 		}
 
 		return $result;
