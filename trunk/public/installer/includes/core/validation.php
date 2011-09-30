@@ -65,14 +65,15 @@ class Validation_Core
 		elseif ( $this->config['db_type'] == 'pgsql' ) {
 			#echo "<pre>".print_r($this->config, 1)."</pre>";
 			if ( $db_name ) {
-				$link = @pg_connect("host=$db_host dbname=$db_name user=$db_user password=$db_pass");
-				if(!$link ) {
-					$e =  error_get_last();
-					$this->error = $e['message'];
-					return false;
-				} else {
-					return true;
+				#$link = pg_connect("host=$db_host dbname=$db_name user=$db_user password=$db_pass");
+				try {
+					$dbh = new PDO("pgsql:dbname=$db_name;host=$db_host", $db_user, $db_pass);
 				}
+				catch(PDOException $e) {
+					$this->error = $e->getMessage();
+					return false;
+				}
+				return true;
 			}
 		} else {
 			$this->error = $this->language['db_select'];

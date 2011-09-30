@@ -15,7 +15,6 @@ http://www.phpsetupwizard.com/license/
 */
 ini_set('display_errors', 'on');
 error_reporting(E_ALL);
-
 // Needed for Location header, which needs an absolute URI (RFC2616)
 $proto = $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://';
 

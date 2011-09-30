@@ -110,5 +110,4 @@ function get_admin() {
 	return false;
 }
 
-
 ?>
