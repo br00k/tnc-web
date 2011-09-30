@@ -10,7 +10,7 @@
 <body>
 <div id="header">
 	<div class="left">
-	<h1><a href="/core/"><?= $this->conferenceInfo('name'); ?></a></h1>
+	<h1><a href="/core/"><?= htmlspecialchars($this->conferenceInfo('name')); ?></a></h1>
 	</div>
 	<div class="right">
 		<?= $this->render('core/_topnav.phtml'); ?>
@@ -35,7 +35,7 @@
 	<? endif; ?>
 	<?= $this->layout()->content; ?>
 	</div>
-	<div id="footer"><a href="http://code.google.com/p/terena-core/">CORE</a></div>
+	<div id="footer"><a href="https://confluence.terena.org/display/core">CORE</a></div>
 </div>
 </body>
 </html>
