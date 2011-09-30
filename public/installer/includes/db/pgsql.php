@@ -51,7 +51,7 @@ class DB_PgSQL
 		try {
 			$this->dbh = new PDO("pgsql:dbname={$params['db_name']};host={$params['db_host']}", $params['db_user'], $params['db_pass']);
 		} catch(PDOException $e) {
-			$this->error = $e->getMesssage();
+			$this->error = $e->getMessage();
 			return false;
 		}
 
@@ -107,11 +107,13 @@ class DB_PgSQL
 	function query($sql, $soft = false)
 	{
 		$result = $this->dbh->query($sql);
-
-		if ( $result === false && !$soft ) {
-			$this->error($sql);
+			
+		if($result === false) {
+			$errorinfo = $this->dbh->errorInfo();
+			if(!$soft) {
+				$this->error = $errorinfo[2];
+			}
 		}
-
 		return $result;
 	}
 
