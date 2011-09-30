@@ -2,6 +2,7 @@
 //
 require_once('functions.php');
 
+
 $steps=array(
 		array(
 			// Step name
@@ -246,8 +247,8 @@ $steps=array(
 																			'db_pass' => 'db_password',
 																			'db_name' => 'db_name'
 																			),
-																		),
-																	),
+																		), 
+																	), 
 																),
 
 

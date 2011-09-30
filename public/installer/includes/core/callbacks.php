@@ -123,11 +123,12 @@ class Callbacks_Core
 	 * @param	string
 	 * @return	string
 	 */
-	function db_escape($value)
+	function db_escape($string)
 	{
-		$value = $this->db->escape($value);
-
-		return $value;
+	//	var_dump($this); 
+		$string = $this->db->escape($string);
+//		$value = $this->db->escape($value);
+		return $string;
 	}
 
 	/**

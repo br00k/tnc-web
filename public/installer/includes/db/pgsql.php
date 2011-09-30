@@ -48,10 +48,13 @@ class DB_PgSQL
 	 */
 	function connect($params)
 	{
-		if ( !($this->link = pg_connect("host={$params['db_host']} user={$params['db_user']} password={$params['db_pass']} dbname={$params['db_name']}")) ) {
-			$this->error = $this->language['db_connect'];
+		try {
+			$this->dbh = new PDO("pgsql:dbname={$params['db_name']};host={$params['db_host']}", $params['db_user'], $params['db_pass']);
+		} catch(PDOException $e) {
+			$this->error = $e->getMesssage();
 			return false;
 		}
+
 
 /*		if ( $this->config['db_charset'] && $this->config['db_collation'] ) {
 			$this->query("SET NAMES " . $this->config['db_charset'] . " COLLATE " . $this->config['db_collation'], true);
@@ -88,7 +91,7 @@ class DB_PgSQL
 	 */
 	function close()
 	{
-		$result = @pg_close($this->link);
+		$result = pg_close($this->link);
 
 		return $result;
 	}
@@ -103,7 +106,7 @@ class DB_PgSQL
 	 */
 	function query($sql, $soft = false)
 	{
-		$result = @pg_query($this->link, $sql);
+		$result = $this->dbh->query($sql);
 
 		if ( $result === false && !$soft ) {
 			$this->error($sql);
@@ -139,9 +142,9 @@ class DB_PgSQL
 	 * @param	string
 	 * @return	string
 	 */
-	function escape($value)
+	function escape($string)
 	{
-		$value = @pg_escape_string($this->link, $value);
+		$value = $this->dbh->quote($string);
 
 		return $value;
 	}
@@ -170,7 +173,7 @@ class DB_PgSQL
 	# Not needed anywhere??
 	function last_insert_id()
 	{
-		$id = @pg_insert_id($this->link);
+		$id = pg_insert_id($this->link);
 
 		return $id;
 	}

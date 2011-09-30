@@ -92,16 +92,15 @@ class Callbacks extends Callbacks_Core
 			return false;
 		}
 
-
 		// Initialise Conference
 		$conf_abbr = $this->db_escape($conf['conf_abbr']);
 		$conf_name = $this->db_escape($conf['conf_name']);
 		$conf_hostname = $this->db_escape($conf['conf_hostname']);
-		if(!$this->db_query("INSERT INTO conferences (abbreviation, name, hostname) VALUES ('$conf_abbr', '$conf_name', '$conf_hostname')")) {
+		if(!$this->db_query("INSERT INTO conferences (abbreviation, name, hostname) VALUES ($conf_abbr, $conf_name, $conf_hostname)")) {
 			return false;
 		}
 
-
+echo "asfasf";
        // Add administrative account
         $admin_uid = $this->db_escape($attributes[$conf['ssp_uid_attribute']][0]);
         $admin_fname = $this->db_escape($attributes[$conf['ssp_fname_attribute']][0]);
@@ -110,7 +109,8 @@ class Callbacks extends Callbacks_Core
         $admin_organisation = $this->db_escape($attributes[$conf['ssp_organisation_attribute']][0]);
         $admin_country = $this->db_escape($attributes[$conf['ssp_country_attribute']][0]);
 
-        $admin_query = "INSERT INTO users (smart_id, fname, lname, email, organisation, country) VALUES ('$admin_uid', '$admin_fname', '$admin_lname', '$admin_email', '$admin_organisation', '$admin_country')";
+	echo "yes";
+        $admin_query = "INSERT INTO users (smart_id, fname, lname, email, organisation, country) VALUES ($admin_uid, $admin_fname, $admin_lname, $admin_email, $admin_organisation, $admin_country)";
         if(!$this->db_query($admin_query)) {
 			return false;
 		}
@@ -124,7 +124,8 @@ class Callbacks extends Callbacks_Core
 
 
 
-		$this->db_close();
+// Not needed with PDO any more
+//		$this->db_close();
 
 
 
