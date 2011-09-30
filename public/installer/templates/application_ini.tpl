@@ -113,6 +113,16 @@ simplesaml.saml_organisation_attribute = "{ssp_organisation_attribute}"
 simplesaml.saml_email_attribute = "{ssp_email_attribute}"
 simplesaml.saml_country_attribute = "{ssp_country_attribute}"
 
+;; email address to send debug messages to
+;core.debugMailTo = "gijtenbeek@terena.org"
+;; observers
+core.observer.review = 1
+core.observer.submit = 1
+;; log simplesaml attributes
+core.logSamlAttributes = 1
+;; how long before an invite expires 
+core.userInviteTtl = '3 months'
+
 ;; Diagnostic -- uncomment the line below to enable
 ;diagnostic.log = APPLICATION_PATH "/../logs/diagnostic.log"
 ; change to "a" to append rather than overwrite diagnostic log
