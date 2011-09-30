@@ -262,110 +262,6 @@ CREATE TABLE programme (
 SET search_path = public, pg_catalog;
 
 --
--- Name: presentations_presentation_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE presentations_presentation_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    MAXVALUE 9999999999999
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: presentations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE presentations (
-    presentation_id integer DEFAULT nextval('presentations_presentation_id_seq'::regclass) NOT NULL,
-    submission_id integer,
-    title text NOT NULL,
-    abstract text,
-    inserted timestamp(0) with time zone DEFAULT now(),
-    conference_id integer,
-    authors text,
-    updated timestamp(0) with time zone,
-    image text
-);
-
-
---
--- Name: sessions_session_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE sessions_session_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    MAXVALUE 999657545645
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: sessions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE sessions (
-    session_id integer DEFAULT nextval('sessions_session_id_seq'::regclass) NOT NULL,
-    title text,
-    description text,
-    updated timestamp(0) without time zone,
-    logo text,
-    tag_id integer,
-    location_id integer,
-    timeslot_id integer,
-    conference_id integer,
-    gcal_event_id text,
-    inserted timestamp(0) with time zone DEFAULT now()
-);
-
-
---
--- Name: sessions_presentations_session_presentation_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE sessions_presentations_session_presentation_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    MAXVALUE 9898989899999
-    NO MINVALUE
-    CACHE 1;
-
-
---
--- Name: sessions_presentations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE sessions_presentations (
-    session_presentation_id integer DEFAULT nextval('sessions_presentations_session_presentation_id_seq'::regclass) NOT NULL,
-    session_id integer,
-    presentation_id integer,
-    displayorder smallint
-);
-
-
---
--- Name: vw_session_presentations; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW vw_session_presentations AS
-    SELECT sp.session_id, p.presentation_id, p.title, s.title AS session_title, p.inserted AS updated FROM ((sessions_presentations sp LEFT JOIN presentations p ON ((sp.presentation_id = p.presentation_id))) LEFT JOIN sessions s ON ((s.session_id = sp.session_id)));
-
-
-SET search_path = feedback, pg_catalog;
-
---
--- Name: vw_presentations; Type: VIEW; Schema: feedback; Owner: -
---
-
-CREATE VIEW vw_presentations AS
-    SELECT vw_session_presentations.session_id, vw_session_presentations.session_title, vw_session_presentations.presentation_id, vw_session_presentations.title, count(presentations.rating) AS responses, max(presentations.rating) AS rating_max, round(avg(presentations.rating), 2) AS rating_avg, min(presentations.rating) AS rating_min FROM (presentations JOIN public.vw_session_presentations ON ((presentations.presentation_id = vw_session_presentations.presentation_id))) WHERE (presentations.rating <> 0) GROUP BY vw_session_presentations.session_id, vw_session_presentations.session_title, vw_session_presentations.presentation_id, vw_session_presentations.title ORDER BY round(avg(presentations.rating), 2) DESC;
-
-
-SET search_path = public, pg_catalog;
-
---
 -- Name: conferences_conference_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -399,7 +295,9 @@ CREATE TABLE conferences (
     gcal_username text,
     gcal_password text,
     feedback_end timestamp(0) with time zone,
-    navigation boolean
+    navigation boolean,
+    stream_url text,
+    timezone text
 );
 ALTER TABLE ONLY conferences ALTER COLUMN hostname SET STATISTICS 100;
 
@@ -740,7 +638,36 @@ CREATE SEQUENCE presentation_tag_id_seq
     CACHE 1;
 
 
+--
+-- Name: presentations_presentation_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE presentations_presentation_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 9999999999999
+    NO MINVALUE
+    CACHE 1;
+
+
 SET default_with_oids = true;
+
+--
+-- Name: presentations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE presentations (
+    presentation_id integer DEFAULT nextval('presentations_presentation_id_seq'::regclass) NOT NULL,
+    submission_id integer,
+    title text NOT NULL,
+    abstract text,
+    inserted timestamp(0) with time zone DEFAULT now(),
+    conference_id integer,
+    authors text,
+    updated timestamp(0) with time zone,
+    image text
+);
+
 
 --
 -- Name: presentations_files; Type: TABLE; Schema: public; Owner: -; Tablespace: 
@@ -922,6 +849,37 @@ ALTER SEQUENCE session_evaluation_session_evaluation_id_seq OWNED BY session_eva
 
 
 --
+-- Name: sessions_session_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE sessions_session_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 999657545645
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: sessions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE sessions (
+    session_id integer DEFAULT nextval('sessions_session_id_seq'::regclass) NOT NULL,
+    title text,
+    description text,
+    updated timestamp(0) without time zone,
+    logo text,
+    tag_id integer,
+    location_id integer,
+    timeslot_id integer,
+    conference_id integer,
+    gcal_event_id text,
+    inserted timestamp(0) with time zone DEFAULT now()
+);
+
+
+--
 -- Name: sessions_files; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -942,6 +900,30 @@ CREATE SEQUENCE sessions_files_session_file_id_seq
     MAXVALUE 99999999999
     NO MINVALUE
     CACHE 1;
+
+
+--
+-- Name: sessions_presentations_session_presentation_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE sessions_presentations_session_presentation_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 9898989899999
+    NO MINVALUE
+    CACHE 1;
+
+
+--
+-- Name: sessions_presentations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE sessions_presentations (
+    session_presentation_id integer DEFAULT nextval('sessions_presentations_session_presentation_id_seq'::regclass) NOT NULL,
+    session_id integer,
+    presentation_id integer,
+    displayorder smallint
+);
 
 
 --
@@ -1330,6 +1312,14 @@ CREATE VIEW vw_session_files AS
 
 
 --
+-- Name: vw_session_presentations; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW vw_session_presentations AS
+    SELECT sp.session_id, p.presentation_id, p.title, s.title AS session_title, p.inserted AS updated FROM ((sessions_presentations sp LEFT JOIN presentations p ON ((sp.presentation_id = p.presentation_id))) LEFT JOIN sessions s ON ((s.session_id = sp.session_id)));
+
+
+--
 -- Name: vw_sessions; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -1374,7 +1364,7 @@ CREATE VIEW vw_speakers AS
 --
 
 CREATE VIEW vw_submissions AS
-    SELECT s.submission_id, s.date, s.title, s.target_audience, s.publish_paper, s.comment, s.file_id, u.user_id, u.fname, u.lname, u.organisation, u.active, u.inserted, u.email, u.lastlogin, rs.review_first, rs.review_last, rs.review_count, s.conference_id, st.title AS session_title, st.session_id, st.status FROM ((((submissions s LEFT JOIN users_submissions us ON ((us.submission_id = s.submission_id))) LEFT JOIN users u ON ((u.user_id = us.user_id))) LEFT JOIN vw_reviewstats rs ON ((rs.submission_id = s.submission_id))) LEFT JOIN vw_sessionstats st ON ((st.submission_id = s.submission_id)));
+    SELECT s.submission_id, s.date, s.title, s.target_audience, s.publish_paper, s.comment, s.file_id, u.user_id, u.fname, u.lname, u.organisation, u.active, u.inserted, u.email, u.lastlogin, rs.review_first, rs.review_last, rs.review_count, s.conference_id, st.title AS session_title, st.session_id, st.status, s.date AS submission_insert FROM ((((submissions s LEFT JOIN users_submissions us ON ((us.submission_id = s.submission_id))) LEFT JOIN users u ON ((u.user_id = us.user_id))) LEFT JOIN vw_reviewstats rs ON ((rs.submission_id = s.submission_id))) LEFT JOIN vw_sessionstats st ON ((st.submission_id = s.submission_id)));
 
 
 --
