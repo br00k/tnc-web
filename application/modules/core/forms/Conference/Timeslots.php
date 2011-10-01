@@ -124,8 +124,10 @@ class Core_Form_Conference_Timeslots extends TA_Form_Abstract
 				$dynamicValues = $dynamicValues->toMagicArray('dd/MM/yyyy H:m');
 			}
 
-			$this->addDynamicElement('timeslot_'.$dynamicValues['timeslot_id'])
-				 ->setValue($dynamicValues);
+			$dynElement = $this->addDynamicElement('timeslot_'.$dynamicValues['timeslot_id']);
+			if ($dynElement) {
+				$dynElement->setValue($dynamicValues);
+			}
 		}
 		parent::setDefaults($values);
 	}
