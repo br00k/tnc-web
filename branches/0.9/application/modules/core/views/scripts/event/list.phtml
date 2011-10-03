@@ -1,0 +1,18 @@
+<? if ($this->authInfo()->isAdmin() ): ?>
+<div class="actions"><a href="/core/event/new" title="Add new event">add</a></div>
+<? endif; ?>
+<div id="event_listing">
+<? foreach ($this->grid['rows'] as $category => $events): ?>
+    <h1><?= htmlspecialchars($category) ?>s</h1>
+    <ul class="basic">
+	<? foreach ($events as $event): ?>
+	<? if ($this->id != $event->event_id): ?>
+    <li><a title="Show event details" href="<?= $this->url(array('controller' => 'event', 'action' => 'show', 'id' => $event->event_id), 'oneitem') ?>"><?= htmlspecialchars($event->title) ?></a></li>
+	<? else: ?>
+	<li class="active"><?= htmlspecialchars($event->title) ?></li>
+	<? endif; ?>
+	<? endforeach; ?>
+    </ul><br />
+<? endforeach; ?>
+<div class="clearer"></div>
+</div>

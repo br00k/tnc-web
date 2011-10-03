@@ -1,0 +1,15 @@
+<p>Dear <?= $this->values['fname'] ?> <?= $this->values['lname'] ?>,</p>
+<p>
+Please ensure you have reviewed all your papers as soon as possible. Currently you still need to review the 
+following <?= (count($this->values['submission']) > 1) ? 'papers' : 'paper' ?>:
+</p>
+
+<ul>
+<? foreach ($this->values['submission'] as $submission): ?>
+<? $link = $this->url(array('controller' => 'review', 'action' => 'new', 'id' => $submission['submission_id']), 'reviewnew') ?>
+<li><a href="<?=$link?>"><?= $submission['title'] ?></a></li>	
+<? endforeach; ?>
+</ul>
+
+
+<?= $this->render($this->conferenceInfo('abbreviation').'-reviewers.phtml') ?>

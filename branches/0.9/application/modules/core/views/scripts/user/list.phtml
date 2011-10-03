@@ -1,0 +1,89 @@
+<h1>Users</h1>
+<a href="<?= $this->url(array('controller'=>'user', 'action'=>'new'), 'main-module') ?>" title="invite a new user">Invite</a>
+<?
+function globFilter($input)
+{
+	return !isset($input['hidden']);
+}
+$columns = array_filter($this->grid['cols'], 'globFilter');
+?>
+<? if ($this->grid['rows']->count() !== 0): ?>
+<? if ( ($this->grid['rows'] instanceof Zend_Paginator) && ($this->grid['rows']->getTotalItemCount() > $this->grid['rows']->getItemCountPerPage()) ): ?>
+<?= $this->paginationControl($this->grid['rows'], 'Sliding', '_paginator.phtml', array('route_name' => 'grid')); ?>
+<? endif; ?>
+<table class="grid" cellspacing="0">
+<thead>
+<tr>
+<th style="width:3px;padding:0;margin:0;"></th>
+<? foreach (array_keys($columns) as $col):  ?>
+<? $dir = ($this->grid['params']['dir'] === 'desc') ? 'asc' : 'desc' ?>
+<th>
+	<? if ($columns[$col]['sortable'] === true): ?>
+	<a href="<?= $this->url(array('order' => $col, 'dir' => $dir), 'grid') ?>"><?= $columns[$col]['label'] ?></a>
+	<? else: ?>
+	<?= $columns[$col]['label'] ?>
+	<? endif; ?>
+	<? if ($columns[$col]['field'] === $this->grid['params']['order']): ?>
+	<img class="" src="/includes/core/gfx/icons/sort_<?=$dir?>.gif" alt="sort icon" />
+	<? endif; ?>
+</th>
+<? endforeach; ?>
+<? if ($this->authInfo()->isAdmin() ): ?>
+<th>Actions</th>
+<? endif; ?>
+</tr>
+</thead>
+<tbody>
+<? foreach ($this->grid['rows'] as $item): ?>
+	<tr class="collapsible <?= $this->cycle(array('odd', 'even'))->next() ?>">
+	<td rowspan="1" style="<? if ($item['invite']): ?>background:green;<? endif; ?>padding:0;margin:0;width:3px;"></td>	
+  	<? foreach (array_keys($columns) as $col):  ?>
+  		<td>
+  		<?
+  		// apply modifiers
+  		if ( isset($columns[$col]['modifier']) ) {
+  			if ($columns[$col]['modifier'] instanceof Closure) {
+				echo $columns[$col]['modifier']($item->$col);
+  			} else {
+  				echo call_user_func(array($this, $columns[$col]['modifier']), $item->$col);
+  			}
+  		} else {
+  			echo $item->$col;
+  		}
+  		?>
+  		</td>
+  	<? endforeach; ?>
+  	<? if ($this->gridactions): ?>
+  	<? $this->item = $item; ?>
+  	<?= $this->render($this->gridactions) ?>
+  	<? else: ?>
+	<? if ($this->authInfo()->isAdmin() ): ?>
+		<td>
+		<a href="<?= $this->url(array('action' => 'edit', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">edit</a> |
+		<a href="<?= $this->url(array('action' => 'delete', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">delete</a>
+		</td>
+	<? endif; ?>
+  	<? endif; ?>
+	</tr>
+
+	<tr class="extra <?= $this->cycle(array('odd', 'even'))->current() ?>">
+	<td colspan="7"><? if ($item['smart_id']): ?><span class="meta"><?= $item['smart_id'] ?></span><br /><? endif; ?>
+	<span class="meta">inserted: <?= $this->formatDate($item['inserted']) ?></span>
+	<? 
+	if ($metadata = $item->getAuditData()):
+	echo '<br /><span class="meta">Invited user as: '
+	.$metadata['fname'].'&nbsp;'
+	.$metadata['lname'].'&nbsp;'
+	.$metadata['email']
+	.'</span>';
+	endif; 
+	?>	
+	</td>
+	</tr>
+<? endforeach; ?>
+</tbody>
+</table>
+<? endif; ?>
+<? if ( ($this->grid['rows'] instanceof Zend_Paginator) && ($this->grid['rows']->getTotalItemCount() > $this->grid['rows']->getItemCountPerPage()) ): ?>
+<?= $this->paginationControl($this->grid['rows'], 'Sliding', '_paginator.phtml', array('route_name' => 'grid')); ?>
+<? endif; ?>

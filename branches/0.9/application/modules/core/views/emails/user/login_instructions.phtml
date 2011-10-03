@@ -1,0 +1,10 @@
+<p>CORE uses federated login. This means that we do not provide usernames/passwords any more; instead you need to log in using your own institutional account. If your institute is not listed, you can also use one of the external providers, such as Google, Yahoo, Facebook, Twitter, ProtectNetwork, etc.</p>
+
+<p>This personal invitation link:</p>
+<p><a href="https://<?= $this->conferenceInfo('hostname') ?>/core/user/login/?id=<?= $this->values['invite'] ?>">https://<?= $this->conferenceInfo('hostname') ?>/core/user/login/?id=<?= $this->values['invite'] ?></a>
+</p>
+<p>will take you to the page where you can authenticate. When this succeeds, you will be redicted to CORE and your account will be active.</p>
+
+<p>While you could log in using several ways (for instance using your university, organisation, Google or Facebook credentials), all privileges are tied to the way you login for the first time. This means that, for example, if you now use your institutional account to log in to CORE, you should keep using that in the future.</p>
+
+<p>If you have any questions, please send them to <?= $this->conferenceInfo('email') ?>.</p>

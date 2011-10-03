@@ -1,0 +1,17 @@
+<p>Hello Admin<p>
+
+<p>A new user has just logged in to CORE for the first time, which triggered the creation of an account. Below is a copy of the information we received. Please be aware that this is the /initial/ information, which can be freely changed by the user.
+Only the *user_id* and *smart_id* values are fixed.<p>
+
+<table>
+<tr><td>user_id</td><td><?= $this->values['user_id']?></td></tr>
+<tr><td>First name</td><td><?= $this->values['fname']?></td></tr>
+<tr><td>Last name</td><td><?= $this->values['lname']?></td></tr>
+<tr><td>Organisation</td><td><?= $this->values['organisation']?></td></tr>
+<tr><td>E-mail</td><td><?= $this->values['email']?></td></tr>
+<tr><td>smart_id</td><td><pre><?= $this->values['smart_id']?><pre></td></tr>
+</table>
+
+<p>
+-- <br />
+The CORE admins<p>

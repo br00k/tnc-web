@@ -1,0 +1,28 @@
+<? if ($this->grid): ?>
+<h1>Speakers</h1>
+<? $i=0; ?><div id="persons">
+	<ul class="longlist">
+	<?
+	// calculate number of rows based on number of columns (5 here)
+	$rows = ceil($this->grid['rows']->count() / 5);
+	foreach ($this->grid['rows'] as $speakers => $speaker):
+	$i++;
+	?>
+		<li>
+		<? if ($this->user_id != $speaker->user_id): ?>
+		<a href="<?= $this->url(array('controller' => 'user', 'action' => 'show', 'id' => $speaker->user_id)) ?>"><?= $speaker->getFullName() ?></a>
+		<? else: ?>
+		<span class="active"><?= $speaker->getFullName() ?></span>
+		<? endif; ?>
+		</li>
+		<? if ($i % $rows == 0): ?>
+		</ul>
+		<ul class="longlist">
+		<? endif; ?>
+	<? endforeach; ?>
+	</ul>
+</div>
+<div class="clearer"></div>
+<? else: ?>
+<p>There are no speakers in CORE.</p>
+<? endif; ?>

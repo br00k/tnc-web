@@ -1,0 +1,44 @@
+<?= $this->doctype(); ?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<?= $this->headTitle() ?>
+<?= $this->headLink() ?>
+<?= $this->headMeta() ?>
+<?= $this->headStyle() ?>
+<?= $this->headScript() ?>
+<meta http-equiv="Refresh" content="300;url=<?=Zend_Controller_Front::getInstance()->getRequest()->getRequestUri()?>"></meta>
+<style type="text/css">
+html, body, #programme {
+	height:100%;	
+	margin:0;
+	padding:0;
+}
+table.schedule {
+	height:100%;
+	margin:0;
+}
+table.schedule tbody {
+	height:95%;
+}
+#newsticker {
+	position:fixed;
+	bottom:0px;
+	left:0px;
+	padding:12px;
+	margin:0;
+	border-top:1px solid black;
+	width:100%;
+	font-size:14px;
+	text-align:left;
+}
+a {
+	color:#000 !important;
+}
+</style>
+</head>
+<body>
+<?= $this->render('schedule/schedule.phtml') ?>
+<div id="newsticker">
+
+</div>
+</body>
+</html>

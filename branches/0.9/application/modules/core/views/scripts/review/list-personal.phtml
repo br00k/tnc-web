@@ -1,0 +1,52 @@
+<?
+if (!empty($this->mysubmissionstoreview)):
+
+	$reviewModel = new Core_Model_Review();
+	$filter = array();
+	$filter['user_id'] = Zend_Auth::getInstance()->getIdentity()->user_id;
+
+	// get all reviews that I did
+	$reviews = $reviewModel->getReviews(null, null, $filter);
+	
+	$submissionsReviewed = array();
+	foreach ($reviews['rows']->toArray() as $review) {
+		$submissionsReviewed[$review['review_id']] = $review['submission_id'];
+	}
+
+	// merge id's of submission I reviewed with id's of papers I must review
+	$submissionIds = array_merge($submissionsReviewed, $this->mysubmissionstoreview);
+
+	$submitModel = new Core_Model_Submit();
+	$filter = new stdClass();
+	$filter->filters = new stdClass();
+	$filter->filters->submission_id = array_unique($submissionIds);
+
+	// get all submissions I have either reviewed or should review
+	$submissions = $submitModel->getSubmissions(null, null, $filter);
+
+	$completed = $todo = '<ul>';
+
+	foreach ($submissions['rows'] as $submission) {
+
+		if ( in_array($submission['submission_id'], $submissionsReviewed) ) {
+			// get review_id of submission
+			$reviewId = current(array_keys($submissionsReviewed, $submission->submission_id));
+			$href = $this->url(array('controller'=>'review', 'action'=>'edit', 'id'=>$reviewId), 'gridactions');
+			$completed .= '<li><a href="'.$href.'" title="edit your review">'.$submission->title.'</a></li>';
+		} else {
+			$href = $this->url(array('controller'=>'review', 'action'=>'new', 'id'=>$submission->submission_id), 'reviewnew');
+			$todo .= '<li><a href="'.$href.'" title="write a new review">'.$submission->title.'</a></li>';
+		}
+
+	}
+
+?>
+<h1>My submissions to review</h1>
+<?= $todo; ?>
+</ul>
+<? if (!empty($submissionsReviewed)): ?>
+<h1>My completed reviews</h1>
+<?= $completed; ?>
+</ul>
+<? endif; ?>
+<? endif; ?>

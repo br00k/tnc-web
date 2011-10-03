@@ -1,0 +1,14 @@
+<div class="widebox">
+	<div class="body">
+    <h1>Participants [<?= count($this->participants) ?>]</h1>
+        <p>The following people are participating in this event:</p>
+        <table summary="Participants">
+			<tbody>
+				<? foreach ($this->participants as $participant): ?>
+				<tr><td><?= htmlspecialchars($participant['fname'] . ' ' . $participant['lname']); ?></td><td><?= htmlspecialchars($participant['org']) ?></td></tr>
+				<? endforeach; ?>
+			</tbody>
+        </table>
+    </div>
+  <div class="closer"></div>
+</div>

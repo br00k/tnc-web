@@ -1,0 +1,74 @@
+	<div class="column">
+
+		<!-- blogs -->
+		<div class="portlet" id="cont-blogs">
+			<div class="portlet-header">Blogs</div>
+			<div id="content-blogs" class="portlet-content">
+<?
+if (isset($this->results['blog'])) {
+	echo $this->markup->blog();
+}
+?>
+			</div>
+		</div>
+
+		<div class="portlet" id="cont-pictures">
+			<div class="portlet-header">Pictures from Flickr</div>
+			<div id="content-flickr" class="portlet-content">
+<?
+if (isset($this->results['flickr'])) {
+	echo $this->markup->flickr();
+}
+?>
+			</div>
+		</div>
+
+<? if (isset($this->results['morepics'])): ?>
+		<div class="portlet" id="cont-external">
+			<div class="portlet-header">More Pictures From around the web</div>
+			<div id="content-external" class="portlet-content">
+<?= $this->markup->morepics(); ?>
+			</div>
+		</div>
+<? endif; ?>
+
+		<div class="portlet" id="cont-covother">
+			<div class="portlet-header">Coverage found elsewhere</div>
+			<div id="content-covother" class="portlet-content">
+			<p>If you found some TNC related coverage elsewhere on the net, <a href="mailto:webmaster@terena.org">please let us know</a>! We will either add it to this list or aggregate it!</p>
+			<ul>
+			<li><a href="http://gallery.christiangijtenbeek.nl/v/TNC2011/">Pictures by Christian Gijtenbeek</a></li>
+			<li><a href="http://bech.uni-c.dk/tnc2011/">Pictures by Martin Bech</a></li>
+			<li><a href="http://www.jisc.ac.uk/news/stories/2011/05/europecloud.aspx">European cloud provision way forward, says JISC</a></li>
+			<li><a href="http://www.egi.eu/blog/2011/05/18/networking_for_beginners.html">Networking for beginners</a></li>
+			<li><a href="http://independentdigitalobserver.blogspot.com/">Ann Harding - SWITCH</a></li>
+			</ul>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="column">
+
+		<!-- tweets -->
+		<div class="portlet" id="cont-tweets">
+			<div class="portlet-header">Tweets</div>
+			<div id="content-twitter" class="portlet-content">
+<?
+if (isset($this->results['twitter'])) {
+	echo $this->markup->twitter();
+}
+?>
+			</div>
+		</div>
+
+<? if (isset($this->results['youtube'])): ?>
+		<div class="portlet" id="cont-video">
+			<div class="portlet-header">Video</div>
+			<div id="content-youtube" class="portlet-content">
+<?= $this->markup->youtube(); ?>
+			</div>
+		</div>
+<? endif; ?>
+
+	</div>

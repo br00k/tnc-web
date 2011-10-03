@@ -1,0 +1,41 @@
+<?= $this->doctype(); ?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<?= $this->headTitle() ?>
+<?= $this->headLink() ?>
+<?= $this->headMeta() ?>
+<?= $this->headStyle() ?>
+<?= $this->headScript() ?>
+</head>
+<body>
+<div id="header">
+	<div class="left">
+	<h1><a href="/core/"><?= htmlspecialchars($this->conferenceInfo('name')); ?></a></h1>
+	</div>
+	<div class="right">
+		<?= $this->render('core/_topnav.phtml'); ?>
+	</div>
+</div>
+<div id="navigation">
+	<div class="wrapper navcontainer">
+	<?= $this->render('core/_mainnav.phtml'); ?>
+	</div>
+	<div class="wrapper navcontainer">
+	<?= $this->render('core/_subnav.phtml'); ?>
+	</div>
+</div>
+<div id="content">
+	<div class="wrapper">
+	<? if ($this->messages): ?>
+	<ul class="notice">
+	<? foreach ($this->messages as $k): ?>
+		<li><?= $k ?></li>
+	<? endforeach; ?>
+	</ul>
+	<? endif; ?>
+	<?= $this->layout()->content; ?>
+	</div>
+	<div id="footer"><a href="https://confluence.terena.org/display/core">CORE</a></div>
+</div>
+</body>
+</html>
