@@ -16,6 +16,14 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: LastRequest.php 598 2011-09-15 20:55:32Z visser $
  */
+
+/**
+ * Redirect Helper
+ *
+ * @author Christian Gijtenbeek
+ * @package TA_Controller
+ * @subpackage Helper
+ */ 
 class TA_Controller_Action_Helper_LastRequest extends Zend_Controller_Action_Helper_Abstract
 {
     /**

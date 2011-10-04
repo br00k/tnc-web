@@ -17,6 +17,13 @@
  * @revision   $Id: MemoryPeakUsageLog.php 598 2011-09-15 20:55:32Z visser $
  */
 
+/**
+ * Show memory peaks
+ *
+ * @author Christian Gijtenbeek
+ * @package TA_Controller
+ * @subpackage Plugin
+ */
 class TA_Controller_Plugin_MemoryPeakUsageLog extends Zend_Controller_Plugin_Abstract
 {
 	protected $_logger = null;

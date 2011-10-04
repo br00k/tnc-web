@@ -16,9 +16,11 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: ConferenceInfo.php 598 2011-09-15 20:55:32Z visser $
  */
+
 /**
+ * Conference Info View helper
  *
- *
+ * @package Core_View_Helper
  */
 class Core_View_Helper_ConferenceInfo extends Zend_View_Helper_Abstract
 {

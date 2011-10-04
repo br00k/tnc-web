@@ -16,10 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: SendEmail.php 598 2011-09-15 20:55:32Z visser $
  */
+ 
 /**
- * Sends an email
+ * Email Helper
  *
  * @author Christian Gijtenbeek
+ * @package TA_Controller
+ * @subpackage Helper
  */
 class TA_Controller_Action_Helper_SendEmail extends Zend_Controller_Action_Helper_Abstract
 {

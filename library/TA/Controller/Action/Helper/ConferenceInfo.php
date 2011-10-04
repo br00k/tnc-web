@@ -16,10 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: ConferenceInfo.php 598 2011-09-15 20:55:32Z visser $
  */
+
 /**
  * Conference Info Helper
  *
  * @author Christian Gijtenbeek
+ * @package TA_Controller
+ * @subpackage Helper
  */
 class TA_Controller_Action_Helper_ConferenceInfo extends Zend_Controller_Action_Helper_Abstract
 {
@@ -58,7 +61,7 @@ class TA_Controller_Action_Helper_ConferenceInfo extends Zend_Controller_Action_
     {
 		$date = new Zend_Date();
 
-		if ( (!isset($this->_conference['start'])) || 
+		if ( (!isset($this->_conference['start'])) ||
 		(!isset($this->_conference['end'])) ) {
 			return false;
 		}
@@ -71,7 +74,7 @@ class TA_Controller_Action_Helper_ConferenceInfo extends Zend_Controller_Action_
     }
 
     /**
-     * Is feedback open? Feedback is open when the feedback codes are sent and the 
+     * Is feedback open? Feedback is open when the feedback codes are sent and the
      * feedback closing date has not passed
 	 *
 	 * @return	mixed	boolean on false or Zend_Date on true
@@ -91,5 +94,5 @@ class TA_Controller_Action_Helper_ConferenceInfo extends Zend_Controller_Action_
 		}
 		return false;
 	}
-	
+
 }

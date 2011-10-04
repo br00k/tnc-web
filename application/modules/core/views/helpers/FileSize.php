@@ -16,15 +16,18 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: FileSize.php 598 2011-09-15 20:55:32Z visser $
  */
+
 /**
  * @author     Martin Hujer
+ *
+ * @package Core_View_Helper 
  * @todo	Keep an eye on Zend development, this will be replaced eventually by Framework code!
  */
 class Core_View_Helper_FileSize
 {
     /**
      * Array of units available
-     * 
+     *
      * @var array
      */
     protected $_units;
@@ -66,27 +69,27 @@ class Core_View_Helper_FileSize
             $isLocaleSet = false;
             $locale = null;
         }
-        
-        
+
+
         if ($isLocaleSet) {
             /**
              * @see Zend_Locale_Math
              */
             require_once 'Zend/Locale/Format.php';
-            //get localised input value 
-            $fileSize = Zend_Locale_Format::getFloat($fileSize, array('locale' => $locale));    
+            //get localised input value
+            $fileSize = Zend_Locale_Format::getFloat($fileSize, array('locale' => $locale));
         } else {
             $fileSize = floatval($fileSize);
         }
-        
+
         $m = new Zend_Measure_Binary($fileSize, null, $locale);
-        
+
         $m->setType('BYTE');
-        
+
         if (null === $norm) {
             $norm = 'traditional';
         }
-        
+
         if (isset($type)) {
             $m->setType($type);
         } elseif ($norm === 'traditional') {
@@ -125,7 +128,7 @@ class Core_View_Helper_FileSize
 
     /**
      * Get size of $unit in bytes
-     * 
+     *
      * @param string $unit
      */
     protected function _getUnitSize($unit)

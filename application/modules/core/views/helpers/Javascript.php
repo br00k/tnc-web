@@ -17,6 +17,11 @@
  * @revision   $Id: Javascript.php 598 2011-09-15 20:55:32Z visser $
  */
 
+/**
+ * Include javascript view helper
+ *
+ * @package Core_View_Helper
+ */
 class Core_View_Helper_Javascript extends Zend_View_Helper_Abstract
 {
 

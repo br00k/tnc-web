@@ -17,6 +17,13 @@
  * @revision   $Id: Timeslot.php 598 2011-09-15 20:55:32Z visser $
  */
 
+/**
+ * CORE timeslot validator
+ *
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ * @package TA_Form
+ * @subpackage Validator
+ */
 class TA_Form_Validator_Timeslot extends Zend_Validate_Abstract
 {
 	const NOT_EMPTY = 'notempty';

@@ -16,8 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: LangSelector.php 614 2011-09-28 09:10:26Z gijtenbeek $
  */
+ 
 /**
+ * Sets language
  *
+ * @author Christian Gijtenbeek
+ * @package TA_Controller
+ * @subpackage Plugin
  */
 class TA_Controller_Plugin_LangSelector extends Zend_Controller_Plugin_Abstract {
 

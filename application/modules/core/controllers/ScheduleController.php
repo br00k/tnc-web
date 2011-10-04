@@ -59,7 +59,7 @@ class Core_ScheduleController extends Zend_Controller_Action
 		} else {
 			$day = $this->_helper->conferenceInfo('start')->get('dd/MM/YYYY');
 		}
-
+		
 		// if feedback codes have been sent
 		if ($this->_helper->conferenceInfo()->isFeedbackOpen() ) {
 			$feedbackModel = new Core_Model_Feedback();

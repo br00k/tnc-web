@@ -16,10 +16,11 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: Acl.php 619 2011-09-29 11:20:22Z gijtenbeek $
  */
- 
+
 /**
  * Checks if user is allowed to access resource, if not user gets 303 error
  *
+ * @package Application_Plugin
  * @todo find out why the dispatcher check does not work
  */
 class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract

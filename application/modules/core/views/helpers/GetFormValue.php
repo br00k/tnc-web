@@ -17,6 +17,11 @@
  * @revision   $Id: GetFormValue.php 598 2011-09-15 20:55:32Z visser $
  */
 
+/**
+ * Form values View helper
+ *
+ * @package Core_View_Helper
+ */
 class Core_View_Helper_GetFormValue extends Zend_View_Helper_Abstract
 {
 

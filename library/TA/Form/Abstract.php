@@ -16,7 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: Abstract.php 598 2011-09-15 20:55:32Z visser $
  */
-
+ 
+/**
+ * Abstract form class
+ *
+ * @author Christian Gijtenbeek
+ * @package TA_Form
+ */
 class TA_Form_Abstract extends Zend_Form
 {
 

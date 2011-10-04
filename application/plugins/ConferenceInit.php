@@ -21,6 +21,7 @@
  * Initialize a conference. Get all conference data and store it in APC cache
  * which has unlimited lifetime and is cleared when the conference is edited
  *
+ * @package Application_Plugin 
  * @see Core_ConferenceController
  */
 class Application_Plugin_ConferenceInit extends Zend_Controller_Plugin_Abstract

@@ -17,6 +17,13 @@
  * @revision   $Id: Composite.php 598 2011-09-15 20:55:32Z visser $
  */
 
+/**
+ * Composite Form Decorator
+ *
+ * @author Christian Gijtenbeek
+ * @package TA_Form
+ * @subpackage Decorator
+ */
 class TA_Form_Decorator_Composite extends Zend_Form_Decorator_Abstract
 {
 

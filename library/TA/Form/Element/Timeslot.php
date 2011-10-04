@@ -16,10 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: Timeslot.php 598 2011-09-15 20:55:32Z visser $
  */
+
 /**
  * Custom Composite Form Element to represent a CORE timeslot
  *
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ * @package TA_Form
+ * @subpackage Element
  */
 class TA_Form_Element_Timeslot extends Zend_Form_Element_Xhtml
 {
@@ -76,7 +79,7 @@ class TA_Form_Element_Timeslot extends Zend_Form_Element_Xhtml
 	/**
 	 * Override setName method to allow for use of brackets
 	 * in the name property
-	 * 
+	 *
 	 * @todo since timeslot[nr] gave problems I no longer need this?
 	 */
 	public function setName($name)
@@ -129,5 +132,5 @@ class TA_Form_Element_Timeslot extends Zend_Form_Element_Xhtml
 			'type' => $this->getType()
 		);
 	}
-	
+
 }
