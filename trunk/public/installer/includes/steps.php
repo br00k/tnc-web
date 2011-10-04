@@ -66,9 +66,7 @@ $steps=array(
 							array(
 								'type'=>	'info',
 								'value'=>	'Where is the Zend Framework library located?<br />
-								This is directory that contains the "Zend" directory.<br />
-								For the demo try one of these:<br /><strong>/usr/share/php/libzend-framework-php<br />/opt/tmp/ZendFramework-1.11.10-minimal/library<br />/opt/tmp/ZendFramework-1.8.2-minimal/library</strong>',
-								),
+								This is directory that contains the "Zend" directory.'),
 							array(
 								'label' => 'Location',
 								'type' => 'text',
@@ -101,7 +99,7 @@ $steps=array(
 								'fields' => array(
 									array(
 										'type'=>	'info',
-										'value'=>	'<p>Where is SimpleSAMLphp library located? For demo use <strong>/opt/tmp/simplesamlphp</strong></p>'
+										'value'=>	'Where is SimpleSAMLphp library located?'
 										),
 									array(
 										'label' => 'Location',
