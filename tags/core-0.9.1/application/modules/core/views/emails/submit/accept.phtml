@@ -1,0 +1,67 @@
+<p><?= $this->conferenceInfo('name') ?>.</p></p>
+
+<p>Dear <?= $this->values['fname'] ?> <?= $this->values['lname'] ?>,
+</p>
+
+<p>On behalf of the Programme Committee, it is my pleasure to inform you
+that your submitted paper entitled "<?= $this->values['title'] ?>" has been
+accepted for presentation at the <?= $this->conferenceInfo('name') ?>.</p>
+
+
+<?
+// prepare dates and times
+$date = $this->formatDate($this->values['session']['tstart'], null, 'EEEE dd MMMM');
+$time = $this->formatDate($this->values['session']['tstart'], null, 'HH:mm').'-'.
+		$this->formatDate($this->values['session']['tend'], null, 'HH:mm');
+
+?>
+
+<p>
+At present, you are scheduled to speak in a session on <?= $date ?>, from <?=$time?>.
+<?
+if ($chairs = $this->values['session']['chair']) {
+	foreach ($chairs as $chair) {
+		$chair = '<a href="mailto:'. $chair['email'] .'">'.$chair['fname']. ' '.$chair['lname'].'</a>';
+	}
+}
+?>
+<? if (isset($chair)): ?>Your session chair will be <?= $chair ?>. Please note that these details are subject to change.<? endif; ?>
+<p>
+
+<p>Comments from the programme committee:
+<hr />
+<ul>
+<? foreach ($this->values['reviews'] as $review): ?>
+<? if(!empty($review['comments_authors'])):?>
+<li> <?= $review['comments_authors']?> </li>
+<? endif; ?>
+<? endforeach; ?>
+</ul>
+<hr />
+<?#= $this->render($this->conferenceInfo('abbreviation').'-submit-accept.html.phtml') ?>
+</p>
+
+
+<p>
+You will be hearing from us again very shortly, but in the meantime you should take the following steps to complete your involvement in <?= $this->conferenceInfo('abbreviation') ?>:</p>
+
+<p>
+<strong>1) Sign in to CORE</strong>
+<? if (!empty($this->values['invite'])): ?>
+&nbsp;using this unique invitation link:<br />
+<a href="https://<?= $this->conferenceInfo('hostname') ?>/core/user/login/?id=<?= $this->values['invite'] ?>">https://<?= $this->conferenceInfo('hostname') ?>/core/user/login/?id=<?= $this->values['invite'] ?></a>.
+
+
+<? else: ?>
+:&nbsp;<a href="https://<?= $this->conferenceInfo('hostname') ?>/core/user/login">https://<?= $this->conferenceInfo('hostname') ?>/core/user/login</a>.
+<? endif; ?>
+</p>
+
+
+<p>
+<strong>2) Update your personal information</strong> by clicking your name in the top right corner. The information you enter will be shown on your 'Speaker Details' webpage. This includes a landscape profile picture (minimum 300 x 200 pixels), a short biography (max 100 words). You should also make sure your name is spelled correctly and that the organisation which you will be representing is correct. Also check that the details of the presentation assigned to you are correct.
+</p>
+
+<p>
+Sincerely,<br />
+</p>

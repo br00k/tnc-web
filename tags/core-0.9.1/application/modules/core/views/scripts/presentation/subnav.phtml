@@ -1,0 +1,9 @@
+<h1>Manage presentation <span class="metanav"><a href="<?=$this->url(array('controller'=>'presentation', 'action'=>'show', 'id'=>$this->id), 'oneitem')?>" title="show all information off this presentation">Show</a></span></h1>
+<? $action = Zend_Controller_Front::getInstance()->getRequest()->getActionName(); ?>
+<ul class="navlist">
+<li><? if ($action == 'edit'): ?>details<? else: ?><a href="<?= $this->url(array('action' => 'edit', 'id' => $this->id), 'gridactions') ?>">details</a><? endif; ?></li>
+<? if ($this->aclCheck('presentation', 'speakers')): ?>
+<li><? if ($action == 'speakers'): ?>speakers<? else: ?><a href="<?= $this->url(array('action' => 'speakers', 'id' => $this->id), 'main-module') ?>">speakers</a><? endif; ?></li>
+<? endif; ?>
+<li><? if ($action == 'files'): ?>files<? else: ?><a href="<?= $this->url(array('action' => 'files', 'id' => $this->id), 'main-module') ?>">files</a><? endif; ?></li>
+</ul>

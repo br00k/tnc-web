@@ -1,0 +1,10 @@
+<h1>Import submissions</h1>
+<?
+$eventlogModel = new Core_Model_Eventlog();
+if ($mailout = $eventlogModel->getTimestampByType('Core_PresentationController::importAction') ): ?>
+<p class="notice">
+Last import was: <?=$this->timeSince($mailout->getTimestamp())?> ago, on <?=$this->formatDate($mailout)?>
+</p>
+<? endif; ?>
+<p>All submissions that have the following criteria will be imported as presentations.
+<?= $this->importForm ?>

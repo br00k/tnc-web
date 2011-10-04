@@ -1,0 +1,14 @@
+#submission_info {}
+#submission_info table th {
+	vertical-align: top;
+	width:200px;
+}
+#submission_info ul {
+	margin:0;
+	padding:0;
+	list-style: none;
+}
+.reviewers li {
+	margin: 0;
+	padding: 0;
+}

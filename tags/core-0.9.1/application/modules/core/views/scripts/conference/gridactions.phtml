@@ -1,0 +1,7 @@
+<? if ($this->authInfo()->isAdmin() ): ?>
+    <td>
+    <a href="<?= $this->url(array('action' => 'edit', 'id' => $this->item->{$this->grid['primary']}), 'gridactions') ?>">edit</a> |
+    <a href="<?= $this->url(array('action' => 'timeslots', 'id' => $this->item->{$this->grid['primary']}), 'gridactions') ?>">timeslots</a> |
+    <a href="<?= $this->url(array('action' => 'delete', 'id' => $this->item->{$this->grid['primary']}), 'gridactions') ?>">delete</a>
+    </td>
+<? endif; ?>

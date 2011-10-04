@@ -1,0 +1,11 @@
+<p>Dear admin,</p>
+
+<p>
+<?
+$url = $this->url(array('controller'=>'submit', 'action'=>'list'), 'grid');
+?>
+A new paper "<?= $this->values['submit']['title']?>" has been added to <?= $this->conferenceInfo('name') ?>, check it out here:
+</p>
+<p>
+<a href="<?=$url?>"><?=$url?></a>
+</p>

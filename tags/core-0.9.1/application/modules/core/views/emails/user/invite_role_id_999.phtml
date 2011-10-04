@@ -1,0 +1,10 @@
+<p>Dear <?= $this->values['fname'] . ' ' . $this->values['lname'] ?>,</p>
+
+<p>You have been invited to become a administrator for CORE.</p>
+
+<p>This is an invitation to activate your account for CORE.</p>
+
+<p>Please take a moment to read the following instructions carefully - they are not difficult, but there is only one oppurtunity to get it right.</p>
+
+<?= $this->render('user/login_instructions.phtml') ?>
+<?= $this->render('user/signature.phtml') ?>

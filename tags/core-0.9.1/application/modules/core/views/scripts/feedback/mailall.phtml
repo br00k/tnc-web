@@ -1,0 +1,45 @@
+<h1>Send feedback codes to participants [<?= count($this->participants); ?>]</h1>
+
+<?
+$eventlogModel = new Core_Model_Eventlog();
+if ($mailout = $eventlogModel->getTimestampByType('Core_FeedbackController::mailAction')): ?>
+<p class="notice">
+Last email run went out: <?=$this->timeSince($mailout->getTimestamp())?> ago, on <?=$this->formatDate($mailout)?>
+</p>
+<? endif; ?>
+
+<? if (!empty($this->sent)): ?>
+<? if ($this->dummy == 1): ?>
+Testrun complete; The following emails were generated, please check them before sending (to send: 
+<a href="<?= $this->url(array('controller' => 'feedback', 'action' => 'mailall')) ?>">go back</a> and uncheck the 'test run' box).
+<? else: ?>
+Successfully mailed <?= count($this->participants); ?> participants
+<? endif; ?>
+
+<ul class="normal">
+<? foreach ($this->sent as $participant): ?>
+<?
+$name = $participant['email']. '_'. sha1($this->conferenceInfo('abbreviation').' Feedback') .'.eml'
+?>
+<li>
+	<? if ($this->dummy == 1): ?>
+	<? // dummy is set: make hyperlinks to generated emails so user can review them ?>
+	<a href="/core/file/getstaticfile/file/<?= $name ?>/type/mail" title="download email">
+	<?= $participant['email'] ?>
+	</a>
+	<? else: ?>
+	<?= $participant['email'] ?>
+	<? endif; ?>
+</li>
+<? endforeach; ?>
+</ul>
+
+<? else: ?>
+<?
+$template = $this->conferenceInfo('abbreviation') .'-feedback.phtml';
+?>
+<p>
+The emails will be generated using a combination of a static and a dynamic template. The static template is called
+<code><?= $template ?></code> and can be found in <code>/application/modules/core/views/emails</code>.</p>
+<?= $this->mailForm ?>
+<? endif; ?>

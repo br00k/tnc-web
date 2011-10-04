@@ -1,0 +1,48 @@
+<? 
+/**
+ * This view displays submission details. To use it, simply render it 
+ * and set $this->submission in your controller or view 
+ * If you want to display user information as well set $this->userinfo = true
+ *
+ */
+?>
+<table id="paper_details">
+	<tbody>
+	<tr>
+	<th>Title</th>
+	<td><a href="/getfile/<?= $this->submission->file_id ?>" title="download file"><?= $this->submission->title ?></a></td>
+	</tr>
+	<tr>
+	<th>Submit date</th>
+	<td><?= $this->formatDate($this->submission->date) ?></td>
+	</tr>
+	<tr>
+	<th>Target audience</th>
+	<td><?= $this->getFormValue('target_audience', $this->submission->target_audience, 'submit') ?></td>
+	</tr>
+	<tr>
+	<th>Publish paper</th>
+	<td><?= $this->getFormValue('publish_paper', $this->submission->publish_paper, 'submit') ?></td>
+	</tr>
+	<tr>
+	<th>Comment</th>
+	<td><?= $this->submission->comment ?></td>
+	</tr>
+	</tbody>
+</table>
+<? if ($this->userinfo): ?>
+<table id="submitter_details">
+	<tbody>
+	<tr>
+	<th>Submitter</th>
+	<td>
+		<ul>
+		<li><?= $this->submission->fname .' '. $this->submission->lname ?></li>
+		<li><?= $this->submission->email ?></li>
+		<li><?= $this->submission->organisation ?></li>
+		</ul>
+	</td>
+	</tr>
+	</tbody>
+</table>
+<? endif; ?>

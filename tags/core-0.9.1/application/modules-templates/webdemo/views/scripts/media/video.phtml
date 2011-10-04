@@ -1,0 +1,46 @@
+<div class="streams">
+	<div id="str_details2">
+	<h1 class="light">View the TNC Impression videos<span id="activestream" style="display:none;"><?= $this->activeStream ?></span></h1>
+  	<table class="interviews" id="medialist2" summary="TERENA Networking Conference 2010 interviews">
+  		<tbody>
+      	<tr>
+        <? if (empty($this->streams)): ?>
+      	<td>There are currently no interviews, please check back later!</td>
+      	<? else: ?>
+      	<? $i=-1; ?>
+      	<? foreach ($this->streams as $key => $stream): ?>
+		    <? $i++; if ($i % 5 == 0 && $i != 0): ?>
+		    </tr><tr>
+		    <? endif; ?>
+      	    <td>
+      	    <div><?= $stream['name'] ?></div>
+		    <a title="view interview" href="<?= $this->url(array('controller'=>'media', 'action'=>'video', 'stream'=>$key)) ?>" class="stream">
+		    <img src="/includes/tnc2011/gfx/photos/videos/<?= $key ?>.jpg" alt="image" /></a>
+      	    </td>
+		<? endforeach; ?>
+		<? endif; ?>
+        </tr>
+    	</tbody>
+	</table>
+	</div><!--str_details-->
+	<? if ($this->activeStream): ?>
+	<div class="article-vid">
+	<div class="vidstart"></div>
+		<div class="vcontent">
+		<h1 class="light"><?= $this->streams[$this->activeStream]['title'] ?></h1>
+		<div class="nmeta"><?= $this->streams[$this->activeStream]['description'] ?><p>
+		These videos were created by Computing and Information Centre (CIC) of the Czech Technical University in Prague. CIC's mission is to coordinate, integrate and develop the university’s activities in the area of Information and Communication Technology. CIC is a partner for each of the faculties and participate in providing mainly centralised services aimed at developing and operating control components and applications. The CIC's portfolio also consists of audio/video and multimedia services and webdesign.
+		</p></div>
+	    <div id="mediacontent2">
+		<div id="mediacontent_container">
+		<p>Select a stream from the top. <a href="http://www.adobe.com/products/flashplayer/" title="download flash">Adobe Flash Player</a> is required to watch these streams. They are also available on YouTube.</p>
+		</div>
+	    </div>
+	    <div class="clearer"></div>
+		</div><!-- ncontent -->
+	<div class="vidstop"></div>
+	</div><!-- article-vid -->
+	<? endif; ?>
+</div>
+<div class="clearer"></div>
+<div class="bot_crnrs"></div>
