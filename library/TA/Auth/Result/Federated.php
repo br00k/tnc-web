@@ -58,9 +58,7 @@ class TA_Auth_Result_Federated extends Zend_Auth_Result
     	$samlUidAttribute = $config->simplesaml->saml_uid_attribute;
 
         $this->_attributes = parent::getIdentity();
-        //$mail = $this->_attributes[$samlUidAttribute];
-
-		if ($config->core->logSamlAttributes === 1) {
+		if ((int)$config->core->logSamlAttributes === 1) {
         	$log = Zend_Registry::get('log');
         	$log->info(var_export($this->_attributes, true));		
 		}
