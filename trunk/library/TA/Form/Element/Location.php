@@ -16,9 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: Location.php 598 2011-09-15 20:55:32Z visser $
  */
+
 /**
+ * Custom Form Element for locations
  *
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ * @package TA_Form
+ * @subpackage Element
  */
 class TA_Form_Element_Location extends Zend_Form_Element_Text
 {

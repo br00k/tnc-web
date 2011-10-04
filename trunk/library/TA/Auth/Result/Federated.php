@@ -16,6 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: Federated.php 598 2011-09-15 20:55:32Z visser $
  */
+ 
+/**
+ *
+ * @author Christian Gijtenbeek
+ * @package TA_Auth
+ * @subpackage Result_Federated
+ */ 
 class TA_Auth_Result_Federated extends Zend_Auth_Result
 {
 

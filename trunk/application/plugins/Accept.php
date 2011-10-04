@@ -20,6 +20,7 @@
 /**
  * Performs header detection and sets a value 'format' to json or xml
  *
+ * @package Application_Plugin
  * @todo Fix conflict with ActionContext switch
  */
 class Application_Plugin_Accept extends Zend_Controller_Plugin_Abstract

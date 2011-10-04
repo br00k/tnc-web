@@ -20,6 +20,7 @@
 /**
  * Records status of the Response Object through all application phases
  *
+ * @package Application_Plugin 
  */
 class Application_Plugin_Diagnostic extends Zend_Controller_Plugin_Abstract
 {

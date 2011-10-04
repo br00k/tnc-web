@@ -17,6 +17,13 @@
  * @revision   $Id: IdenticalFields.php 598 2011-09-15 20:55:32Z visser $
  */
 
+/**
+ * Identical field validator
+ *
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ * @package TA_Form
+ * @subpackage Validator
+ */
 class TA_Form_Validator_IdenticalFields extends Zend_Validate_Abstract
 {
 

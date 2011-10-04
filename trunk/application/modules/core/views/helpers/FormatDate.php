@@ -17,6 +17,11 @@
  * @revision   $Id: FormatDate.php 598 2011-09-15 20:55:32Z visser $
  */
 
+/**
+ * Date View helper
+ *
+ * @package Core_View_Helper
+ */
 class Core_View_Helper_FormatDate extends Zend_View_Helper_Abstract
 {
 

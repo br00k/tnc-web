@@ -16,9 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: User.php 598 2011-09-15 20:55:32Z visser $
  */
+ 
 /**
+ * Custom User form element
  *
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ * @package TA_Form
+ * @subpackage Element
  */
 class TA_Form_Element_User extends Zend_Form_Element_Select
 {

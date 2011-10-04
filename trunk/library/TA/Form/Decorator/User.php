@@ -16,9 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: User.php 598 2011-09-15 20:55:32Z visser $
  */
+
 /**
+ * Custom User form element decorator
  *
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ * @package TA_Form
+ * @subpackage Decorator
  */
 class TA_Form_Decorator_User extends Zend_Form_Decorator_Abstract
 {

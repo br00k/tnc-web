@@ -20,6 +20,8 @@
 /**
  * Zend loads ALL Bootstrap's instead of the one needed for the module.
  * This plugin makes it possible to load module specific config
+ *
+ * @package Application_Plugin 
  */
 class Application_Plugin_Module extends Zend_Controller_Plugin_Abstract
 {

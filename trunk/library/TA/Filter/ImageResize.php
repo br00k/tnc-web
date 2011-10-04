@@ -20,8 +20,10 @@ require_once dirname(dirname(__FILE__)).'/phpthumb/ThumbLib.inc.php';
 
 /**
  * Resize an image
- * @author Christian Gijtenbeek <gijtenbeek@terena.org>
- */
+ *
+ * @author Christian Gijtenbeek
+ * @package TA_Filter
+ */ 
 class TA_Filter_ImageResize implements Zend_Filter_Interface
 {
      /**

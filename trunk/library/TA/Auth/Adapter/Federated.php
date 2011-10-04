@@ -16,7 +16,14 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: Federated.php 598 2011-09-15 20:55:32Z visser $
  */
-
+ 
+/**
+ * Authenticates the given Federated identity..
+ *
+ * @author Christian Gijtenbeek
+ * @package TA_Auth
+ * @subpackage Adapter_Federated
+ */
 class TA_Auth_Adapter_Federated implements Zend_Auth_Adapter_Interface
 {
 

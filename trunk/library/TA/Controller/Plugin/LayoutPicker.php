@@ -16,9 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: LayoutPicker.php 614 2011-09-28 09:10:26Z gijtenbeek $
  */
+ 
 /**
- * Change layout based on config
+ * Change layout based on configuration value
  *
+ * @author Christian Gijtenbeek
+ * @package TA_Controller
+ * @subpackage Plugin
  */
 class TA_Controller_Plugin_LayoutPicker extends Zend_Controller_Plugin_Abstract {
 
