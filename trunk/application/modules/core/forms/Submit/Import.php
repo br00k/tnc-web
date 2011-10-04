@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Import.php 619 2011-09-29 11:20:22Z gijtenbeek $
+ * @revision   $Id$
  */
 
 /** 

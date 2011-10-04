@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Bootstrap.php 618 2011-09-29 11:18:54Z visser $
+ * @revision   $Id$
  */
 
 class Webdemo_Bootstrap extends Zend_Application_Module_Bootstrap

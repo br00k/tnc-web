@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Sessionsevaluation.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id$
  */
 class Core_Resource_Sessionsevaluation extends TA_Model_Resource_Db_Table_Abstract
 {
