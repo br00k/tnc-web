@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Timeslot.php 623 2011-09-29 13:25:34Z gijtenbeek $
+ * @revision   $Id$
  */
 
 /** 

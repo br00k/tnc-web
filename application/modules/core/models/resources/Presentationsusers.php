@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Presentationsusers.php 613 2011-09-19 13:16:58Z visser $
+ * @revision   $Id$
  */
 class Core_Resource_Presentationsusers extends TA_Model_Resource_Db_Table_Abstract
 {
