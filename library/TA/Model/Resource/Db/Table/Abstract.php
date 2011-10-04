@@ -114,10 +114,8 @@ class TA_Model_Resource_Db_Table_Abstract extends Zend_Db_Table_Abstract {
 
 			}
 		}
-#echo "<pre>";
-#var_dump($zd);
-#exit;
-		return $row->save(); 
+
+		return $row->save();
 	}
 
 	/**
