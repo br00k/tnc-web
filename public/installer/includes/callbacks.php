@@ -110,7 +110,7 @@ echo "asfasf";
         $admin_country = $this->db_escape($attributes[$conf['ssp_country_attribute']][0]);
 
 	echo "yes";
-        $admin_query = "INSERT INTO users (smart_id, fname, lname, email, organisation, country) VALUES ($admin_uid, $admin_fname, $admin_lname, $admin_email, $admin_organisation, $admin_country)";
+        $admin_query = "INSERT INTO users (uid, fname, lname, email, organisation, country) VALUES ($admin_uid, $admin_fname, $admin_lname, $admin_email, $admin_organisation, $admin_country)";
         if(!$this->db_query($admin_query)) {
 			return false;
 		}
