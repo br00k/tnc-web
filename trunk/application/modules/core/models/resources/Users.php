@@ -68,6 +68,7 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 	public function mapFederatedToUser(array $federatedAttributes)
 	{
 		$required = array(
+//			'saml_uid_attribute',
 			'uid',
 			'fname',
 			'lname',
@@ -91,17 +92,17 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 			$values[$req] = $federatedAttributes[$req2][0];
 		}
 
-		// Do some more magic here, maybe try to get rid of the smart_id module in SimpleSAML?
+		// Do some more magic here, maybe try to get rid of the s_mart_id module in SimpleSAML?
 		return $values;
 	}
 
 	/**
 	 * @param	$smartid
 	 */
-	public function getUserBySmartId($smartid, $safe = false)
+	public function getUserBySmartId($smart_id, $safe = false)
 	{
 		$select = $this->select();
-		$select->where('smart_id = ?', $smartid);
+		$select->where('uid = ?', $smart_id);
 
 		$row = $this->fetchRow($select);
 
@@ -223,7 +224,8 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 			'organisation' => array('field' => 'organisation', 'label' => 'Organisation', 'sortable' => true),
 			'lastlogin' => array('field' => 'lastlogin', 'label' => 'Last login', 'sortable' => true, 'modifier' => 'formatDate'),
 			'active' => array('field' => 'active', 'label' => 'Active', 'sortable' => false),
-			'smart_id' => array('field' => 'smart_id', 'label' => 'smart_id', 'sortable' => false, 'hidden' => true),
+//			'saml_uid_attribute' => array('field' => 'saml_uid_attribute', 'label' => 'saml_uid_attribute', 'sortable' => false, 'hidden' => true),
+			'uid' => array('field' => 'uid', 'label' => 'uid', 'sortable' => false, 'hidden' => true),
 			'invite' => array('field' => 'invite', 'label' => 'invite', 'sortable' => false, 'hidden' => true),
 			'inserted' => array('field' => 'inserted', 'label' => 'inserted', 'sortable' => false, 'hidden' => true)
 		);

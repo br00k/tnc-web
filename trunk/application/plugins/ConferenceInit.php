@@ -35,7 +35,7 @@ class Application_Plugin_ConferenceInit extends Zend_Controller_Plugin_Abstract
 
 		$hostname = getenv('HTTP_HOST');
 
-		#$cache->clean();
+		$cache->clean();
 
 		if( ($result = $cache->load('conference'.md5($hostname))) === false ) {
 			$db = $bootstrap->getResource('db');
