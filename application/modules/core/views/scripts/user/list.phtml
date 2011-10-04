@@ -67,7 +67,9 @@ $columns = array_filter($this->grid['cols'], 'globFilter');
 	</tr>
 
 	<tr class="extra <?= $this->cycle(array('odd', 'even'))->current() ?>">
-	<td colspan="7"><? if ($item['smart_id']): ?><span class="meta"><?= $item['smart_id'] ?></span><br /><? endif; ?>
+	<td colspan="7">
+	<? /* if ($item['saml_uid_attribute']): ?><span class="meta"><?= $item['saml_uid_attribute'] ?></span><br /><? endif; */ ?>
+	<? if ($item['uid']): ?><span class="meta"><?= $item['uid'] ?></span><br /><? endif; ?>
 	<span class="meta">inserted: <?= $this->formatDate($item['inserted']) ?></span>
 	<? 
 	if ($metadata = $item->getAuditData()):

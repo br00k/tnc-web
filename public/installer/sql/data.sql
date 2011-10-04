@@ -1215,7 +1215,7 @@ CREATE TABLE users (
     inserted timestamp(0) with time zone DEFAULT now(),
     email text,
     lastlogin timestamp(0) with time zone,
-    smart_id text,
+    uid text,
     country text,
     profile text,
     jobtitle text,
@@ -1372,7 +1372,7 @@ CREATE VIEW vw_submissions AS
 --
 
 CREATE VIEW vw_users AS
-    SELECT u.user_id, u.fname, u.lname, u.organisation, u.active, u.inserted, u.email, u.lastlogin, u.smart_id, u.country, u.profile, u.jobtitle, u.file_id, u.invite, r.role_id, r.name AS role_name FROM ((users u LEFT JOIN user_role ur ON ((u.user_id = ur.user_id))) LEFT JOIN roles r ON ((r.role_id = ur.role_id)));
+    SELECT u.user_id, u.fname, u.lname, u.organisation, u.active, u.inserted, u.email, u.lastlogin, u.uid, u.country, u.profile, u.jobtitle, u.file_id, u.invite, r.role_id, r.name AS role_name FROM ((users u LEFT JOIN user_role ur ON ((u.user_id = ur.user_id))) LEFT JOIN roles r ON ((r.role_id = ur.role_id)));
 
 
 SET search_path = feedback, pg_catalog;
@@ -1806,19 +1806,19 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: users_smart_id_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY users
-    ADD CONSTRAINT users_smart_id_key UNIQUE (smart_id);
-
-
---
 -- Name: users_submissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY users_submissions
     ADD CONSTRAINT users_submissions_pkey PRIMARY KEY (user_submission_id);
+
+
+--
+-- Name: users_uid_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_uid_key UNIQUE (uid);
 
 
 --
