@@ -81,7 +81,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 	public function getSafeUser()
 	{
 		$data = $this->toArray();
-		unset($data['smart_id']);
+		unset($data['uid']);
 		return $data;
 	}
 
