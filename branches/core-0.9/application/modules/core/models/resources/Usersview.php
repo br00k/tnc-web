@@ -98,7 +98,8 @@ class Core_Resource_Usersview extends TA_Model_Resource_Db_Table_Abstract
 			'organisation' => array('field' => 'organisation', 'label' => 'Organisation', 'sortable' => true),
 			'lastlogin' => array('field' => 'lastlogin', 'label' => 'Last login', 'sortable' => true, 'modifier' => 'formatDate'),
 			'active' => array('field' => 'active', 'label' => 'Active', 'sortable' => false),
-			'smart_id' => array('field' => 'smart_id', 'label' => 'smart_id', 'sortable' => false, 'hidden' => true),
+//			'saml_uid_attribute' => array('field' => 'saml_uid_attribute', 'label' => 'saml_uid_attribute', 'sortable' => false, 'hidden' => true),
+			'uid' => array('field' => 'uid', 'label' => 'uid', 'sortable' => false, 'hidden' => true),
 			'invite' => array('field' => 'invite', 'label' => 'invite', 'sortable' => false, 'hidden' => true),
 			'inserted' => array('field' => 'inserted', 'label' => 'inserted', 'sortable' => false, 'hidden' => true),
 			'role_name' => array('field' => 'role_name', 'label' => 'role_name', 'sortable' => false, 'hidden' => true)
