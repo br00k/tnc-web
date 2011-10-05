@@ -21,6 +21,7 @@
  * Class to manage events stored in google calendar
  *
  * @package		Core_Service
+ * @author		Christian Gijtenbeek <gijtenbeek@terena.org>
  * @see 		http://framework.zend.com/manual/en/zend.gdata.calendar.html
  */
 class Core_Service_GoogleEvent {

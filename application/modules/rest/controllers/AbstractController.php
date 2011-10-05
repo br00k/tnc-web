@@ -16,32 +16,39 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
-abstract class Rest_AbstractController extends Zend_Rest_Controller 
+
+/**
+ * AbstractController
+ *
+ * @package Rest_Controller
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
+abstract class Rest_AbstractController extends Zend_Rest_Controller
 {
 	protected $_sharedViews = false;
-	
+
 	/**
-	 * All controllers will use the views that are stored in 
+	 * All controllers will use the views that are stored in
 	 * modules/rest/views/scripts/_shared/
-	 * 
-	 * This method is useful if the same actions in 
+	 *
+	 * This method is useful if the same actions in
 	 * different controllers share the same views
-	 * 
+	 *
 	 * This method can be used to control the shared views
 	 * from the controller
-	 * 
+	 *
 	 * @param boolean $flag
 	 */
-	protected function enableSharedViews($flag=true) 
+	protected function enableSharedViews($flag=true)
 	{
 		if($flag) {
-			$this->_helper->viewRenderer->setViewScriptPathSpec('_shared/:action.:suffix');	
+			$this->_helper->viewRenderer->setViewScriptPathSpec('_shared/:action.:suffix');
 		}
 		else {
 			$this->_helper->viewRenderer->setViewScriptPathSpec(':action.:suffix');
 		}
 	}
-	
+
 	public function init()
 	{
 		$this->_helper->contextSwitch()
@@ -49,13 +56,13 @@ abstract class Rest_AbstractController extends Zend_Rest_Controller
 			 ->addActionContext('post',  array('xml','json'))
 			 ->initContext();
 		$this->_helper->layout()->disableLayout();
-		
+
 		// can be used to set the shared views globally
 		if ($this->_sharedViews) {
 			$this->enableSharedViews(true);
 		}
 	}
-	
+
 	public function indexAction()
     {
     	$this->_forward('get');

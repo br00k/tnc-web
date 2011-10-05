@@ -16,9 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
+
 /**
- * Make sure users can only modify presentation user links of their own presentations 
+ * Make sure users can only modify presentation user links of their own presentations
  *
+ * @package Core_Model
+ * @subpackage Core_Model_Acl
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Model_Acl_UserCanModifyUserPresentationAssertion implements Zend_Acl_Assert_Interface
 {

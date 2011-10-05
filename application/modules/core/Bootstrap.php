@@ -17,6 +17,12 @@
  * @revision   $Id$
  */
 
+/**
+ * CORE specific bootstrapper
+ *
+ * @package Core
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
 class Core_Bootstrap extends Zend_Application_Module_Bootstrap
 {
 }

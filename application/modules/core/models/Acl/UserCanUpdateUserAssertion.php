@@ -16,10 +16,14 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
+
 /**
  * Make sure users can only change their own information
  *
- */
+ * @package Core_Model
+ * @subpackage Core_Model_Acl
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */  
 class Core_Model_Acl_UserCanUpdateUserAssertion implements Zend_Acl_Assert_Interface
 {
     /**

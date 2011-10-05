@@ -16,10 +16,14 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
+
 /**
  * Make sure session chairs can only change sessions assigned to them
  *
- */
+ * @package Core_Model
+ * @subpackage Core_Model_Acl
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */   
 class Core_Model_Acl_UserCanUpdateSessionAssertion implements Zend_Acl_Assert_Interface
 {
     /**

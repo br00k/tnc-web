@@ -19,6 +19,12 @@
 
 require_once APPLICATION_PATH.'/modules/rest/controllers/AbstractController.php';
 
+/**
+ * ScheduleController
+ *
+ * @package Rest_Controller
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
 class Rest_ScheduleController extends Rest_AbstractController
 {   
 	// enable for all actions in this controller the

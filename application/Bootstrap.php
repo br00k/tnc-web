@@ -17,6 +17,12 @@
  * @revision   $Id$
  */
 
+/**
+ * Bootstrapper
+ *
+ * @package Core
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 	public $frontController;
@@ -30,7 +36,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$this->bootstrap('mail');
 		$transport = $this->getResource('mail');
 	}
-	
+
 	/**
 	 * Initialize config object and store in global Registry
 	 *
@@ -400,13 +406,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	$this->bootstrap('frontController');
     	$frontController = $this->getResource('frontController');
 
-		#try {
-		#	$conference = Zend_Registry::get('conference');
-		#} catch (Exception $e) {
-		#	$conferenceInit = $frontController->getPlugin('Application_Plugin_ConferenceInit');
-		#	Zend_Debug::dump($conferenceInit);exit();
-		#}
-		
 		$navigationPlugin = $frontController->getPlugin('TA_Controller_Plugin_NavigationSelector');
 
 		// store the navigation in the resource registry
