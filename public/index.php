@@ -14,7 +14,6 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * {banner}
  */
 
 // Needed for Location header, which needs an absolute URI (RFC2616)
@@ -51,7 +50,7 @@ $paths = array(
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, $paths));
 
-/** Zend_Application */
+// Zend_Application
 require_once $ini['zend.location'].'/Zend/Application.php';
 
 // Create application, bootstrap, and run
