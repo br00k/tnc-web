@@ -48,6 +48,12 @@ class Core_Service_Authentication {
 	protected $_invite;
 
 	/**
+	 * Redirect url
+	 * @var string
+	 */	
+	protected $_returnTo;
+
+	/**
 	 * Constructor, loads user model
 	 *
 	 * @param	string	$inviteHash		Invite hash
