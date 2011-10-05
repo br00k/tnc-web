@@ -4,5 +4,5 @@
 <?= $this->authInfo()->getFullName() ?>
 </p>
 <? else: ?>
-<p><a href="/core/user/login">Please login</a> and try again</p>
+<p><a href="/core/user/login<?= (isset($this->referrer)) ? '?redir='.$this->referrer : '' ?>">Please login</a> and try again</p>
 <? endif; ?>

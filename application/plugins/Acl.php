@@ -21,6 +21,7 @@
  * Checks if user is allowed to access resource, if not user gets 303 error
  *
  * @package Application_Plugin
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  * @todo find out why the dispatcher check does not work
  */
 class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
@@ -50,13 +51,19 @@ class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
 			if ($request->getModuleName() == 'rest') {
 				return;
 			}
+
+			$lastRequest = Zend_Controller_Action_HelperBroker::getStaticHelper('lastRequest');
 			$redir = Zend_Controller_Action_HelperBroker::getStaticHelper('Redirector');
 
+			// save last request in session since this data will be lost after redirect
+			// have to call it here because the request URI is saved in postDispatch() 
+			$lastRequest->saveRequestUri($request->getRequestUri());
+			// perform redirect
 			$redir->setCode(303)
  				  ->setExit(true)
 				  ->gotoRoute(array(
 				  	'controller' => 'error',
-					'action' => 'noaccess'
+					'action' => 'noaccess',
 				  ), 'main-module');
 
 		}

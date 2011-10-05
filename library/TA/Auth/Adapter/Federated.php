@@ -16,7 +16,7 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
- 
+
 /**
  * Authenticates the given Federated identity..
  *
@@ -79,7 +79,7 @@ class TA_Auth_Adapter_Federated implements Zend_Auth_Adapter_Interface
 	public function authenticate()
 	{
 		try {
-			$config = Zend_Registry::get('config');			
+			$config = Zend_Registry::get('config');
 			$simplesaml_dir = $config->simplesaml->dir;
 		} catch (Exception $e) {
 			$simplesaml_dir = "simplesaml";

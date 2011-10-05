@@ -20,7 +20,7 @@
 /**
  * Sets language
  *
- * @author Christian Gijtenbeek
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  * @package TA_Controller
  * @subpackage Plugin
  */

@@ -16,12 +16,12 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
- 
+
 /**
  * ErrorController
  *
  * @package Core_Controllers
- */ 
+ */
 class Core_ErrorController extends Zend_Controller_Action
 {
 
@@ -82,10 +82,13 @@ class Core_ErrorController extends Zend_Controller_Action
 
     /**
      * This is called when a user visits a restricted page that is not
-     * protected by ACL from the navigation object.
+     * protected by ACL from the navigation object
      *
      */
-    public function noaccessAction() {}
+    public function noaccessAction()
+    {
+    	$this->view->referrer = $this->_helper->lastRequest->getRequestUri();
+    }
 
 
 }
