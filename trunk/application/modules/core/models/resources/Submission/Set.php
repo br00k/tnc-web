@@ -16,8 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
+
 /**
- * This class represents a rowset
+ * Submission rowset
+ *
+ * @package Core_Resource
+ * @subpackage Core_Resource_Submission
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Resource_Submission_Set extends Zend_Db_Table_Rowset_Abstract
 {
@@ -53,13 +58,13 @@ class Core_Resource_Submission_Set extends Zend_Db_Table_Rowset_Abstract
 	 */
 	public function getAllReviewers()
 	{
-		$query = "select u.fname, u.lname, u.email, u.user_id, rs.submission_id 
+		$query = "select u.fname, u.lname, u.email, u.user_id, rs.submission_id
 		from reviewers_submissions rs
 		left join users u on (rs.user_id = u.user_id)
         left join submissions s on (rs.submission_id = s.submission_id)
         where s.conference_id=?";
 		return $this->getTable()->getAdapter()->query(
-			$query, 
+			$query,
 			$this->current()->conference_id)->fetchAll();
 	}
 
@@ -106,7 +111,7 @@ class Core_Resource_Submission_Set extends Zend_Db_Table_Rowset_Abstract
 		$list = array();
 
 		$submissions = $this->toArray();
-		
+
 		if (empty($submissions)) {
 			throw new TA_Exception('no submissions found');
 		}

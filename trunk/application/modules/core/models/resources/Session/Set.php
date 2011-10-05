@@ -16,8 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
-/**
- * This class represents a rowset
+
+/** 
+ * Session rowset
+ *
+ * @package Core_Resource
+ * @subpackage Core_Resource_Session
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 {

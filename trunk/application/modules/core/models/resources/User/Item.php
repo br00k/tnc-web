@@ -16,10 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
+
 /**
- * This class represents a single record
- * Methods in this class could include logic for a single record
+ * User row, implements Zend_Acl_Role_Interface so this object is a role
  *
+ * @package Core_Resource
+ * @subpackage Core_Resource_User
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract implements Zend_Acl_Role_Interface
 {
@@ -50,7 +53,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 
 		// sessions to chair
 		$query = "select su.session_id from sessions_users su where su.user_id=:user_id";
-		$this->_data['sessions_to_chair'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));		
+		$this->_data['sessions_to_chair'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
 
 		// submissions to review
 		$query = "select rs.submission_id from reviewers_submissions rs where rs.user_id=:user_id";
@@ -59,7 +62,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		// my own submissions
 		$query = "select s.submission_id from submissions s left join users_submissions us ON (s.submission_id = us.submission_id) where us.user_id=:user_id";
 		$this->_data['my_submissions'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
-	
+
 		// my own presentations
 		$query = "select p.presentation_id from presentations p left join presentations_users pu on (p.presentation_id = pu.presentation_id) where pu.user_id=:user_id";
 		$this->_data['my_presentations'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
@@ -68,6 +71,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 	/**
 	 * Reload session
 	 *
+	 * @return void
 	 */
 	public function reloadSession()
 	{
@@ -78,6 +82,11 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		}
 	}
 
+	/**
+	 * Returns all user data apart from saml_uid_attribute
+	 *
+	 * @return array
+	 */
 	public function getSafeUser()
 	{
 		$data = $this->toArray();
@@ -99,10 +108,10 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 	{
 		return $this->fname .' '. $this->lname . ' <' . substr($this->email, 0, 50) . '>';
 	}
-	
+
 	/**
 	 * Check if user has a certain role
-	 * 
+	 *
 	 * @param	$requiredRole	string/array
 	 * @return	boolean
 	 */
@@ -114,9 +123,9 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
         } else if (0 === count($requiredRole)) {
             $requiredRole = array(null);
         }
-        
+
 		$roles = $this->getRoles(true);
-		
+
 		foreach ($requiredRole as $rrole) {
 		    if (in_array($rrole, $roles)) {
 		    	return true;
@@ -126,7 +135,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 	}
 
 	/**
-	 * Get role id
+	 * Get role id - this method also deals with multiple roles
 	 *
 	 * @return string
 	 */
@@ -159,7 +168,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
     {
 		return $this->submissions_to_review;
     }
-    
+
     /**
      * Get sessions that the user chairs
      *
@@ -178,7 +187,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
     public function getMySubmissions()
     {
 		return $this->my_submissions;
-    }    
+    }
 
     /**
      * Get presentations of the user
@@ -189,7 +198,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
     {
 		return $this->my_presentations;
     }
-        
+
 	/**
 	 * Is user admin?
 	 * @return boolean
@@ -245,7 +254,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		$query = "insert into user_role (user_id, role_id) values (:user_id, :role_id)";
 		return $adapter->query($query, $values);
 	}
-	
+
 	/**
 	 * Get sessions current user is chairing
 	 *
@@ -253,7 +262,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 	public function getSessions()
 	{
 		$query = "select * from vw_sessions_chairs where user_id=:user_id";
-		return $this->select()->getAdapter()->fetchAll($query, array(':user_id' => $this->user_id));	
+		return $this->select()->getAdapter()->fetchAll($query, array(':user_id' => $this->user_id));
 	}
 	/**
 	 * Get presentations current user is a speaker of
@@ -265,7 +274,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		return $this->select()->getAdapter()->fetchAll($query, array(
 			':user_id' => $this->user_id,
 			':email' => $this->email
-		));	
+		));
 	}
-	
+
 }

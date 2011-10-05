@@ -20,6 +20,7 @@
 /** 
  *
  * @package Core_Model
+ * @author Christian Gijtenbeek
  */
 class Core_Model_Submit extends TA_Model_Acl_Abstract
 {

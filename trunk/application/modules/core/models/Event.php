@@ -20,6 +20,7 @@
 /** 
  *
  * @package Core_Model
+ * @author Christian Gijtenbeek
  */
 class Core_Model_Event extends TA_Model_Acl_Abstract
 {

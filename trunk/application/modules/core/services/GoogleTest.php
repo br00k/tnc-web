@@ -23,7 +23,7 @@
  * @todo this class should eventually be merged with GoogleEvent.php
  * since they basically do the same things
  * @package Core_Service
- * @authors gijtenbeek@terena.org
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  * @see http://framework.zend.com/manual/en/zend.gdata.calendar.html
  */
 class Core_Service_GoogleTest {

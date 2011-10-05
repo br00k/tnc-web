@@ -16,7 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
-
+ 
+/**
+ * REST specific bootstrapper
+ *
+ * @package Rest
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
 class Rest_Bootstrap extends Zend_Application_Module_Bootstrap
 {
 /**

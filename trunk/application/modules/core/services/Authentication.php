@@ -20,7 +20,8 @@
 /**
  * Authentication Service
  *
- * @package		Core_Service
+ * @package		Core_Service 
+ * @author Christian Gijtenbeek
  */
 class Core_Service_Authentication {
 

@@ -16,6 +16,12 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
+
+/** 
+ *
+ * @package Core_Resource
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
 class Core_Resource_Submissionstatus extends TA_Model_Resource_Db_Table_Abstract
 {
 

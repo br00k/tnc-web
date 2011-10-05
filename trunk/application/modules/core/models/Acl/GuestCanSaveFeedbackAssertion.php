@@ -16,9 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
+
 /**
- * Make sure feedback is only provided for own feedback id
+ * Ensure feedback is only provided for own feedback id
  *
+ * @package Core_Model
+ * @subpackage Core_Model_Acl
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Model_Acl_GuestCanSaveFeedbackAssertion implements Zend_Acl_Assert_Interface
 {
@@ -41,7 +45,7 @@ class Core_Model_Acl_GuestCanSaveFeedbackAssertion implements Zend_Acl_Assert_In
 		// posted feedback id
 		$param = $post['id'];
 
-		// check if posted feedbackId is the same as feedbackId retrieved from cookie 
+		// check if posted feedbackId is the same as feedbackId retrieved from cookie
 		if ($param !== null && $param == $feedbackId ) {
 			return true;
 		} else {

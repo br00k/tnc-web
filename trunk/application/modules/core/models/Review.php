@@ -20,6 +20,7 @@
 /** 
  *
  * @package Core_Model
+ * @author Christian Gijtenbeek
  */
 class Core_Model_Review extends TA_Model_Acl_Abstract
 {
