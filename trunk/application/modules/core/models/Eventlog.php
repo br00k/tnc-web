@@ -18,9 +18,13 @@
  */
  
 /** 
+ * Eventlog Model.
+ * The event log keeps track of important CORE events, like sending out
+ * mass emails to submitters or reviewers. This model offers a way to 
+ * query the log.
  *
  * @package Core_Model
- * @author Christian Gijtenbeek
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Model_Eventlog extends TA_Model_Acl_Abstract
 {
@@ -64,6 +68,9 @@ class Core_Model_Eventlog extends TA_Model_Acl_Abstract
 		return false;
 	}
 
+	/**
+	 * Proxy
+	 */
 	public function getAllTimestamps()
 	{
 		return $this->getResource('eventlogs')->getAllTimestamps();

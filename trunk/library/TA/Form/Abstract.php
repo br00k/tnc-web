@@ -79,6 +79,8 @@ class TA_Form_Abstract extends Zend_Form
 	);
 
 	/**
+	 * Constructor
+	 * @param	array	$options
 	 * @todo add subform decorator
 	 */
 	public function __construct($options = null)

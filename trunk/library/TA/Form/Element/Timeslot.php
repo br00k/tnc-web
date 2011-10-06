@@ -18,7 +18,7 @@
  */
 
 /**
- * Custom Composite Form Element to represent a CORE timeslot
+ * Custom Composite form element to represent a CORE timeslot
  *
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  * @package TA_Form
@@ -26,7 +26,6 @@
  */
 class TA_Form_Element_Timeslot extends Zend_Form_Element_Xhtml
 {
-
 	protected $_start;
 	protected $_end;
 	protected $_number;
@@ -106,14 +105,14 @@ class TA_Form_Element_Timeslot extends Zend_Form_Element_Xhtml
                  ->setEnd($value['tend']);
 
 			if (isset($value['number'])) {
-                 $this->setNumber($value['number']);
+				$this->setNumber($value['number']);
 			}
 
 			if (isset($value['type'])) {
-                 $this->setType($value['type']);
+				$this->setType($value['type']);
 			}
         } else {
-            throw new Exception('Invalid default timeslot value provided');
+			throw new Exception('Invalid default timeslot value provided');
         }
 
 	}
