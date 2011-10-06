@@ -16,7 +16,7 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
- 
+
 /**
  * Change layout based on configuration value
  *
@@ -26,8 +26,16 @@
  */
 class TA_Controller_Plugin_LayoutPicker extends Zend_Controller_Plugin_Abstract {
 
+	/**
+	 * Conference abbreviation
+	 * @var string
+	 */
 	private $_abbr;
 
+	/**
+	 * Conference info
+	 * @var array
+	 */
 	private $_conference;
 
 	public function postDispatch(Zend_Controller_Request_Abstract $request)
@@ -56,6 +64,10 @@ class TA_Controller_Plugin_LayoutPicker extends Zend_Controller_Plugin_Abstract 
 		$this->_initView();
 	}
 
+	/**
+	 * Helper method to initialize view
+	 * @return void
+	 */
 	private function _initView()
 	{
 		$cssFolder = ($this->_conference['layout'])

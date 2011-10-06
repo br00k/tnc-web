@@ -18,6 +18,7 @@
  */
 
 /** 
+ * Presentation Model
  *
  * @package Core_Model
  * @author Christian Gijtenbeek

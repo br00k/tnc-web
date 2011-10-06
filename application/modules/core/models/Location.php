@@ -18,9 +18,10 @@
  */
 
 /** 
+ * Location Model
  *
  * @package Core_Model
- * @author Christian Gijtenbeek
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Model_Location extends TA_Model_Acl_Abstract
 {

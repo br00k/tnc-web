@@ -16,8 +16,9 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
- 
-/** 
+
+/**
+ * Event Model
  *
  * @package Core_Model
  * @author Christian Gijtenbeek
@@ -27,8 +28,8 @@ class Core_Model_Event extends TA_Model_Acl_Abstract
 
 	/**
 	 * Get event by id
-	 * @param		integer		$id		User id
-	 * @return		Core_Resource_User_Item
+	 * @param		integer		$id		event id
+	 * @return		Core_Resource_Event_Item
 	 */
 	public function getEventById($id)
 	{
@@ -39,6 +40,12 @@ class Core_Model_Event extends TA_Model_Acl_Abstract
     	return $row;
 	}
 
+	/**
+	 * Get all event related data (with data from joined tables) by event_id
+	 *
+	 * @param	integer		$id		event id
+	 * @return		Core_Resource_Event_Item
+	 */
 	public function getAllEventDataById($id)
 	{
 		$row = $this->getResource('eventsview')->getEventById( (int) $id );
@@ -72,6 +79,7 @@ class Core_Model_Event extends TA_Model_Acl_Abstract
 	/**
 	 * Get event categories
 	 *
+	 * @return	array
 	 */
 	public function getCategories()
 	{

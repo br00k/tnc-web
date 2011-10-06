@@ -26,8 +26,17 @@
  */
 class TA_Controller_Action_Helper_ConferenceInfo extends Zend_Controller_Action_Helper_Abstract
 {
+	/**
+	 * Conference array
+	 * @var array
+	 */
 	protected $_conference;
 
+    /**
+	 * Get conference details
+	 *
+	 * @param	string	$info		information you want
+	 */
 	public function conferenceInfo($info)
 	{
 		if (!$this->_conference) {
@@ -40,17 +49,6 @@ class TA_Controller_Action_Helper_ConferenceInfo extends Zend_Controller_Action_
 			return $this;
 		}
 	}
-
-
-    /**
-	 * Proxy method for conferenceInfo
-	 *
-	 * @param	string	$info		Requested Array key
-	 */
-    public function direct($info = null)
-    {
-        return $this->conferenceInfo($info);
-    }
 
 	/**
 	 * Is the conference live?
@@ -94,5 +92,15 @@ class TA_Controller_Action_Helper_ConferenceInfo extends Zend_Controller_Action_
 		}
 		return false;
 	}
+
+    /**
+	 * Proxy method for conferenceInfo
+	 *
+	 * @param	string	$info		Requested Array key
+	 */
+    public function direct($info = null)
+    {
+        return $this->conferenceInfo($info);
+    }
 
 }

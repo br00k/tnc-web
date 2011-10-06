@@ -36,7 +36,7 @@ class Core_Model_Observer_Sessiongcal extends TA_Model_Acl_Abstract implements T
 	 * Add session to Google Calendar and update session table with
 	 * resulting google calendar id.
 	 *
-	 * Major WTF - I have to refresh $subject in order for save() to work!
+	 * Weird. I have to refresh $subject in order for save() to work!
 	 *
 	 * @return void
 	 */
