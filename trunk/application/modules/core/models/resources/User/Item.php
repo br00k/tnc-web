@@ -107,9 +107,27 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		return $this->fname .' '. $this->lname;
 	}
 
+	/**
+	 * Get identifier string
+	 *
+	 * This is for use in lists, so that it is possible to distinguish
+	 * between "Joe Average <joe.a@uni.edu>" from f.i. Google, and
+	 * "Joe Average <joe.a@uni.edu>" from the UNI IdP.
+	 * Some specific smart_id logic, if that doesn't work just use the
+	 * bare saml_uid_attribute.
+	 *
+	 * @return string
+	 */
 	public function getOneliner()
 	{
-		return $this->fname .' '. $this->lname . ' <' . substr($this->email, 0, 50) . '>';
+		if(preg_match('/^([a-z]+)_targetedID:http/', $this->uid, $matches)) {
+			$idp = ucfirst($matches[1]);
+		} elseif (preg_match('/.*!(.*)$/', $this->uid, $matches)) {
+			$idp = $matches[1];
+		} else {
+			$idp = $this->uid;
+		}
+		return $this->fname . ' ' . $this->lname . ' (' . $this->email . ', ' . $idp . ')';
 	}
 
 	/**
