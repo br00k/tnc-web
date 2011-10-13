@@ -27,6 +27,15 @@
 class Core_Resource_Session_Item extends TA_Model_Resource_Db_Table_Row_Abstract
 {
 	/**
+	 * Proxy method to $this::getChairs(), required for TA_Form_Element_User
+	 *
+	 */
+	public function getUsers($allData = null)
+	{
+		return $this->getChairs(true);
+	}
+
+	/**
 	 * Get chairs belonging to this session
 	 *
 	 * @param boolean $allData Get all data or just what is needed for a select

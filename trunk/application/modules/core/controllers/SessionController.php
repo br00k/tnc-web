@@ -21,7 +21,7 @@
  * SessionController
  *
  * @package Core_Controllers
- */ 
+ */
 class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_Resource_Interface
 {
 
@@ -318,7 +318,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 	 * Delete user session link
 	 *
 	 */
-	public function deletechairAction()
+	public function deleteuserlinkAction()
 	{
 		$this->_sessionModel->deleteChair($this->_getParam('id'));
 		return $this->_helper->lastRequest();
@@ -340,12 +340,14 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 
 		// No post; display form
 		if ( !$request->isPost() )  {
-			$this->view->sessionUserForm = $this->_sessionModel->getForm('sessionUser');
-			$this->view->chairs = $session->getChairs();
+			$form = $this->view->sessionUserForm = $this->_sessionModel->getForm('sessionUser');
 			// populate form with defaults
 			$this->view->sessionUserForm->setDefaults(array(
 			   	'session_id' => $id
 			));
+			$form->getElement('user_id')->setTaRow(
+				$this->_sessionModel->getSessionById($id)
+			);
 			return $this->render('chairs');
 		}
 

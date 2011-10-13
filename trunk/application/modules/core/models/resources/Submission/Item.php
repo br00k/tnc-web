@@ -28,13 +28,22 @@ class Core_Resource_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstr
 {
 
 	/**
+	 * Proxy method to $this::getReviewers(), required for TA_Form_Element_User
+	 *
+	 */
+	public function getUsers()
+	{
+		return $this->getReviewers();
+	}
+
+	/**
 	 * Get reviewers belonging to this submission
 	 *
 	 * @return array
 	 */
 	public function getReviewers()
 	{
-		$query = "select u.email, rs.reviewer_submission_id as id from reviewers_submissions rs
+		$query = "select u.email, u.organisation, rs.reviewer_submission_id as id from reviewers_submissions rs
 		left join users u on (rs.user_id = u.user_id)
 		where rs.submission_id=:submission_id";
 

@@ -223,7 +223,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 	 * Delete reviewer submission link
 	 *
 	 */
-	public function deletereviewerAction()
+	public function deleteuserlinkAction()
 	{
 		$this->_submitModel->deleteReviewer($this->_getParam('id'));
 		return $this->_helper->lastRequest();
@@ -251,12 +251,14 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 
 		// No post; display form
 		if ( !$request->isPost() )  {
-			$this->view->submitUserForm = $this->_submitModel->getForm('submitUser');
-			$this->view->reviewers = $submission->getReviewers();
+			$form = $this->view->submitUserForm = $this->_submitModel->getForm('submitUser');
 			// populate form with defaults
 			$this->view->submitUserForm->setDefaults(array(
 			   	'submission_id' => $id
 			));
+			$form->getElement('user_id')->setTaRow(
+				$this->_submitModel->getSubmissionById($id)
+			);				
 			return $this->render('reviewers');
 		}
 

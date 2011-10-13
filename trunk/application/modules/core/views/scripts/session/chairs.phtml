@@ -2,18 +2,6 @@
 <? #if ($this->reviewers): ?>
 <table class="reviewers">
 
-<? foreach ($this->chairs as $chair):  ?>
-
-<tr>
-<td><?= $chair['email'] ?></td>
-<td><a title="remove user" href="<?= $this->url(array(
-		'controller' => 'session',
-		'action' => 'deletechair',
-		'id' => $chair['id']
-	), 'gridactions') ?>">x</a></td>
-</tr>
-
-<? endforeach; ?>
 <tr><td>
 <?= $this->sessionUserForm; ?>
 </td><td>&nbsp;</td>

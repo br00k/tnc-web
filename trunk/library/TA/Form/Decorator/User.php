@@ -57,7 +57,7 @@ class TA_Form_Decorator_User extends Zend_Form_Decorator_Abstract
 			$output = '<table>';
 			foreach ($linkedUsers as $linkedUser) {
 				$output .= '<tr><td>'.$linkedUser['email'].'</td>'
-				.'<td>'.$linkedUser['organisation'].'</td>'
+				.'<td>'.$linkedUser['organisation'].'</td>'				
 				.'<td>'.$this->_getHref($linkedUser['id']).'</td>'
 				.'</tr>';
 			}

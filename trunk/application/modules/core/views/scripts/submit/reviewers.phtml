@@ -7,18 +7,6 @@
 <h1>Reviewers</h1>
 <table class="reviewers">
 
-<? foreach ($this->reviewers as $reviewer):  ?>
-
-<tr>
-<td><?= $reviewer['email'] ?></td>
-<td><a title="remove reviewer" href="<?= $this->url(array(
-		'controller' => 'submit',
-		'action' => 'deletereviewer',
-		'id' => $reviewer['id']
-	), 'gridactions') ?>">x</a></td>
-</tr>
-
-<? endforeach; ?>
 <tr><td>
 <?= $this->submitUserForm; ?>
 </td><td>&nbsp;</td>
