@@ -17,7 +17,7 @@
  * @revision   $Id$
  */
 
-/** 
+/**
  *
  * @package Core_Forms
  * @subpackage Core_Forms_Submit
@@ -38,25 +38,15 @@ class Core_Form_Submit_User extends TA_Form_Abstract
 	    			 )
 	    			 ->setDecorators(array('Composite'));
 
-	    $userModel = new Core_Model_User();
-
-	    $select = new Zend_Form_Element_Select('user_id');
-	    $select->setAttrib('onchange', 'this.form.submit()')
-	    		// @todo Only show users that are not already reviewers for this submission
-	    	   ->setMultiOptions($userModel->getUsersForSelect(true, 'reviewer'))
-			   ->setRegisterInArrayValidator(false)
-	    	   ->setDecorators(array('Composite'));
+		$users = new TA_Form_Element_User('user_id');
+		$users->setTaController('submit')
+			  ->populateElement('reviewer')
+			  ->setAttrib('onchange', "this.form.submit()");
 
 	    $this->addElements(array(
 	    	$submissionId,
-	    	$select
+	    	$users
 	    ));
-
-	    #$this->addElement('submit', 'submit', array(
-		#   'label' => 'Link users to submission',
-		#   'ignore' => true,
-		#   'decorators' => $this->_buttonElementDecorator
-	    #));
 
 	}
 

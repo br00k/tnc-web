@@ -46,6 +46,7 @@ class TA_Form_Element_User extends Zend_Form_Element_Select
 
 	/**
 	 * Populate element with user values
+	 *
 	 * @param	string	$role	Only show users that have this role
 	 * @return	TA_Form_Element_User	fluent interface
 	 */
