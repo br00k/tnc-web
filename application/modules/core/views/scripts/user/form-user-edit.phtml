@@ -23,22 +23,17 @@ $presentations = $presModel->getPresentations(null, array('presentation_title', 
 <? endif; ?>
 <? endif; ?>
 
-<?
-if ($mySubmits = Zend_Auth::getInstance()->getIdentity()->getMySubmissions()):
-$submitModel = new Core_Model_Submit();
-$filter = new stdClass();
-$filter->filters = new stdClass();
-$filter->filters->submission_id = $mySubmits;
-$submits = $submitModel->getSubmissions(null, array('date', 'desc'), $filter);
-?>
+<? 
+$submitLive = $this->conferenceInfo()->isSubmitLive();
+if ($mySubmits = Zend_Auth::getInstance()->getIdentity()->getMySubmissions()): ?>
 <br />
 
-<h2>My Submitted papers</h2>
+<h2>My Submitted pape<?= (count($mySubmits) == 1) ? 'r': 'rs' ?> <? if (!$submitLive): ?><span class="meta">(not possible to edit because submission deadline has passed)</span><? endif; ?></h2>
 <ul>
-<? foreach ($submits['rows'] as $submit): ?>
-<li><a href="<?= $this->url(array('controller' => 'submit', 'action' => 'edit', 'id' => $submit->submission_id)) ?>" title="edit submission">
-<?= $submit->title ?></a>
-(<?= $this->formatDate($submit->date) ?>)
+<? foreach ($mySubmits as $submit): ?>
+<li><? if ($submitLive): ?><a href="<?= $this->url(array('controller' => 'submit', 'action' => 'edit', 'id' => $submit['submission_id'])) ?>" title="edit submission"><? endif; ?>
+<?= $submit['title'] ?><? if ($submitLive): ?></a><? endif; ?>
+ (<?= $this->formatDate($submit['date']) ?>)
 </li>
 <? endforeach; ?>
 </ul>

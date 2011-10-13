@@ -36,7 +36,7 @@ class Core_Model_Acl_Core extends Zend_Acl {
     	$log->info(__METHOD__);
 		// Define Roles
 		$this->addRole(new Core_Model_Acl_Role_Guest) // not authenicated
-			 ->addRole(new Core_Model_Acl_Role_User, 'guest')
+			 ->addRole(new Core_Model_Acl_Role_User, 'guest') // user role is automatically assigned to logged in users
 			 ->addRole(new Core_Model_Acl_Role_Submitter, 'user')
 			 ->addRole(new Core_Model_Acl_Role_Presenter, 'user')
 			 ->addRole(new Core_Model_Acl_Role_Reviewer, 'user')
@@ -71,7 +71,9 @@ class Core_Model_Acl_Core extends Zend_Acl {
 		if (!$this->has('Submit')) {
 	        $this->add(new Core_Model_Submit())
 				 ->allow('user', 'Submit', 'new')
+				 ->allow('user', 'Submit', 'index')
 				 ->allow('user', 'Submit', 'save')
+				 ->allow('user', 'Submit', array('edit', 'save'), new Core_Model_Acl_UserCanUpdateSubmissionAssertion())
 				 ->allow('reviewer', 'Submit', array('download', 'review', 'list'));
 		}
 		if (!$this->has('Review')) {

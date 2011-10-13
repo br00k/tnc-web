@@ -106,4 +106,5 @@ class Core_View_Helper_ConferenceInfo extends Zend_View_Helper_Abstract
 		}
 		return false;
     }
+    
 }

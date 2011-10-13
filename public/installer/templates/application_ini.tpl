@@ -122,6 +122,8 @@ core.observer.submit = 1
 core.logSamlAttributes = 1
 ;; how long before an invite expires 
 core.userInviteTtl = '3 months'
+;; number of seconds before session start after which user can no longer edit their presentation
+core.presentation.deadline = '1800'
 
 ;; Diagnostic -- uncomment the line below to enable
 ;diagnostic.log = APPLICATION_PATH "/../logs/diagnostic.log"

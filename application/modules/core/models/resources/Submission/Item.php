@@ -42,9 +42,31 @@ class Core_Resource_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstr
 			$query, array(':submission_id' => $this->submission_id)
 		)->fetchAll();
 	}
-	
+
 	public function getSubmissionOneliner()
 	{
 		return $this->title;
+	}
+
+	/**
+	 * Is this current time before the edit deadline?
+	 *
+	 * @return boolean
+	 */
+	public function isBeforeEditDeadline()
+	{
+		$conference = Zend_Registry::get('conference');
+
+		if (!isset($conference['review_start'])) {
+			return true;
+		}
+
+		$now = new Zend_Date();
+
+		if ( $now->isEarlier($conference['review_start']) ) {
+		   return true;
+		}
+
+		return false;
 	}
 }

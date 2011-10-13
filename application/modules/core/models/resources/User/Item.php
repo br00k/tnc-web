@@ -45,10 +45,11 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		// roles
 		$query = "select r.name from user_role ur left join roles r on (ur.role_id=r.role_id) where user_id=:user_id";
 		$roles = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
+		// logged in users automatically get user role
 		if (empty($roles)) {
-			$this->_data['role'] = array('user');
+		    $this->_data['role'] = array('user');
 		} else {
-			$this->_data['role'] = $roles;
+		    $this->_data['role'] = $roles;
 		}
 
 		// sessions to chair
@@ -60,12 +61,13 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		$this->_data['submissions_to_review'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
 
 		// my own submissions
-		$query = "select s.submission_id from submissions s left join users_submissions us ON (s.submission_id = us.submission_id) where us.user_id=:user_id";
-		$this->_data['my_submissions'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
+		$query = "select s.submission_id, s.title, s.date, s.file_id from submissions s left join users_submissions us ON (s.submission_id = us.submission_id) where us.user_id=:user_id";
+		$this->_data['my_submissions'] = $this->select()->getAdapter()->fetchAssoc($query, array(':user_id' => $this->user_id));
 
 		// my own presentations
 		$query = "select p.presentation_id from presentations p left join presentations_users pu on (p.presentation_id = pu.presentation_id) where pu.user_id=:user_id";
 		$this->_data['my_presentations'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
+
 	}
 
 	/**
@@ -78,6 +80,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		$this->updateAttributes();
 		// make sure only current session is updated, otherwise you login as other user!
 		if (Zend_Auth::getInstance()->getIdentity()->user_id === $this->user_id) {
+			$st = Zend_Auth::getInstance()->getStorage();
 			Zend_Auth::getInstance()->getStorage()->write($this);
 		}
 	}

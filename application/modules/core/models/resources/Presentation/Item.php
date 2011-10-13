@@ -17,7 +17,7 @@
  * @revision   $Id$
  */
 
-/** 
+/**
  * Presentation row
  *
  * @package Core_Resource
@@ -60,5 +60,35 @@ class Core_Resource_Presentation_Item extends TA_Model_Resource_Db_Table_Row_Abs
 			"select * from vw_session_presentations where presentation_id=:presentation_id",
 			array(':presentation_id' => $this->presentation_id)
 		);
+	}
+
+	/**
+	 * Is this current time before the edit deadline?
+	 *
+	 * Assumes config directive core.presentation.deadline
+	 *
+	 * @return boolean
+	 */
+	public function isBeforeEditDeadline()
+	{
+		$config = Zend_Registry::get('config');
+
+		$tStart = $this->getTable()->getAdapter()->fetchOne(
+			"select tstart from vw_sessions left join vw_session_presentations sp"
+			." ON (vw_sessions.session_id = sp.session_id) where presentation_id=:presentation_id",
+			array(':presentation_id' => $this->presentation_id)
+		);
+
+		if ($tStart) {
+			$now = new Zend_Date();
+			$tStart = new Zend_Date($tStart, Zend_Date::ISO_8601);
+			$deadline = $tStart->sub($config->core->presentation->deadline, Zend_Date::SECOND);
+
+			if ( $now->isEarlier($deadline) ) {
+			   return true;
+			}
+		}
+
+		return false;
 	}
 }
