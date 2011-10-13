@@ -88,6 +88,14 @@ class Core_ErrorController extends Zend_Controller_Action
     public function noaccessAction()
     {
     	$this->view->referrer = $this->_helper->lastRequest->getRequestUri();
+
+    	switch ($this->getRequest()->getParam('resource')) {
+    		case 'Submit':
+				if ($this->getRequest()->getParam('privilege') == 'index') {
+					return $this->render('noaccess-newsubmit');
+				}
+    		break;
+    	}
     }
 
 
