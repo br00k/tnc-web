@@ -62,7 +62,7 @@ class Zend_View_Helper_TimeUntil extends Zend_View_Helper_Abstract
     /**
      * Calculates time until a certain event returning a phrase similar to "5 weeks ago"
      *
-     * @param	mixed	integer or Zend_Date object		$timestamp
+     * @param	mixed integer or Zend_Date object		$timestamp
      * @param	integer		$time	Timestamp to use instead of time()
      */
     public function timeUntil($timestamp, $time = null)    

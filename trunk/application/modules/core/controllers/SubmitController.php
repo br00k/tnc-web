@@ -21,7 +21,7 @@
  * SubmitController
  *
  * @package Core_Controllers
- */ 
+ */
 class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_Resource_Interface
 {
 
@@ -59,7 +59,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 
 	public function indexAction()
 	{
-		return $this->_forward('list');
+		return $this->_forward('new');
 	}
 
 	/**
@@ -301,8 +301,14 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 			return $this->render('formEdit');
 		}
 
-		// everything went OK, redirect to list action
+		// everything went OK, redirect
 		$this->_helper->flashMessenger('Succesfully edited record');
+		if (Zend_Auth::getInstance()->getIdentity()->role != 'admin') {
+			// reload session because user details have changed (their submission data)
+			$userModel = new Core_Model_User();
+			$userModel->getUserById(Zend_Auth::getInstance()->getIdentity()->user_id)->reloadSession();
+			return $this->_helper->lastRequest();
+		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'submit', 'action'=>'list'), 'grid');
 	}
 
@@ -315,6 +321,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		// @todo: this can't be right, I add the ACL logic here.
 		// I can't do it in Core.php because that causes a chicken/egg problem
 		// with Zend_Registry::get('conference') not being set.
+		// no worries, because the date assertion is void anyway
 		$acl = Zend_Registry::get('acl');
 		$acl->allow('user', 'Submit', 'new', new Core_Model_Acl_DateAssertion());
 
@@ -331,9 +338,26 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 			return $this->displayForm();
 		}
 
-		// everything went OK, redirect to list action
-		$this->_helper->flashMessenger('Thank you for your paper submission');
-		if (Zend_Auth::getInstance()->getIdentity()->role != 'admin') {
+		// send email to submitter
+		Zend_Controller_Action_HelperBroker::addHelper(new TA_Controller_Action_Helper_SendEmail());
+		$emailHelper = $this->_helper->sendEmail;
+		$identity = Zend_Auth::getInstance()->getIdentity();
+
+		$conference = Zend_Registry::get('conference');
+		$emailHelper->sendEmail(array(
+		    'template' => 'submit/new',
+		    'subject' => 'Paper submission',
+			'html' => true,
+		    'to_email' => $identity->email,
+			'to_name' => $identity->fname.' '.$identity->lname
+		), $request->getPost());
+
+		// everything went OK, redirect
+		$this->_helper->flashMessenger('Thank you for your paper submission, a confirmation email has been sent');
+		if (Zend_Auth::getInstance()->getIdentity()->role != 'admin') {		
+			// reload session because user details have changed (their submission data)
+			$userModel = new Core_Model_User();
+			$userModel->getUserById(Zend_Auth::getInstance()->getIdentity()->user_id)->reloadSession();
 			return $this->_helper->lastRequest();
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'submit', 'action'=>'list'), 'grid');

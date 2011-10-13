@@ -36,17 +36,17 @@ class TA_Model_Resource_Db_Table_Row_Abstract extends Zend_Db_Table_Row_Abstract
 	 * This only affects the CORE module, @todo: maybe move to CORE specific abstract class?
 	 */
 	public function init()
-	{	
+	{
 		if (isset($this->conference_id)) {
 			if (!$this->conference_id) {
 				return;
 			}
-		}		
-		$request = Zend_Controller_Front::getInstance()->getRequest();		
-		
-		if ( ($request->getControllerName() != 'conference') 
-		&& ($request->getModuleName() == 'core') 
-		&& (isset($this->conference_id)) 
+		}
+		$request = Zend_Controller_Front::getInstance()->getRequest();
+
+		if ( ($request->getControllerName() != 'conference')
+		&& ($request->getModuleName() == 'core')
+		&& (isset($this->conference_id))
 		&& ($this->getTable()->getConferenceId()) ) {
 			try {
 				if ($this->getTable()->getConferenceId() != $this->conference_id) {
@@ -156,7 +156,7 @@ class TA_Model_Resource_Db_Table_Row_Abstract extends Zend_Db_Table_Row_Abstract
 	}
 
 	/**
-	 * Get observers attached to this row 
+	 * Get observers attached to this row
 	 *
 	 * @return	array
 	 */

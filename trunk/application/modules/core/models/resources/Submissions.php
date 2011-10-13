@@ -105,7 +105,7 @@ class Core_Resource_Submissions extends TA_Model_Resource_Db_Table_Abstract
 
 		if (!$identity->isAdmin()) {
 			// if user is not admin, only show their own submissions
-			$mySubmissions = implode(",", $identity->getMySubmissions());
+			$mySubmissions = implode(",", array_keys($identity->getMySubmissions()) );
 			if (!empty($mySubmissions)) {
 				$query .= ' and st.submission_id IN ('.$mySubmissions.')';
 			} else {
