@@ -1,0 +1,8 @@
+<h1>Oops</h1>
+<? if ($this->authInfo()->isLoggedIn()): ?>
+<p>You are logged in as ' 
+<?= $this->authInfo()->getFullName() ?>', but you do not have access to this resource.
+</p>
+<? else: ?>
+<p>You don't seem to be logged in, please <a href="/core/user/login<?= (isset($this->referrer)) ? '?redir='.$this->referrer : '' ?>">log in</a> to submit a paper.</p>
+<? endif; ?>

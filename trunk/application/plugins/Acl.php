@@ -64,6 +64,8 @@ class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
 				  ->gotoRoute(array(
 				  	'controller' => 'error',
 					'action' => 'noaccess',
+					'resource' => $acl->get(ucfirst($request->getControllerName()))->getResourceId(),
+					'privilege' => $request->getActionName()
 				  ), 'main-module');
 
 		}
