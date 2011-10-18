@@ -24,18 +24,29 @@
  * @subpackage Core_Resource_Presentation
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
-class Core_Resource_Presentation_Item extends TA_Model_Resource_Db_Table_Row_Abstract
+class Core_Resource_Presentation_Item extends TA_Model_Resource_Db_Table_Row_Abstract implements TA_Form_Element_User_Interface
 {
 
+	/**
+	 * Required by TA_Form_Element_User
+	 *
+	 * @return	Zend_Db_Table_Rowset
+	 */
 	public function getUsers()
 	{
-		$query = "select u.email, u.organisation, pu.presentation_user_id as id from presentations_users pu
-		left join users u on (pu.user_id = u.user_id)
-		where pu.presentation_id=:presentation_id";
+		$userIds = $this->getTable()->getAdapter()->fetchCol(
+			"select user_id from presentations_users where presentation_id=:presentation_id",
+			array(':presentation_id' => $this->presentation_id)
+		);
 
-		return $this->getTable()->getAdapter()->query(
-			$query, array(':presentation_id' => $this->presentation_id)
-		)->fetchAll();
+		$userModel = new Core_Model_User();
+		$filter = new stdClass();
+		$filter->user_id = $userIds;
+		if ($userIds) {
+			$users = $userModel->getUsers(null, null, $filter);
+			return $users['rows'];
+		}
+		return false;
 	}
 
 	public function getSpeakers()

@@ -262,7 +262,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 		}
 		$id = (int) $id;
 
-		return $this->getResource('reviewerssubmissions')->getItemById($id)->delete();
+		return $this->getResource('reviewerssubmissions')->getItemByUserId($id)->delete();
 	}
 
 	public function saveReviewers(array $post)

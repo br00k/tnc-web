@@ -17,7 +17,7 @@
  * @revision   $Id$
  */
 
-/** 
+/**
  *
  * @package Core_Resource
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
@@ -28,7 +28,7 @@ class Core_Resource_Reviewerssubmissions extends TA_Model_Resource_Db_Table_Abst
 	protected $_name = 'reviewers_submissions';
 
 	protected $_primary = 'reviewer_submission_id';
-	
+
 	protected $_rowClass = 'Core_Resource_Review_Submission_Item';
 
 	public function init()
@@ -57,6 +57,20 @@ class Core_Resource_Reviewerssubmissions extends TA_Model_Resource_Db_Table_Abst
 					$this->select()
 					->where('submission_id = ?', $data['submission_id'])
 					->where('user_id = ?', $data['user_id'])
+				);
+	}
+
+	/**
+	 * Gets item by user id
+	 *
+	 * @param	integer		$id 	user id value
+	 * @return	Zend_Db_Table_Row
+	 */
+	public function getItemByUserId($id)
+	{
+		return $this->fetchRow(
+					$this->select()
+					->where('user_id = ?', $id)
 				);
 	}
 

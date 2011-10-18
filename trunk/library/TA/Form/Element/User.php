@@ -88,6 +88,9 @@ class TA_Form_Element_User extends Zend_Form_Element_Select
 	 */
 	public function getTaRow()
 	{
+		if (!$this->_taRow instanceof TA_Form_Element_User_Interface) {
+			throw new TA_Exception('Row element must implement TA_Form_Element_User_Interface');
+		}
 		return $this->_taRow;
 	}
 
