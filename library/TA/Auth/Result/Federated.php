@@ -16,13 +16,13 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
- 
+
 /**
  *
  * @author Christian Gijtenbeek
  * @package TA_Auth
  * @subpackage Result_Federated
- */ 
+ */
 class TA_Auth_Result_Federated extends Zend_Auth_Result
 {
 
@@ -61,7 +61,7 @@ class TA_Auth_Result_Federated extends Zend_Auth_Result
 
 		if ((int)$config->core->logSamlAttributes === 1) {
         	$log = Zend_Registry::get('log');
-        	$log->info(var_export($this->_attributes, true));		
+        	$log->info(var_export($this->_attributes, true));
 		}
 
         return $this->_attributes[$samlUidAttribute];
@@ -77,18 +77,5 @@ class TA_Auth_Result_Federated extends Zend_Auth_Result
     {
     	return $this->_attributes;
     }
-
-	/**
-	 * Get IdP from attributes
-	 *
-	 */
-    public function getIdp()
-    {
-		if (preg_match("/^(facebook|twitter|windowslive|myspace|linkedin)_targetedID:(.*)\!(.*)$/", $this->_attributes['smart_id'], $matches)) {
-			return $matches[2];
-		} elseif (preg_match('/.*!(.*)/', $this->_attributes['smart_id'], $matches)) {
-			return $matches[1];
-		}
-	}
 
 }

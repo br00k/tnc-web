@@ -336,7 +336,7 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 		}
 		$id = (int) $id;
 
-		return $this->getResource('sessionsusers')->getItemById($id)->delete();
+		return $this->getResource('sessionsusers')->getItemByUserId($id)->delete();
 	}
 
 	/**

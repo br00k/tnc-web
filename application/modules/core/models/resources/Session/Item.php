@@ -24,15 +24,27 @@
  * @subpackage Core_Resource_Session
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
-class Core_Resource_Session_Item extends TA_Model_Resource_Db_Table_Row_Abstract
+class Core_Resource_Session_Item extends TA_Model_Resource_Db_Table_Row_Abstract implements TA_Form_Element_User_Interface
 {
 	/**
-	 * Proxy method to $this::getChairs(), required for TA_Form_Element_User
+	 * Required by TA_Form_Element_User
 	 *
 	 */
 	public function getUsers($allData = null)
 	{
-		return $this->getChairs(true);
+		$userIds = $this->getTable()->getAdapter()->fetchCol(
+			"select user_id from sessions_users where session_id=:session_id",
+			array(':session_id' => $this->session_id)
+		);
+
+		$userModel = new Core_Model_User();
+		$filter = new stdClass();
+		$filter->user_id = $userIds;
+		if ($userIds) {
+			$users = $userModel->getUsers(null, null, $filter);
+			return $users['rows'];
+		}
+		return false;
 	}
 
 	/**

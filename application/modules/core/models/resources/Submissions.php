@@ -17,7 +17,7 @@
  * @revision   $Id$
  */
 
-/** 
+/**
  *
  * @package Core_Resource
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
@@ -33,8 +33,8 @@ class Core_Resource_Submissions extends TA_Model_Resource_Db_Table_Abstract
 
 	protected $_rowsetClass = 'Core_Resource_Submission_Set';
 
-	public function init() 
-	{	
+	public function init()
+	{
 		$config = Zend_Registry::get('config');
 
 		if ($config->core->observer->submit == 1) {
@@ -144,11 +144,11 @@ class Core_Resource_Submissions extends TA_Model_Resource_Db_Table_Abstract
 			$order = 'lower(title) ASC';
 		}
 		$select->order($order)
-			   ->setIntegrityCheck(false);		
+			   ->setIntegrityCheck(false);
 
 		$select->from( 'vw_submissions', array_keys($this->getGridColumns()) )
-			   ->where( 'conference_id = ?', $this->getConferenceId());		
-		
+			   ->where( 'conference_id = ?', $this->getConferenceId());
+
 		if ($filter) {
 			$select->where( 'conference_id = ?', (int) $filter);
 		}

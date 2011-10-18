@@ -17,7 +17,7 @@
  * @revision   $Id$
  */
 
-/** 
+/**
  *
  * @package Core_Resource
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
@@ -33,7 +33,9 @@ class Core_Resource_Sessionsusers extends TA_Model_Resource_Db_Table_Abstract
 
 	/**
 	 * Gets item by primary key
-	 * @return object Zend_Db_Table_Row
+	 *
+	 * @param	integer		$id
+	 * @return	Zend_Db_Table_Row
 	 */
 	public function getItemById($id)
 	{
@@ -52,6 +54,20 @@ class Core_Resource_Sessionsusers extends TA_Model_Resource_Db_Table_Abstract
 					$this->select()
 					->where('session_id = ?', $data['session_id'])
 					->where('user_id = ?', $data['user_id'])
+				);
+	}
+
+	/**
+	 * Gets item by user id
+	 *
+	 * @param	integer		$id 	user id value
+	 * @return	Zend_Db_Table_Row
+	 */
+	public function getItemByUserId($id)
+	{
+		return $this->fetchRow(
+					$this->select()
+					->where('user_id = ?', $id)
 				);
 	}
 

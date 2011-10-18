@@ -1,12 +1,8 @@
 <?= $this->render('session/subnav.phtml') ?>
 <? #if ($this->reviewers): ?>
-<table class="reviewers">
 
-<tr><td>
 <?= $this->sessionUserForm; ?>
-</td><td>&nbsp;</td>
-</tr>
-</table>
+
 <? #endif; ?>
 <? if ($this->authInfo()->isAdmin() ): ?>
 <p>This list only shows session chairs. To add a user to this list, add the role 'chair' to an existing user or <a href="/core/user/new/role_id/6">send out invite</a></p>

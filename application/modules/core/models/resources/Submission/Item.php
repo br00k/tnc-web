@@ -24,16 +24,29 @@
  * @subpackage Core_Resource_Submission
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
-class Core_Resource_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstract
+class Core_Resource_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstract implements TA_Form_Element_User_Interface
 {
 
 	/**
-	 * Proxy method to $this::getReviewers(), required for TA_Form_Element_User
+	 * Required by TA_Form_Element_User
 	 *
+	 * @return	Zend_Db_Table_Rowset
 	 */
 	public function getUsers()
 	{
-		return $this->getReviewers();
+		$userIds = $this->getTable()->getAdapter()->fetchCol(
+			"select user_id from reviewers_submissions where submission_id=:submission_id",
+			array(':submission_id' => $this->submission_id)
+		);
+
+		$userModel = new Core_Model_User();
+		$filter = new stdClass();
+		$filter->user_id = $userIds;
+		if ($userIds) {
+			$users = $userModel->getUsers(null, null, $filter);
+			return $users['rows'];
+		}
+		return false;
 	}
 
 	/**

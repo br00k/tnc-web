@@ -165,7 +165,7 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 		}
 		$id = (int) $id;
 
-		return $this->getResource('presentationsusers')->getItemById($id)->delete();
+		return $this->getResource('presentationsusers')->getItemByUserId($id)->delete();
 	}
 
 

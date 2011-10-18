@@ -56,6 +56,20 @@ class Core_Resource_Presentationsusers extends TA_Model_Resource_Db_Table_Abstra
 	}
 
 	/**
+	 * Gets item by user id
+	 *
+	 * @param	integer		$id 	user id value
+	 * @return	Zend_Db_Table_Row
+	 */
+	public function getItemByUserId($id)
+	{
+		return $this->fetchRow(
+					$this->select()
+					->where('user_id = ?', $id)
+				);
+	}	
+
+	/**
 	 * Save rows to the database. (insert only)
 	 *
 	 * This method makes sure that only records that are not already in the

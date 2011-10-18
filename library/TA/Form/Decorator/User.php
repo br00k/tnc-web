@@ -54,15 +54,21 @@ class TA_Form_Decorator_User extends Zend_Form_Decorator_Abstract
         $output = null;
 
 		if ( $linkedUsers = $element->getTaRow()->getUsers() ) {
-			$output = '<table>';
+
+			if (!$linkedUsers instanceof Zend_Db_Table_Rowset) {
+				throw new TA_Exception('Row element does not return Zend_Db_Table_Rowset');
+			}
+			
+			$output = '<table class="grid" cellspacing="0"><tbody>';
 			foreach ($linkedUsers as $linkedUser) {
-				$output .= '<tr><td>'.$linkedUser['email'].'</td>'
-				.'<td>'.$linkedUser['organisation'].'</td>'				
-				.'<td>'.$this->_getHref($linkedUser['id']).'</td>'
+				$output .= '<tr class="'. $view->cycle(array('odd', 'even'))->next() .'">'
+				.'<td>'.$linkedUser->getFullName().'</td>'
+				.'<td>'.$linkedUser->organisation.'</td>'
+				.'<td style="text-align:right">'.$this->_getHref($linkedUser->user_id).'</td>'
 				.'</tr>';
 			}
 
-			$output .= '</table>';
+			$output .= '</tbody></table>';
 		}
 		$placement = $this->getPlacement();
 		$separator = $this->getSeparator();
@@ -84,8 +90,8 @@ class TA_Form_Decorator_User extends Zend_Form_Decorator_Abstract
 		    		'controller' => $this->getElement()->getTaController(),
 		    		'action' => 'deleteuserlink',
 		    		'id' => $id
-		    	), 'main-module') .'">x</a>';	
-	
+		    	), 'main-module') .'">delete</a>';
+
 	}
 
 }
