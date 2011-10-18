@@ -67,11 +67,6 @@ class Core_Form_User extends TA_Form_Abstract
 	    	  ->setDescription('the invitation will be sent to this address')
 	    	  ->addValidators(array(
 				array('EmailAddress', true),
-				array(new Zend_Validate_Db_NoRecordExists(array(
-	    	  		'table' => 'users',
-	    	  		'field' => 'email'
-	    	  		))
-	    	  	)
 	    	  ))
 	    	  ->setDecorators(array('Composite'));
 
