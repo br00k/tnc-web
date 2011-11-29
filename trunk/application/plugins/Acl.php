@@ -40,6 +40,28 @@ class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
 			return;
 		}
 
+		if ($role != 'guest') {
+			// prevent redirect loop by excluding 'user' controller actions
+    		if ( ($auth->getIdentity()->email == 'invalid_email_needs_updating')
+    			&& ($request->getControllerName() != 'user') ) {
+
+				$flash = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
+				$lastRequest = Zend_Controller_Action_HelperBroker::getStaticHelper('lastRequest');
+				$redir = Zend_Controller_Action_HelperBroker::getStaticHelper('Redirector');
+
+				$flash->addMessage('Your IdP did not provide a valid email address, please supply one below.');
+				$lastRequest->saveRequestUri($request->getRequestUri());
+
+				$redir->setCode(303)
+					  ->setExit(true)
+					  ->gotoRoute(array(
+					 	'controller' => 'user',
+					 	'action' => 'edit',
+					 	'id' => $auth->getIdentity()->user_id
+					  ), 'main-module');
+			}
+		}
+
     	// check if ACL resource exists
     	if (!$acl->has(ucfirst($request->getControllerName()) )) {
 			return;
@@ -56,7 +78,7 @@ class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
 			$redir = Zend_Controller_Action_HelperBroker::getStaticHelper('Redirector');
 
 			// save last request in session since this data will be lost after redirect
-			// have to call it here because the request URI is saved in postDispatch() 
+			// have to call it here because the request URI is saved in postDispatch()
 			$lastRequest->saveRequestUri($request->getRequestUri());
 			// perform redirect
 			$redir->setCode(303)
