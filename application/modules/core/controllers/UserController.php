@@ -117,7 +117,7 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
     	$config = Zend_Registry::get('config');
 		$authresult = $auth->authenticate(array('authsource' => $config->simplesaml->authsource));
 
-		if ($authresult  === true) {
+		if ($authresult === true) {
 			$this->_helper->flashMessenger('Successful login');
 			$this->_redirect( $this->getRequest()->getParam('redir', '/') );
 		} else {
@@ -179,9 +179,14 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 			return $this->render('formUserEdit');
 		}
 
-		// everything went OK, redirect to list action
+		// everything went OK, redirect
 		$this->_helper->flashMessenger('Successfully edited record');
-		return $this->_helper->lastRequest();
+
+		return $this->_helper->redirector->gotoRoute(array(
+			'controller' => 'user',
+			'action' => 'edit',
+			'id' => $this->view->id
+		), 'gridactions');
 	}
 
 	public function deleteAction()
