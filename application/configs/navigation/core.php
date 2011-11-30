@@ -142,10 +142,10 @@ return array(
 	    		'module' => 'core',
 	    		'controller' => 'review',
 	    		'resource' => 'Review', // ACL
-	    		'action' => 'list',
+	    		'action' => 'listmine',
 	    		'route' => 'main-module',
 	    		'reset_params' => false,
-	    		'privilege' => 'list',
+	    		'privilege' => 'listmine',
 	    		'reset_params' => true
 	    	)
 

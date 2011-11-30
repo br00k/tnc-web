@@ -266,15 +266,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			'%s/%s/%s/%d/%s'
     	);
     	$router->addRoute('gridactions', $mainRoute->chain($gridActionsRoute));
-
-    	$route = new Zend_Controller_Router_Route(
-        	'/core/review/list/:id',
+    	
+      	$route = new Zend_Controller_Router_Route_Regex(
+        	'core/review/list/(\d+)',
 			array(
 				'lang'		=> ':lang',
 				'module'	=> 'core',
 				'controller'=> 'review',
 				'action'	=> 'list'
-			)
+			),
+			array(
+				1 => 'id'
+			),
+			'core/review/list/%d'
     	);
     	$router->addRoute('reviewlist', $mainRoute->chain($route));
 

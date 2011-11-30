@@ -27,16 +27,23 @@
 class Core_Resource_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstract implements TA_Form_Element_User_Interface
 {
 
+	protected $_manyToManyIds;
+
 	/**
 	 * Required by TA_Form_Element_User
 	 *
+	 * @param	boolean		$tiebreaker		Return only tiebreaker users
 	 * @return	Zend_Db_Table_Rowset
 	 */
-	public function getUsers()
+	public function getUsers($tiebreaker=false)
 	{
-		$userIds = $this->getTable()->getAdapter()->fetchCol(
-			"select user_id from reviewers_submissions where submission_id=:submission_id",
-			array(':submission_id' => $this->submission_id)
+		$sql = "select reviewer_submission_id, user_id from reviewers_submissions where submission_id=:submission_id";
+		if ($tiebreaker) {
+			$sql .= " and tiebreaker=true";
+		}
+		
+		$this->_manyToManyIds = $userIds = $this->getTable()->getAdapter()->fetchPairs(
+			$sql, array(':submission_id' => $this->submission_id)
 		);
 
 		$userModel = new Core_Model_User();
@@ -47,6 +54,15 @@ class Core_Resource_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstr
 			return $users['rows'];
 		}
 		return false;
+	}
+
+	/**
+	 * Get primary key values of many to many join table
+	 * in this case reviewers_submissions
+	 */
+	public function getManyToManyIds()
+	{
+		return array_flip($this->_manyToManyIds);
 	}
 
 	/**

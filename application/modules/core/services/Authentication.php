@@ -20,7 +20,7 @@
 /**
  * Authentication Service
  *
- * @package		Core_Service 
+ * @package		Core_Service
  * @author Christian Gijtenbeek
  */
 class Core_Service_Authentication {
@@ -50,7 +50,7 @@ class Core_Service_Authentication {
 	/**
 	 * Redirect url
 	 * @var string
-	 */	
+	 */
 	protected $_returnTo;
 
 	/**
@@ -69,7 +69,7 @@ class Core_Service_Authentication {
 	 * Perform authentication
 	 *
 	 * @param	array	$values
-	 * @return	mixed	true on success, else error message 
+	 * @return	mixed	true on success, else error message
 	 */
 	public function authenticate($values)
 	{
@@ -98,10 +98,6 @@ class Core_Service_Authentication {
 			}
 
 			$user->updateAttributes();
-
-			if ($this->_getAuthType() === 'federated') {
-				// do some stuff with the federated attributes you can get with: $result->getIdentityAttributes()
-			}
 
 			$storage->write($user);
 

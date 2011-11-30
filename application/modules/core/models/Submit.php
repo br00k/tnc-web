@@ -250,6 +250,26 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 		return $this->getResource('submissionsview')->getAcceptedSubmissions($values);
 	}
 
+	/**
+	 * Set reviewers tiebreaker value
+	 *
+	 * @param	integer		$id		user id
+	 * @param	boolean		$value
+	 */
+	public function setTiebreaker($id = null, $value = null)
+	{
+		if (!$this->checkAcl('reviewerSave')) {
+            throw new TA_Model_Acl_Exception("Insufficient rights");
+        }
+		if ( ($id === null) || ($value === null) ) {
+			return false;
+		}
+		$id = (int) $id;
+
+		return $this->getResource('reviewerssubmissions')
+					->getItemById($id)
+					->setTiebreaker($value);
+	}
 
 	public function deleteReviewer($id = null)
 	{
@@ -262,7 +282,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 		}
 		$id = (int) $id;
 
-		return $this->getResource('reviewerssubmissions')->getItemByUserId($id)->delete();
+		return $this->getResource('reviewerssubmissions')->getItemById($id)->delete();
 	}
 
 	public function saveReviewers(array $post)
@@ -422,6 +442,5 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 			throw new TA_Model_Exception($e->getMessage());
 		}
 	}
-
-
+	
 }

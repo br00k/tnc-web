@@ -78,7 +78,8 @@ class Core_Model_Acl_Core extends Zend_Acl {
 		}
 		if (!$this->has('Review')) {
 	        $this->add(new Core_Model_Review())
-				 ->allow('reviewer', 'Review', array('new', 'save', 'edit', 'list'));
+				 ->allow('reviewer', 'Review', array('new', 'save', 'edit', 'listmine'))
+				 ->allow('reviewer', 'Review', 'list', new Core_Model_Acl_UserCanListReviewsAssertion());
 		}
 		if (!$this->has('Location')) {
 	        $this->add(new Core_Model_Location())

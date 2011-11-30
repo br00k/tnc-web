@@ -17,13 +17,13 @@
  * @revision   $Id$
  */
 
-/** 
+/**
  *
  * @package Core_Forms
  *
  * @note For advanced view options uncomment the __construct() method
- * and replace all Composite decoraters with _standardElementDecorator 
- */ 
+ * and replace all Composite decoraters with _standardElementDecorator
+ */
 class Core_Form_Conference extends TA_Form_Abstract
 {
 
@@ -141,7 +141,7 @@ class Core_Form_Conference extends TA_Form_Abstract
 
 		$submitStart = new Zend_Form_Element_Text('submit_start');
 		$submitStart->setLabel('Submit start')
-			->setDescription('dd/mm/yy')
+			->setDescription('dd/mm/yyyy')
 			->setAttrib('class', 'medium')
 			->setRequired(false)
 			->addFilter('Null')
@@ -149,7 +149,7 @@ class Core_Form_Conference extends TA_Form_Abstract
 
 		$submitEnd = new Zend_Form_Element_Text('submit_end');
 		$submitEnd->setLabel('Submit end')
-			->setDescription('dd/mm/yy')
+			->setDescription('dd/mm/yyyy')
 			->setAttrib('class', 'medium')
 			->setRequired(false)
 			->addFilter('Null')
@@ -157,7 +157,7 @@ class Core_Form_Conference extends TA_Form_Abstract
 
 		$reviewStart = new Zend_Form_Element_Text('review_start');
 		$reviewStart->setLabel('Review opens on')
-			->setDescription('dd/mm/yy')
+			->setDescription('dd/mm/yyyy')
 			->setAttrib('class', 'medium')
 			->setRequired(false)
 			->addFilter('Null')
@@ -165,7 +165,7 @@ class Core_Form_Conference extends TA_Form_Abstract
 
 		$reviewVis = new Zend_Form_Element_Text('review_visible');
 		$reviewVis->setLabel('Reviewers can see all reviews on')
-			->setDescription('dd/mm/yy')
+			->setDescription('dd/mm/yyyy')
 			->setAttrib('class', 'medium')
 			->setRequired(false)
 			->addFilter('Null')
@@ -173,7 +173,7 @@ class Core_Form_Conference extends TA_Form_Abstract
 
 		$reviewEnd = new Zend_Form_Element_Text('review_end');
 		$reviewEnd->setLabel('Review closes on')
-			->setDescription('dd/mm/yy')
+			->setDescription('dd/mm/yyyy')
 			->setAttrib('class', 'medium')
 			->setRequired(false)
 			->addFilter('Null')
@@ -181,7 +181,7 @@ class Core_Form_Conference extends TA_Form_Abstract
 
 		$feedbackEnd = new Zend_Form_Element_Text('feedback_end');
 		$feedbackEnd->setLabel('Feedback closes on')
-			->setDescription('dd/mm/yy')
+			->setDescription('dd/mm/yyyy')
 			->setAttrib('class', 'medium')
 			->setRequired(false)
 			->addFilter('Null')
@@ -237,9 +237,9 @@ class Core_Form_Conference extends TA_Form_Abstract
 		));
 
 		$this->addElement('submit', 'submit', array(
-					'label' => 'Submit',
-					'decorators' => $this->_buttonElementDecorator
-					));
+			'label' => 'Submit',
+			'decorators' => $this->_buttonElementDecorator
+		));
 
 	}
 

@@ -14,28 +14,17 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: Set.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
 
-/** 
+/**
+ * Submission rowset
  *
  * @package Core_Resource
- * @subpackage Core_Resource_Review
+ * @subpackage Core_Resource_User
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
-class Core_Resource_Review_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstract
+class Core_Resource_User_Set extends Zend_Db_Table_Rowset_Abstract
 {
-
-	/**
-	 * Set tiebreaker
-	 *
-	 * @param	boolean		$value
-	 */
-	public function setTiebreaker($value)
-	{
-		// notice the typecast!
-		$this->tiebreaker = (int)(bool) $value;
-		$this->save();
-	}
 
 }

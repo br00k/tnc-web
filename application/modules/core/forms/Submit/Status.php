@@ -28,7 +28,8 @@ class Core_Form_Submit_Status extends TA_Form_Abstract
 	{
 		parent::init();
 
-		$this->setAction('/core/review/list');
+		$this->setAction('/core/review/list/');
+		$this->setAttrib('id', 'statusform');
 
 	    $submissionId = new Zend_Form_Element_Hidden('submission_id');
 	    $submissionId->setRequired(true)

@@ -26,14 +26,17 @@
  */
 class Core_Resource_Session_Item extends TA_Model_Resource_Db_Table_Row_Abstract implements TA_Form_Element_User_Interface
 {
+
+	protected $_manyToManyIds;
+
 	/**
 	 * Required by TA_Form_Element_User
 	 *
 	 */
 	public function getUsers($allData = null)
 	{
-		$userIds = $this->getTable()->getAdapter()->fetchCol(
-			"select user_id from sessions_users where session_id=:session_id",
+		$this->_manyToManyIds = $userIds = $this->getTable()->getAdapter()->fetchPairs(
+			"select session_user_id, user_id from sessions_users where session_id=:session_id",
 			array(':session_id' => $this->session_id)
 		);
 
@@ -45,6 +48,15 @@ class Core_Resource_Session_Item extends TA_Model_Resource_Db_Table_Row_Abstract
 			return $users['rows'];
 		}
 		return false;
+	}
+
+	/**
+	 * Get primary key values of many to many join table
+	 * in this case sessions_users
+	 */
+	public function getManyToManyIds()
+	{
+		return array_flip($this->_manyToManyIds);
 	}
 
 	/**

@@ -120,5 +120,22 @@ class Core_View_Helper_AuthInfo extends Zend_View_Helper_Abstract
 		}
 		return $this->_authService->getAuth()->getIdentity()->getMyPresentations();
 	}
+	
+	/**
+	 * Get submissions users should review
+	 *
+	 * @param	boolean		$full	Get complete array or just submission_ids?
+	 * @return 	array 		submission_id's
+	 */
+	public function getSubmissionsToReview($full = false)
+	{
+		if (!$this->isLoggedIn()) {
+			return array();
+		}
+		if ($full) {
+			return $this->_authService->getAuth()->getIdentity()->getSubmissionsToReview();
+		}
+		return array_keys($this->_authService->getAuth()->getIdentity()->getSubmissionsToReview());		
+	}
 
 }

@@ -19,4 +19,5 @@
 interface TA_Form_Element_User_Interface
 {
 	public function getUsers();
+	public function getManyToManyIds();
 }
