@@ -14,14 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Version.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Version.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
 
 final class TA_Version {
 	/**
 	 * CORE version identification - see compareVersion()
 	 */
-	const VERSION = '0.9';
+	const VERSION = '0.9dev';
 
 	/**
 	 * Compare the specified version string $version with the

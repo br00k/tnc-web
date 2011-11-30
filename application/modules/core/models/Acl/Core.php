@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Core.php 623 2011-09-29 13:25:34Z gijtenbeek $
+ * @revision   $Id: Core.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
 /**
@@ -36,7 +36,7 @@ class Core_Model_Acl_Core extends Zend_Acl {
     	$log->info(__METHOD__);
 		// Define Roles
 		$this->addRole(new Core_Model_Acl_Role_Guest) // not authenicated
-			 ->addRole(new Core_Model_Acl_Role_User, 'guest')
+			 ->addRole(new Core_Model_Acl_Role_User, 'guest') // user role is automatically assigned to logged in users
 			 ->addRole(new Core_Model_Acl_Role_Submitter, 'user')
 			 ->addRole(new Core_Model_Acl_Role_Presenter, 'user')
 			 ->addRole(new Core_Model_Acl_Role_Reviewer, 'user')
@@ -71,12 +71,15 @@ class Core_Model_Acl_Core extends Zend_Acl {
 		if (!$this->has('Submit')) {
 	        $this->add(new Core_Model_Submit())
 				 ->allow('user', 'Submit', 'new')
+				 ->allow('user', 'Submit', 'index')
 				 ->allow('user', 'Submit', 'save')
+				 ->allow('user', 'Submit', array('edit', 'save'), new Core_Model_Acl_UserCanUpdateSubmissionAssertion())
 				 ->allow('reviewer', 'Submit', array('download', 'review', 'list'));
 		}
 		if (!$this->has('Review')) {
 	        $this->add(new Core_Model_Review())
-				 ->allow('reviewer', 'Review', array('new', 'save', 'edit', 'list'));
+				 ->allow('reviewer', 'Review', array('new', 'save', 'edit', 'listmine'))
+				 ->allow('reviewer', 'Review', 'list', new Core_Model_Acl_UserCanListReviewsAssertion());
 		}
 		if (!$this->has('Location')) {
 	        $this->add(new Core_Model_Location())

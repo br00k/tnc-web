@@ -14,11 +14,13 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: ConferenceInfo.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: ConferenceInfo.php 33 2011-10-13 10:33:44Z gijtenbeek@terena.org $
  */
+
 /**
+ * Conference Info View helper
  *
- *
+ * @package Core_View_Helper
  */
 class Core_View_Helper_ConferenceInfo extends Zend_View_Helper_Abstract
 {
@@ -104,4 +106,5 @@ class Core_View_Helper_ConferenceInfo extends Zend_View_Helper_Abstract
 		}
 		return false;
     }
+    
 }

@@ -14,7 +14,13 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Eventlogs.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Eventlogs.php 30 2011-10-06 08:37:15Z gijtenbeek@terena.org $
+ */
+
+/**
+ *
+ * @package Core_Resource
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Resource_Eventlogs extends TA_Model_Resource_Db_Table_Abstract
 {
@@ -23,15 +29,15 @@ class Core_Resource_Eventlogs extends TA_Model_Resource_Db_Table_Abstract
 
 	// compound primary key
 	protected $_primary = array('event_type', 'conference_id');
-	
+
 	protected $_rowClass = 'Core_Resource_Eventlog_Item';
-	
+
 	protected $_rowsetClass = 'TA_Model_Resource_Db_Table_Rowset_Abstract';
 
 	public function init() {}
-	
+
 	/**
-	 * Get eventlog by primary key
+	 * Get eventlog entry by primary key
 	 *
 	 * @return object Zend_Db_Table_Row_Abstract
 	 */
@@ -39,9 +45,9 @@ class Core_Resource_Eventlogs extends TA_Model_Resource_Db_Table_Abstract
 	{
 		return $this->find($id, $this->getConferenceId())->current();
 	}
-	
+
 	/**
-	 * Get eventlog by type
+	 * Get eventlog entry by type
 	 *
 	 * @return string timestamp of when event happened
 	 */
@@ -50,12 +56,16 @@ class Core_Resource_Eventlogs extends TA_Model_Resource_Db_Table_Abstract
 		return $this->getAdapter()->fetchOne(
 			"select timestamp from " . $this->_name . " where event_type=:type and conference_id=:conference_id",
 			array(
-				'type' => $type, 
+				'type' => $type,
 				'conference_id' => $this->getConferenceId()
 			)
 		);
 	}
-	
+
+	/**
+	 * Get timestamps from all logged events
+	 *
+	 */
 	public function getAllTimestamps()
 	{
 		return $this->getAdapter()->fetchAssoc(
@@ -65,5 +75,5 @@ class Core_Resource_Eventlogs extends TA_Model_Resource_Db_Table_Abstract
 			)
 		);
 	}
-	
+
 }

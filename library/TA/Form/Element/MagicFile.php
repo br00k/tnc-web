@@ -14,15 +14,18 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: MagicFile.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: MagicFile.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
+
 /**
  * Custom Form Element for Files.
  * This element adds the method 'setTaFile' to the form element
  * the file will be rendered by the decorator
  *
- * @see TA_Form_Decorator_MagicFile
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ * @package TA_Form
+ * @subpackage Element
+ * @see TA_Form_Decorator_MagicFile
  */
 class TA_Form_Element_MagicFile extends Zend_Form_Element_File
 {

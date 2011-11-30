@@ -14,12 +14,15 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Timeslot.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Timeslot.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
+
 /**
  * Custom Composite Form Element decorator
  *
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ * @package TA_Form
+ * @subpackage Decorator
  */
 class TA_Form_Decorator_Timeslot extends Zend_Form_Decorator_Abstract
 {

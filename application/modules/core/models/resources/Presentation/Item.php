@@ -14,26 +14,50 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Item.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Item.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
+
 /**
-	* This class represents a single record
-	* Methods in this class could include logic for a single record
-	* for example sticking first_name and last_name together in a getName() method
-	* @todo: move all these methods to their respective resources and call those? 
-	*/
-class Core_Resource_Presentation_Item extends TA_Model_Resource_Db_Table_Row_Abstract
+ * Presentation row
+ *
+ * @package Core_Resource
+ * @subpackage Core_Resource_Presentation
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
+class Core_Resource_Presentation_Item extends TA_Model_Resource_Db_Table_Row_Abstract implements TA_Form_Element_User_Interface
 {
 
+	protected $_manyToManyIds;
+
+	/**
+	 * Required by TA_Form_Element_User
+	 *
+	 * @return	Zend_Db_Table_Rowset
+	 */
 	public function getUsers()
 	{
-		$query = "select u.email, u.organisation, pu.presentation_user_id as id from presentations_users pu
-		left join users u on (pu.user_id = u.user_id)
-		where pu.presentation_id=:presentation_id";
+		$this->_manyToManyIds = $userIds = $this->getTable()->getAdapter()->fetchPairs(
+			"select presentation_user_id, user_id from presentations_users where presentation_id=:presentation_id",
+			array(':presentation_id' => $this->presentation_id)
+		);
 
-		return $this->getTable()->getAdapter()->query(
-			$query, array(':presentation_id' => $this->presentation_id)
-		)->fetchAll();
+		$userModel = new Core_Model_User();
+		$filter = new stdClass();
+		$filter->user_id = $userIds;
+		if ($userIds) {
+			$users = $userModel->getUsers(null, null, $filter);
+			return $users['rows'];
+		}
+		return false;
+	}
+
+	/**
+	 * Get primary key values of many to many join table
+	 * in this case presentations_users
+	 */
+	public function getManyToManyIds()
+	{
+		return array_flip($this->_manyToManyIds);
 	}
 
 	public function getSpeakers()
@@ -58,5 +82,35 @@ class Core_Resource_Presentation_Item extends TA_Model_Resource_Db_Table_Row_Abs
 			"select * from vw_session_presentations where presentation_id=:presentation_id",
 			array(':presentation_id' => $this->presentation_id)
 		);
+	}
+
+	/**
+	 * Is this current time before the edit deadline?
+	 *
+	 * Assumes config directive core.presentation.deadline
+	 *
+	 * @return boolean
+	 */
+	public function isBeforeEditDeadline()
+	{
+		$config = Zend_Registry::get('config');
+
+		$tStart = $this->getTable()->getAdapter()->fetchOne(
+			"select tstart from vw_sessions left join vw_session_presentations sp"
+			." ON (vw_sessions.session_id = sp.session_id) where presentation_id=:presentation_id",
+			array(':presentation_id' => $this->presentation_id)
+		);
+
+		if ($tStart) {
+			$now = new Zend_Date();
+			$tStart = new Zend_Date($tStart, Zend_Date::ISO_8601);
+			$deadline = $tStart->sub($config->core->presentation->deadline, Zend_Date::SECOND);
+
+			if ( $now->isEarlier($deadline) ) {
+			   return true;
+			}
+		}
+
+		return false;
 	}
 }

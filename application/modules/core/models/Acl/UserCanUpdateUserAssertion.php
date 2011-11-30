@@ -14,12 +14,16 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: UserCanUpdateUserAssertion.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: UserCanUpdateUserAssertion.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
+
 /**
  * Make sure users can only change their own information
  *
- */
+ * @package Core_Model
+ * @subpackage Core_Model_Acl
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */  
 class Core_Model_Acl_UserCanUpdateUserAssertion implements Zend_Acl_Assert_Interface
 {
     /**

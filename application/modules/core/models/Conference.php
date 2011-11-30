@@ -14,12 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Conference.php 623 2011-09-29 13:25:34Z gijtenbeek $
+ * @revision   $Id: Conference.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
-/** 
+/**
+ * Conference Model
  *
  * @package Core_Model
+ * @author Christian Gijtenbeek
  */
 class Core_Model_Conference extends TA_Model_Acl_Abstract
 {

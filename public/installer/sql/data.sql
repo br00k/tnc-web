@@ -715,6 +715,30 @@ CREATE TABLE presentations_users (
 );
 
 
+SET default_with_oids = false;
+
+--
+-- Name: reviewbreaker; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE reviewbreaker (
+    submission_id integer NOT NULL,
+    evalue real NOT NULL
+);
+
+
+--
+-- Name: reviewbreaker_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE reviewbreaker_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    MAXVALUE 99999999
+    NO MINVALUE
+    CACHE 1;
+
+
 --
 -- Name: reviewers_submissions_reviewer_submission_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -727,6 +751,8 @@ CREATE SEQUENCE reviewers_submissions_reviewer_submission_id_seq
     CACHE 1;
 
 
+SET default_with_oids = true;
+
 --
 -- Name: reviewers_submissions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
@@ -734,7 +760,8 @@ CREATE SEQUENCE reviewers_submissions_reviewer_submission_id_seq
 CREATE TABLE reviewers_submissions (
     reviewer_submission_id integer DEFAULT nextval('reviewers_submissions_reviewer_submission_id_seq'::regclass) NOT NULL,
     user_id integer,
-    submission_id integer
+    submission_id integer,
+    tiebreaker boolean DEFAULT false NOT NULL
 );
 ALTER TABLE ONLY reviewers_submissions ALTER COLUMN user_id SET STATISTICS 0;
 
@@ -1630,6 +1657,14 @@ ALTER TABLE ONLY presentations_users
 
 
 --
+-- Name: reviewbreaker_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY reviewbreaker
+    ADD CONSTRAINT reviewbreaker_pkey PRIMARY KEY (submission_id);
+
+
+--
 -- Name: reviewers_submissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2099,6 +2134,14 @@ ALTER TABLE ONLY presentations_users
 
 ALTER TABLE ONLY presentations_users
     ADD CONSTRAINT presentations_users_fk1 FOREIGN KEY (user_id) REFERENCES users(user_id);
+
+
+--
+-- Name: reviewbreaker_submission_id_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY reviewbreaker
+    ADD CONSTRAINT reviewbreaker_submission_id_fk1 FOREIGN KEY (submission_id) REFERENCES submissions(submission_id) ON DELETE CASCADE;
 
 
 --

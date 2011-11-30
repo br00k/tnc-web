@@ -14,10 +14,15 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: LangSelector.php 614 2011-09-28 09:10:26Z gijtenbeek $
+ * @revision   $Id: LangSelector.php 29 2011-10-05 20:36:08Z gijtenbeek@terena.org $
  */
+ 
 /**
+ * Sets language
  *
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ * @package TA_Controller
+ * @subpackage Plugin
  */
 class TA_Controller_Plugin_LangSelector extends Zend_Controller_Plugin_Abstract {
 

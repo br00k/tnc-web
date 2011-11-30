@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: User.php 619 2011-09-29 11:20:22Z gijtenbeek $
+ * @revision   $Id: User.php 38 2011-10-18 14:19:19Z gijtenbeek@terena.org $
  */
 
 /** 
@@ -67,11 +67,6 @@ class Core_Form_User extends TA_Form_Abstract
 	    	  ->setDescription('the invitation will be sent to this address')
 	    	  ->addValidators(array(
 				array('EmailAddress', true),
-				array(new Zend_Validate_Db_NoRecordExists(array(
-	    	  		'table' => 'users',
-	    	  		'field' => 'email'
-	    	  		))
-	    	  	)
 	    	  ))
 	    	  ->setDecorators(array('Composite'));
 

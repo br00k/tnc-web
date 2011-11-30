@@ -14,14 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: UserController.php 623 2011-09-29 13:25:34Z gijtenbeek $
+ * @revision   $Id: UserController.php 39 2011-11-29 13:20:44Z gijtenbeek@terena.org $
  */
 
 /**
  * UserController
  *
  * @package Core_Controllers
- */ 
+ */
 class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Resource_Interface
 {
 
@@ -110,14 +110,16 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 	 */
 	public function loginAction()
 	{
-    	$auth = new Core_Service_Authentication( $this->getRequest()->getParam('id', null) );
+    	$auth = new Core_Service_Authentication(
+    		$this->getRequest()->getParam('id', null)
+    	);
 
     	$config = Zend_Registry::get('config');
 		$authresult = $auth->authenticate(array('authsource' => $config->simplesaml->authsource));
 
-		if ($authresult  === true) {
+		if ($authresult === true) {
 			$this->_helper->flashMessenger('Successful login');
-			$this->_redirect('/');
+			$this->_redirect( $this->getRequest()->getParam('redir', '/') );
 		} else {
 		   // failed login
 		   return $this->render('login');
@@ -177,9 +179,14 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 			return $this->render('formUserEdit');
 		}
 
-		// everything went OK, redirect to list action
+		// everything went OK, redirect
 		$this->_helper->flashMessenger('Successfully edited record');
-		return $this->_helper->lastRequest();
+
+		return $this->_helper->redirector->gotoRoute(array(
+			'controller' => 'user',
+			'action' => 'edit',
+			'id' => $this->view->id
+		), 'gridactions');
 	}
 
 	public function deleteAction()

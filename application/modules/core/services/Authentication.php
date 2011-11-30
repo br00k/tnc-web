@@ -14,13 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Authentication.php 623 2011-09-29 13:25:34Z gijtenbeek $
+ * @revision   $Id: Authentication.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
 /**
  * Authentication Service
  *
  * @package		Core_Service
+ * @author Christian Gijtenbeek
  */
 class Core_Service_Authentication {
 
@@ -47,6 +48,12 @@ class Core_Service_Authentication {
 	protected $_invite;
 
 	/**
+	 * Redirect url
+	 * @var string
+	 */
+	protected $_returnTo;
+
+	/**
 	 * Constructor, loads user model
 	 *
 	 * @param	string	$inviteHash		Invite hash
@@ -62,7 +69,7 @@ class Core_Service_Authentication {
 	 * Perform authentication
 	 *
 	 * @param	array	$values
-	 * @return	mixed	true on success, else error message 
+	 * @return	mixed	true on success, else error message
 	 */
 	public function authenticate($values)
 	{
@@ -91,10 +98,6 @@ class Core_Service_Authentication {
 			}
 
 			$user->updateAttributes();
-
-			if ($this->_getAuthType() === 'federated') {
-				// do some stuff with the federated attributes you can get with: $result->getIdentityAttributes()
-			}
 
 			$storage->write($user);
 

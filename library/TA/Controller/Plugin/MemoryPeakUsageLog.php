@@ -14,9 +14,16 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: MemoryPeakUsageLog.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: MemoryPeakUsageLog.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
 
+/**
+ * Show memory peaks
+ *
+ * @author Christian Gijtenbeek
+ * @package TA_Controller
+ * @subpackage Plugin
+ */
 class TA_Controller_Plugin_MemoryPeakUsageLog extends Zend_Controller_Plugin_Abstract
 {
 	protected $_logger = null;

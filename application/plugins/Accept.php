@@ -14,12 +14,13 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Accept.php 619 2011-09-29 11:20:22Z gijtenbeek $
+ * @revision   $Id: Accept.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
 
 /**
  * Performs header detection and sets a value 'format' to json or xml
  *
+ * @package Application_Plugin
  * @todo Fix conflict with ActionContext switch
  */
 class Application_Plugin_Accept extends Zend_Controller_Plugin_Abstract

@@ -14,9 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: AuthInfo.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: AuthInfo.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
+/**
+ * AuthInfo View helper
+ *
+ * @package Core_View_Helper
+ */
 class Core_View_Helper_AuthInfo extends Zend_View_Helper_Abstract
 {
 
@@ -114,6 +119,23 @@ class Core_View_Helper_AuthInfo extends Zend_View_Helper_Abstract
 			return array();
 		}
 		return $this->_authService->getAuth()->getIdentity()->getMyPresentations();
+	}
+	
+	/**
+	 * Get submissions users should review
+	 *
+	 * @param	boolean		$full	Get complete array or just submission_ids?
+	 * @return 	array 		submission_id's
+	 */
+	public function getSubmissionsToReview($full = false)
+	{
+		if (!$this->isLoggedIn()) {
+			return array();
+		}
+		if ($full) {
+			return $this->_authService->getAuth()->getIdentity()->getSubmissionsToReview();
+		}
+		return array_keys($this->_authService->getAuth()->getIdentity()->getSubmissionsToReview());		
 	}
 
 }

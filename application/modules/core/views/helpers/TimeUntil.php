@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: TimeUntil.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: TimeUntil.php 33 2011-10-13 10:33:44Z gijtenbeek@terena.org $
  */
 /**
  * Zym Framework
@@ -62,7 +62,7 @@ class Zend_View_Helper_TimeUntil extends Zend_View_Helper_Abstract
     /**
      * Calculates time until a certain event returning a phrase similar to "5 weeks ago"
      *
-     * @param	mixed	integer or Zend_Date object		$timestamp
+     * @param	mixed integer or Zend_Date object		$timestamp
      * @param	integer		$time	Timestamp to use instead of time()
      */
     public function timeUntil($timestamp, $time = null)    

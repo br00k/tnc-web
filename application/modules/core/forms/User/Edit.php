@@ -14,10 +14,10 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Edit.php 619 2011-09-29 11:20:22Z gijtenbeek $
+ * @revision   $Id: Edit.php 38 2011-10-18 14:19:19Z gijtenbeek@terena.org $
  */
 
-/** 
+/**
  *
  * @package Core_Forms
  * @subpackage Core_Forms_User
@@ -44,18 +44,4 @@ class Core_Form_User_Edit extends Core_Form_User
 		$this->getElement('organisation')
 			 ->setRequired(true);
 	}
-	
-	public function isValid($data)
-	{
-		$this->getElement('email')
-		     ->getValidator('Zend_Validate_Db_NoRecordExists')
-		     ->setExclude(array(
-		        'field' => 'user_id',
-		        'value' => $data['user_id']
-		     ));
-		
-		return parent::isValid($data);
-	}	
-
-
 }

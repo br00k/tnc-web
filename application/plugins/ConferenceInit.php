@@ -14,13 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: ConferenceInit.php 619 2011-09-29 11:20:22Z gijtenbeek $
+ * @revision   $Id: ConferenceInit.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
 /**
  * Initialize a conference. Get all conference data and store it in APC cache
  * which has unlimited lifetime and is cleared when the conference is edited
  *
+ * @package Application_Plugin 
  * @see Core_ConferenceController
  */
 class Application_Plugin_ConferenceInit extends Zend_Controller_Plugin_Abstract
@@ -34,7 +35,7 @@ class Application_Plugin_ConferenceInit extends Zend_Controller_Plugin_Abstract
 
 		$hostname = getenv('HTTP_HOST');
 
-		$cache->clean();
+		#$cache->clean();
 
 		if( ($result = $cache->load('conference'.md5($hostname))) === false ) {
 			$db = $bootstrap->getResource('db');

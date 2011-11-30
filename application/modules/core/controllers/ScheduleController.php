@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: ScheduleController.php 619 2011-09-29 11:20:22Z gijtenbeek $
+ * @revision   $Id: ScheduleController.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
 
 /**
@@ -59,7 +59,7 @@ class Core_ScheduleController extends Zend_Controller_Action
 		} else {
 			$day = $this->_helper->conferenceInfo('start')->get('dd/MM/YYYY');
 		}
-
+		
 		// if feedback codes have been sent
 		if ($this->_helper->conferenceInfo()->isFeedbackOpen() ) {
 			$feedbackModel = new Core_Model_Feedback();

@@ -14,12 +14,13 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Poster.php 623 2011-09-29 13:25:34Z gijtenbeek $
+ * @revision   $Id: Poster.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
 
 /** 
  *
  * @package Core_Model
+ * @author Christian Gijtenbeek
  */
 class Core_Model_Poster extends TA_Model_Acl_Abstract
 {

@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: ScheduleController.php 618 2011-09-29 11:18:54Z visser $
+ * @revision   $Id: ScheduleController.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
 require_once APPLICATION_PATH.'/modules/webdemo/controllers/AbstractController.php';
 

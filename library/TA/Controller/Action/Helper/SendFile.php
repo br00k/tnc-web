@@ -14,16 +14,17 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: SendFile.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: SendFile.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
 
 /**
-* Sends a file for download
-*
-* @category Noginn
-* @copyright Copyright (c) 2009 Tom Graham (http://www.noginn.com)
-* @license http://www.opensource.org/licenses/mit-license.php
-*/
+ * Sends a file for download
+ *
+ * @copyright Copyright (c) 2009 Tom Graham (http://www.noginn.com)
+ * @license http://www.opensource.org/licenses/mit-license.php
+ * @package TA_Controller
+ * @subpackage Plugin
+ */
 class TA_Controller_Action_Helper_SendFile extends Zend_Controller_Action_Helper_Abstract
 {
 	/**

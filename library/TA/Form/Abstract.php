@@ -14,9 +14,15 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Abstract.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Abstract.php 30 2011-10-06 08:37:15Z gijtenbeek@terena.org $
  */
-
+ 
+/**
+ * Abstract form class
+ *
+ * @author Christian Gijtenbeek
+ * @package TA_Form
+ */
 class TA_Form_Abstract extends Zend_Form
 {
 
@@ -73,6 +79,8 @@ class TA_Form_Abstract extends Zend_Form
 	);
 
 	/**
+	 * Constructor
+	 * @param	array	$options
 	 * @todo add subform decorator
 	 */
 	public function __construct($options = null)

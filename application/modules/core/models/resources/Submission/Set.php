@@ -14,10 +14,15 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Set.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Set.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
+
 /**
- * This class represents a rowset
+ * Submission rowset
+ *
+ * @package Core_Resource
+ * @subpackage Core_Resource_Submission
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Resource_Submission_Set extends Zend_Db_Table_Rowset_Abstract
 {
@@ -44,105 +49,7 @@ class Core_Resource_Submission_Set extends Zend_Db_Table_Rowset_Abstract
 	{
 		return $this->title;
 	}
-
-	/**
-	 * Get all reviewers of papers submitted for current conference
-	 *
-	 * @todo: rename this to getReviewers()
-	 * @return array
-	 */
-	public function getAllReviewers()
-	{
-		$query = "select u.fname, u.lname, u.email, u.user_id, rs.submission_id 
-		from reviewers_submissions rs
-		left join users u on (rs.user_id = u.user_id)
-        left join submissions s on (rs.submission_id = s.submission_id)
-        where s.conference_id=?";
-		return $this->getTable()->getAdapter()->query(
-			$query, 
-			$this->current()->conference_id)->fetchAll();
-	}
-
-	/**
-	 * Get a list of reviews indexed by submission_id
-	 *
-	 * @param	$userId			integer		User id of reviewer to filter by
-	 * @param	$groupUserId	boolean		Group list by user_id instead of review_id
-	 * @return array
-	 */
-	public function getReviews($userId = null, $groupUserId = false)
-	{
-		$list = array();
-
-		$query = "select user_id, submission_id, review_id, inserted from reviews";
-		if ($userId) {
-			$query .= " where user_id=".(int) $userId;
-		}
-
-		$reviews = $this->getTable()->getAdapter()->fetchAll($query);
-
-		foreach ($reviews as $review) {
-			$submission = current(array_filter($this->toArray(), function($val) use($review) {
-			     return ($val['submission_id'] == $review['submission_id']);
-			}));
-			if ($groupUserId) {
-				$list[$review['submission_id']][$review['user_id']] = $review;
-			} else {
-				$list[$review['submission_id']][$review['review_id']] = $review;
-			}
-		}
-
-		return $list;
-	}
-
-	/**
-	 * Get list of all reviewers and the submissions they should review
-	 *
-	 * @param	$todo	boolean		Only show submissions that are should still be reviewed
-	 * @return array	contains: reviewers/submissions
-	 */
-	public function getReviewersSubmissions($todo = false)
-	{
-		$list = array();
-
-		$submissions = $this->toArray();
-		
-		if (empty($submissions)) {
-			throw new TA_Exception('no submissions found');
-		}
-
-		$reviews = $this->getReviews(null, true);
-		$reviewers = $this->getAllReviewers();
-
-		foreach ($reviewers as $reviewer) {
-			if ( !isset($list[$reviewer['user_id']]) ) {
-				$list[$reviewer['user_id']] = $reviewer;
-			}
-
-			$submission = current(array_filter($submissions, function($val) use($reviewer, $reviews) {
-				return ($val['submission_id'] == $reviewer['submission_id']);
-			}));
-
-			if ($todo) {
-				if (!isset($reviews[$submission['submission_id']][$reviewer['user_id']])) {
-				    // there is a review for this submission by this reviewer
-				    $list[$reviewer['user_id']]['submission'][] = $submission;
-				}
-			} else {
-				$list[$reviewer['user_id']]['submission'][] = $submission;
-			}
-
-		}
-		if ($todo) {
-			$list = array_filter($list, function($val) {
-				// remove empty submissions
-				return (array_key_exists('submission', $val));
-			});
-		}
-
-		return $list;
-	}
-
+	
 	/**
 	 * Get total number of reviewers for a submission
 	 * @return array

@@ -14,14 +14,16 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: ImageResize.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: ImageResize.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
 require_once dirname(dirname(__FILE__)).'/phpthumb/ThumbLib.inc.php';
 
 /**
  * Resize an image
- * @author Christian Gijtenbeek <gijtenbeek@terena.org>
- */
+ *
+ * @author Christian Gijtenbeek
+ * @package TA_Filter
+ */ 
 class TA_Filter_ImageResize implements Zend_Filter_Interface
 {
      /**

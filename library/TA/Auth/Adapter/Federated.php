@@ -14,9 +14,16 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Federated.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Federated.php 29 2011-10-05 20:36:08Z gijtenbeek@terena.org $
  */
 
+/**
+ * Authenticates the given Federated identity..
+ *
+ * @author Christian Gijtenbeek
+ * @package TA_Auth
+ * @subpackage Adapter_Federated
+ */
 class TA_Auth_Adapter_Federated implements Zend_Auth_Adapter_Interface
 {
 
@@ -72,7 +79,7 @@ class TA_Auth_Adapter_Federated implements Zend_Auth_Adapter_Interface
 	public function authenticate()
 	{
 		try {
-			$config = Zend_Registry::get('config');			
+			$config = Zend_Registry::get('config');
 			$simplesaml_dir = $config->simplesaml->dir;
 		} catch (Exception $e) {
 			$simplesaml_dir = "simplesaml";

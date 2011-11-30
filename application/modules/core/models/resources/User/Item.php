@@ -14,12 +14,15 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Item.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Item.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
+
 /**
- * This class represents a single record
- * Methods in this class could include logic for a single record
+ * User row, implements Zend_Acl_Role_Interface so this object is a role
  *
+ * @package Core_Resource
+ * @subpackage Core_Resource_User
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract implements Zend_Acl_Role_Interface
 {
@@ -42,42 +45,51 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		// roles
 		$query = "select r.name from user_role ur left join roles r on (ur.role_id=r.role_id) where user_id=:user_id";
 		$roles = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
+		// logged in users automatically get user role
 		if (empty($roles)) {
-			$this->_data['role'] = array('user');
+		    $this->_data['role'] = array('user');
 		} else {
-			$this->_data['role'] = $roles;
+		    $this->_data['role'] = $roles;
 		}
 
 		// sessions to chair
 		$query = "select su.session_id from sessions_users su where su.user_id=:user_id";
-		$this->_data['sessions_to_chair'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));		
+		$this->_data['sessions_to_chair'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
 
 		// submissions to review
-		$query = "select rs.submission_id from reviewers_submissions rs where rs.user_id=:user_id";
-		$this->_data['submissions_to_review'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
+		$query = "select rs.submission_id, tiebreaker from reviewers_submissions rs where rs.user_id=:user_id";
+		$this->_data['submissions_to_review'] = $this->select()->getAdapter()->fetchPairs($query, array(':user_id' => $this->user_id));
 
 		// my own submissions
-		$query = "select s.submission_id from submissions s left join users_submissions us ON (s.submission_id = us.submission_id) where us.user_id=:user_id";
-		$this->_data['my_submissions'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
-	
+		$query = "select s.submission_id, s.title, s.date, s.file_id from submissions s left join users_submissions us ON (s.submission_id = us.submission_id) where us.user_id=:user_id";
+		$this->_data['my_submissions'] = $this->select()->getAdapter()->fetchAssoc($query, array(':user_id' => $this->user_id));
+
 		// my own presentations
 		$query = "select p.presentation_id from presentations p left join presentations_users pu on (p.presentation_id = pu.presentation_id) where pu.user_id=:user_id";
 		$this->_data['my_presentations'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
+
 	}
 
 	/**
 	 * Reload session
 	 *
+	 * @return void
 	 */
 	public function reloadSession()
 	{
 		$this->updateAttributes();
 		// make sure only current session is updated, otherwise you login as other user!
 		if (Zend_Auth::getInstance()->getIdentity()->user_id === $this->user_id) {
+			$st = Zend_Auth::getInstance()->getStorage();
 			Zend_Auth::getInstance()->getStorage()->write($this);
 		}
 	}
 
+	/**
+	 * Returns all user data apart from saml_uid_attribute
+	 *
+	 * @return array
+	 */
 	public function getSafeUser()
 	{
 		$data = $this->toArray();
@@ -95,14 +107,32 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		return $this->fname .' '. $this->lname;
 	}
 
+	/**
+	 * Get identifier string
+	 *
+	 * This is for use in lists, so that it is possible to distinguish
+	 * between "Joe Average <joe.a@uni.edu>" from f.i. Google, and
+	 * "Joe Average <joe.a@uni.edu>" from the UNI IdP.
+	 * Some specific smart_id logic, if that doesn't work just use the
+	 * bare saml_uid_attribute.
+	 *
+	 * @return string
+	 */
 	public function getOneliner()
 	{
-		return $this->fname .' '. $this->lname . ' <' . substr($this->email, 0, 50) . '>';
+		if(preg_match('/^([a-z]+)_targetedID:http/', $this->uid, $matches)) {
+			$idp = ucfirst($matches[1]);
+		} elseif (preg_match('/.*!(.*)$/', $this->uid, $matches)) {
+			$idp = $matches[1];
+		} else {
+			$idp = $this->uid;
+		}
+		return $this->fname . ' ' . $this->lname . ' (' . $this->email . ', ' . $idp . ')';
 	}
-	
+
 	/**
 	 * Check if user has a certain role
-	 * 
+	 *
 	 * @param	$requiredRole	string/array
 	 * @return	boolean
 	 */
@@ -114,9 +144,9 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
         } else if (0 === count($requiredRole)) {
             $requiredRole = array(null);
         }
-        
+
 		$roles = $this->getRoles(true);
-		
+
 		foreach ($requiredRole as $rrole) {
 		    if (in_array($rrole, $roles)) {
 		    	return true;
@@ -126,7 +156,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 	}
 
 	/**
-	 * Get role id
+	 * Get role id - this method also deals with multiple roles
 	 *
 	 * @return string
 	 */
@@ -153,13 +183,34 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
     /**
      * Get submissions that the user is assigned reviewer of
      *
-     * @return array
+     * @param	boolean		$full	Return full live dataset or minimal cached set?
+     * @param	boolean		$excludeReviewed		Exclude submissions that user reviewed
+     *
+     * @return array in format (int) submission_id => (boolean) tiebreaker
      */
-    public function getSubmissionsToReview()
+    public function getSubmissionsToReview($full = false, $excludeReviewed = false)
     {
+    	if ($full) {
+			$where = ($excludeReviewed)
+				? "where rs.user_id=$this->user_id and r.user_id!=$this->user_id"
+				: "where rs.user_id=$this->user_id" ;
+
+			$query = "select rs.submission_id, rs.tiebreaker, rb.evalue, count(
+			CASE WHEN r.self_assessment=1 THEN 1 ELSE NULL END
+			) as wrong_reviewer_count,
+			count (r.submission_id) as review_count,
+			count(case when r.user_id=$this->user_id then 1 else null end) as my_review
+			from reviewers_submissions rs left join reviewbreaker rb on (rs.submission_id = rb.submission_id)
+			left join reviews r on (r.submission_id = rs.submission_id)
+			$where
+			group by rs.submission_id, rs.tiebreaker, rb.evalue
+			order by rs.submission_id";
+
+			return $this->select()->getAdapter()->fetchAssoc($query);
+    	}
 		return $this->submissions_to_review;
     }
-    
+
     /**
      * Get sessions that the user chairs
      *
@@ -178,7 +229,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
     public function getMySubmissions()
     {
 		return $this->my_submissions;
-    }    
+    }
 
     /**
      * Get presentations of the user
@@ -189,7 +240,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
     {
 		return $this->my_presentations;
     }
-        
+
 	/**
 	 * Is user admin?
 	 * @return boolean
@@ -245,7 +296,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		$query = "insert into user_role (user_id, role_id) values (:user_id, :role_id)";
 		return $adapter->query($query, $values);
 	}
-	
+
 	/**
 	 * Get sessions current user is chairing
 	 *
@@ -253,8 +304,9 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 	public function getSessions()
 	{
 		$query = "select * from vw_sessions_chairs where user_id=:user_id";
-		return $this->select()->getAdapter()->fetchAll($query, array(':user_id' => $this->user_id));	
+		return $this->select()->getAdapter()->fetchAll($query, array(':user_id' => $this->user_id));
 	}
+
 	/**
 	 * Get presentations current user is a speaker of
 	 *
@@ -265,7 +317,19 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		return $this->select()->getAdapter()->fetchAll($query, array(
 			':user_id' => $this->user_id,
 			':email' => $this->email
-		));	
+		));
 	}
-	
+
+	/**
+	 * Is user tiebreaker?
+	 *
+	 * @param	integer		$id		reviewer_submission_id
+	 * @return	boolean
+	 */
+	public function isReviewTiebreaker($id)
+	{
+		$query = "select tiebreaker from reviewers_submissions where reviewer_submission_id=:id";
+		return $this->select()->getAdapter()->fetchOne($query, array(':id' => $id));
+	}
+
 }

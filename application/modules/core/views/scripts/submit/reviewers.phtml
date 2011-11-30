@@ -5,23 +5,6 @@
 
 </div>
 <h1>Reviewers</h1>
-<table class="reviewers">
-
-<? foreach ($this->reviewers as $reviewer):  ?>
-
-<tr>
-<td><?= $reviewer['email'] ?></td>
-<td><a title="remove reviewer" href="<?= $this->url(array(
-		'controller' => 'submit',
-		'action' => 'deletereviewer',
-		'id' => $reviewer['id']
-	), 'gridactions') ?>">x</a></td>
-</tr>
-
-<? endforeach; ?>
-<tr><td>
 <?= $this->submitUserForm; ?>
-</td><td>&nbsp;</td>
-</tr>
-</table>
-<p>This list only shows reviewers. To add a user to this list, add the role 'reviewer' to an existing user or <a href="/core/user/new/role_id/3">send out invite</a></p>
+
+<p>This list only shows reviewers. To add a user to this list, add the role 'reviewer' to an existing user or <a href="/core/user/new/role_id/3">invite a user</a></p>

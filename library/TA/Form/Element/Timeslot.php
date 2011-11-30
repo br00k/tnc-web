@@ -14,16 +14,18 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Timeslot.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Timeslot.php 30 2011-10-06 08:37:15Z gijtenbeek@terena.org $
  */
+
 /**
- * Custom Composite Form Element to represent a CORE timeslot
+ * Custom Composite form element to represent a CORE timeslot
  *
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ * @package TA_Form
+ * @subpackage Element
  */
 class TA_Form_Element_Timeslot extends Zend_Form_Element_Xhtml
 {
-
 	protected $_start;
 	protected $_end;
 	protected $_number;
@@ -76,7 +78,7 @@ class TA_Form_Element_Timeslot extends Zend_Form_Element_Xhtml
 	/**
 	 * Override setName method to allow for use of brackets
 	 * in the name property
-	 * 
+	 *
 	 * @todo since timeslot[nr] gave problems I no longer need this?
 	 */
 	public function setName($name)
@@ -103,14 +105,14 @@ class TA_Form_Element_Timeslot extends Zend_Form_Element_Xhtml
                  ->setEnd($value['tend']);
 
 			if (isset($value['number'])) {
-                 $this->setNumber($value['number']);
+				$this->setNumber($value['number']);
 			}
 
 			if (isset($value['type'])) {
-                 $this->setType($value['type']);
+				$this->setType($value['type']);
 			}
         } else {
-            throw new Exception('Invalid default timeslot value provided');
+			throw new Exception('Invalid default timeslot value provided');
         }
 
 	}
@@ -129,5 +131,5 @@ class TA_Form_Element_Timeslot extends Zend_Form_Element_Xhtml
 			'type' => $this->getType()
 		);
 	}
-	
+
 }

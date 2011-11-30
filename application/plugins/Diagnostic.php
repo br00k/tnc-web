@@ -14,12 +14,13 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Diagnostic.php 619 2011-09-29 11:20:22Z gijtenbeek $
+ * @revision   $Id: Diagnostic.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
 
 /**
  * Records status of the Response Object through all application phases
  *
+ * @package Application_Plugin 
  */
 class Application_Plugin_Diagnostic extends Zend_Controller_Plugin_Abstract
 {

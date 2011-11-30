@@ -280,11 +280,13 @@ ul.basic {
 .basic li:before {
 	content: "\203A \0020";
 }
-div.warning {
+div.warning, td.warning {
 	background-color:#FFF7DE;
 	border:2px solid #F5E5B4;
-	padding:8px;
 	margin-bottom:6px;
+}
+div.warning {
+	padding:8px;	
 }
 .pagination_control {
 	margin-top:10px;
@@ -348,3 +350,27 @@ div.infobox {
 }
 span.meta, td.meta {font-size:11px;}
 span.metanav {font-size:11px;}
+a.inactive {
+	color:#b7b7b7 !important;
+}
+
+/* User info */
+dl.userinfo {
+        border: 3px double #ccc;
+        font-size: 10px;
+        padding: 0.5em;
+}
+dl.userinfo  dt{
+        float: left;
+        clear: left;
+        width: 80px;
+        text-align:     right;
+}
+dl.userinfo dt:after {
+        content: ":";
+}
+dl.userinfo dd{
+        font-weight: bold;
+        margin: 0 0 0 100px;
+        padding: 0 0 0.5em 0;
+}

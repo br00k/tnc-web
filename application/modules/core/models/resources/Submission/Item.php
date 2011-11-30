@@ -14,15 +14,56 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Item.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Item.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
+
 /**
-	* This class represents a single record
-	* Methods in this class could include logic for a single record
-	* for example sticking first_name and last_name together in a getName() method
-	*/
-class Core_Resource_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstract
+ * Submission row
+ *
+ * @package Core_Resource
+ * @subpackage Core_Resource_Submission
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
+class Core_Resource_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstract implements TA_Form_Element_User_Interface
 {
+
+	protected $_manyToManyIds;
+
+	/**
+	 * Required by TA_Form_Element_User
+	 *
+	 * @param	boolean		$tiebreaker		Return only tiebreaker users
+	 * @return	Zend_Db_Table_Rowset
+	 */
+	public function getUsers($tiebreaker=false)
+	{
+		$sql = "select reviewer_submission_id, user_id from reviewers_submissions where submission_id=:submission_id";
+		if ($tiebreaker) {
+			$sql .= " and tiebreaker=true";
+		}
+		
+		$this->_manyToManyIds = $userIds = $this->getTable()->getAdapter()->fetchPairs(
+			$sql, array(':submission_id' => $this->submission_id)
+		);
+
+		$userModel = new Core_Model_User();
+		$filter = new stdClass();
+		$filter->user_id = $userIds;
+		if ($userIds) {
+			$users = $userModel->getUsers(null, null, $filter);
+			return $users['rows'];
+		}
+		return false;
+	}
+
+	/**
+	 * Get primary key values of many to many join table
+	 * in this case reviewers_submissions
+	 */
+	public function getManyToManyIds()
+	{
+		return array_flip($this->_manyToManyIds);
+	}
 
 	/**
 	 * Get reviewers belonging to this submission
@@ -31,7 +72,7 @@ class Core_Resource_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstr
 	 */
 	public function getReviewers()
 	{
-		$query = "select u.email, rs.reviewer_submission_id as id from reviewers_submissions rs
+		$query = "select u.email, u.organisation, rs.reviewer_submission_id as id from reviewers_submissions rs
 		left join users u on (rs.user_id = u.user_id)
 		where rs.submission_id=:submission_id";
 
@@ -39,9 +80,31 @@ class Core_Resource_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstr
 			$query, array(':submission_id' => $this->submission_id)
 		)->fetchAll();
 	}
-	
+
 	public function getSubmissionOneliner()
 	{
 		return $this->title;
+	}
+
+	/**
+	 * Is this current time before the edit deadline?
+	 *
+	 * @return boolean
+	 */
+	public function isBeforeEditDeadline()
+	{
+		$conference = Zend_Registry::get('conference');
+
+		if (!isset($conference['review_start'])) {
+			return true;
+		}
+
+		$now = new Zend_Date();
+
+		if ( $now->isEarlier($conference['review_start']) ) {
+		   return true;
+		}
+
+		return false;
 	}
 }
