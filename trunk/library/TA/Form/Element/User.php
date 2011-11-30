@@ -16,7 +16,7 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id$
  */
- 
+
 /**
  * Custom User form element
  *
@@ -33,17 +33,12 @@ class TA_Form_Element_User extends Zend_Form_Element_Select
 	 */
 	protected $_taRow;
 
-	protected $_taController;
-
 	/**
-	 * @todo: replace this method by an Ajax call
-	 *
+	 * Holds the controller name
+	 * @var	string
 	 */
-	public function init()
-	{
-		#$this->populateElement();
-	}
-
+	protected $_taController;
+	
 	/**
 	 * Populate element with user values
 	 *
@@ -94,13 +89,18 @@ class TA_Form_Element_User extends Zend_Form_Element_Select
 		return $this->_taRow;
 	}
 
+	/**
+	 * Define default decorators
+	 *
+	 */
     public function loadDefaultDecorators()
     {
         if ($this->loadDefaultDecoratorsIsDisabled()) {
             return;
         }
-
+        
         $decorators = $this->getDecorators();
+        
         if (empty($decorators)) {
         	$this->addDecorator('User')
             	 ->addDecorator('ViewHelper')
@@ -110,9 +110,7 @@ class TA_Form_Element_User extends Zend_Form_Element_Select
                  ->addDecorator('Description', array('tag' => 'div',
                  'class' => 'description', 'escape' => false));
         }
-
-
-
+        
     }
 
 

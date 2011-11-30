@@ -121,6 +121,36 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		}
 	}
 
+	/**
+	 * Helper method to get submissions user should review
+	 *
+	 * @param	boolean	$tiebreak	true to get submissions that assigned user as tiebreaker
+	 *								null to get all submissions user should review (including
+	 *								tiebreakers)
+	 * @return	mixed	Array of submission_id or false
+	 */
+	private function _personalReviewFilter($tiebreak=null)
+	{
+       	if ( $submissions = Zend_Auth::getInstance()->getIdentity()->getSubmissionsToReview() ) {
+		    if ($tiebreak) {
+		    	return array_keys(
+		    	    array_filter($submissions, function($val) use($tiebreak) {
+       	    	    	return ($val === $tiebreak);
+       	    	    })
+       	    	);
+       	    }
+       	    $reviewModel = new Core_Model_Review();
+			return array_keys(
+				$reviewModel->getPersonalTiebreakers(null, false, true)
+			);
+        }
+        return false;
+	}
+
+	/**
+	 * List submissions
+	 *
+	 */
 	public function listAction()
 	{
 		$session = new Zend_Session_Namespace('gridsubmit');
@@ -134,9 +164,11 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 			$params = $this->getRequest()->getPost();
 			foreach ($params as $field => $value) {
 				if ($field == 'submission_id') {
+					// default value for form element
+					$this->view->{$field} = $value;
 					if ($value == 1) {
-       					if ( $submissions = Zend_Auth::getInstance()->getIdentity()->getSubmissionsToReview() ) {
-							$session->filters->submission_id = $submissions;
+       					if ( $filter = $this->_personalReviewFilter() ) {
+							$session->filters->{$field} = $filter;
         				}
         			} else {
         				unset($session->filters->$field);
@@ -151,12 +183,12 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 			}
 		}
 
-		// set defaults for form elements
+		// set defaults for form elements from session
 		foreach ($session->filters as $filter => $value) {
-			if ($filter == 'submission_id') {
-				$this->view->submission_id = 1;
-			} else {
+			if ($filter != 'submission_id') {
 				$this->view->$filter = $value;
+			} else {
+				$this->view->submission_id = 1;
 			}
 		}
 
@@ -185,7 +217,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		// if session is set, use that as filter otherwise use 'my submissions to review' as filter
 		if (!isset($session->filters)) {
 			$session->filters = new stdClass();
-			$session->filters->submission_id = Zend_Auth::getInstance()->getIdentity()->getSubmissionsToReview();
+			$session->filters->submission_id = array_keys(Zend_Auth::getInstance()->getIdentity()->getSubmissionsToReview());
 		}
 
 		$archive = $this->_submitModel->getArchiveBySubmissionIds(
@@ -229,6 +261,19 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		return $this->_helper->lastRequest();
 	}
 
+	/**
+	 * Toggle reviewer tiebreaker
+	 *
+	 */
+	public function toggletiebreakerAction()
+	{
+		$this->_submitModel->setTiebreaker(
+			$this->_getParam('id'),
+			$this->_getParam('value', false)
+		);
+		return $this->_helper->lastRequest();
+	}
+
 	// @todo move this to parent class? In order to do this I have to extend Zend_Controller_Action
 	private function _includeJquery()
 	{
@@ -258,7 +303,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 			));
 			$form->getElement('user_id')->setTaRow(
 				$this->_submitModel->getSubmissionById($id)
-			);				
+			);
 			return $this->render('reviewers');
 		}
 
@@ -356,7 +401,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 
 		// everything went OK, redirect
 		$this->_helper->flashMessenger('Thank you for your paper submission, a confirmation email has been sent');
-		if (Zend_Auth::getInstance()->getIdentity()->role != 'admin') {		
+		if (Zend_Auth::getInstance()->getIdentity()->role != 'admin') {
 			// reload session because user details have changed (their submission data)
 			$userModel = new Core_Model_User();
 			$userModel->getUserById(Zend_Auth::getInstance()->getIdentity()->user_id)->reloadSession();

@@ -32,10 +32,6 @@ class TA_Form_Decorator_User extends Zend_Form_Decorator_Abstract
 	 */
 	private $_view;
 
-	/**
-	 * File type is based on db values table: filetypes
-	 *
-	 */
     public function render($content)
     {
 
@@ -55,21 +51,31 @@ class TA_Form_Decorator_User extends Zend_Form_Decorator_Abstract
 
 		if ( $linkedUsers = $element->getTaRow()->getUsers() ) {
 
-			if (!$linkedUsers instanceof Zend_Db_Table_Rowset) {
+			if (!$linkedUsers instanceof Core_Resource_User_Set) {
 				throw new TA_Exception('Row element does not return Zend_Db_Table_Rowset');
 			}
 			
-			$output = '<table class="grid" cellspacing="0"><tbody>';
+			// mapping of user_id to linked table primary key values
+			$linkedIds = $element->getTaRow()->getManyToManyIds();
+
+			$output = '<li><table class="grid" cellspacing="0"><tbody>';
 			foreach ($linkedUsers as $linkedUser) {
+				$custom = ($this->getOption('showCustomTaAction')) ?
+					' | '. $this->getCustomTaAction($linkedUser, $linkedIds)
+					: '';
+
 				$output .= '<tr class="'. $view->cycle(array('odd', 'even'))->next() .'">'
 				.'<td>'.$linkedUser->getFullName().'</td>'
 				.'<td>'.$linkedUser->organisation.'</td>'
-				.'<td style="text-align:right">'.$this->_getHref($linkedUser->user_id).'</td>'
+				.'<td style="text-align:right">'.$this->_getDeleteLink($linkedIds[$linkedUser->user_id])
+				. $custom
+				.'</td>'
 				.'</tr>';
 			}
 
-			$output .= '</tbody></table>';
+			$output .= '</tbody></table></li>';
 		}
+
 		$placement = $this->getPlacement();
 		$separator = $this->getSeparator();
 
@@ -83,13 +89,17 @@ class TA_Form_Decorator_User extends Zend_Form_Decorator_Abstract
 
     }
 
-	private function _getHref($id)
+	/**
+	 * Helper method to build hyperlink to delete method
+	 *
+	 */
+	private function _getDeleteLink($id)
 	{
 		return '<a title="remove user" href="'
     	    	.$this->_view->url(array(
 		    		'controller' => $this->getElement()->getTaController(),
 		    		'action' => 'deleteuserlink',
-		    		'id' => $id
+		    		'id' => $id,
 		    	), 'main-module') .'">delete</a>';
 
 	}

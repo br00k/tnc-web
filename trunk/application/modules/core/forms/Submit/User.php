@@ -42,7 +42,13 @@ class Core_Form_Submit_User extends TA_Form_Abstract
 		$users->setTaController('submit')
 			  ->populateElement('reviewer')
 			  ->setAttrib('onchange', "this.form.submit()");
-
+        
+        // use custom decorator for this element
+        $users->removeDecorator('User');
+        $users->addDecorator('Userreviewer', array(
+        	'placement' => 'prepend'
+        ));
+        
 	    $this->addElements(array(
 	    	$submissionId,
 	    	$users

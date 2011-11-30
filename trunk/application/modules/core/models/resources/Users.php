@@ -30,6 +30,8 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 	protected $_primary = 'user_id';
 
 	protected $_rowClass = 'Core_Resource_User_Item';
+	
+	protected $_rowsetClass = 'Core_Resource_User_Set';
 
 	private $_config;
 

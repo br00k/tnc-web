@@ -17,7 +17,7 @@
  * @revision   $Id$
  */
 
-/** 
+/**
  * Conference Model
  *
  * @package Core_Model

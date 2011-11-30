@@ -57,8 +57,8 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		$this->_data['sessions_to_chair'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
 
 		// submissions to review
-		$query = "select rs.submission_id from reviewers_submissions rs where rs.user_id=:user_id";
-		$this->_data['submissions_to_review'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
+		$query = "select rs.submission_id, tiebreaker from reviewers_submissions rs where rs.user_id=:user_id";
+		$this->_data['submissions_to_review'] = $this->select()->getAdapter()->fetchPairs($query, array(':user_id' => $this->user_id));
 
 		// my own submissions
 		$query = "select s.submission_id, s.title, s.date, s.file_id from submissions s left join users_submissions us ON (s.submission_id = us.submission_id) where us.user_id=:user_id";
@@ -183,10 +183,31 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
     /**
      * Get submissions that the user is assigned reviewer of
      *
-     * @return array
+     * @param	boolean		$full	Return full live dataset or minimal cached set?
+     * @param	boolean		$excludeReviewed		Exclude submissions that user reviewed
+     *
+     * @return array in format (int) submission_id => (boolean) tiebreaker
      */
-    public function getSubmissionsToReview()
+    public function getSubmissionsToReview($full = false, $excludeReviewed = false)
     {
+    	if ($full) {
+			$where = ($excludeReviewed)
+				? "where rs.user_id=$this->user_id and r.user_id!=$this->user_id"
+				: "where rs.user_id=$this->user_id" ;
+
+			$query = "select rs.submission_id, rs.tiebreaker, rb.evalue, count(
+			CASE WHEN r.self_assessment=1 THEN 1 ELSE NULL END
+			) as wrong_reviewer_count,
+			count (r.submission_id) as review_count,
+			count(case when r.user_id=$this->user_id then 1 else null end) as my_review
+			from reviewers_submissions rs left join reviewbreaker rb on (rs.submission_id = rb.submission_id)
+			left join reviews r on (r.submission_id = rs.submission_id)
+			$where
+			group by rs.submission_id, rs.tiebreaker, rb.evalue
+			order by rs.submission_id";
+
+			return $this->select()->getAdapter()->fetchAssoc($query);
+    	}
 		return $this->submissions_to_review;
     }
 
@@ -285,6 +306,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		$query = "select * from vw_sessions_chairs where user_id=:user_id";
 		return $this->select()->getAdapter()->fetchAll($query, array(':user_id' => $this->user_id));
 	}
+
 	/**
 	 * Get presentations current user is a speaker of
 	 *
@@ -296,6 +318,18 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 			':user_id' => $this->user_id,
 			':email' => $this->email
 		));
+	}
+
+	/**
+	 * Is user tiebreaker?
+	 *
+	 * @param	integer		$id		reviewer_submission_id
+	 * @return	boolean
+	 */
+	public function isReviewTiebreaker($id)
+	{
+		$query = "select tiebreaker from reviewers_submissions where reviewer_submission_id=:id";
+		return $this->select()->getAdapter()->fetchOne($query, array(':id' => $id));
 	}
 
 }
