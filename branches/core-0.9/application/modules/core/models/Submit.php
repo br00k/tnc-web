@@ -14,12 +14,13 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Submit.php 623 2011-09-29 13:25:34Z gijtenbeek $
+ * @revision   $Id: Submit.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
-/** 
+/**
  *
  * @package Core_Model
+ * @author Christian Gijtenbeek
  */
 class Core_Model_Submit extends TA_Model_Acl_Abstract
 {
@@ -249,6 +250,26 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 		return $this->getResource('submissionsview')->getAcceptedSubmissions($values);
 	}
 
+	/**
+	 * Set reviewers tiebreaker value
+	 *
+	 * @param	integer		$id		user id
+	 * @param	boolean		$value
+	 */
+	public function setTiebreaker($id = null, $value = null)
+	{
+		if (!$this->checkAcl('reviewerSave')) {
+            throw new TA_Model_Acl_Exception("Insufficient rights");
+        }
+		if ( ($id === null) || ($value === null) ) {
+			return false;
+		}
+		$id = (int) $id;
+
+		return $this->getResource('reviewerssubmissions')
+					->getItemById($id)
+					->setTiebreaker($value);
+	}
 
 	public function deleteReviewer($id = null)
 	{
@@ -421,6 +442,5 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 			throw new TA_Model_Exception($e->getMessage());
 		}
 	}
-
-
+	
 }

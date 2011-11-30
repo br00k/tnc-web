@@ -14,9 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: FormatDate.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: FormatDate.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
 
+/**
+ * Date View helper
+ *
+ * @package Core_View_Helper
+ */
 class Core_View_Helper_FormatDate extends Zend_View_Helper_Abstract
 {
 

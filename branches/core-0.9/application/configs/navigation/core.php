@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: core.php 613 2011-09-19 13:16:58Z visser $
+ * @revision   $Id: core.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
 
@@ -142,10 +142,10 @@ return array(
 	    		'module' => 'core',
 	    		'controller' => 'review',
 	    		'resource' => 'Review', // ACL
-	    		'action' => 'list',
+	    		'action' => 'listmine',
 	    		'route' => 'main-module',
 	    		'reset_params' => false,
-	    		'privilege' => 'list',
+	    		'privilege' => 'listmine',
 	    		'reset_params' => true
 	    	)
 

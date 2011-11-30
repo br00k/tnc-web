@@ -14,11 +14,15 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: GuestCanSaveFeedbackAssertion.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: GuestCanSaveFeedbackAssertion.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
+
 /**
- * Make sure feedback is only provided for own feedback id
+ * Ensure feedback is only provided for own feedback id
  *
+ * @package Core_Model
+ * @subpackage Core_Model_Acl
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Model_Acl_GuestCanSaveFeedbackAssertion implements Zend_Acl_Assert_Interface
 {
@@ -41,7 +45,7 @@ class Core_Model_Acl_GuestCanSaveFeedbackAssertion implements Zend_Acl_Assert_In
 		// posted feedback id
 		$param = $post['id'];
 
-		// check if posted feedbackId is the same as feedbackId retrieved from cookie 
+		// check if posted feedbackId is the same as feedbackId retrieved from cookie
 		if ($param !== null && $param == $feedbackId ) {
 			return true;
 		} else {

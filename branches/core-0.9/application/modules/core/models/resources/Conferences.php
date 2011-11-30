@@ -14,9 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Conferences.php 614 2011-09-28 09:10:26Z gijtenbeek $
+ * @revision   $Id: Conferences.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
-
+ 
+/** 
+ *
+ * @package Core_Resource
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
 class Core_Resource_Conferences extends TA_Model_Resource_Db_Table_Abstract
 {
 

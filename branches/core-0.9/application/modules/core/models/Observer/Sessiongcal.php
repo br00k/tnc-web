@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Sessiongcal.php 623 2011-09-29 13:25:34Z gijtenbeek $
+ * @revision   $Id: Sessiongcal.php 30 2011-10-06 08:37:15Z gijtenbeek@terena.org $
  */
  
 /**
@@ -36,7 +36,7 @@ class Core_Model_Observer_Sessiongcal extends TA_Model_Acl_Abstract implements T
 	 * Add session to Google Calendar and update session table with
 	 * resulting google calendar id.
 	 *
-	 * Major WTF - I have to refresh $subject in order for save() to work!
+	 * Weird. I have to refresh $subject in order for save() to work!
 	 *
 	 * @return void
 	 */

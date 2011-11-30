@@ -20,6 +20,12 @@ $columns = array_filter($this->grid['cols'], 'globFilter');
 ?>
 <? if ($this->grid['rows']->count() !== 0): ?>
 
+<? if ($this->tiebreaker): ?>
+<div class="warning">
+Reviewers disagree on this submission (<?= round($this->tiebreaker,2) ?> above the threshold)
+</div>
+<? endif; ?>
+
 <table class="grid" cellspacing="0">
 <thead>
 <tr>
@@ -27,12 +33,12 @@ $columns = array_filter($this->grid['cols'], 'globFilter');
 <? foreach ($this->grid['rows'] as $item): ?>
 <th>
 Review #<?= $item->review_id ?>
-<div class="actions">
 <? if ( ($item->user_id == $this->authInfo('user_id')) || ( $this->authInfo()->isAdmin() ) ): ?>
-<a title="delete this review" href="<?= $this->url(array('controller' => 'review', 'action' => 'delete', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">delete</a>
-<a title="edit this review" href="<?= $this->url(array('controller' => 'review', 'action' => 'edit', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">edit</a>
+<span class="metanav">
+<a title="edit this review" href="<?= $this->url(array('controller' => 'review', 'action' => 'edit', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">Edit</a>
+<a title="delete this review" href="<?= $this->url(array('controller' => 'review', 'action' => 'delete', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">Delete</a>
+</span>
 <? endif; ?>
-</div>
 </th>
 <? endforeach; ?>
 </tr>
@@ -46,7 +52,7 @@ Review #<?= $item->review_id ?>
 	<? foreach ($this->grid['rows'] as $item): ?>
 	<td>
   	<?
-  	if ($col == 'user_id') {  	
+  	if ($col == 'user_id') {
 		echo '<a href="mailto:'.$item->email.'" title="send email">'.$item->getFullReviewerName().'</a>';
   	} else {
   		// transform values (integers) to text

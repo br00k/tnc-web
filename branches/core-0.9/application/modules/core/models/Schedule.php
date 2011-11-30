@@ -14,12 +14,13 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Schedule.php 623 2011-09-29 13:25:34Z gijtenbeek $
+ * @revision   $Id: Schedule.php 33 2011-10-13 10:33:44Z gijtenbeek@terena.org $
  */
 
 /** 
  *
  * @package Core_Model
+ * @author Christian Gijtenbeek
  */
 class Core_Model_Schedule extends TA_Model_Acl_Abstract
 {
@@ -101,9 +102,9 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 					// the 'use' makes the variables accessible in the anonymous function scope
 					// current() gets the first element
 					$session = current(array_filter($sessions->toArray(), function($val) use ($timeslot, $location) {
-							return ($val['timeslot_id'] == $timeslot['timeslot_id'] &&
-									$val['location_id'] == $location->location_id);
-							})
+						return ($val['timeslot_id'] == $timeslot['timeslot_id'] &&
+								$val['location_id'] == $location->location_id);
+						})
 					);
 					if ($session) {
 						$session['loc_abbr'] = $location->abbreviation;

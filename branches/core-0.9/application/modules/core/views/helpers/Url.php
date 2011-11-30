@@ -14,26 +14,27 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Url.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Url.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
+
 /**
  * Override the standard Url View helper
- * 
- * If the controller is not set in the $urlOptions then it is taken 
+ *
+ * If the controller is not set in the $urlOptions then it is taken
  * from the request object and added to the $urlOptions array
  *
- * This is very useful for my _grid.phtml partial view 
- * 
+ * This is very useful for my _grid.phtml partial view
+ * @package Core_View_Helper
  */
 class Core_View_Helper_Url extends Zend_View_Helper_Url
 {
     public function url(array $urlOptions = array(), $name = null, $reset = false, $encode = true)
     {
-    	
-    	if (!isset($urlOptions['controller'])) { 
+
+    	if (!isset($urlOptions['controller'])) {
     		$urlOptions['controller'] = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
     	}
-		
+
         return parent::url($urlOptions, $name, $reset, $encode);
     }
 }

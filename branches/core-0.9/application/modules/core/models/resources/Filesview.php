@@ -14,7 +14,13 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Filesview.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Filesview.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
+ */
+
+/** 
+ *
+ * @package Core_Resource
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Resource_Filesview extends TA_Model_Resource_Db_Table_Abstract
 {

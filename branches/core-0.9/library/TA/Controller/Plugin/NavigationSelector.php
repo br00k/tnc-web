@@ -14,13 +14,16 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: NavigationSelector.php 619 2011-09-29 11:20:22Z gijtenbeek $
+ * @revision   $Id: NavigationSelector.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
- 
+
 /**
-  * Controller plugin that sets navigation object based on conference abbreviation
-  *
-  */ 
+ * Sets navigation object based on conference abbreviation
+ *
+ * @author Christian Gijtenbeek
+ * @package TA_Controller
+ * @subpackage Plugin
+ */
 class TA_Controller_Plugin_NavigationSelector extends Zend_Controller_Plugin_Abstract
 {
     /**

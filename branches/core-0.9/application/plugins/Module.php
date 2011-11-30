@@ -14,12 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Module.php 619 2011-09-29 11:20:22Z gijtenbeek $
+ * @revision   $Id: Module.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
 
 /**
  * Zend loads ALL Bootstrap's instead of the one needed for the module.
  * This plugin makes it possible to load module specific config
+ *
+ * @package Application_Plugin 
  */
 class Application_Plugin_Module extends Zend_Controller_Plugin_Abstract
 {

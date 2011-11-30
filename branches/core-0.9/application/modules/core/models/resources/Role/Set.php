@@ -14,10 +14,15 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Set.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Set.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
+
 /**
- * This class represents a rowset
+ * Role row
+ *
+ * @package Core_Resource
+ * @subpackage Core_Resource_Role
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Resource_Role_Set extends Zend_Db_Table_Rowset_Abstract
 {

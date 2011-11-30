@@ -114,14 +114,19 @@ simplesaml.saml_email_attribute = "{ssp_email_attribute}"
 simplesaml.saml_country_attribute = "{ssp_country_attribute}"
 
 ;; email address to send debug messages to
-;core.debugMailTo = "gijtenbeek@terena.org"
+core.debugMailTo = "gijtenbeek@terena.org"
 ;; observers
 core.observer.review = 1
 core.observer.submit = 1
+core.observer.tiebreaker.notify = 1
 ;; log simplesaml attributes
 core.logSamlAttributes = 1
 ;; how long before an invite expires 
 core.userInviteTtl = '3 months'
+;; number of seconds before session start after which user can no longer edit their presentation
+core.presentation.deadline = '7200'
+;; review tiebreaker value
+core.review.tiebreaker = 0.13
 
 ;; Diagnostic -- uncomment the line below to enable
 ;diagnostic.log = APPLICATION_PATH "/../logs/diagnostic.log"

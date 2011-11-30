@@ -14,9 +14,15 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Bootstrap.php 614 2011-09-28 09:10:26Z gijtenbeek $
+ * @revision   $Id: Bootstrap.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
+/**
+ * Bootstrapper
+ *
+ * @package Core
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 	public $frontController;
@@ -30,7 +36,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$this->bootstrap('mail');
 		$transport = $this->getResource('mail');
 	}
-	
+
 	/**
 	 * Initialize config object and store in global Registry
 	 *
@@ -260,15 +266,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			'%s/%s/%s/%d/%s'
     	);
     	$router->addRoute('gridactions', $mainRoute->chain($gridActionsRoute));
-
-    	$route = new Zend_Controller_Router_Route(
-        	'/core/review/list/:id',
+    	
+      	$route = new Zend_Controller_Router_Route_Regex(
+        	'core/review/list/(\d+)',
 			array(
 				'lang'		=> ':lang',
 				'module'	=> 'core',
 				'controller'=> 'review',
 				'action'	=> 'list'
-			)
+			),
+			array(
+				1 => 'id'
+			),
+			'core/review/list/%d'
     	);
     	$router->addRoute('reviewlist', $mainRoute->chain($route));
 
@@ -400,13 +410,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	$this->bootstrap('frontController');
     	$frontController = $this->getResource('frontController');
 
-		#try {
-		#	$conference = Zend_Registry::get('conference');
-		#} catch (Exception $e) {
-		#	$conferenceInit = $frontController->getPlugin('Application_Plugin_ConferenceInit');
-		#	Zend_Debug::dump($conferenceInit);exit();
-		#}
-		
 		$navigationPlugin = $frontController->getPlugin('TA_Controller_Plugin_NavigationSelector');
 
 		// store the navigation in the resource registry

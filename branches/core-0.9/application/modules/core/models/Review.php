@@ -14,12 +14,13 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Review.php 623 2011-09-29 13:25:34Z gijtenbeek $
+ * @revision   $Id: Review.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
-/** 
+/**
  *
  * @package Core_Model
+ * @author Christian Gijtenbeek
  */
 class Core_Model_Review extends TA_Model_Acl_Abstract
 {
@@ -40,27 +41,23 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 
 	/**
 	 * Get a list of reviews
-	 * @param		integer		$page	Page number to show
-	 * @param		array		$order	Array with keys 'field' and 'direction'
-	 * @param		integer		$filter	filter to apply to grid
+	 * @param		integer		$page		Page number to show
+	 * @param		array		$order		Array with keys 'field' and 'direction'
+	 * @param		integer		$filter		filter to apply to grid
+	 * @param		boolean		$aclSkip	Skip ACL check (needed if called from observer)
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
 	 */
-	public function getReviews($paged, $order, $filter=null)
+	public function getReviews($paged=null, $order=array(), $filter=null, $aclSkip=false)
 	{
-		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
+		if (!$aclSkip) {
+			if (!$this->checkAcl('list')) {
+        	    throw new TA_Model_Acl_Exception("Insufficient rights");
+        	}
         }
-        
+
 		$conference = Zend_Registry::getInstance()->conference;
 
 		$now = new Zend_Date();
-		
-		// only show users' own reviews if now is earlier than configured date
-		#if ($conference['review_visible']->isEarlier($now)) {
-			if ($this->getIdentity()->role != 'admin') {
-				#$filter->user_id = $this->getIdentity()->user_id;
-			}
-		#}
 
 		return $this->getResource('reviewsview')->getReviews($paged, $order, $filter);
 	}
@@ -85,19 +82,99 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 	}
 
 	/**
-	 * Get list of reviewers for mass email
+	 * Get list of all reviewers and the submissions they should review
 	 *
-	 * @param	$todo	boolean		Only show submissions that should still be reviewed	
-	 * @return	array
+	 * @param	boolean	$todo			Only show submissions that should still be reviewed
+	 * @param	boolean	$tiebreakers	Remove tiebreaker submissions from list
+	 * @return	array	contains: reviewers/submissions
 	 */
-	public function getReviewersForMail($todo = false)
+	public function getReviewersForMail($todo = false, $tiebreakers = true)
 	{
 		if (!$this->checkAcl('mail')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
         }
 
 		$submissions = $this->getResource('submissions')->getSubmissions();
-		return $submissions['rows']->getReviewersSubmissions($todo);
+
+		if (empty($submissions)) {
+			throw new TA_Exception('no submissions found');
+		}
+
+		$list = array();
+
+		if ($todo) {
+			$reviews = $this->getReviewsIndexedBySubmission($submissions['rows'], null, true);
+		}
+		$tiebreakers = $this->getAllTiebreakers();
+
+		foreach ($this->getResource('reviewerssubmissions')->getAllReviewers() as $reviewer) {
+			if ( !isset($list[$reviewer['user_id']]) ) {
+				$list[$reviewer['user_id']] = $reviewer;
+			}
+
+			$submission = current(array_filter($submissions['rows']->toArray(),
+				function($val) use($reviewer, $tiebreakers) {
+					return ($val['submission_id'] == $reviewer['submission_id']);
+				})
+			);
+
+			// remove non-tiebreaker submissions from list, only if user is a tiebreaker for the submission
+			if ( ($reviewer['tiebreaker']) && ($tiebreakers) ) {
+				if (isset($tiebreakers[$reviewer['submission_id']])) {
+					if (!isset($tiebreakers[$reviewer['submission_id']]['tiebreak_required'])) {					
+						$submission = null;
+					}
+				} else {
+					$submission = null;
+				}
+			}
+			
+			if ($submission) {
+				if ($todo) {
+					// if there is a review for this submission by this reviewer
+					if (!isset($reviews[$submission['submission_id']][$reviewer['user_id']])) {
+					    $list[$reviewer['user_id']]['submission'][] = $submission;
+					}
+				} else {
+					$list[$reviewer['user_id']]['submission'][] = $submission;
+				}
+			}
+
+		}
+		if ($todo) {
+			// remove empty submissions
+			$list = array_filter($list, function($val) {
+				return (array_key_exists('submission', $val));
+			});
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Get a list of reviews indexed by submission_id
+	 *
+	 * @param	Core_Resource_Submission_Set	$submissions
+	 * @param	integer		$userId			User id of reviewer to filter by
+	 * @param	boolean		$groupUserId	Group list by user_id instead of review_id
+	 * @return array
+	 */
+	public function getReviewsIndexedBySubmission(Core_Resource_Submission_Set $submissions, $userId = null, $groupUserId = false)
+	{
+		$list = array();
+
+		foreach ($this->getResource('reviews')->getReviewsIndexedBySubmission($userId) as $review) {
+			$submission = current(array_filter($submissions->toArray(), function($val) use($review) {
+			     return ($val['submission_id'] == $review['submission_id']);
+			}));
+			if ($groupUserId) {
+				$list[$review['submission_id']][$review['user_id']] = $review;
+			} else {
+				$list[$review['submission_id']][$review['review_id']] = $review;
+			}
+		}
+
+		return $list;
 	}
 
 	/**
@@ -123,9 +200,11 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 			return false;
 		}
 
-		// get filtered values
 		$values = $form->getValues();
-		$values['user_id'] = $this->getIdentity()->user_id;
+		// only set user_id if user is not admin or if the review is new
+		if ( (!$this->getIdentity()->isAdmin()) || ($action != 'edit') ) {
+			$values['user_id'] = $this->getIdentity()->user_id;
+		}
 
 		$review = array_key_exists('review_id', $values) ?
 			$this->getResource('reviews')
@@ -133,16 +212,99 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 
 		return $this->getResource('reviews')->saveRow($values, $review);
 
+	}
+
+	/**
+	 * Save Tiebreaker
+	 *
+	 * @param	array	$values
+	 * @return	mixed	The primary key of the inserted/updated record or resource error message
+	 */
+	public function saveTiebreaker(array $values)
+	{
+		$reviewbreaker = array_key_exists('submission_id', $values) ?
+			$this->getResource('reviewbreakers')
+				 ->getItemById($values['submission_id']) : null;
+
+
+		if (!$values['evalue']) {
+			if ($reviewbreaker) {
+				return $reviewbreaker->delete();
+			}
+			return;
+		}
+
+		return $this->getResource('reviewbreakers')->saveRow($values, $reviewbreaker);
 
 	}
 
+	/**
+	 * Helper method to calculate the submissions that need a tiebreaker
+	 *
+	 * @param	array	$submissions
+	 * @return	array
+	 */
+	private function _calculateTiebreakers($submissions, $excludeNoTiebreakNeeded = false)
+	{
+		$config = Zend_Registry::get('config');
+
+		foreach ($submissions as $key => $val) {
+			$e = (isset($val['evalue'])) ? $val['evalue'] : 0;
+
+			if ( ($val['wrong_reviewer_count'] >= 1) && ($val['review_count'] <= 2) ) {
+		    	$submissions[$key]['tiebreak_required'] = true;
+			} elseif ($e > $config->core->review->tiebreaker) {
+		    	$submissions[$key]['tiebreak_required'] = true;
+		    	$submissions[$key]['_lod'] = round($e - $config->core->review->tiebreaker, 2);
+		    } elseif ( isset($val['tiebreaker']) && ($excludeNoTiebreakNeeded) ) {
+				if ($val['tiebreaker']) {
+					unset($submissions[$key]);
+				}
+			}
+		}
+
+		return $submissions;
+	}
+
+	/**
+	 * Get all submissions that require a tiebreaker
+	 *
+	 * @param 	integer		$userId			Defaults to logged in user
+	 * @param	array		$submissionIds
+	 * @return	array
+	 */
+	public function getAllTiebreakers($userId = null, $submissionIds = null)
+	{
+		$userId = (isset($userId))
+			? $userId
+			: Zend_Auth::getInstance()->getIdentity()->user_id;
+
+		return $this->_calculateTiebreakers(
+			$this->getResource('reviewbreakers')->getAllTiebreakers($userId, $submissionIds)
+		);
+	}
+
+	/**
+	 * Get submissions that the user is assigned reviewer of.
+	 * For submissions that require a tiebreaker the 'tiebreak_required' key is set
+	 *
+	 * @param 	integer		$userId						Defaults to logged in user
+	 * @param	boolean		$excludeReviewed			Exclude submissions that user reviewed
+	 * @param	boolean		$excludeNoTiebreakNeeded	Exclude submissions of which I am tiebreaker but that require no tiebreak
+	 * @return	array
+	 */
+	public function getPersonalTiebreakers($userId = null, $excludeReviewed = false, $excludeNoTiebreakNeeded = false)
+	{
+		$userId = (isset($userId))
+			? $userId
+			: Zend_Auth::getInstance()->getIdentity()->user_id;
+
+		$user = $this->getResource('users')->getUserById($userId);
+
+		return $this->_calculateTiebreakers(
+			$user->getSubmissionsToReview(true, $excludeReviewed),
+			$excludeNoTiebreakNeeded
+		);
+	}
 
 }
-
-
-
-
-
-
-
-

@@ -14,7 +14,13 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Presentations.php 617 2011-09-28 10:30:59Z gijtenbeek $
+ * @revision   $Id: Presentations.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
+ */
+
+/** 
+ *
+ * @package Core_Resource
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Resource_Presentations extends TA_Model_Resource_Db_Table_Abstract
 {

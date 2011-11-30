@@ -14,12 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Acl.php 619 2011-09-29 11:20:22Z gijtenbeek $
+ * @revision   $Id: Acl.php 40 2011-11-29 13:23:56Z gijtenbeek@terena.org $
  */
- 
+
 /**
  * Checks if user is allowed to access resource, if not user gets 303 error
  *
+ * @package Application_Plugin
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  * @todo find out why the dispatcher check does not work
  */
 class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
@@ -38,6 +40,28 @@ class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
 			return;
 		}
 
+		if ($role != 'guest') {
+			// prevent redirect loop by excluding 'user' controller actions
+    		if ( ($auth->getIdentity()->email == 'invalid_email_needs_updating')
+    			&& ($request->getControllerName() != 'user') ) {
+
+				$flash = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
+				$lastRequest = Zend_Controller_Action_HelperBroker::getStaticHelper('lastRequest');
+				$redir = Zend_Controller_Action_HelperBroker::getStaticHelper('Redirector');
+
+				$flash->addMessage('Your IdP did not provide a valid email address, please supply one below.');
+				$lastRequest->saveRequestUri($request->getRequestUri());
+
+				$redir->setCode(303)
+					  ->setExit(true)
+					  ->gotoRoute(array(
+					 	'controller' => 'user',
+					 	'action' => 'edit',
+					 	'id' => $auth->getIdentity()->user_id
+					  ), 'main-module');
+			}
+		}
+
     	// check if ACL resource exists
     	if (!$acl->has(ucfirst($request->getControllerName()) )) {
 			return;
@@ -49,13 +73,21 @@ class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
 			if ($request->getModuleName() == 'rest') {
 				return;
 			}
+
+			$lastRequest = Zend_Controller_Action_HelperBroker::getStaticHelper('lastRequest');
 			$redir = Zend_Controller_Action_HelperBroker::getStaticHelper('Redirector');
 
+			// save last request in session since this data will be lost after redirect
+			// have to call it here because the request URI is saved in postDispatch()
+			$lastRequest->saveRequestUri($request->getRequestUri());
+			// perform redirect
 			$redir->setCode(303)
  				  ->setExit(true)
 				  ->gotoRoute(array(
 				  	'controller' => 'error',
-					'action' => 'noaccess'
+					'action' => 'noaccess',
+					'resource' => $acl->get(ucfirst($request->getControllerName()))->getResourceId(),
+					'privilege' => $request->getActionName()
 				  ), 'main-module');
 
 		}

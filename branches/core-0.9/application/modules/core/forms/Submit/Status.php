@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Status.php 619 2011-09-29 11:20:22Z gijtenbeek $
+ * @revision   $Id: Status.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
 /** 
@@ -28,7 +28,8 @@ class Core_Form_Submit_Status extends TA_Form_Abstract
 	{
 		parent::init();
 
-		$this->setAction('/core/review/list');
+		$this->setAction('/core/review/list/');
+		$this->setAttrib('id', 'statusform');
 
 	    $submissionId = new Zend_Form_Element_Hidden('submission_id');
 	    $submissionId->setRequired(true)

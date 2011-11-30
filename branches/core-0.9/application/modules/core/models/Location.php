@@ -14,12 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Location.php 623 2011-09-29 13:25:34Z gijtenbeek $
+ * @revision   $Id: Location.php 30 2011-10-06 08:37:15Z gijtenbeek@terena.org $
  */
 
 /** 
+ * Location Model
  *
  * @package Core_Model
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Model_Location extends TA_Model_Acl_Abstract
 {

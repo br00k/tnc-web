@@ -14,7 +14,13 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Sessionsusers.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Sessionsusers.php 37 2011-10-18 14:09:56Z gijtenbeek@terena.org $
+ */
+
+/**
+ *
+ * @package Core_Resource
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Resource_Sessionsusers extends TA_Model_Resource_Db_Table_Abstract
 {
@@ -27,7 +33,9 @@ class Core_Resource_Sessionsusers extends TA_Model_Resource_Db_Table_Abstract
 
 	/**
 	 * Gets item by primary key
-	 * @return object Zend_Db_Table_Row
+	 *
+	 * @param	integer		$id
+	 * @return	Zend_Db_Table_Row
 	 */
 	public function getItemById($id)
 	{
@@ -46,6 +54,20 @@ class Core_Resource_Sessionsusers extends TA_Model_Resource_Db_Table_Abstract
 					$this->select()
 					->where('session_id = ?', $data['session_id'])
 					->where('user_id = ?', $data['user_id'])
+				);
+	}
+
+	/**
+	 * Gets item by user id
+	 *
+	 * @param	integer		$id 	user id value
+	 * @return	Zend_Db_Table_Row
+	 */
+	public function getItemByUserId($id)
+	{
+		return $this->fetchRow(
+					$this->select()
+					->where('user_id = ?', $id)
 				);
 	}
 

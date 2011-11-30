@@ -14,9 +14,15 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Bootstrap.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Bootstrap.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
-
+ 
+/**
+ * REST specific bootstrapper
+ *
+ * @package Rest
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
 class Rest_Bootstrap extends Zend_Application_Module_Bootstrap
 {
 /**

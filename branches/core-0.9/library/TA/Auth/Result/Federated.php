@@ -14,7 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Federated.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Federated.php 37 2011-10-18 14:09:56Z gijtenbeek@terena.org $
+ */
+
+/**
+ *
+ * @author Christian Gijtenbeek
+ * @package TA_Auth
+ * @subpackage Result_Federated
  */
 class TA_Auth_Result_Federated extends Zend_Auth_Result
 {
@@ -51,11 +58,10 @@ class TA_Auth_Result_Federated extends Zend_Auth_Result
     	$samlUidAttribute = $config->simplesaml->saml_uid_attribute;
 
         $this->_attributes = parent::getIdentity();
-        //$mail = $this->_attributes[$samlUidAttribute];
 
 		if ((int)$config->core->logSamlAttributes === 1) {
         	$log = Zend_Registry::get('log');
-        	$log->info(var_export($this->_attributes, true));		
+        	$log->info(var_export($this->_attributes, true));
 		}
 
         return $this->_attributes[$samlUidAttribute];
@@ -71,18 +77,5 @@ class TA_Auth_Result_Federated extends Zend_Auth_Result
     {
     	return $this->_attributes;
     }
-
-	/**
-	 * Get IdP from attributes
-	 *
-	 */
-    public function getIdp()
-    {
-		if (preg_match("/^(facebook|twitter|windowslive|myspace|linkedin)_targetedID:(.*)\!(.*)$/", $this->_attributes['smart_id'], $matches)) {
-			return $matches[2];
-		} elseif (preg_match('/.*!(.*)/', $this->_attributes['smart_id'], $matches)) {
-			return $matches[1];
-		}
-	}
 
 }

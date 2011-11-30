@@ -14,13 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: GoogleEvent.php 623 2011-09-29 13:25:34Z gijtenbeek $
+ * @revision   $Id: GoogleEvent.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
 
 /**
  * Class to manage events stored in google calendar
  *
  * @package		Core_Service
+ * @author		Christian Gijtenbeek <gijtenbeek@terena.org>
  * @see 		http://framework.zend.com/manual/en/zend.gdata.calendar.html
  */
 class Core_Service_GoogleEvent {

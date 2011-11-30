@@ -14,7 +14,13 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Users.php 623 2011-09-29 13:25:34Z gijtenbeek $
+ * @revision   $Id: Users.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
+ */
+
+/** 
+ *
+ * @package Core_Resource
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 {
@@ -24,6 +30,8 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 	protected $_primary = 'user_id';
 
 	protected $_rowClass = 'Core_Resource_User_Item';
+	
+	protected $_rowsetClass = 'Core_Resource_User_Set';
 
 	private $_config;
 

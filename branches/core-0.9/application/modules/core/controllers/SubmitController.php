@@ -14,14 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: SubmitController.php 619 2011-09-29 11:20:22Z gijtenbeek $
+ * @revision   $Id: SubmitController.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
 /**
  * SubmitController
  *
  * @package Core_Controllers
- */ 
+ */
 class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_Resource_Interface
 {
 
@@ -59,7 +59,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 
 	public function indexAction()
 	{
-		return $this->_forward('list');
+		return $this->_forward('new');
 	}
 
 	/**
@@ -121,6 +121,36 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		}
 	}
 
+	/**
+	 * Helper method to get submissions user should review
+	 *
+	 * @param	boolean	$tiebreak	true to get submissions that assigned user as tiebreaker
+	 *								null to get all submissions user should review (including
+	 *								tiebreakers)
+	 * @return	mixed	Array of submission_id or false
+	 */
+	private function _personalReviewFilter($tiebreak=null)
+	{
+       	if ( $submissions = Zend_Auth::getInstance()->getIdentity()->getSubmissionsToReview() ) {
+		    if ($tiebreak) {
+		    	return array_keys(
+		    	    array_filter($submissions, function($val) use($tiebreak) {
+       	    	    	return ($val === $tiebreak);
+       	    	    })
+       	    	);
+       	    }
+       	    $reviewModel = new Core_Model_Review();
+			return array_keys(
+				$reviewModel->getPersonalTiebreakers(null, false, true)
+			);
+        }
+        return false;
+	}
+
+	/**
+	 * List submissions
+	 *
+	 */
 	public function listAction()
 	{
 		$session = new Zend_Session_Namespace('gridsubmit');
@@ -134,9 +164,11 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 			$params = $this->getRequest()->getPost();
 			foreach ($params as $field => $value) {
 				if ($field == 'submission_id') {
+					// default value for form element
+					$this->view->{$field} = $value;
 					if ($value == 1) {
-       					if ( $submissions = Zend_Auth::getInstance()->getIdentity()->getSubmissionsToReview() ) {
-							$session->filters->submission_id = $submissions;
+       					if ( $filter = $this->_personalReviewFilter() ) {
+							$session->filters->{$field} = $filter;
         				}
         			} else {
         				unset($session->filters->$field);
@@ -151,12 +183,12 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 			}
 		}
 
-		// set defaults for form elements
+		// set defaults for form elements from session
 		foreach ($session->filters as $filter => $value) {
-			if ($filter == 'submission_id') {
-				$this->view->submission_id = 1;
-			} else {
+			if ($filter != 'submission_id') {
 				$this->view->$filter = $value;
+			} else {
+				$this->view->submission_id = 1;
 			}
 		}
 
@@ -185,7 +217,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		// if session is set, use that as filter otherwise use 'my submissions to review' as filter
 		if (!isset($session->filters)) {
 			$session->filters = new stdClass();
-			$session->filters->submission_id = Zend_Auth::getInstance()->getIdentity()->getSubmissionsToReview();
+			$session->filters->submission_id = array_keys(Zend_Auth::getInstance()->getIdentity()->getSubmissionsToReview());
 		}
 
 		$archive = $this->_submitModel->getArchiveBySubmissionIds(
@@ -223,9 +255,22 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 	 * Delete reviewer submission link
 	 *
 	 */
-	public function deletereviewerAction()
+	public function deleteuserlinkAction()
 	{
 		$this->_submitModel->deleteReviewer($this->_getParam('id'));
+		return $this->_helper->lastRequest();
+	}
+
+	/**
+	 * Toggle reviewer tiebreaker
+	 *
+	 */
+	public function toggletiebreakerAction()
+	{
+		$this->_submitModel->setTiebreaker(
+			$this->_getParam('id'),
+			$this->_getParam('value', false)
+		);
 		return $this->_helper->lastRequest();
 	}
 
@@ -251,12 +296,14 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 
 		// No post; display form
 		if ( !$request->isPost() )  {
-			$this->view->submitUserForm = $this->_submitModel->getForm('submitUser');
-			$this->view->reviewers = $submission->getReviewers();
+			$form = $this->view->submitUserForm = $this->_submitModel->getForm('submitUser');
 			// populate form with defaults
 			$this->view->submitUserForm->setDefaults(array(
 			   	'submission_id' => $id
 			));
+			$form->getElement('user_id')->setTaRow(
+				$this->_submitModel->getSubmissionById($id)
+			);
 			return $this->render('reviewers');
 		}
 
@@ -301,8 +348,14 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 			return $this->render('formEdit');
 		}
 
-		// everything went OK, redirect to list action
+		// everything went OK, redirect
 		$this->_helper->flashMessenger('Succesfully edited record');
+		if (Zend_Auth::getInstance()->getIdentity()->role != 'admin') {
+			// reload session because user details have changed (their submission data)
+			$userModel = new Core_Model_User();
+			$userModel->getUserById(Zend_Auth::getInstance()->getIdentity()->user_id)->reloadSession();
+			return $this->_helper->lastRequest();
+		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'submit', 'action'=>'list'), 'grid');
 	}
 
@@ -315,6 +368,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		// @todo: this can't be right, I add the ACL logic here.
 		// I can't do it in Core.php because that causes a chicken/egg problem
 		// with Zend_Registry::get('conference') not being set.
+		// no worries, because the date assertion is void anyway
 		$acl = Zend_Registry::get('acl');
 		$acl->allow('user', 'Submit', 'new', new Core_Model_Acl_DateAssertion());
 
@@ -331,9 +385,26 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 			return $this->displayForm();
 		}
 
-		// everything went OK, redirect to list action
-		$this->_helper->flashMessenger('Thank you for your paper submission');
+		// send email to submitter
+		Zend_Controller_Action_HelperBroker::addHelper(new TA_Controller_Action_Helper_SendEmail());
+		$emailHelper = $this->_helper->sendEmail;
+		$identity = Zend_Auth::getInstance()->getIdentity();
+
+		$conference = Zend_Registry::get('conference');
+		$emailHelper->sendEmail(array(
+		    'template' => 'submit/new',
+		    'subject' => 'Paper submission',
+			'html' => true,
+		    'to_email' => $identity->email,
+			'to_name' => $identity->fname.' '.$identity->lname
+		), $request->getPost());
+
+		// everything went OK, redirect
+		$this->_helper->flashMessenger('Thank you for your paper submission, a confirmation email has been sent');
 		if (Zend_Auth::getInstance()->getIdentity()->role != 'admin') {
+			// reload session because user details have changed (their submission data)
+			$userModel = new Core_Model_User();
+			$userModel->getUserById(Zend_Auth::getInstance()->getIdentity()->user_id)->reloadSession();
 			return $this->_helper->lastRequest();
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'submit', 'action'=>'list'), 'grid');

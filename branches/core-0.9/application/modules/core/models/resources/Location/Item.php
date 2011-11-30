@@ -14,14 +14,16 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Item.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Item.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
-/**
-	* This class represents a single record
-	* Methods in this class could include logic for a single record
-	* for example sticking first_name and last_name together in a getName() method
-	*
-	*/
+
+/** 
+ * Location row
+ *
+ * @package Core_Resource
+ * @subpackage Core_Resource_Location
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
 class Core_Resource_Location_Item extends TA_Model_Resource_Db_Table_Row_Abstract
 {
 

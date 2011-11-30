@@ -14,11 +14,17 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: ScheduleController.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: ScheduleController.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
 
 require_once APPLICATION_PATH.'/modules/rest/controllers/AbstractController.php';
 
+/**
+ * ScheduleController
+ *
+ * @package Rest_Controller
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
 class Rest_ScheduleController extends Rest_AbstractController
 {   
 	// enable for all actions in this controller the

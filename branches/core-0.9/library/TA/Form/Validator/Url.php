@@ -14,15 +14,20 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Url.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: Url.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
+ 
 /**
  * Custom Url validator - uses Zend_Uri to check validity of URL
  * Zend_Uri can't be used in a Form since it does not implement the
  * Zend_Validate_Interface. This custom class allows you to use the functionality.
- * Ex: $formElement->addValidator('url');
+ *
+ * @example $formElement->addValidator('url');
+ *
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ * @package TA_Form
+ * @subpackage Validator
  */
-
 class TA_Form_Validator_Url extends Zend_Validate_Abstract
 {
     const INVALID_URL = 'invalidUrl';

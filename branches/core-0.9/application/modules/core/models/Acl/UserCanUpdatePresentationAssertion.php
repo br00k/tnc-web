@@ -14,16 +14,21 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: UserCanUpdatePresentationAssertion.php 598 2011-09-15 20:55:32Z visser $
+ * @revision   $Id: UserCanUpdatePresentationAssertion.php 33 2011-10-13 10:33:44Z gijtenbeek@terena.org $
  */
+
 /**
  * Make sure session chairs can only change sessions assigned to them
+ * Also checks if presentation is edited within edit deadline
  *
+ * @package Core_Model
+ * @subpackage Core_Model_Acl
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
  */
 class Core_Model_Acl_UserCanUpdatePresentationAssertion implements Zend_Acl_Assert_Interface
 {
     /**
-     * This assertion should receive the actual User objects.
+     * This assertion should receive the actual Presentation objects.
      *
      * @param Zend_Acl $acl
      * @param Zend_Acl_Role_Interface $user
@@ -33,8 +38,6 @@ class Core_Model_Acl_UserCanUpdatePresentationAssertion implements Zend_Acl_Asse
      */
     public function assert(Zend_Acl $acl, Zend_Acl_Role_Interface $user = null, Zend_Acl_Resource_Interface $model = null, $privilege = null)
     {
-		#$log = Zend_Registry::get('log');
-		
 		if ($user) {
 			$presentations = $user->getMyPresentations();
 		} else {
@@ -44,10 +47,10 @@ class Core_Model_Acl_UserCanUpdatePresentationAssertion implements Zend_Acl_Asse
 		$request = Zend_Controller_Front::getInstance()->getRequest();
 		$param = ( $request->getParam('id') ) ? $request->getParam('id') : $request->getParam('presentation_id');
 
-		#$log->crit($param);
+		$presentation = $model->getPresentationById($param);
 
 		// perform check
-		if ($param !== null && in_array( (int) $param, $presentations, true)) {
+		if ($param !== null && $presentation->isBeforeEditDeadline() && in_array( (int) $param, $presentations, true)) {
 			return true;
 		} else {
 			return false;
