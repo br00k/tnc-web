@@ -21,7 +21,7 @@ final class TA_Version {
 	/**
 	 * CORE version identification - see compareVersion()
 	 */
-	const VERSION = '0.9dev';
+	const VERSION = '0.9.2';
 
 	/**
 	 * Compare the specified version string $version with the
