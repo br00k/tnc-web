@@ -1,0 +1,26 @@
+<div id="nocol">
+    <h1 class="light">View the latest Snapshots</h1>
+	<form action="/webdemo/media/photos/" method="post" id="mediaselect">
+      	<div>
+      	<?= $this->formSelect('day', $this->day, array('id'=>'mediadropdown'), $this->days) ?>
+        </div>
+	</form>
+  	<table class="photos" summary="TERENA Networking Conference 2011 photo collection">
+  		<tbody>
+      		<tr>
+            <? if (empty($this->photos)): ?>
+      		<td>There are currently no photos available for this day, please check back later!</td>
+      		<? else: ?>
+      		<? $i=-1; ?>
+      		<? foreach ($this->photos as $key => $item): ?>
+				<? $i++; if ($i % 5 == 0 && $i != 0): ?>
+				</tr><tr>
+				<? endif; ?>
+				<td><a href="<?= $item['href'] ?>" rel="lightbox-tnc"><img alt="TNC2011" src="<?= $item['location'] ?>" /></a></td>
+			<? endforeach; ?>
+			<? endif; ?>
+            </tr>
+    	</tbody>
+	</table>
+</div>
+<div class="bot_crnrs"></div>

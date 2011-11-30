@@ -1,0 +1,376 @@
+/**
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: base.css 598 2011-09-15 20:55:32Z visser $
+ */
+html {
+	margin:0;
+	padding:0;
+	background:#DBDBDB;
+}
+body {
+	margin:0;
+	padding:0;
+	background:none repeat scroll 0 0 #fff;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:15px;
+	color:#545454;
+	text-align:center;
+}
+p {
+	line-height: 21px;
+}
+.wrapper {
+	margin:0 auto;
+	text-align:left;
+	width:880px;
+}
+a {
+	outline:none;
+}
+h1 {
+	font-size:22px;
+	font-weight: bold;
+}
+h1, h2, h3 {
+	padding:0;
+	margin:0;
+}
+h1 {
+	font-size:1.33em;
+	margin-bottom:12px;
+}
+h2 {
+	font-size:16px;
+}
+form h1 {
+	padding:3px 0 0 0;
+	display:inline;
+}
+
+#header {
+	padding:0 0 10px 0;
+	margin:0;
+	height:35px;
+	background: #2E2F2F;
+}
+#header h1 {
+	color:#fff;
+	padding:10px 0 0 10px;
+}
+#navigation {
+	padding:10px 0 0 0;
+	background: #2E2F2F;
+}
+#content {
+	clear:both;
+	background:#DBDBDB;
+}
+#content .wrapper {
+	padding:25px 20px 30px 20px;
+	background:#fff;
+	border: 1px solid #545454;
+	border-width: 0 1px 1px 1px
+}
+#footer {
+	margin:0 auto;
+	text-align:left;
+	width:880px;
+	padding:5px 20px 5px 20px;
+	background:#fff;
+	border: 1px solid #545454;
+	border-width: 0 1px 1px 1px;
+	font-size:12px;
+}
+ table.grid a.important {
+	color:#9A3334;
+}
+a, .mainnav a, table.grid a {
+	color:#507A9A;
+	text-decoration: none;
+}
+div.navcontainer {
+	overflow:hidden;
+}
+ul.mainnav, ul.subnav {
+	margin:0;
+	padding:0;
+	display:inline;
+	list-style:none;
+	height:39px;
+	font-weight:bold;
+}
+.mainnav li {
+	padding:0;
+	margin:0 4px 0 0;
+	display:block;
+	float:left;
+}
+.subnav li {
+	padding:0;
+	margin:0 14px 0 0;
+	display:block;
+	float:right;
+}
+.mainnav li a {
+	margin:0;
+	display:block;
+	float:left;
+	font-size:14px;
+	padding:8px 10px;
+	text-decoration:none;
+	outline:none;
+}
+.subnav li a {
+	margin:0;
+	background:#9A3334;
+	color:#fff;
+	display:block;
+	float:left;
+	font-size:14px;
+	padding:8px 12px;
+	text-decoration:none;
+	outline:none;
+}
+.mainnav li.active a {
+	background-color:#fff;
+	color:#383838;
+	font-weight:bold;
+}
+.navlist {
+list-style:none outside none;
+margin:0 0 16px;
+padding:0;
+}
+
+.navlist li{
+display:inline;
+line-height:1.4em;
+list-style:square outside none;
+}
+.navlist li:before {
+	font-weight: bold;
+	content: " \B7  ";
+}
+.navlist li:first-child:before { content: ""; }
+
+div.left {
+	float:left;
+	overflow:hidden;
+	text-align:left;
+	width:54%;
+}
+h1.left {
+	float:left;
+	overflow:hidden;
+	text-align:left;
+	width:15%;
+}
+div.right {
+	float:right;
+	text-align:right;
+	width:44%;
+}
+.rightform {
+	margin:5px 0 0 0;
+	float:right;
+	text-align:right;
+	width:44%;
+}
+.welcomemsg {
+	color:#a1a1a1;
+	padding:9px 7px 0 0;
+	font-size:13px;
+	float:right;
+	text-align:right;
+}
+.grid {
+	background-color:#FFFFFF;
+	margin:5px 0;
+	width:100%;
+}
+.grid thead th {
+	background-color:#f3f3f3;
+	font-weight:bold;
+	letter-spacing:1px;
+	font-size: 12px;
+	padding:0 4px;
+	text-align:left;
+}
+.grid thead th.large {
+	width: 335px;
+}
+.grid thead th.tiny {
+	width:10px;
+}
+table.grid tr {
+	height:32px;
+}
+.grid tbody tr {
+	vertical-align: top;
+}
+.grid ul {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+.grid tr.even {
+	background:#F7F7F7;
+}
+.grid td {
+	font-weight:normal;
+	line-height:22px;
+	padding:4px;
+	border-bottom:1px solid #E5E5E5;
+}
+.grid td.meta {
+	border:none;
+}
+.grid p {
+	margin:0;
+}
+.hashbutton {
+	display:none;
+	padding:0 3px;
+	margin:0;
+}
+.attribute {
+	color:#818181;
+	font-size: 12px;
+}
+p.note {
+
+}
+span.link {
+	margin:0 20px;
+}
+ul.notice {
+	margin:0;
+	background-color:#B3EBB0;
+	border:2px solid #5AA356;
+	padding:8px;
+	margin-bottom:12px;
+}
+ul.notice li {
+	list-style-type:none;
+}
+ul.basic {
+    list-style: none outside none;
+    margin-left: 0;
+    padding-left: 14px;
+    text-indent: -1em;
+}
+.basic li {   
+	background: none repeat scroll 0 0 transparent;
+    padding-left: 0;
+    margin:5px 0;
+}
+.basic li:before {
+	content: "\203A \0020";
+}
+div.warning, td.warning {
+	background-color:#FFF7DE;
+	border:2px solid #F5E5B4;
+	margin-bottom:6px;
+}
+div.warning {
+	padding:8px;	
+}
+.pagination_control {
+	margin-top:10px;
+	font-size:13px;
+}
+.actions {
+	margin:10px 0 0 0;
+}
+#listform {
+	padding-top:20px;
+}
+#listform select, #downloadform select, #filterform select, ol select {
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:15px;
+	color:#545454;
+}
+#group_id {
+	width:300px;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size: 14px;
+}
+.clear, .clearer {
+	clear:both;
+}
+div.formlinks {
+	margin:15px 0 0 9px;
+}
+#filterform {
+	margin-bottom:12px;
+}
+div.content_left {
+	float:left;
+	width:60%;
+}
+div.content_right {
+	float:left;
+	width:30%;
+	margin-left:76px;
+}
+dl.infolist dd {
+	font-size:90%;
+	margin-bottom:12px;
+	margin-left:0;
+}
+dt {
+	margin:2px 0;
+}
+div.infobox {
+	border:1px solid #5F5F5F;
+	padding:10px;
+	margin:0 0 20px 0;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+}
+.infobox h1 {
+	font-size:14px;
+}
+#header h1 a {
+	color:#fff;
+}
+span.meta, td.meta {font-size:11px;}
+span.metanav {font-size:11px;}
+a.inactive {
+	color:#b7b7b7 !important;
+}
+
+/* User info */
+dl.userinfo {
+        border: 3px double #ccc;
+        font-size: 10px;
+        padding: 0.5em;
+}
+dl.userinfo  dt{
+        float: left;
+        clear: left;
+        width: 80px;
+        text-align:     right;
+}
+dl.userinfo dt:after {
+        content: ":";
+}
+dl.userinfo dd{
+        font-weight: bold;
+        margin: 0 0 0 100px;
+        padding: 0 0 0.5em 0;
+}

@@ -1,0 +1,109 @@
+<?= $this->doctype(); ?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<?= $this->headTitle() ?>
+<?= $this->headLink() ?>
+<?= $this->headMeta() ?>
+<?= $this->headStyle() ?>
+<?= $this->headScript() ?>
+<script type="text/javascript" src="/js/terena-min.js"></script>
+</head>
+<body>
+
+<?
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$controller = $request->getControllerName();
+?>
+<div id="container">
+	<div id="pageintro">
+
+	<div id="year"><a href="/"><?= $this->conferenceInfo('name'); ?></a></div>
+	<div id="nav-main">
+		<ul class="subnav">
+<!--
+	Not available yet here... terena specific
+		<li><a href="/webdemo/contacts">Contacts</a></li>
+		<li><a href="/webdemo/sponsors">Sponsors</a></li>
+-->
+		<? if ($this->authInfo()->isLoggedIn()): ?>
+		<li><a href="<?=$this->url(array('controller' => 'user', 'action' => 'edit', 'id' => $this->authInfo('user_id')), 'gridactions')?>"
+		title="<?= $this->translate('Manage account details'); ?>">Edit account</a></li>
+		<li id="Logout"><a href="<?= $this->url(array('controller' => 'user', 'action' => 'logout'), 'main-module') ?>">Sign out</a></li>
+		<? else: ?>
+		<li id="Login"><a href="<?= $this->url(array('controller' => 'user', 'action' => 'login'), 'main-module') ?>">Sign in</a></li>
+		<? endif; ?>
+		</ul>
+	</div>
+    <div id="section_bg">
+		<div id="nav-sub"><?= $this->navigation()
+         ->menu()
+         ->SetUlClass('mainnav')
+         ->setMaxDepth(0);?></div>
+    </div>
+
+	<div class="clearer"></div>
+	</div><!--page_intro-->
+
+	<div id="nav-section" class="helper">
+	<?=	$this->navigation()
+		->menu()
+		->setMinDepth(1)
+		->setRenderParents(false)
+        ->SetUlClass('nav3')
+		->setOnlyActiveBranch(true)
+	?>
+
+		<div id="help">
+
+		<div class="article">
+		<div class="article_start"></div>
+		<div class="ncontent">
+			<h1 class="light">What is this?</h1>
+			<p>This page aggregates TNC related content from different social media sites. It automatically refreshes every minute, and
+you can arrange this page by dragging and dropping the different sections to a new place to suit your needs.<br /><br />To join the converstation, follow the instructions below</p>
+			<ul>
+			<li>
+			<div class="meta"><img class="" src="/includes/<?= $this->conferenceInfo('abbreviation'); ?>/gfx/socialmedia/twitter.png" alt="twitter logo" /></div>
+			<div class="preview">Tweet about TNC using the #TNC2011 or #TNC2011Prague hashtag.</div>
+			</li>
+			<li class="clearer">
+			<div class="meta"><img class="" src="/includes/<?= $this->conferenceInfo('abbreviation'); ?>/gfx/socialmedia/wordpress-blue.png" alt="wordpress logo" /></div>
+			<div class="preview">If you write about us in your blog or want to write in <a href="http://myterena.wordpress.com">our blog</a> please <a href="mailto:coverage@terena.org">contact us</a>.</div>
+			</li>
+			<li class="clearer">
+			<div class="meta"><img class="" src="/includes/<?= $this->conferenceInfo('abbreviation'); ?>/gfx/socialmedia/flickr.png" alt="flickr logo" /></div>
+			<div class="preview">Join the <a href="http://www.flickr.com/groups/1646917@N24/">Flickr group</a>!</div>
+			</li>
+			<li class="clearer">
+			<div class="meta"><img class="" src="/includes/<?= $this->conferenceInfo('abbreviation'); ?>/gfx/socialmedia/youtube.png" alt="youtube logo" /></div>
+			<div class="preview">Tag your Youtube video with <?= $this->conferenceInfo('abbreviation'); ?></div>
+			</li>
+			</ul>
+		<div class="clearer"></div>
+		</div><!--ncontent-->
+
+		<div class="article_end"></div>
+		</div>
+		</div>
+	</div>
+	<div class="helpbutton">I want to join!</div>
+	<div id="pagebody">
+
+	<? if (!$this->threeColumnLayout): ?><div id="content"><? endif; ?>
+
+	<? if ($this->messages): ?>
+	<ul class="notice">
+	<? foreach ($this->messages as $k): ?>
+		<li><?= $k ?></li>
+	<? endforeach; ?>
+	</ul>
+	<? endif; ?>
+
+	<?= $this->layout()->content; ?>
+
+	<? if (!$this->threeColumnLayout): ?></div><? endif; ?>
+	</div>
+	<div class="clearer"></div>
+	<div id="footer">TRANS-EUROPEAN RESEARCH AND EDUCATION NETWORKING ASSOCIATION &middot; <a href="/p3p/">Privacy Policy</a></div>
+</div>
+</body>
+</html>

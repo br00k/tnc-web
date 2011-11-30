@@ -1,0 +1,10 @@
+Dear <?= $this->values['fname'] ?> <?= $this->values['lname'] ?>,
+
+You have been assigned to review the following submission:
+
+<?= $this->values['title'] ?>
+
+
+You can go to the review page directly by visiting this link:
+
+<?= $this->url(array('controller' => 'review', 'action' => 'new', 'id' => $this->values['submission_id']), 'reviewnew') ?>

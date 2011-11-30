@@ -1,0 +1,52 @@
+<div id="streams" class="streams">
+	<div id="str_details">
+		<h1 class="light">Watch Video Streams<span id="activestream" style="display:none;"><?= $this->activeStream ?></span>
+		<span id="quality" style="display:none;"><?= $this->quality ?></span></h1>
+		<ul id="medialist">
+		<? foreach ($this->roomsessions as $key => $item): ?>
+	    <li>
+	    <? if ($item['session']): ?>
+				<a href="<?= $this->url(array('controller'=>'session', 'action'=>'show', 'id'=>$item['session']['session_id']), 'oneitem') ?>">
+				<?= htmlspecialchars($item['session']['title']) ?></a>
+		<? elseif ($item['upcoming']['session']): ?>
+				<h3>Upcoming session:</h3>
+				<a href="<?= $this->url(array('controller'=>'session', 'action'=>'show', 'id'=>$item['upcoming']['session']['session_id']), 'oneitem') ?>">
+				<?= $item['upcoming']['session']['title'] ?></a><br />
+				Starts at: <?= $this->formatDate($item['upcoming']['session']['tstart'], null, 'HH:mm') ?>
+		<? else: ?>
+				No (more) sessions will be held in room <?=$item['roomname']?>
+		<? endif; ?>
+		<? if ($item['session']): ?>
+			<ul>
+			<? foreach ($item['speakers'] as $speaker): ?>
+			<li><a href="<?= $this->url(array('controller'=>'user', 'action'=>'show', 'id'=>$speaker['user_id']), 'oneitem') ?>">
+			<?= $speaker['fname'] . ' ' . $speaker['lname']?></a></li>
+			<? endforeach; ?>
+			</ul>
+		<? endif; ?>
+		<? if ($item['session']): ?>
+		<? $str = $item['session']['number'].$item['roomname']['abbr'] ?>
+		<a href="<?= $this->url(array('controller'=>'media', 'action'=>'stream', 'stream'=>$str), 'stream') ?>" class="stream<? if ($this->activeStream == $str): ?> active<? endif; ?>">Play Stream <?= $str ?></a><br /><br />
+		<? endif; ?>
+	    </li>
+		<? endforeach; ?>
+	  </ul>
+	</div><!--str_details-->
+
+    <div id="mediacontent">
+    	<form action="<?= $this->url() ?>" method="post" id="streamquality">
+    	<div>
+    	low<input type="radio" value="lo" id="radio-lo" name="quality" <? if ($this->quality == 'lo'): ?>checked="checked" <? endif; ?> />
+    	high<input type="radio" value="hi" id="radio-hi" name="quality" <? if ($this->quality == 'hi'): ?>checked="checked" <? endif; ?> />
+    	mobile<input type="radio" value="mo" id="radio-mobile" name="quality" <? if ($this->quality == 'mo'): ?>checked="checked" <? endif; ?> />
+    	</div>
+    	</form>
+    	<div id="mediacontent_container">
+      	<p>Select a stream from the left. <a href="http://www.adobe.com/products/flashplayer/" title="download flash">Adobe Flash Player</a> is required to watch these streams.</p>
+      </div>
+    </div>
+
+    <div class="clearer"></div>
+</div>
+<div class="clearer"></div>
+<div class="bot_crnrs"></div>

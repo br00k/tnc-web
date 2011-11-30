@@ -1,0 +1,107 @@
+<?= $this->doctype(); ?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<?= $this->headTitle() ?>
+<?= $this->headLink() ?>
+<?= $this->headMeta() ?>
+<?= $this->headStyle() ?>
+<?= $this->headScript() ?>
+<script type="text/javascript" src="/js/terena-min.js"></script>
+</head>
+<body>
+
+<?
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$controller = $request->getControllerName();
+?>
+<div id="container">
+	<a href="/core"><img src="/includes/<?= $this->conferenceInfo('abbreviation'); ?>/gfx/ribbon.png" class="about-core" alt="about-core" /></a>
+	<div id="pageintro">
+
+	<div id="year"><a href="/"><?= $this->conferenceInfo('name'); ?></a></div>
+	<div id="nav-main">
+		<ul class="subnav">
+<!--
+	Not available here, terena specific module
+		<li><a href="/webdemo/contacts">Contacts</a></li>
+		<li><a href="/webdemo/sponsors">Sponsors</a></li>
+-->
+		<? /* if ($this->authInfo()->isLoggedIn()): ?>
+		<li><a href="<?=$this->url(array('controller' => 'user', 'action' => 'edit', 'id' => $this->authInfo('user_id')), 'gridactions')?>"
+		title="<?= $this->translate('Manage account details'); ?>">Edit account</a></li>
+		<li id="Logout"><a href="<?= $this->url(array('controller' => 'user', 'action' => 'logout'), 'main-module') ?>">Sign out</a></li>
+		<? else: ?>
+		<li id="Login"><a href="<?= $this->url(array('controller' => 'user', 'action' => 'login'), 'main-module') ?>">Sign in</a></li>
+		<? endif; */ ?>
+		</ul>
+	</div>
+    <div id="section_bg">
+  		<div id="logo">
+  			<a title="Visit the TERENA website" href="http://www.terena.org"><img id="terena" src="/includes/<?= $this->conferenceInfo('abbreviation'); ?>/gfx/logos/terena_header.png" alt="TERENA logo" /></a>
+  		</div>
+		<div id="nav-sub"><?= $this->navigation()
+         ->menu()
+         ->SetUlClass('mainnav')
+         ->setMaxDepth(0);?></div>
+    </div>
+
+
+	<? /* if (in_array($controller, array('index', 'schedule', 'media', 'venue', 'participate'))): ?>
+	<div id="registration">
+		<a title="Please give your feedback" href="/core/feedback/participant">
+		<img src="/includes/<?= $this->conferenceInfo('abbreviation'); ?>/gfx/feedback.png" alt="Give your feedback about <?= $this->conferenceInfo('name'); ?>" class="register"/>
+		</a>
+	</div>
+	<? endif; */ ?>
+
+
+		<div class="clearer"></div>
+	</div><!--page_intro-->
+
+	<? if ($controller != 'index'): ?>
+	<div id="nav-section">
+	<?=	$this->navigation()
+		->menu()
+		->setMinDepth(1)
+		->setRenderParents(false)
+        ->SetUlClass('nav3')
+		->setOnlyActiveBranch(true)
+	?></div>
+	<? endif; ?>
+
+    <div id="ticker-search">
+	    <div id="newsticker">
+        	<a href="/webdemo/media/announcements"><img alt="placeholder" src="/includes/<?= $this->conferenceInfo('abbreviation'); ?>/gfx/icons/next.gif" id="nextimg" /></a>
+			<span id="section">Announcements</span> | <span class="news_text">&nbsp;</span>
+    	</div>
+
+	    <div id="searchbar">
+           <form action="/search/index.php" method="get" id="terenaSearch">
+         	  <div>
+              	<input type="image" value="Submit" src="/includes/<?= $this->conferenceInfo('abbreviation'); ?>/gfx/icons/search.png" id="submitsearch" alt="send" />
+              	<input type="text" maxlength="255" size="32" name="q" id="searchbox" />
+              </div>
+           </form>
+	    </div>
+    </div> <!-- ticker -->
+
+	<div id="pagebody">
+
+	<? if (!$this->threeColumnLayout): ?><div id="content"><? endif; ?>
+
+	<? if ($this->messages): ?>
+	<ul class="notice">
+	<? foreach ($this->messages as $k): ?>
+		<li><?= $k ?></li>
+	<? endforeach; ?>
+	</ul>
+	<? endif; ?>
+
+	<?= $this->layout()->content; ?>
+
+	<? if (!$this->threeColumnLayout): ?></div><? endif; ?>
+	<div class="clearer"></div>
+	</div>
+	<div id="footer">TRANS-EUROPEAN RESEARCH AND EDUCATION NETWORKING ASSOCIATION &middot; <a href="/p3p/">Privacy Policy</a></div>
+</div>
+</body>
+</html>

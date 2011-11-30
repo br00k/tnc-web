@@ -1,0 +1,27 @@
+<h1>Synchronize sessions (<?= $this->sessions ?>)</h1>
+<? if ($this->conferenceInfo()->hasGoogleCalendar()): ?>
+
+<? if ($this->response): ?>
+<? foreach ($this->response as $response): ?>
+<?= $response['_statusCode'] . ' ' . strtoupper($response['_statusReason']) ?> : <?= $response['title'] ?><br />
+<? endforeach; ?>
+<? else: 
+$eventlogModel = new Core_Model_Eventlog();
+if ($sync = $eventlogModel->getTimestampByType('Core_SessionController::syncAction') ): ?>
+<p class="notice">
+Last sync was: <?=$this->timeSince($sync->getTimestamp())?> ago, on <?=$this->formatDate($sync)?>
+</p>
+<? endif; ?>
+<p>This action will synchronise all CORE sessions with the following Google Calendar:<br /><br /><code><?= $this->conferenceInfo('gcal_url') ?></code><br /><br />
+Before running this script you should manually purge the calendar or any previous entries that might be in it. Only run this action if you find a discrepancy between Google Calendar and the CORE schedule.<br /><br />Would you like to proceed?
+</p>
+
+<form action="<?= $this->url(array('controller'=>'session', 'action'=>'sync', 'ack'=>true)) ?>" method="post">
+<input type="submit" name="ack" value="Yes, continue!" />&nbsp;&nbsp;
+<a href="<?= $this->url(array('controller'=>'session', 'action'=>'list')) ?>">No thanks</a>
+</form>
+<? endif; // response ?>
+
+<? else: // gcal_url ?>
+<p>Please <a href="<?= $this->url(array('controller'=>'conference', 'action'=>'edit', 'id'=>$this->conferenceInfo('conference_id')), 'gridactions') ?>">set all required properties</a> for Google Calendar (url, username, password)</p>
+<? endif; // gcal_url ?>

@@ -1,0 +1,7 @@
+<? if ($this->authInfo()->isLoggedIn()): ?>
+<p>You are logged in as ' 
+<?= $this->authInfo()->getFullName() ?>', but you do not have access to this resource.
+</p>
+<? else: ?>
+<p>Please <a href="/core/user/login<?= (isset($this->referrer)) ? '?redir='.$this->referrer : '' ?>">log in</a> to access this resource.</p>
+<? endif; ?>

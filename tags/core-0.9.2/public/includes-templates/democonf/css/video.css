@@ -1,0 +1,36 @@
+#medialist2 td {
+	border:0;
+	height:124px;
+	margin:0;
+	padding:8px;
+	width:150px;
+	color:#fff;
+}
+#str_details2 {
+	padding:0;
+	margin:0;
+}
+.article-vid {
+	color:#FFFFFF;
+	padding:0;
+	width:850px;
+}
+.vidstart {
+background:url("../gfx/layout/boxes/top850_b.gif") no-repeat scroll center top #505050;
+height:7px;
+}
+.vidstop {
+background:url("../gfx/layout/boxes/bottom850_b.gif") no-repeat scroll center bottom #505050;
+height:7px;
+margin-bottom:12px;
+}
+.vcontent {
+background-color:#505050;
+padding:1.5em;
+}
+#mediacontent2 {
+	padding-left:18px;
+}
+.article-vid a:link, .article-vid a:visited {
+color:#FFFFFF;
+}

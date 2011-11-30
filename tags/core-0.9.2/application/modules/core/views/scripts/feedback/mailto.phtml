@@ -1,0 +1,8 @@
+<h1>Send feebdack code to email</h1>
+<? if (isset($this->mailForm)): ?>
+<?= $this->mailForm ?>
+<? else: ?>
+<p>
+Successfully sent feebdack code to <?= $this->email ?> <a href="<?= $this->url(array('controller' => 'feedback', 'action' => 'mailto')) ?>">Send another one!</a>
+</p>
+<? endif; ?> 

@@ -1,0 +1,70 @@
+<?
+$files = $this->presentation->getFiles();
+$session = $this->presentation->getSession();
+$authors = ( !empty($this->presentation->authors) ) ? explode("\n", trim($this->presentation->authors)) : null;
+$speakers = $this->presentation->getSpeakers();
+?>
+<div class="content_left">
+<h1><? if ($this->presentation->image): ?><img src="/includes/core/gfx/gn2logo.gif" alt="<?= $this->presentation->image ?>" /> <? endif; ?><?= $this->presentation->title ?>
+<? if ($this->aclCheck('presentation', 'save')): ?>
+<span class="metanav"> <a href="<?= $this->url(array('controller' => 'presentation', 'action' => 'edit', 'id' => $this->presentation->presentation_id), 'gridactions') ?>">Edit</a></span>
+<? endif; ?></h1>
+<p><?= $this->presentation->abstract ?></p>
+
+<h2>Speakers</h2>
+<? foreach ( $speakers as $speaker):
+$url = $this->url(
+	array('controller'=>'user', 'action'=>'show', 'id'=>$speaker['user_id']),
+	'oneitem'
+);
+$speakerData = '<a href="'.$url.'">'.$speaker['fname'] .' '. $speaker['lname'] .'</a> '. $speaker['organisation'];
+?>
+<ul class="persons">
+<li><?= $speakerData ?></li>
+</ul>
+<? endforeach; ?>
+<? if ($authors): ?>
+<h2>Authors</h2>
+<? foreach ($authors as $author): ?>
+<ul>
+<li><?= htmlspecialchars($author) ?></li>
+</ul>
+<? endforeach; endif; ?>
+</div>
+
+<div class="content_right">
+<? if (isset($session['session_title'])): ?>
+<div class="infobox">
+	<h1>Part of session</h1>
+<a href="<?= $this->url(array('controller'=>'session', 'action'=>'show', 'id'=>$session['session_id']), 'oneitem') ?>" title="see session details"><?= htmlspecialchars($session['session_title']) ?></a>
+
+</div>
+<? endif; ?>
+
+<? if (count($files) > 0): ?>
+<div class="infobox">
+	<h1>Related documents</h1>
+<? foreach ( $files as $file):
+?>
+<ul>
+<?
+switch ($file['core_filetype']) {
+	case 'paper':
+		$type = 'Download paper';
+	break;
+	case 'slides':
+		$type = 'Download slides';
+	break;
+	case 'misc':
+		$type = 'Download extra file';
+	break;
+}
+?>
+<li><a class="paper" href="/getfile/<?= $file['file_id'] ?>"><?= $type ?></a> (<?= $this->fileSize($file['filesize'])?>)</li>
+</ul>
+<? endforeach; ?>
+</div>
+<? endif; ?>
+</div> <!-- content_right -->
+
+<div class="clear"></div>

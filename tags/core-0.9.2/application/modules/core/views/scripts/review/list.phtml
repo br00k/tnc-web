@@ -1,0 +1,80 @@
+<h1>Reviews</h1>
+<div id="submission_info" class="infobox">
+
+<? $this->userinfo = true // set this if you want to display userinfo as well ?>
+<?= $this->render('/_submit_details.phtml') ?>
+<? if ($this->authInfo()->isAdmin() ): ?>
+<?= $this->statusForm ?>
+<? endif; ?>
+</div>
+
+<?
+// @todo: this is legacy, replace this by a call to the view helper: getFormValue()
+$selectValues = Zend_Registry::get('formconfig')->formdefaults->review;
+// filter out hidden columns
+function globFilter($input)
+{
+	return !isset($input['hidden']);
+}
+$columns = array_filter($this->grid['cols'], 'globFilter');
+?>
+<? if ($this->grid['rows']->count() !== 0): ?>
+
+<? if ($this->tiebreaker): ?>
+<div class="warning">
+Reviewers disagree on this submission (<?= round($this->tiebreaker,2) ?> above the threshold)
+</div>
+<? endif; ?>
+
+<table class="grid" cellspacing="0">
+<thead>
+<tr>
+<th>&nbsp;</th>
+<? foreach ($this->grid['rows'] as $item): ?>
+<th>
+Review #<?= $item->review_id ?>
+<? if ( ($item->user_id == $this->authInfo('user_id')) || ( $this->authInfo()->isAdmin() ) ): ?>
+<span class="metanav">
+<a title="edit this review" href="<?= $this->url(array('controller' => 'review', 'action' => 'edit', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">Edit</a>
+<a title="delete this review" href="<?= $this->url(array('controller' => 'review', 'action' => 'delete', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">Delete</a>
+</span>
+<? endif; ?>
+</th>
+<? endforeach; ?>
+</tr>
+</thead>
+<tbody>
+
+<? foreach (array_keys($columns) as $col):  ?>
+  <tr class="<?= $this->cycle(array('odd', 'even'))->next() ?>">
+
+	<th><?= $columns[$col]['label'] ?></th>
+	<? foreach ($this->grid['rows'] as $item): ?>
+	<td>
+  	<?
+  	if ($col == 'user_id') {
+		echo '<a href="mailto:'.$item->email.'" title="send email">'.$item->getFullReviewerName().'</a>';
+  	} else {
+  		// transform values (integers) to text
+  		if ($transformValue = $selectValues->get($col)) {
+  			echo $transformValue->get($item->$col);
+  		} else {
+  			// apply modifiers
+  			if ( isset($columns[$col]['modifier']) ) {
+  			    echo call_user_func(array($this, $columns[$col]['modifier']), $item->$col);
+  			} else {
+  			    echo $item->$col;
+  			}
+  		}
+  	}
+  	?>
+	</td>
+	<? endforeach; ?>
+  </tr>
+<? endforeach; ?>
+</tbody>
+</table>
+<? endif; ?>
+<? if ( ($this->grid['rows'] instanceof Zend_Paginator) && ($this->grid['rows']->getTotalItemCount() > $this->grid['rows']->getItemCountPerPage()) ): ?>
+<?= $this->paginationControl($this->grid['rows'], 'Sliding', '_paginator.phtml', array('route_name' => 'grid')); ?>
+<? endif; ?>

@@ -1,0 +1,233 @@
+/**
+  *
+  * Schedule Lists
+  * -----------------------------
+  */
+#daysnav{
+	height:32px;
+}
+#daysnav li{
+    display: inline;
+    line-height: 1.4em;
+	list-style:square outside none;
+}
+#daysnav li.active {
+	font-weight: bold;
+}
+#daysnav li:before {
+	font-weight: bold;
+	content: " \B7  ";
+}
+#daysnav li:first-child:before { content: ""; }
+
+ul.persons li{
+	background:transparent url(../gfx/icons/person_off.gif) no-repeat scroll left top;
+	padding-left:1.75em;
+}
+ul.titles li{
+	background:transparent url(../gfx/icons/title_off.gif) no-repeat top left;
+	padding-left:1.4em;
+}
+td.eve_prog li {
+	background:none;
+	padding:0;
+	margin-bottom:12px;
+}
+td.eve_prog .meta {
+	background:transparent url(../gfx/icons/arrow.gif) no-repeat scroll left center;
+	padding-left:0.8em;
+}
+td.eve_prog li a {
+	text-decoration: underline;
+}
+ul.extras{
+	margin-top:0.67em;
+	margin-bottom:0.67em;
+}
+ul#view{margin-bottom:1em;}
+ul#view li{
+	display:inline;
+	background:none;
+}
+ul{
+	list-style:none;
+	padding:0;
+	margin:0;
+}
+/**
+  *
+  * Schedule links
+  * -----------------------------
+  */
+.person{
+	background:transparent url(../gfx/icons/person_off.gif) no-repeat top left;
+	padding-left:1.75em;
+}
+.personon{
+	background:transparent url(../gfx/icons/person_on.gif) no-repeat top left;
+	padding-left:1.75em;
+}
+.title{
+	background:transparent url(../gfx/icons/title_off.gif) no-repeat top left;
+	padding-left:1.75em;
+}
+.titleon{
+	background:transparent url(../gfx/icons/title_on.gif) no-repeat top left;
+	padding-left:1.75em;
+}
+.paper{
+	background:transparent url(../gfx/icons/paper_off.gif) no-repeat scroll left bottom;
+	padding-left:1.75em;
+}
+.arrow{
+	background:transparent url(../gfx/icons/arrow.gif) no-repeat scroll left center;
+	padding-left:0.8em;
+}
+.video{
+	background:transparent url(../gfx/icons/video_off.png) no-repeat scroll left bottom;
+	padding-left:1.67em;
+	padding-top:1.25em;
+}
+.star, .subscribe{
+	background:transparent url(../gfx/icons/star_off.gif) no-repeat scroll left center;
+	padding-top:0.2em;
+	padding-left:1.6em;
+}
+.staron, .subscribeon{
+	background:transparent url(../gfx/icons/star_on.gif) no-repeat scroll left center;
+	padding-top:0.2em;
+	padding-left:1.5em;
+}
+
+/**
+  *
+  * Schedule tables
+  * -----------------------------
+  */
+table.schedule{
+	width:100%;
+	border-top: 1px solid #cecece;
+	font-size: 1em; /*Necessary re-declaration of font-size in order to display correct font-size in both IE7 as well as Opera*/
+}
+table.schedule caption {
+	color:#5F5F5F;
+	font-size:15px;
+	padding:5px 0;
+	text-align:left;
+}
+.schedule thead th {
+	height:32px;
+	background-color:#e1e2e2;
+}
+.schedule th{
+	color:#5f5f5f;
+	text-align:center;
+}
+.schedule tbody{
+
+	background-color:#fff;
+	color:#5d6d5d;
+}
+.schedule tbody td{
+	border-right:1px solid #ecedee;
+	border-bottom:1px dashed #ecedee;/*D5D6D5; changed color because if IE7*/
+	height:127px;
+	padding: 0.83em 1.25em;
+	vertical-align:top;
+}
+.schedule .active {
+	background-color:#B3EBB0;
+}
+.small tr td {
+	height:1em;
+}
+td.eve_prog{
+	border-right:none;
+}
+#sortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+#sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; }
+#sortable li span { position: absolute; margin-left: -1.3em; }
+.ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+#sortable li span.delete { position:relative; float:right; }
+span.infotext {color: #777777;
+    font-size: 80%;
+    margin: 0;
+    padding: 1px 0 3px;}
+
+/**
+#pagebody{
+	background-color:#ECEDEE;
+	border:1px solid #C8C8C8;
+	margin-top:2em;
+	padding:1.5em;
+	color:#5f5f5f;
+}
+*/
+.lfloater {
+  float: left;
+  width: 25%;
+}
+/**
+  * Person details
+  *-----------------------------
+  **/
+div.grey_widebox {
+	background:transparent url(../gfx/layout/boxes/sides862g.gif) repeat-y scroll left top;
+	margin-bottom:1em;
+	margin-top:0.5em;
+	width:862px;
+}
+.grey_widebox .body {
+	background:transparent url(../gfx/layout/boxes/top862g.gif) no-repeat scroll left top;
+	padding:1.5em;
+}
+.grey_widebox .closer {
+	background:transparent url(../gfx/layout/boxes/bot862g.gif) no-repeat scroll left bottom;
+	height:0.67em;
+	width:862px;
+}
+#person_meta{
+	float:left;
+	width:250px;
+}
+.session_info {color:#000000;}
+dt {margin-bottom:2px;}
+dl.session_info dd {color:grey;margin-bottom:1.83em; margin-left:0;font-size:0.9em;}
+/*#speakers{
+	height:200px;
+}*/
+ul.longlist{
+	float:left;
+	width:168px;
+}
+ul.longlist li span.active {
+	font-weight: bold;
+}
+div#person_details{color:#5f5f5f; float:right;width:550px;}
+
+.rate_widget {
+    overflow:visible;
+    padding:5px;
+    position:relative;
+    width:120px;
+    height:16px;
+}
+.rate_widget div {
+    cursor: pointer;
+    float:left;
+    height:12px;
+    padding:2px;
+    width:16px;
+}
+.ratings_stars {
+    background: url('../../core/gfx/icons/star.gif') no-repeat;
+}
+.rate_widget .delete {
+    background: url('../../core/gfx/icons/delete.gif') no-repeat;
+}
+.ratings_vote {
+	background-position:0 -16px;
+}
+.ratings_over {
+	background-position:0 -32px;
+}

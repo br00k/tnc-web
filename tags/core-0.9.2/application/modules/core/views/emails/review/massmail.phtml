@@ -1,0 +1,15 @@
+<p>Dear <?= $this->values['fname'] ?> <?= $this->values['lname'] ?>,</p>
+<p>
+The <?= $this->conferenceInfo('name') ?> paper submission has just closed.
+You have been assigned to review the following <?= (count($this->values['submission']) > 1) ? 'submissions' : 'submission' ?> listed below.
+</p>
+
+<p>To download these papers as a single ZIP archive please <a href="<?=$this->url(array('controller' => 'submit', 'action' => 'download'), 'main-module') ?>">click on this link</a>.</p>
+
+
+<ul>
+<? foreach ($this->values['submission'] as $submission): ?>
+<? $link = $this->url(array('controller' => 'review', 'action' => 'new', 'id' => $submission['submission_id']), 'reviewnew') ?>
+<li><a href="<?=$link?>"><?= $submission['title'] ?></a></li>	
+<? endforeach; ?>
+</ul>

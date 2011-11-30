@@ -1,0 +1,48 @@
+<? if ($this->submissions != 0): ?>
+
+<h1>Send mail to <?= ($this->status == 1) ? 'accepted' : 'rejected' ?> papers [<?= $this->submissions; ?>]</h1>
+
+<?
+$eventlogModel = new Core_Model_Eventlog();
+if ($mailout = $eventlogModel->getTimestampByType(($this->status == 1) ? 'mail_accepted' : 'mail_rejected')): ?>
+<p class="notice">
+Last email run went out: <?=$this->timeSince($mailout->getTimestamp())?> ago, on <?=$this->formatDate($mailout)?>
+</p>
+<? endif; ?>
+<? if (!empty($this->sent)): ?>
+<? if ($this->dummy == 1): ?>
+Testrun complete; The following emails were generated, please check them before sending (to send: 
+<a href="<?= $this->url(array('controller' => 'submit', 'action' => 'mail', 'id' => $this->status), 'gridactions') ?>">go back</a> and uncheck the 'test run' box).
+<? else: ?>
+Successfully mailed <?= $this->submissions; ?> <?= ($this->status == 1) ? 'accepted' : 'rejected' ?> papers
+<? endif; ?>
+
+<ul>
+<? foreach ($this->sent as $submission): ?>
+<?
+$name = $submission['email']. '_'. sha1($this->conferenceInfo('abbreviation').':'.$submission['title']) .'.eml'
+?>
+<li>
+	<? if ($this->dummy == 1): ?>
+	<? // dummy is set: make hyperlinks to generated emails so user can review them ?>
+	<a href="/core/file/getstaticfile/file/<?= $name ?>/type/mail" title="download email">
+	<?= $submission['email'] ?> - <?= $submission['title'] ?>
+	</a>
+	<? else: ?>
+	<?= $submission['email'] ?> - <?= $submission['title'] ?>
+	<? endif; ?>
+</li>
+<? endforeach; ?>
+</ul>
+
+<? else: ?>
+<?
+$status = ($this->status == 1) ? 'accept' : 'reject';
+$template = $this->conferenceInfo('abbreviation') .'-submit-'. $status .'.phtml';
+?>
+<?= $this->mailForm ?>
+<? endif; ?>
+
+<? else: ?>
+<p>There are no papers with this status</p>
+<? endif; // there are submissions ?>

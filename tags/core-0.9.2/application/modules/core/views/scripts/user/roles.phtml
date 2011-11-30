@@ -1,0 +1,19 @@
+<h1>Manage this users roles</h1>
+<table class="reviewers">
+
+<? foreach ($this->roles as $role):  ?>
+<tr>
+<td><?= $role['name'] ?></td>
+<td><a title="remove role" href="<?= $this->url(array(
+		'controller' => 'user',
+		'action' => 'deleterole',
+		'id' => $role['user_role_id']
+	), 'main-module') ?>">x</a></td>
+</tr>
+
+<? endforeach; ?>
+<tr><td>
+<?= $this->userRoleForm ?>
+</td><td>&nbsp;</td>
+</tr>
+</table>

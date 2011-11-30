@@ -1,0 +1,10 @@
+<h1>Manage session  <span class="metanav"><a href="<?=$this->url(array('controller'=>'session', 'action'=>'show', 'id'=>$this->id), 'oneitem')?>" title="show all information off this session">Show</a></span></h1>
+<ul class="navlist">
+<li><a href="<?= $this->url(array('action' => 'edit', 'id' => $this->id), 'gridactions') ?>">details</a></li>
+<? if ($this->aclCheck('session', 'chairs')): ?>
+<li><a href="<?= $this->url(array('action' => 'chairs', 'id' => $this->id), 'main-module') ?>">chairs</a></li>
+<? endif; ?>
+<? if ($this->aclCheck('session', 'files')): ?>
+<li><a href="<?= $this->url(array('action' => 'files', 'id' => $this->id), 'main-module') ?>">files</a></li>
+<? endif; ?>
+</ul>

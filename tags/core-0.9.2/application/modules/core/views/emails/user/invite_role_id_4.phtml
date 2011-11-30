@@ -1,0 +1,14 @@
+<p>Dear <?= $this->values['fname'] . ' ' . $this->values['lname'] ?>,</p>
+
+<p>You recently submitted a paper for the <?= $this->conferenceInfo('name') ?>.
+The paper has been selected for review by the Programme Committee.</p>
+
+<p>In order for this review to take place, you need to have a CORE account,
+our online COnference REgistration tool. Please take a moment to read
+the following instructions carefully - they are not difficult, but there
+is only one opportunity to get it right as this account is automatically
+created the first time you login.
+</p>
+
+<?= $this->render('user/login_instructions.phtml') ?>
+<?= $this->render('user/signature.phtml') ?>
