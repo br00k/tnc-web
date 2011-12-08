@@ -13,3 +13,6 @@ You have been assigned to review the following <?= (count($this->values['submiss
 <li><a href="<?=$link?>"><?= $submission['title'] ?></a></li>	
 <? endforeach; ?>
 </ul>
+
+
+<?= $this->render($this->conferenceInfo('abbreviation').'-reviewers.phtml') ?>
