@@ -29,8 +29,8 @@ if (!empty($this->MySubmissionsToReview)):
 	$isTiebreaker = false;
 	
 	// build output
-	$completed = '<ul>';
-	$todo = '<ul id="myreviewstodo">';
+	$completed = '<ul class="basic">';
+	$todo = '<ul id="myreviewstodo" class="basic">';
 
 	foreach ($submissions['rows'] as $submission) {
 
