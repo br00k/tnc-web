@@ -50,7 +50,7 @@ class Core_Resource_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstr
 		$filter = new stdClass();
 		$filter->user_id = $userIds;
 		if ($userIds) {
-			$users = $userModel->getUsers(null, null, $filter);
+			$users = $userModel->getUsers(null, null, $filter, true);
 			return $users['rows'];
 		}
 		return false;
