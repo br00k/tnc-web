@@ -95,12 +95,15 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 	 * Get a list of users
 	 * @param		integer		$page	Page number to show
 	 * @param		array		$order	Array with keys 'field' and 'direction'
+	 * @param		boolean		$bypassAcl
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
 	 */
-	public function getUsers($paged, $order, $filter=null)
+	public function getUsers($paged, $order, $filter=null, $bypassAcl = false)
 	{
-		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
+		if (!$bypassAcl) {
+			if (!$this->checkAcl('list')) {
+        	    throw new TA_Model_Acl_Exception("Insufficient rights");
+        	}
         }
 
 		return $this->getResource('users')->getUsers($paged, $order, $filter);
