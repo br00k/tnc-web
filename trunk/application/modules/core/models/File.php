@@ -38,15 +38,14 @@ class Core_Model_File extends TA_Model_Acl_Abstract
     	if ($row === null) {
     		throw new TA_Model_Exception('id not found');
     	}
-
-		$identity = Zend_Auth::getInstance()->getIdentity();
-
-		$temp = array_filter($identity->getMySubmissions(), function($val) use ($row) {
-			return ($val['file_id'] == $row->file_id);
-		});
-
+		
 		// if file is submission and user is not allowed to get the specific type
     	if ( ($row->core_filetype == 'submission') && (!$this->checkAcl('getsubmission')) ) {
+			$identity = Zend_Auth::getInstance()->getIdentity();
+			
+			$temp = array_filter($identity->getMySubmissions(), function($val) use ($row) {
+				return ($val['file_id'] == $row->file_id);
+			});
     		// check if submission file is owned by this user
     		if (empty($temp)) {
 				throw new TA_Model_Exception('Insufficient rights for downloading this type of file');
