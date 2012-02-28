@@ -58,8 +58,10 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 		$locationFilter = new StdClass();
 		$locationFilter->filters = array('type' => 1);
 
-		$locations = $this->getResource('locations')->getLocations(null, null, $locationFilter);
-
+		$locations = $this->getResource('locations')->getLocations(
+			null, array('abbreviation', 'asc'), $locationFilter
+		);
+		
 		// get only timeslots of type 'presentation'
 		$timeslots = $this->getResource('timeslots')->getTimeslots(1);
 
