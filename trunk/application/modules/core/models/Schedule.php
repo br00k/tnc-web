@@ -185,8 +185,8 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 				);
 				if ($roomdata[$i]['upcoming']['session']) {
 				   $roomdata[$i]['upcoming']['speakers'] =
-				   	( $sp = isset($speakersUpcoming[$roomdata[$i]['session']['session_id']]) )
-					? $speakersUpcoming[$roomdata[$i]['session']['session_id']]
+				   	( isset($speakersUpcoming[$roomdata[$i]['upcoming']['session']['session_id']]) )
+					? $speakersUpcoming[$roomdata[$i]['upcoming']['session']['session_id']]
 					: null;
 				}
 			}
