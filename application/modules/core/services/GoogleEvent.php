@@ -123,6 +123,7 @@ class Core_Service_GoogleEvent {
 	 *
 	 * @param Zend_Gdata_Calendar_EventEntry Google Event
 	 * @return Zend_Gdata_Calendar_EventEntry Google Event
+	 * @todo remove hardcoded tnc2012 link
 	 *
 		["session_id"] => int(192)
 		["title"] => string(5) "test2"
@@ -149,7 +150,7 @@ class Core_Service_GoogleEvent {
 	    # Event content
 	    $content = $this->_values['description'];
 
-		$link = 'http://tnc2011.terena.org/core/session/'.$this->_values['session_id'];
+		$link = 'http://tnc2012.terena.org/core/session/'.$this->_values['session_id'];
         $content.=  "<br /><a href='$link'>More information about this event<a/>";
 
 		$event->content = $this->_service->newContent($content);
