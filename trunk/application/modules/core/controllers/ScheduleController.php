@@ -21,7 +21,7 @@
  * ScheduleController
  *
  * @package Core_Controllers
- */ 
+ */
 class Core_ScheduleController extends Zend_Controller_Action
 {
 
@@ -59,7 +59,25 @@ class Core_ScheduleController extends Zend_Controller_Action
 		} else {
 			$day = $this->_helper->conferenceInfo('start')->get('dd/MM/YYYY');
 		}
-		
+
+		if ($loc = $this->_getParam('loc')) {
+			$datearray = array(
+			  'year' => 2012,
+			  'month' => 5,
+			  'day' => 22,
+			  'hour' => 16,
+			  'minute' => 35,
+			  'second' => 10);
+    		$zd = new Zend_Date($datearray);
+			
+			$sessions = $this->_scheduleModel->getStreamData($zd, $loc);
+			$this->view->session = current($sessions);
+			
+			$this->_helper->layout->assign('customlayout', true);
+			$this->_helper->layout->setLayout('core/locationlayout');
+		}
+
+
 		// if feedback codes have been sent
 		if ($this->_helper->conferenceInfo()->isFeedbackOpen() ) {
 			$feedbackModel = new Core_Model_Feedback();
@@ -93,7 +111,6 @@ class Core_ScheduleController extends Zend_Controller_Action
 			'location' => $location
 		);
 
-		// @todo remove hardcoded directory path
 		if ($this->_getParam('size')) {
 			$this->_helper->layout->assign('customlayout', true);
 			$this->_helper->layout->setLayout('core/fullschedule');
