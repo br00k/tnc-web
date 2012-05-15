@@ -1,0 +1,65 @@
+<div id="container">
+<? 
+if ($this->session['session']) {
+	$session = $this->session;
+	$upcoming = false;
+} else {
+	$session = $this->session['upcoming'];
+	$upcoming = true;
+}
+
+?>
+
+<h3>
+<? 
+if ($upcoming) { 
+	echo 'Next '; 
+} else {
+	echo 'Current ';
+}
+?>Session
+<? 
+$tz = new Zend_Date();
+if ($upcoming) {   
+	echo 'starts in '.$this->timeUntil(new Zend_Date($session['session']['tstart']));
+} 
+?>
+</h3>
+<h1><?= $session['session']['title'] ?></h1>
+
+<!--<p><?= $session['session']['description'] ?></p>-->
+
+<h3>Presentations</h3>
+<ul>
+<? foreach ($session['presentations'] as $presentation): ?>
+<li><?= $presentation['title'] ?></li>
+<? endforeach; ?>
+</ul>
+<br />
+
+
+<div>
+<? foreach ($session['speakers'] as $speaker): ?>
+<div>
+<span><?= $speaker['fname'] ." ". $speaker['lname'] ?></span>
+<? if ($speaker['file_id']): ?>
+<div style="border: 1px solid black;
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -khtml-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            width: 260px;
+            height: 170px;
+            background:url(/core/file/<?= $speaker['file_id'] ?>)">
+</div>
+<? else: ?>
+<img alt="<?=$speaker['lname'] ?>" src="/includes/core/gfx/no_image.gif" />
+<? endif; ?>
+</div>
+<? endforeach; ?>
+
+</div>
+
+
+
+</div>
