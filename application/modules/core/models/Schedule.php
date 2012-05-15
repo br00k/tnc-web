@@ -17,7 +17,7 @@
  * @revision   $Id$
  */
 
-/** 
+/**
  *
  * @package Core_Model
  * @author Christian Gijtenbeek
@@ -61,7 +61,7 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 		$locations = $this->getResource('locations')->getLocations(
 			null, array('abbreviation', 'asc'), $locationFilter
 		);
-		
+
 		// get only timeslots of type 'presentation'
 		$timeslots = $this->getResource('timeslots')->getTimeslots(1);
 
@@ -144,9 +144,10 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 
 	/**
 	 * Get data needed for streaming page
-	 * used by web module
+	 *
+	 *
 	 */
-	public function getStreamData(Zend_Date $date=null)
+	public function getStreamData(Zend_Date $date=null, $location=null)
 	{
 		// get current and upcoming sessions
 		$sessions = $this->getResource('sessionsview')->getSessionsByDate($date);
@@ -156,10 +157,27 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 		$speakersCurrent = $sessions->getAllSpeakers();
 		$speakersUpcoming = $sessionsUpcoming->getAllSpeakers();
 
+		if ($location) {
+			$presentationsCurrent = $sessions->getAllPresentations();
+			$presentationsUpcoming = $sessionsUpcoming->getAllPresentations();
+		}
+
 		// get locations
 		$locationFilter = new StdClass();
-		$locationFilter->filters = array('type' => 1);
+		if ($location) {
+			$locationFilter->filters = array('abbreviation' => $location);
+		} else {
+			$locationFilter->filters = array('type' => 1);
+		}
 		$locations = $this->getResource('locations')->getLocations(null, null, $locationFilter);
+
+		if ($locations['rows']->count() === 0) {
+			if (isset($location)) {
+				throw new TA_Exception('Location '. $location .' not found, maybe use capital?');
+			} else {
+				throw new TA_Exception('no locations defined');
+			}
+		}
 
 		// build roomdata
 		$i=0;
@@ -177,6 +195,11 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 					( isset($speakersCurrent[$roomdata[$i]['session']['session_id']]) )
 					? $speakersCurrent[$roomdata[$i]['session']['session_id']]
 					: null;
+				$roomdata[$i]['presentations'] =
+					( isset($presentationsCurrent[$roomdata[$i]['session']['session_id']]) )
+					? $presentationsCurrent[$roomdata[$i]['session']['session_id']]
+					: null;
+
 			} else {
 				$roomdata[$i]['upcoming']['session'] = current(
 					array_filter($sessionsUpcoming->toArray(), function($val) use ($location) {
@@ -187,7 +210,12 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 				   $roomdata[$i]['upcoming']['speakers'] =
 				   	( isset($speakersUpcoming[$roomdata[$i]['upcoming']['session']['session_id']]) )
 					? $speakersUpcoming[$roomdata[$i]['upcoming']['session']['session_id']]
-					: null;
+					: null;					
+
+				   $roomdata[$i]['upcoming']['presentations'] =
+				   	( isset($presentationsUpcoming[$roomdata[$i]['upcoming']['session']['session_id']]) )
+					? $presentationsUpcoming[$roomdata[$i]['upcoming']['session']['session_id']]
+					: null;				
 				}
 			}
 			$i++;
