@@ -41,7 +41,7 @@ $weekday = $zd->get('EEEE dd/MM');
 
 				<a class="sched_title" title="Show information about this session"
 				href="<?= $this->url(array('controller'=>'session', 'action'=>'show', 'id'=>$sess['session_id']), 'oneitem') ?>">
-				<?= $this->timeslots[$date][$timeslot_id]['number'] . $sess['loc_abbr'] . ' - ' . htmlspecialchars($sess['title']) ?></a>
+				<?= ($this->timeslots[$date][$timeslot_id]['number'] !== 0) ? $this->timeslots[$date][$timeslot_id]['number']:''; ?><?= $sess['loc_abbr'] . ' - ' . htmlspecialchars($sess['title']) ?></a>
                 <br /><br />
 
 				<? if ( ($this->filters['view'] == 'speakers') && ($sess['speakers']) ): ?>
