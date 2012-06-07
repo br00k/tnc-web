@@ -3,7 +3,7 @@
 <div><input name="action" type="hidden" value="feedback" /></div>
 <? foreach ($this->schedule as $date => $day): ?>
 <?
-$zd = new Zend_Date($date);	
+$zd = new Zend_Date($date);
 $weekday = $zd->get('EEEE dd/MM');
 ?>
 <table class="schedule" cellspacing="0" cellpadding="0">
@@ -14,7 +14,7 @@ $weekday = $zd->get('EEEE dd/MM');
     <? $range = $this->formatDate($slot['tstart'], null, 'H:m') . ' - ' . $this->formatDate($slot['tend'], null, 'H:m'); ?>
 	<th style="width: 20%;" <? if ($this->filters['timeslot'] == $slot['timeslot_id']): ?>class="active"<? endif; ?>><?= $range ?></th>
 	<? endforeach; // timeslots ?>
-	
+
 	<? if (isset($this->events[$date])): ?>
 	<th style="width: 20%;" class="eve_prog">Extra events</th>
 	<? endif; ?>
@@ -22,6 +22,10 @@ $weekday = $zd->get('EEEE dd/MM');
 	</thead>
     <tbody>
 	<? $i=0; foreach ($day as $loc_id => $location): $i++; ?>
+	<? 	
+	/* don't display empty rows for non-admins */
+	if ( ($this->authInfo()->isAdmin()) || (count(array_filter($location, 'is_null')) != count($location)) ):
+	?>
 		<tr class="location<?=$loc_id?> <? if ($this->filters['location'] == $loc_id): ?>active<? endif; ?>">
 		<? foreach ($location as $timeslot_id => $sess): ?>
 			<td <? if (isset($sess['cat_id'])): ?> class="sess_catid_<?=$sess['cat_id']?>"<? endif; ?>
@@ -104,6 +108,7 @@ $weekday = $zd->get('EEEE dd/MM');
 			</td>
    		<? endif; ?>
     </tr>
+    <? endif; ?>
 	<? endforeach; // locations ?>
 	</tbody>
 </table>
