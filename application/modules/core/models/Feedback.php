@@ -17,7 +17,7 @@
  * @revision   $Id$
  */
 
-/** 
+/**
  *
  * @package Core_Model
  * @author Christian Gijtenbeek
@@ -161,7 +161,7 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 				'lname' => 'Gijtenbeek'
 			)
 		);
-		
+
 		// generate feedback codes
 		$codes = $this->getResource('feedbackcodes')->createFeedbackCodes(
 			count($participants),
@@ -280,4 +280,24 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 		return $this->getResource('feedbackpresentations')->getPresentationRatingsByCodeId($codeId);
 	}
 
+	/**
+	 * Download feedback results
+	 *
+	 * @param	string		$section	Name of the feedback section
+	 * @return	array
+	 */
+	public function getResults($section)
+	{
+		$method = 'getFeedback'.ucfirst($section);
+
+		$results = $this->getResource('feedback'.$section)->$method();
+		return $results;
+	}
+
 }
+
+
+
+
+
+
