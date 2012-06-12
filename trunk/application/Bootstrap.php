@@ -86,7 +86,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 		$writer->setSubjectPrependText('CORE Error');
 		$writer->addFilter(Zend_Log::CRIT);
-		$log->addWriter($writer);
+		#$log->addWriter($writer);
 	}
 
 	/**
@@ -363,6 +363,21 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			'core/feedback/%s'
     	);
     	$router->addRoute('feedbacksection', $mainRoute->chain($route));
+    	
+		// feedback download results
+      	$route = new Zend_Controller_Router_Route_Regex(
+        	'core/feedback/getresults/(general|participant|logistics|programme)',
+			array(
+				'module'	=> 'core',
+				'controller'=> 'feedback',
+				'action'	=> 'getresults'
+			),
+			array(
+				1 => 'section'
+			),
+			'core/feedback/getresults/%s'
+    	);
+    	$router->addRoute('feedbackgetresults', $mainRoute->chain($route));    	
 
 	}
 
