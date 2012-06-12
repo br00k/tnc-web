@@ -43,4 +43,34 @@ class Core_Resource_Feedbackparticipant extends TA_Model_Resource_Db_Table_Abstr
 			->where("id = ?", $id)
 		);
 	}
+
+	/**
+	 * Gets list of general
+	 *
+	 * @return array
+	 */
+	public function getFeedbackparticipant()
+	{
+		$select = $this->select();
+
+		$rowset = $this->fetchAll($select)->toArray();
+		$return = array();
+
+		foreach ($rowset as $key => $row) {
+			if (!isset($headers)) {
+				$headers = array_keys($row);
+			}
+			foreach ($row as $column => $value) {
+				$data = @unserialize($value);
+				if ($value === 'b:0;' || $data !== false) {
+				    $return[$key][$column] = implode('|', $data);
+				} else {
+					$return[$key][$column] = $value;
+				}
+			}
+		}
+
+		array_unshift($return, $headers);
+		return $return;
+	}	
 }
