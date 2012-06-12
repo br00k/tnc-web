@@ -227,7 +227,7 @@ class Core_FeedbackController extends Zend_Controller_Action
 				'dummy' => $request->getParam('dummy'),
 				'template' => 'feedback/codes',
 				'html' => true,
-				'subject' => $conference['abbreviation'] . ' Feedback',
+				'subject' => strtoupper($conference['abbreviation']) . ' Feedback',
 				'to_email' => $participant['email'],
 				'to_name' => $participant['fname'].' '.$participant['lname']
 			), $participant);
@@ -274,6 +274,31 @@ class Core_FeedbackController extends Zend_Controller_Action
 		), array('uuid' => $this->_feedbackModel->createFeedbackCode()) );
 
 		$this->view->email = $form->getValue('email');
+	}
+
+	/**
+	 * Download feedback results
+	 *
+	 */
+	public function getresultsAction()
+	{
+		$request = $this->getRequest();
+		$section = $request->getParam('section');
+
+		$this->_helper->viewRenderer->setNoRender();
+		Zend_Controller_Action_HelperBroker::addHelper(new TA_Controller_Action_Helper_SendFile());
+
+		$results = $this->_feedbackModel->getResults($section);
+
+		$fname = '/tmp/'.$section.'.csv';
+		$fp = fopen($fname, 'w');
+
+		foreach ($results as $fields) {
+		    fputcsv($fp, $fields);
+		}
+
+		fclose($fp);
+    	$this->_helper->SendFile($fname, 'text/csv');
 	}
 
 }
