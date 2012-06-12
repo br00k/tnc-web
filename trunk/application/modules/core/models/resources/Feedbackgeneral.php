@@ -17,7 +17,7 @@
  * @revision   $Id$
  */
 
-/** 
+/**
  *
  * @package Core_Resource
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
@@ -42,5 +42,36 @@ class Core_Resource_Feedbackgeneral extends TA_Model_Resource_Db_Table_Abstract
 		return $this->fetchRow($this->select()
 			->where("id = ?", $id)
 		);
+	}
+
+
+	/**
+	 * Gets list of general feedback
+	 *
+	 * @return array
+	 */
+	public function getFeedbackgeneral()
+	{
+		$select = $this->select();
+
+		$rowset = $this->fetchAll($select)->toArray();
+		$return = array();
+
+		foreach ($rowset as $key => $row) {
+			if (!isset($headers)) {
+				$headers = array_keys($row);
+			}
+			foreach ($row as $column => $value) {
+				$data = @unserialize($value);
+				if ($value === 'b:0;' || $data !== false) {
+				    $return[$key][$column] = implode('|', $data);
+				} else {
+					$return[$key][$column] = $value;
+				}
+			}
+		}
+
+		array_unshift($return, $headers);
+		return $return;
 	}
 }
