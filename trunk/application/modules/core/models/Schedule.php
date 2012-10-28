@@ -38,6 +38,7 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 	 *
 	 * @param		integer		$conferenceId			conference_id
 	 * @param		array		$filter		filters to apply to schedule
+	 * @param		boolean		$mobile		switch to ouput optimized for mobile device?
 	 *
 	 * foreach($groupedTimeslots as $value => $items)
 	 * echo 'Group ' . $value . ' has ' . count($items) . ' ' . (count($items) == 1 ? 'item' : 'items') . "\n";
@@ -48,11 +49,11 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 	 * @todo cache the output of this method
 	 * @return		array		Schedule
 	 */
-	public function getSchedule($conferenceId = null, $filter = null)
+	public function getSchedule($conferenceId = null, $filter = null, $mobile = false)
 	{
 
 		$schedule = array();
-
+		$scheduleMobile = array();
 		$groupedTimeslots = array();
 
 		$locationFilter = new StdClass();
@@ -75,7 +76,10 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 		if ($sessions->count() !== 0) {
 			// get presentations or speakers based on view filter
 			if ($filter['view'] == 'titles') {
-				$presentations = $sessions->getAllPresentations();
+				$presentations = $sessions->getAllPresentations(($mobile)?false:true);
+				if ($mobile) {
+					$speakers = $sessions->getAllSpeakers(false, true);
+				}
 			} elseif ($filter['view'] == 'speakers') {
 				$speakers = $sessions->getAllSpeakers();
 			}
@@ -98,7 +102,6 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 
 			$timeslots = $groupedTimeslots[$day];
 			foreach ($locations['rows'] as $location) {
-
 				foreach ($timeslots as $timeslot) {
 					// filter out session array by specific timeslot/location combo
 					// the 'use' makes the variables accessible in the anonymous function scope
@@ -113,21 +116,40 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 					}
 					$schedule[$day][$location->location_id][$timeslot['timeslot_id']] = $session ? $session : null;
 
-					if ($session) {
-						if ($filter['view'] == 'speakers') {
-							$schedule[$day][$location->location_id][$timeslot['timeslot_id']]['speakers'] =
-							(isset($speakers[$session['session_id']]))
-								? $speakers[$session['session_id']]
-								: null;
-						} else {
-							$schedule[$day][$location->location_id][$timeslot['timeslot_id']]['presentations'] =
-							(isset($presentations[$session['session_id']]))
-								? $presentations[$session['session_id']]
-								: null;
+					if ($mobile) {
+						$startZd = new Zend_Date($timeslot['tstart'], Zend_Date::ISO_8601,Zend_Registry::get('Zend_Locale'));
+						$start = $startZd->get('HH:mm');
+						$endZd = new Zend_Date($timeslot['tend'], Zend_Date::ISO_8601,Zend_Registry::get('Zend_Locale'));
+						$end = $endZd->get('HH:mm');
+						if ($session) {
+							if (isset($presentations[$session['session_id']])) {			
+								if (isset($speakers[$session['session_id']])) {
+									// add speakers to presentation (use reference to modify array)
+									foreach ($presentations[$session['session_id']] as &$pres) {
+										$pres['speakers'] = $speakers[$session['session_id']][$pres['presentation_id']];
+									}
+								}
+								$session['presentations'] = $presentations[$session['session_id']];
+
+								$session['time_start'] = $startZd->get('EEEE H:mm');
+							}
+							$scheduleMobile[$day][$start .' - '. $end][] = $session;
+						}
+					} else {
+						if ($session) {
+							if ($filter['view'] == 'speakers') {
+								$val = (isset($speakers[$session['session_id']]))
+									? $speakers[$session['session_id']]
+									: null;
+								$schedule[$day][$location->location_id][$timeslot['timeslot_id']]['speakers'] = $val;
+							} else {
+								$val = (isset($presentations[$session['session_id']]))
+									? $presentations[$session['session_id']]
+									: null;
+								$schedule[$day][$location->location_id][$timeslot['timeslot_id']]['presentations'] = $val;
+							}
 						}
 					}
-
-
 				}
 
 			}
@@ -138,9 +160,14 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 			$scheduleDay[$filter['day']] = $schedule[$filter['day']];
 			return $scheduleDay;
 		}
-		return $schedule;
+		if ($mobile) {
+			return $scheduleMobile;
+		} else {
+			return $schedule;
+		}
 
 	}
+
 
 	/**
 	 * Get data needed for streaming page
