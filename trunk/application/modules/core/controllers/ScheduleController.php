@@ -35,6 +35,11 @@ class Core_ScheduleController extends Zend_Controller_Action
 			$this->view->headScript()->appendFile('/js/move-session.js');
 		}
 		$this->view->threeColumnLayout = true;
+		
+		// add context switching for mobile app
+		$ajaxContext = $this->_helper->contextSwitch();
+		$ajaxContext->addActionContext('list', 'json')
+					->initContext();		
 	}
 
 	public function indexAction()
@@ -76,7 +81,8 @@ class Core_ScheduleController extends Zend_Controller_Action
 			$this->_helper->layout->assign('customlayout', true);
 			$this->_helper->layout->setLayout('core/locationlayout');
 		}
-
+		
+		$mobile = $this->_getParam('mobile', false);
 
 		// if feedback codes have been sent
 		if ($this->_helper->conferenceInfo()->isFeedbackOpen() ) {
@@ -92,7 +98,7 @@ class Core_ScheduleController extends Zend_Controller_Action
 		$location = $this->_getParam('l', null);
 
 		$this->view->personal = $personal = $this->_getParam('personal', false);
-		$this->view->schedule = $this->_scheduleModel->getSchedule(null, array('view' => $view, 'day' => $day, 'personal' => $personal));
+		$this->view->schedule = $this->_scheduleModel->getSchedule(null, array('view' => $view, 'day' => $day, 'personal' => $personal), $mobile);
 		$this->view->days = $this->_scheduleModel->getDays();
 		$this->view->timeslots = $this->_scheduleModel->getTimeslots();
 
