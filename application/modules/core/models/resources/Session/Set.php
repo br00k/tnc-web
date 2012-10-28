@@ -107,9 +107,11 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 	/**
 	 * Get all presentations grouped by session_id/presentation_id
 	 *
+	 * @param	boolean		$presentationKey	Add presentation_id as array key 
+	 *
 	 * @return array
 	 */
-	public function getAllPresentations()
+	public function getAllPresentations($presentationKey=true)
 	{
 		$list = array();
 
@@ -126,7 +128,11 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 		$presentations = $this->getTable()->getAdapter()->fetchAll($query);
 
 		foreach ($presentations as $presentation) {
-			$list[$presentation['session_id']][$presentation['presentation_id']] = $presentation;
+			if ($presentationKey) {
+				$list[$presentation['session_id']][$presentation['presentation_id']] = $presentation;
+			} else {
+				$list[$presentation['session_id']][] = $presentation;
+			}			
 		}
 
 		return $list;
@@ -137,9 +143,11 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 	 *
 	 * @param	boolean		$unique		Set to true if you want to retrieve unique speakers
 	 *									because multiple presentations can have the same speaker
+	 * @param	boolean		$presentationKey	Add presentation_id as array key 
+	 *
 	 * @return array
 	 */
-	public function getAllSpeakers($unique = false)
+	public function getAllSpeakers($unique = false, $presentationKey = false)
 	{
 		$list = array();
 		$method = ($unique) ? 'fetchAssoc' : 'fetchAll';
@@ -156,7 +164,11 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 		$speakers = $this->getTable()->getAdapter()->$method($query);
 
 		foreach ($speakers as $speaker) {
-			$list[$speaker['session_id']][$speaker['user_id']] = $speaker;
+			if ($presentationKey) {
+				$list[$speaker['session_id']][$speaker['presentation_id']][] = $speaker;
+			} else {
+				$list[$speaker['session_id']][$speaker['user_id']] = $speaker;
+			}
 		}
 
 		return $list;
