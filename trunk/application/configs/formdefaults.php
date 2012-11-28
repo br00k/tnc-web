@@ -85,6 +85,12 @@ return array(
 			'publish_paper' => array(
 				'yes' => 'yes',
 				'no' => 'no'
+			),
+			'topic' => array(
+				'nren' => 'NREN 3.0',
+				'openscience' => 'OPEN SCIENCE, BIG DATA',
+				'solutions' => 'CREATING SOLUTIONS',
+				'infra' => 'CREATING INFRASTRUCTURES'
 			)
 		),
 
