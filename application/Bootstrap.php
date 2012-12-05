@@ -266,7 +266,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			'%s/%s/%s/%d/%s'
     	);
     	$router->addRoute('gridactions', $mainRoute->chain($gridActionsRoute));
-    	
+
       	$route = new Zend_Controller_Router_Route_Regex(
         	'core/review/list/(\d+)',
 			array(
@@ -281,6 +281,21 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			'core/review/list/%d'
     	);
     	$router->addRoute('reviewlist', $mainRoute->chain($route));
+
+      	$route = new Zend_Controller_Router_Route_Regex(
+        	'core/review/listpersonal/(\d+)',
+			array(
+				'lang'		=> ':lang',
+				'module'	=> 'core',
+				'controller'=> 'review',
+				'action'	=> 'listpersonal'
+			),
+			array(
+				1 => 'id'
+			),
+			'core/review/listpersonal/%d'
+    	);
+    	$router->addRoute('reviewlistpersonal', $mainRoute->chain($route));
 
 	   	$route = new Zend_Controller_Router_Route(
         	'/core/review/new/:id',
@@ -363,7 +378,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			'core/feedback/%s'
     	);
     	$router->addRoute('feedbacksection', $mainRoute->chain($route));
-    	
+
 		// feedback download results
       	$route = new Zend_Controller_Router_Route_Regex(
         	'core/feedback/getresults/(general|participant|logistics|programme)',
@@ -377,7 +392,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			),
 			'core/feedback/getresults/%s'
     	);
-    	$router->addRoute('feedbackgetresults', $mainRoute->chain($route));    	
+    	$router->addRoute('feedbackgetresults', $mainRoute->chain($route));
 
 	}
 
