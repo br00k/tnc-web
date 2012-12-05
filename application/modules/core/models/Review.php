@@ -299,8 +299,10 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 			? $userId
 			: Zend_Auth::getInstance()->getIdentity()->user_id;
 
-		$user = $this->getResource('users')->getUserById($userId);
-
+		if (!$user = $this->getResource('users')->getUserById($userId)) {
+			throw new Exception('There is no user with id '. $userId );
+		}
+		
 		return $this->_calculateTiebreakers(
 			$user->getSubmissionsToReview(true, $excludeReviewed),
 			$excludeNoTiebreakNeeded
