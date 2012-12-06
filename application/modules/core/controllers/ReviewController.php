@@ -133,13 +133,16 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 		$this->view->MySubmissionsToReview = $this->_reviewModel->getPersonalTiebreakers();
 		return $this->render('list-personal');
 	}
-	
+
 	public function listpersonalAction()
-	{
+	{	
 		$this->view->headScript()->appendFile('/js/reviewtoggler.js');
-		$this->view->MySubmissionsToReview = $this->_reviewModel->getPersonalTiebreakers(
-			$this->getRequest()->getParam('id')
-		);
+		if ($this->getRequest()->isPost()) {
+			$this->view->user_id = $userId = $this->getRequest()->getParam('user_id');
+			$this->view->MySubmissionsToReview = $this->_reviewModel->getPersonalTiebreakers(
+				$userId
+			);
+		} 
 		return $this->render('list-personal');
 	}
 
