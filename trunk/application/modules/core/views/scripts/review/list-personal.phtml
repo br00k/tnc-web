@@ -21,7 +21,9 @@ if (!empty($this->MySubmissionsToReview)):
 
 	$reviewModel = new Core_Model_Review();
 	$filter = array();
-	$filter['user_id'] = Zend_Auth::getInstance()->getIdentity()->user_id;
+	$filter['user_id'] = ( ($this->authInfo()->isAdmin() ) && ($this->user_id) )
+		? $this->user_id 
+		: Zend_Auth::getInstance()->getIdentity()->user_id;
 	// get all reviews that I did
 	$reviews = $reviewModel->getReviews(null, null, $filter, true);
 
