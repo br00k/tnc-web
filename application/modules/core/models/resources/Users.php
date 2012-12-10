@@ -116,6 +116,22 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 
 		return $row;
 	}
+	
+	/**
+	 * Search for string within user table
+	 * @param	string		$search		String to search for in user table
+	 * @return	array		Array of user_id
+	 */
+	 public function searchUser($string)
+	 {
+	 	$query = "select user_id from users where lname ilike '%".$string ."%' 
+	 	or fname ilike '%".$string ."%'";
+		$users = $this->getAdapter()->fetchCol(
+			$query
+		);
+		
+		return $users; 	
+	 }
 
 	/**
 	 * Get user by invite UUID
