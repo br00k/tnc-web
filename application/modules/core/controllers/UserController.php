@@ -80,9 +80,14 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 		if ($this->getRequest()->getParam('reset_search')) {
 			unset($session->filters);
 			unset($session->searchString);
-		} else if ($searchString = $this->getRequest()->getParam('search')) {
-			$session->filters->user_id = $this->_userModel->searchUser($searchString);
+		} else if ($searchString = $this->getRequest()->getParam('search')) {			
 			$session->searchString = $searchString;
+			if ($userIds = $this->_userModel->searchUser($searchString)) {
+				$session->filters->user_id = $userIds;	
+			} else {
+				unset($session->filters->user_id);			
+				$session->searchString = null;
+			}
 		}
 		
 		$this->view->searchString = $session->searchString;
