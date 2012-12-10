@@ -89,7 +89,19 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 
 		return $userArray;
 	}
-
+	
+	/**
+	 * Search for string within user table
+	 * @param	string		$search		String to search for in user table
+	 * @return	array		Array of user_id
+	 */
+	public function searchUser($search)
+	{
+		if (!$this->checkAcl('searchUser')) {
+            throw new TA_Model_Acl_Exception("Insufficient rights");
+        }	
+        return $this->getResource('users')->searchUser($search);        
+	}
 
 	/**
 	 * Get a list of users
