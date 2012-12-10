@@ -11,7 +11,7 @@ $columns = array_filter($this->grid['cols'], 'globFilter');
 <?		
 $searchField = $this->formText('search',
 	$this->searchString,
-	array("onchange" => "this.form.submit();", "class" => "medium")
+	array("onchange" => "this.form.submit();", "class" => "medium", "title" => "search user")
 );
 $resetButton = $this->formSubmit('reset_search',
 	'reset',
