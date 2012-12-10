@@ -130,7 +130,9 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 			$query
 		);
 		
-		return $users; 	
+		if (!empty($users)) { 
+			return $users;
+		}
 	 }
 
 	/**
