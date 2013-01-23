@@ -3,7 +3,7 @@
 <div><input name="action" type="hidden" value="feedback" /></div>
 <? foreach ($this->schedule as $date => $day): ?>
 <?
-$zd = new Zend_Date($date);
+$zd = new Zend_Date($date, "dd/MM/YYYY");
 $weekday = $zd->get('EEEE dd/MM');
 ?>
 <table class="schedule" cellspacing="0" cellpadding="0">
