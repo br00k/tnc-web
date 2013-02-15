@@ -18,7 +18,7 @@
  */
 
 /**
- * Make sure session chairs can only change sessions assigned to them
+ * Make sure presenters can only edit their own presentations
  * Also checks if presentation is edited within edit deadline
  *
  * @package Core_Model
