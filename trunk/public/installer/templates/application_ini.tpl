@@ -30,6 +30,7 @@ zend.location = "{zend_location}"
 [production]
 Autoloadernamespaces[] = "Zend_"
 Autoloadernamespaces[] = "TA_"
+Autoloadernamespaces[] = "HTMLPurifier"
 
 phpSettings.display_startup_errors = 0
 phpSettings.display_errors = 0
