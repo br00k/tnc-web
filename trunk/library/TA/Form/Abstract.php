@@ -105,8 +105,8 @@ class TA_Form_Abstract extends Zend_Form
 		   'Form'
 		));
 
-		// Strip whitespace from all elements
-		$this->addElementFilters(array('StringTrim'));
+		// filter nasty elements
+		$this->addElementFilters(array('StringTrim', new TA_Filter_HTMLPurifier()));
 	}
 
 
