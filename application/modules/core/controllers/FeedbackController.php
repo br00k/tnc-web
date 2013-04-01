@@ -194,6 +194,25 @@ class Core_FeedbackController extends Zend_Controller_Action
 		$this->view->rating = $this->_feedbackModel->ratePresentation(
 			$id, $feedbackData
 		);
+	}	
+	
+	/**
+	 * Update poster vote
+	 *
+	 */
+	public function voteposterAction()
+	{
+		// this doubles as auth
+		$id = $this->_feedbackModel->getFeedbackId();
+
+		$feedbackData = $this->getRequest()->getParam('id');
+
+		$this->view->rating = $this->_feedbackModel->votePoster(
+			$id, $feedbackData
+		);
+		
+		$this->_helper->flashMessenger('Thank you for your vote!');
+		return $this->_helper->redirector->gotoRoute(array('controller'=>'poster', 'action'=>'list'), 'grid');
 	}
 
 	/**

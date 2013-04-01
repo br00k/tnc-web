@@ -374,3 +374,13 @@ dl.userinfo dd{
         margin: 0 0 0 100px;
         padding: 0 0 0.5em 0;
 }
+.star {
+	background:transparent url(../gfx/icons/star_off.gif) no-repeat scroll left center;
+	padding-top:0.2em;
+	padding-left:1.6em;
+}
+.stargold {
+    background: url("../gfx/icons/star_on.gif") no-repeat scroll 2px center transparent;
+	padding-top:0.2em;
+	padding-left:1.6em;
+}
