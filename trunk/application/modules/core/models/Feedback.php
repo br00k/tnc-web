@@ -294,6 +294,47 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 		return $results;
 	}
 
+	/**
+	 * Vote for a poster 
+	 *	 
+	 * @param	integer		$codeId		Feedback code id (pk from feedback.codes)
+	 * @param	integer		$id
+	 * @return	boolean
+	 */
+	public function votePoster($codeId, $posterId = null)
+	{
+		if (!$posterId) {
+			return false;
+		}
+		$posterId = (int) $posterId;	
+		
+		// build values array
+		$values = array(
+			'id' => $codeId,
+			'poster_id' => $posterId,
+			'rating' => 5
+		);
+		
+		// get row if it exists
+		$feedback = $this->getPosterVote($codeId);		
+		if ($feedback) {
+			$feedback->delete();
+		}
+		
+		$this->getResource('feedbackposters')->saveRow($values);	
+	}
+		
+	/*
+	* Get poster vote
+	*
+	* @param	integer		$codeId		Feedback code id (pk from feedback.codes)
+	* @return array
+	*/	
+	public function getPosterVote($codeId)
+	{
+		return $this->getResource('feedbackposters')->getFeedbackByCodeId($codeId);	
+	}	
+
 }
 
 

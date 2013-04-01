@@ -59,6 +59,15 @@ class Core_PosterController extends Zend_Controller_Action implements Zend_Acl_R
 
 	public function listAction()
 	{
+		Zend_Controller_Action_HelperBroker::addHelper(new TA_Controller_Action_Helper_ConferenceInfo());
+		// if feedback codes have been sent
+		if ($this->_helper->conferenceInfo()->isFeedbackOpen() ) {
+			$feedbackModel = new Core_Model_Feedback();			
+			if ($id = $feedbackModel->getFeedbackId()) {			
+				$this->view->feedback_defaults = $feedbackModel->getPosterVote($id);
+				$this->view->feedback = true;
+			}
+		}	
 		$this->view->grid = $this->_posterModel->getPosters(
 			null,
 			array($this->_getParam('order', null), $this->_getParam('dir', 'asc'))

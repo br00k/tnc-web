@@ -111,12 +111,12 @@ class Core_Model_Acl_Core extends Zend_Acl {
 		if (!$this->has('File')) {
 	        $this->add(new Core_Model_File())
 	        	 ->allow('guest', 'File', array('getfile', 'show', 'getstaticfile'))
-	        	 ->allow('reviewer', 'File', array('getsubmission'));
+	        	 ->allow('reviewer', 'File', array('getsubmission', 'getpaper'));
 		}
 		if (!$this->has('Feedback')) {
 	        $this->add(new Core_Model_Feedback())
 				 ->allow('guest', 'Feedback', 'save', new Core_Model_Acl_GuestCanSaveFeedbackAssertion())
-				 ->allow('guest', 'Feedback', array('index', 'feedbacksection', 'ratepres', 'ratings'));
+				 ->allow('guest', 'Feedback', array('index', 'feedbacksection', 'ratepres', 'ratings', 'voteposter'));
 		}
 
 	}
