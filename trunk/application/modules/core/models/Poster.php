@@ -61,6 +61,23 @@ class Core_Model_Poster extends TA_Model_Acl_Abstract
 	}
 
 	/**
+	 * Get a list of posters
+	 * @param		integer		$page	Page number to show
+	 * @param		array		$order	Array with keys 'field' and 'direction'
+	 * @param		boolean		$group	Group rows by date
+	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
+	 */	
+	public function getPostersByCategory($paged=null, $order=array(), $category=null)
+	{
+		if (!$this->checkAcl('list')) {
+            throw new TA_Model_Acl_Exception("Insufficient rights");
+        }	
+ 
+        $items = $this->getResource('posters')->getPosters($paged, $order, $category);  
+        return $items;     
+	}
+
+	/**
 	 * Remove poster from resource
 	 * @param		integer		$id		Id of record to delete
 	 * @return		boolean
@@ -78,7 +95,7 @@ class Core_Model_Poster extends TA_Model_Acl_Abstract
 
 		return $this->getPosterById($id)->delete();
 	}
-
+	
 	/**
 	 * Save poster to resource
 	 *

@@ -106,7 +106,7 @@ class Core_Model_Acl_Core extends Zend_Acl {
 		}
 		if (!$this->has('Poster')) {
 	        $this->add(new Core_Model_Poster())
-	        	 ->allow('guest', 'Poster', array('list', 'show'));
+	        	 ->allow('guest', 'Poster', array('list', 'show', 'liststudent'));
 		}
 		if (!$this->has('File')) {
 	        $this->add(new Core_Model_File())

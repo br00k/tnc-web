@@ -42,7 +42,7 @@ class Core_Resource_Posters extends TA_Model_Resource_Db_Table_Abstract
 		return $this->find( (int)$id )->current();
 	}
 
-	public function getPosters($paged=null, $order=array())
+	public function getPosters($paged=null, $order=array(), $filter=null)
 	{
 		$grid = array();
 		$grid['cols'] = $this->getGridColumns();
@@ -55,10 +55,14 @@ class Core_Resource_Posters extends TA_Model_Resource_Db_Table_Abstract
 		} else {
 			$order = 'lower(title) ASC';
 		}
-		$select->order($order);
+		$select->order($order);		
 
 		$select->from( 'posters', array_keys($this->getGridColumns()) )
 			   ->where( 'conference_id = ?', $this->getConferenceId());
+			   
+		if ($filter) {
+			$select->where( 'category = ?', (int) $filter);
+		}			   
 
 		if ($paged) {
 
