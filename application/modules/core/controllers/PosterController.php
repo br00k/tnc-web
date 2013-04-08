@@ -31,6 +31,7 @@ class Core_PosterController extends Zend_Controller_Action implements Zend_Acl_R
 	{
 		$this->_posterModel = new Core_Model_Poster();
 		$this->view->Stylesheet('advform.css');
+		$this->view->Stylesheet('poster.css');
 
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 
@@ -59,15 +60,8 @@ class Core_PosterController extends Zend_Controller_Action implements Zend_Acl_R
 
 	public function listAction()
 	{
-		Zend_Controller_Action_HelperBroker::addHelper(new TA_Controller_Action_Helper_ConferenceInfo());
-		// if feedback codes have been sent
-		if ($this->_helper->conferenceInfo()->isFeedbackOpen() ) {
-			$feedbackModel = new Core_Model_Feedback();			
-			if ($id = $feedbackModel->getFeedbackId()) {			
-				$this->view->feedback_defaults = $feedbackModel->getPosterVote($id);
-				$this->view->feedback = true;
-			}
-		}	
+		$this->getFeedbackForPoster();
+		
 		$this->view->grid = $this->_posterModel->getPosters(
 			null,
 			array($this->_getParam('order', null), $this->_getParam('dir', 'asc'))
@@ -76,6 +70,34 @@ class Core_PosterController extends Zend_Controller_Action implements Zend_Acl_R
 		$this->view->grid['params']['order'] = $this->_getParam('order');
 		$this->view->grid['params']['dir'] = $this->_getParam('dir');
 		$this->view->grid['params']['controller'] = $this->getRequest()->getControllerName();
+	}
+	
+	public function liststudentAction()
+	{
+		$this->getFeedbackForPoster();
+		
+		$this->view->grid = $this->_posterModel->getPostersByCategory(
+			null,
+			array($this->_getParam('order', null), $this->_getParam('dir', 'asc')),
+			2
+		);
+
+		$this->view->grid['params']['order'] = $this->_getParam('order');
+		$this->view->grid['params']['dir'] = $this->_getParam('dir');
+		$this->view->grid['params']['controller'] = $this->getRequest()->getControllerName();				
+	}
+	
+	private function getFeedbackForPoster()
+	{
+		Zend_Controller_Action_HelperBroker::addHelper(new TA_Controller_Action_Helper_ConferenceInfo());
+		// if feedback codes have been sent
+		if ($this->_helper->conferenceInfo()->isFeedbackOpen() ) {
+			$feedbackModel = new Core_Model_Feedback();			
+			if ($id = $feedbackModel->getFeedbackId()) {			
+				$this->view->feedback_defaults = $feedbackModel->getPosterVote($id);
+				$this->view->feedback = true;
+			}
+		}		
 	}
 
 	private function displayForm()

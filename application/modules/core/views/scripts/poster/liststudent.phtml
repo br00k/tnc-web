@@ -1,0 +1,45 @@
+<h1>Student Posters</h1>
+<? if ($this->authInfo()->isAdmin() ): ?>
+<div class="actions"><a href="/core/poster/new" title="Add new poster">add</a></div>
+<? endif; ?>
+<br />
+<? if ($this->grid['rows']->count() != 0): ?>
+<form method="post" action="/core/poster/vote">
+
+
+
+<? $i=0; ?>
+<div id="persons">
+<table><tr>
+<? foreach ($this->grid['rows'] as $posters => $poster): ?>
+<? if ($i%2==0): ?></tr><tr><? endif; ?>
+<? $link = $this->url(array(
+	'controller' => 'poster',
+	'action' => 'delete',
+	'id' => $poster->poster_id),
+	'gridactions') ?>
+	<td>
+		<? if ($this->feedback): ?>
+		<a class="star<? if ($this->feedback_defaults->poster_id == $poster->poster_id): ?>gold<? endif; ?>" href="/core/feedback/voteposter/id/<?= $poster->poster_id ?>"></a>
+		<? endif; ?>
+		<? if ($this->poster_id != $poster->poster_id): ?>
+		<a href="<?= $this->url(array('controller' => 'poster', 'action' => 'show', 'id' => $poster->poster_id), 'oneitem') ?>"><?= $poster->title ?></a>
+		<? else: ?>
+		<span class="active"><?= $poster->title ?></span>
+		<? endif; ?>
+		<? if ($this->aclCheck('session', 'save')): ?><span class="delete metanav"><a href="/core/poster/edit/<?=$poster->poster_id?>">Edit</a> <a href="<?=$link?>">Delete</a></span><? endif; ?>
+	<p><img src="/includes/core/gfx/poster_<?= $poster->poster_id ?>.jpg" /></p>
+	</td>	
+<? $i++; ?>		
+<? endforeach; ?>
+</table>
+</div>
+
+
+
+
+</form>
+<div class="clearer"></div>
+<? else: ?>
+<p>There are no posters in CORE.</p> 
+<? endif; ?>

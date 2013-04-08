@@ -70,6 +70,14 @@ return array(
 			)
 		),
 
+		'poster' => array(
+			'categories' => array(
+				'0' => '---',
+				'1' => 'normal',
+				'2' => 'student'
+			)
+		),		
+
 		'submit' => array(
 			'status' => array(
 				'0' => '---',

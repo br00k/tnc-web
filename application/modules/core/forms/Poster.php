@@ -63,6 +63,12 @@ class Core_Form_Poster extends TA_Form_Abstract
 	    	   ->setDescription('Please add person(s)')
 	    	   ->setDecorators(array('Composite'));
 
+	    $cats = new Zend_Form_Element_Select('category');
+	    $cats->setLabel('Category')
+	   		 ->setAttrib('class', 'small')
+			 ->setMultiOptions($this->_getFieldValues('categories', 'poster'))
+			 ->setDecorators(array('Composite'));
+
 	    $file = new TA_Form_Element_MagicFile('file');
 	    $file->setLabel('File')
 			 ->addDecorators($this->_magicFileElementDecorator)
@@ -75,6 +81,7 @@ class Core_Form_Poster extends TA_Form_Abstract
 			$title,
 			$desc,
 			$person,
+			$cats,
 			$file
 		));
 
