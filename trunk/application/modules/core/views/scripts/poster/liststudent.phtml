@@ -28,7 +28,7 @@
 		<span class="active"><?= $poster->title ?></span>
 		<? endif; ?>
 		<? if ($this->aclCheck('session', 'save')): ?><span class="delete metanav"><a href="/core/poster/edit/<?=$poster->poster_id?>">Edit</a> <a href="<?=$link?>">Delete</a></span><? endif; ?>
-	<p><img src="/includes/core/gfx/poster_<?= $poster->poster_id ?>.jpg" /></p>
+	<p><img src="/includes/<?= $this->conferenceInfo('abbreviation'); ?>/gfx/poster_<?= $poster->poster_id ?>.jpg" /></p>
 	</td>	
 <? $i++; ?>		
 <? endforeach; ?>
