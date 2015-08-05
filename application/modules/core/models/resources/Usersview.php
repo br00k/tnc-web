@@ -1,27 +1,4 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
-
-/**
- *
- * @package Core_Resource
- * @author Christian Gijtenbeek <gijtenbeek@terena.org>
- */
 class Core_Resource_Usersview extends TA_Model_Resource_Db_Table_Abstract
 {
 
@@ -104,8 +81,7 @@ class Core_Resource_Usersview extends TA_Model_Resource_Db_Table_Abstract
 			'organisation' => array('field' => 'organisation', 'label' => 'Organisation', 'sortable' => true),
 			'lastlogin' => array('field' => 'lastlogin', 'label' => 'Last login', 'sortable' => true, 'modifier' => 'formatDate'),
 			'active' => array('field' => 'active', 'label' => 'Active', 'sortable' => false),
-//			'saml_uid_attribute' => array('field' => 'saml_uid_attribute', 'label' => 'saml_uid_attribute', 'sortable' => false, 'hidden' => true),
-			'uid' => array('field' => 'uid', 'label' => 'uid', 'sortable' => false, 'hidden' => true),
+			'smart_id' => array('field' => 'smart_id', 'label' => 'smart_id', 'sortable' => false, 'hidden' => true),
 			'invite' => array('field' => 'invite', 'label' => 'invite', 'sortable' => false, 'hidden' => true),
 			'inserted' => array('field' => 'inserted', 'label' => 'inserted', 'sortable' => false, 'hidden' => true),
 			'role_name' => array('field' => 'role_name', 'label' => 'role_name', 'sortable' => false, 'hidden' => true)

@@ -1,27 +1,5 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
 
-/**
- * ConferenceController
- *
- * @package Core_Controllers
- */ 
 class Core_ConferenceController extends Zend_Controller_Action implements Zend_Acl_Resource_Interface
 {
 
@@ -41,22 +19,7 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 		}
 		$this->view->threeColumnLayout = true;
 	}
-
-	/**
-	 * Returns the string identifier of the Resource
-	 *
-	 * @return string
-	 */
-	public function getResourceId()
-	{
-		return 'Conference';
-	}
-
-	public function indexAction()
-	{
-		return $this->_forward('list');
-	}
-
+	
 	// @todo move this to parent class? In order to do this I have to extend Zend_Controller_Action
 	private function _includeJquery()
 	{
@@ -71,8 +34,23 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 			throw new Exception('conference id required');
 		}
 
-		$this->_conferenceModel->createTimeslots($this->getRequest()->getPost());
+		$this->_conferenceModel->createTimeslots($conferenceId);
 		return $this->_helper->lastRequest();
+	}
+
+	/**
+	 * Returns the string identifier of the Resource
+	 *
+	 * @return string
+	 */
+	public function getResourceId()
+	{
+		return 'Conference';
+	}
+
+	public function indexAction()
+	{
+		return $this->_forward('list');
 	}
 
 	public function listAction()
@@ -129,16 +107,19 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 			return $this->render('formEdit');
 		}
 
-		// everything went OK, clear hostname specific cache and redirect to list action
+		// everything went OK, clear cache and redirect to list action
 		$this->_helper->flashMessenger('Succesfully edited record');
-		$this->_clearConferenceCache();
+		$this->_helper->cache
+					  ->getManager()
+					  ->getCache('apc')
+					  ->remove('conference'.md5($_SERVER['HTTP_HOST']));
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'conference', 'action'=>'list'), 'grid');
 	}
 
 	public function deleteAction()
 	{
 		if ( false === $this->_conferenceModel->delete($this->_getParam('id')) ) {
-			throw new TA_Model_Exception('Something went wrong with deleting the user');
+			throw new Core_Model_Exception('Something went wrong with deleting the user');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'conference', 'action'=>'list'), 'grid');
 	}
@@ -175,17 +156,8 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 
 		// @todo if no $id is supplied throw Exception. maybe require this in Routing
 
-		// No post
+		// No post; display form
 		if ( !$request->isPost() )  {
-			// no timeslots have been defined yet, include smart timeslots form
-			if ($this->_conferenceModel->getTimeslots(null, $id)->count() === 0) {
-				$this->view->smartslotsForm = $this->_conferenceModel->getForm('conferenceSmartslots');
-				$this->view->smartslotsForm->setDefaults(array(
-					'days' => 4,
-					'start' => '16/05/2011 09:00',
-					'id' => $id
-				));
-			}
 			return $this->displayTimeslotsForm($id);
 		}
 
@@ -197,33 +169,9 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 
 		// everything went OK
 		$this->_helper->flashMessenger('Succesfully saved timeslots');
-		$this->_clearConferenceCache();
 		return $this->_helper->lastRequest();
 	}
 
-	/**
-	 * Utility method to clear APC conference cache
-	 *
-	 */
-	private function _clearConferenceCache()
-	{
-		$this->_helper->cache
-					  ->getManager()
-					  ->getCache('apc')
-					  ->remove('conference'.md5($this->getRequest()->getPost('hostname')));
-	}
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

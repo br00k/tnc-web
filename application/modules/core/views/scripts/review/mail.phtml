@@ -1,5 +1,3 @@
-<? if ($this->reviewers != 0): ?>
-
 <h1>Send <? if ($this->reminder): ?>reminder<? endif; ?> mail to reviewers [<?= $this->reviewers; ?>]</h1>
 <?
 $eventlogModel = new Core_Model_Eventlog();
@@ -42,10 +40,7 @@ $template = $this->conferenceInfo('abbreviation') .'-reviewers.phtml';
 <p>
 All users who have been assigned to review a submission will get an email with a list of submissions they should review.</p>
 <p>
-To add text to this email change the template <code>/application/modules/core/views/emails/<?= $template ?></code></p>
+The emails will be generated using a combination of a static and a dynamic template. The static template is called
+<code><?= $template ?></code> and can be found in <code>/application/modules/core/views/emails</code>.</p>
 <?= $this->mailForm ?>
 <? endif; ?>
-
-<? else: ?>
-<p>There are no reviewers assigned to any papers</p>
-<? endif; // there are submissions ?>

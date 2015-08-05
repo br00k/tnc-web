@@ -1,27 +1,5 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
 
-/**
- *
- * @package Core_Model
- * @author Christian Gijtenbeek
- */
 class Core_Model_Feedback extends TA_Model_Acl_Abstract
 {
 
@@ -91,8 +69,8 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 
 	/**
 	 * Get feedback by UUID
-	 * @param	integer		$uuid		UUID
-	 * @return	object		Zend_Db_Table_Row
+	 * @param		integer		$uuid		UUID
+	 * @return
 	 */
 	public function getFeedbackByUuid($uuid)
 	{
@@ -143,7 +121,6 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 
 	/**
 	 * Get Conference Participants
-	 * This should hook in to your registration system
 	 *
 	 * @return	array
 	 */
@@ -153,14 +130,32 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
             throw new TA_Model_Acl_Exception("Insufficient rights");
         }
 
-		// for debugging just use me
+		// for debugging just use us
 		$participants = array(
 			array(
 				'email' => 'gijtenbeek@terena.org',
 				'fname' => 'Christian',
 				'lname' => 'Gijtenbeek'
+			),
+			array(
+				'email' => 'visser@terena.org',
+				'fname' => 'Dick',
+				'lname' => 'Visser'
 			)
 		);
+
+
+		// this is really specific to TERENA, get participants from webshop (remote db)
+		$config = new Zend_Config_Ini(
+		    APPLICATION_PATH.'/configs/web.ini',
+		    'development'
+		);
+		$db = Zend_Db::factory($config->resources->multidb->webshop);
+
+		$query = "select fname, lname, email from vw_prodpart
+		where product_id IN (57,58,59) and order_status NOT IN ('canceled', 'unpaid', 'pending', 'refund')";
+
+		$participants = $db->query($query)->fetchAll();
 
 		// generate feedback codes
 		$codes = $this->getResource('feedbackcodes')->createFeedbackCodes(
@@ -177,7 +172,7 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 	}
 
 	/**
-	 * Generate a single feedback code
+	 * Generate single feedback code
 	 *
 	 * @return	string	UUID (feeback code)
 	 */
@@ -280,65 +275,4 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 		return $this->getResource('feedbackpresentations')->getPresentationRatingsByCodeId($codeId);
 	}
 
-	/**
-	 * Download feedback results
-	 *
-	 * @param	string		$section	Name of the feedback section
-	 * @return	array
-	 */
-	public function getResults($section)
-	{
-		$method = 'getFeedback'.ucfirst($section);
-
-		$results = $this->getResource('feedback'.$section)->$method();
-		return $results;
-	}
-
-	/**
-	 * Vote for a poster 
-	 *	 
-	 * @param	integer		$codeId		Feedback code id (pk from feedback.codes)
-	 * @param	integer		$id
-	 * @return	boolean
-	 */
-	public function votePoster($codeId, $posterId = null)
-	{
-		if (!$posterId) {
-			return false;
-		}
-		$posterId = (int) $posterId;	
-		
-		// build values array
-		$values = array(
-			'id' => $codeId,
-			'poster_id' => $posterId,
-			'rating' => 5
-		);
-		
-		// get row if it exists
-		$feedback = $this->getPosterVote($codeId);		
-		if ($feedback) {
-			$feedback->delete();
-		}
-		
-		$this->getResource('feedbackposters')->saveRow($values);	
-	}
-		
-	/*
-	* Get poster vote
-	*
-	* @param	integer		$codeId		Feedback code id (pk from feedback.codes)
-	* @return array
-	*/	
-	public function getPosterVote($codeId)
-	{
-		return $this->getResource('feedbackposters')->getFeedbackByCodeId($codeId);	
-	}	
-
 }
-
-
-
-
-
-

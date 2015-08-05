@@ -1,27 +1,5 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
 
-/**
- * FeedbackController
- *
- * @package Core_Controllers
- */
 class Core_FeedbackController extends Zend_Controller_Action
 {
 
@@ -107,7 +85,7 @@ class Core_FeedbackController extends Zend_Controller_Action
 		$ajaxContext->addActionContext('ratepres', 'json')
 					->addActionContext('ratings', 'json')
 					->initContext();
-
+		
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 	}
 
@@ -132,7 +110,7 @@ class Core_FeedbackController extends Zend_Controller_Action
 		$id = $this->_feedbackModel->getFeedbackId();
 		if (!$id) {
 			$this->_helper->flashMessenger('Feedback is closed.');
-			return $this->_helper->redirector->gotoRoute(array('controller'=>'schedule', 'action'=>'list'), 'grid');
+			return $this->_helper->redirector->gotoRoute(array('controller'=>'schedule', 'action'=>'list'), 'grid');		
 		}
 
 		// set section and form names from parameter
@@ -194,25 +172,6 @@ class Core_FeedbackController extends Zend_Controller_Action
 		$this->view->rating = $this->_feedbackModel->ratePresentation(
 			$id, $feedbackData
 		);
-	}	
-	
-	/**
-	 * Update poster vote
-	 *
-	 */
-	public function voteposterAction()
-	{
-		// this doubles as auth
-		$id = $this->_feedbackModel->getFeedbackId();
-
-		$feedbackData = $this->getRequest()->getParam('id');
-
-		$this->view->rating = $this->_feedbackModel->votePoster(
-			$id, $feedbackData
-		);
-		
-		$this->_helper->flashMessenger('Thank you for your vote!');
-		return $this->_helper->redirector->gotoRoute(array('controller'=>'poster', 'action'=>'list'), 'grid');
 	}
 
 	/**
@@ -246,7 +205,7 @@ class Core_FeedbackController extends Zend_Controller_Action
 				'dummy' => $request->getParam('dummy'),
 				'template' => 'feedback/codes',
 				'html' => true,
-				'subject' => strtoupper($conference['abbreviation']) . ' Feedback',
+				'subject' => $conference['abbreviation'] . ' Feedback',
 				'to_email' => $participant['email'],
 				'to_name' => $participant['fname'].' '.$participant['lname']
 			), $participant);
@@ -293,31 +252,6 @@ class Core_FeedbackController extends Zend_Controller_Action
 		), array('uuid' => $this->_feedbackModel->createFeedbackCode()) );
 
 		$this->view->email = $form->getValue('email');
-	}
-
-	/**
-	 * Download feedback results
-	 *
-	 */
-	public function getresultsAction()
-	{
-		$request = $this->getRequest();
-		$section = $request->getParam('section');
-
-		$this->_helper->viewRenderer->setNoRender();
-		Zend_Controller_Action_HelperBroker::addHelper(new TA_Controller_Action_Helper_SendFile());
-
-		$results = $this->_feedbackModel->getResults($section);
-
-		$fname = '/tmp/'.$section.'.csv';
-		$fp = fopen($fname, 'w');
-
-		foreach ($results as $fields) {
-		    fputcsv($fp, $fields);
-		}
-
-		fclose($fp);
-    	$this->_helper->SendFile($fname, 'text/csv');
 	}
 
 }

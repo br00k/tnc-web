@@ -1,28 +1,6 @@
 <?php
 /**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
-
-/**
- * Session rowset
- *
- * @package Core_Resource
- * @subpackage Core_Resource_Session
- * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ * This class represents a rowset
  */
 class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 {
@@ -36,7 +14,7 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 	public function group($by = 'day')
 	{
 		$list = array();
-
+		
 		$by = strtolower($by);
 
 		$values = $this->toArray();
@@ -56,7 +34,7 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 		ksort($list);
 		return $list;
 	}
-
+	
 	/**
 	 * Get all chairs
 	 *
@@ -107,19 +85,13 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 	/**
 	 * Get all presentations grouped by session_id/presentation_id
 	 *
-	 * @param	boolean		$presentationKey	Add presentation_id as array key 
-	 *
 	 * @return array
 	 */
-	public function getAllPresentations($presentationKey=true)
+	public function getAllPresentations()
 	{
 		$list = array();
 
 		$sessionIds = $this->_getSessionIds();
-
-		if (count($sessionIds) == 0) {
-			return false;
-		}
 
 		$query = "select * from sessions_presentations sp
 		left join presentations p on (sp.presentation_id = p.presentation_id)
@@ -128,11 +100,7 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 		$presentations = $this->getTable()->getAdapter()->fetchAll($query);
 
 		foreach ($presentations as $presentation) {
-			if ($presentationKey) {
-				$list[$presentation['session_id']][$presentation['presentation_id']] = $presentation;
-			} else {
-				$list[$presentation['session_id']][] = $presentation;
-			}			
+			$list[$presentation['session_id']][$presentation['presentation_id']] = $presentation;
 		}
 
 		return $list;
@@ -143,32 +111,26 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 	 *
 	 * @param	boolean		$unique		Set to true if you want to retrieve unique speakers
 	 *									because multiple presentations can have the same speaker
-	 * @param	boolean		$presentationKey	Add presentation_id as array key 
-	 *
 	 * @return array
 	 */
-	public function getAllSpeakers($unique = false, $presentationKey = false)
+	public function getAllSpeakers($unique = false)
 	{
 		$list = array();
 		$method = ($unique) ? 'fetchAssoc' : 'fetchAll';
 
 		$sessionIds = $this->_getSessionIds();
-
+		
 		if (count($sessionIds) == 0) {
 			return false;
 		}
 
-		$query = "select user_id, session_id, presentation_id, fname, lname, email, organisation, file_id
+		$query = "select user_id, session_id, presentation_id, fname, lname, email, organisation
 		 from vw_sessions_speakers where session_id IN (".implode(',',$sessionIds).")";
 
 		$speakers = $this->getTable()->getAdapter()->$method($query);
 
 		foreach ($speakers as $speaker) {
-			if ($presentationKey) {
-				$list[$speaker['session_id']][$speaker['presentation_id']][] = $speaker;
-			} else {
-				$list[$speaker['session_id']][$speaker['user_id']] = $speaker;
-			}
+			$list[$speaker['session_id']][$speaker['user_id']] = $speaker;
 		}
 
 		return $list;

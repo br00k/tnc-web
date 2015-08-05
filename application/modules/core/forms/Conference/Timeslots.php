@@ -1,28 +1,9 @@
 <?php
 /**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
-
-/**
  * Timeslots form
  *
- * @note This form uses dynamic field functionality in combination with Composite Elements
- * @package Core_Forms 
- * @subpackage Core_Forms_Conference
+ * This form uses dynamic field functionality in combination with Composite Elements
+ *
  */
 class Core_Form_Conference_Timeslots extends TA_Form_Abstract
 {
@@ -73,8 +54,6 @@ class Core_Form_Conference_Timeslots extends TA_Form_Abstract
 	/**
 	 * Add dynamically added form elements to subform
 	 *
-	 * @param	Zend_Form_Element	$element
-	 * @return	TA_Form_Element_Timeslot
 	 */
 	private function addDynamicElement($element, $values = null)
 	{
@@ -94,11 +73,8 @@ class Core_Form_Conference_Timeslots extends TA_Form_Abstract
 	}
 
 	/**
-	 * Validate the form
 	 * Override method to add form elements that were dynamically added
 	 *
-     * @param  array $data
-     * @return boolean
 	 */
 	public function isValid($data)
 	{
@@ -110,12 +86,9 @@ class Core_Form_Conference_Timeslots extends TA_Form_Abstract
 	}
 
 	/**
-	 * Set default values for elements
 	 * Override method to add form elements that were dynamically added
 	 * Every row in the dynamic value array adds the form element
 	 *
-     * @param  array $defaults
-     * @return Zend_Form
 	 */
 	public function setDefaults(array $values)
 	{
@@ -124,10 +97,8 @@ class Core_Form_Conference_Timeslots extends TA_Form_Abstract
 				$dynamicValues = $dynamicValues->toMagicArray('dd/MM/yyyy H:m');
 			}
 
-			$dynElement = $this->addDynamicElement('timeslot_'.$dynamicValues['timeslot_id']);
-			if ($dynElement) {
-				$dynElement->setValue($dynamicValues);
-			}
+			$this->addDynamicElement('timeslot_'.$dynamicValues['timeslot_id'])
+				 ->setValue($dynamicValues);
 		}
 		parent::setDefaults($values);
 	}

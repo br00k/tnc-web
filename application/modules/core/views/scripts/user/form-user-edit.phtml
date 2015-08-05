@@ -4,14 +4,13 @@
 <? endif; ?>
 <?= $this->userForm ?>
 
-<? if ($myPresentations = Zend_Auth::getInstance()->getIdentity()->getMyPresentations()):
+<? if ($myPresentations = Zend_Auth::getInstance()->getIdentity()->getMyPresentations()): 
 $presModel = new Core_Model_Presentation();
 $filter = new stdClass();
 $filter->filters = new stdClass();
 $filter->filters->presentation_id = $myPresentations;
 $presentations = $presModel->getPresentations(null, array('presentation_title', 'asc'), $filter, true);
 ?>
-<? if ($presentations): ?>
 <h2>My presentatio<?= (count($presentations['rows']) == 1) ? 'n': 'ns' ?></h2>
 <ul class="titles">
 <? foreach ($presentations['rows'] as $presentation): ?>
@@ -21,20 +20,26 @@ $presentations = $presModel->getPresentations(null, array('presentation_title', 
 <? endforeach; ?>
 </ul>
 <? endif; ?>
-<? endif; ?>
 
-<? 
-$submitLive = $this->conferenceInfo()->isSubmitLive();
-if ($mySubmits = Zend_Auth::getInstance()->getIdentity()->getMySubmissions()): ?>
+
+<? /*
+if ($mySubmits = Zend_Auth::getInstance()->getIdentity()->getMySubmissions()):
+$submitModel = new Core_Model_Submit();
+$filter = new stdClass();
+$filter->filters = new stdClass();
+$filter->filters->submission_id = $mySubmits;
+$submits = $submitModel->getSubmissions(null, array('date', 'desc'), $filter);
+?>
 <br />
 
-<h2>My Submitted pape<?= (count($mySubmits) == 1) ? 'r': 'rs' ?> <? if (!$submitLive): ?><span class="meta">(not possible to edit because submission deadline has passed)</span><? endif; ?></h2>
+<h2>My Submitted papers</h2>
 <ul>
-<? foreach ($mySubmits as $submit): ?>
-<li><? if ($submitLive): ?><a href="<?= $this->url(array('controller' => 'submit', 'action' => 'edit', 'id' => $submit['submission_id'])) ?>" title="edit submission"><? endif; ?>
-<?= $submit['title'] ?><? if ($submitLive): ?></a><? endif; ?>
- (<?= $this->formatDate($submit['date']) ?>)
+<? foreach ($submits['rows'] as $submit): ?>
+<li><a href="<?= $this->url(array('controller' => 'submit', 'action' => 'edit', 'id' => $submit->submission_id)) ?>" title="edit submission">
+<?= $submit->title ?></a>
+(<?= $this->formatDate($submit->date) ?>)
 </li>
 <? endforeach; ?>
 </ul>
 <? endif; ?>
+*/ ?>

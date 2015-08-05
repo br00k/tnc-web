@@ -1,35 +1,10 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
-
-/**
- *
- * @package Core_Forms
- */
 class Core_Form_Location extends TA_Form_Abstract
 {
-	protected $_conference;
 
 	public function init()
 	{
 	    $this->setAction('/core/location/new');
-
-	    $this->_conference = Zend_Registry::get('conference');
 
 	    $name = new Zend_Form_Element_Text('name');
 	    $name->setLabel('Name')
@@ -50,10 +25,8 @@ class Core_Form_Location extends TA_Form_Abstract
 	    			 ))
 	    			 ->addValidator(new Zend_Validate_Db_NoRecordExists(array(
 	    			    'table' => 'locations',
-	    			    'field' => 'abbreviation',
-	    			    'exclude' => 'conference_id = '.$this->_conference['conference_id']
+	    			    'field' => 'abbreviation'
 	    			 )))
-	    	 		 ->setRequired(true)
 	    			 ->setAttrib('class', 'medium')
 	    			 ->setDescription('Must be between 1 and 10 characters, only letters, numbers and spaces allowed')
 	    			 ->setDecorators(array('Composite'));
@@ -84,7 +57,7 @@ class Core_Form_Location extends TA_Form_Abstract
 		$address = new TA_Form_Element_Location('address');
 		$address->setLabel('Address')
 	   		    ->setAttrib('class', 'medium')
-			    ->setDecorators(array('Composite'));
+			    ->setDecorators(array('Composite'));		
 
 		$resize = new TA_Filter_ImageResize();
 		$resize->setWidth(90)
@@ -108,8 +81,8 @@ class Core_Form_Location extends TA_Form_Abstract
 		$this->addElements(array(
 			$types,
 			$name,
-			$abbreviation,
 			$address,
+			$abbreviation,
 			$comments,
 			$capacity,
 			$image

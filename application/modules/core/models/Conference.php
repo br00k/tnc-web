@@ -1,34 +1,10 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
 
-/**
- * Conference Model
- *
- * @package Core_Model
- * @author Christian Gijtenbeek
- */
 class Core_Model_Conference extends TA_Model_Acl_Abstract
 {
 
 	/**
 	 * Get conference by id
-	 *
 	 * @param		integer		$id		Conference_id
 	 * @return		Core_Resource_Conference_Item
 	 */
@@ -42,14 +18,12 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 	}
 
 	/**
-	 * Get conference row by hostname
 	 *
-	 * @param	string	$hostname
-	 * @return	object	Core_Resource_Conference_Item
+	 *
 	 */
 	public function getConferenceByHostname($hostname)
 	{
-		$row = $this->getResource('conferences')->getConferenceByHostname($hostname);
+		$row = $this->getResource('conferences')->getConferenceByHostname( $hostname );
     	if ($row === null) {
     		throw new TA_Model_Exception('hostname not found');
     	}
@@ -59,7 +33,6 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 
 	/**
 	 * Get a list of conferences
-	 *
 	 * @param		integer		$page	Page number to show
 	 * @param		array		$order	Array with keys 'field' and 'direction'
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
@@ -75,19 +48,18 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 
 
 	/**
-	 * Create batch of timeslots
+	 * mockup
+	 * @todo: check
 	 *
-	 * @param	array	$post	Post request
 	 */
-	public function createTimeslots(array $post)
+	public function createTimeslots($conferenceId)
 	{
-		return $this->getResource('conferences')->createTimeslots($post);
+		return $this->getResource('conferences')->createTimeslots($conferenceId);
 	}
 
 
 	/**
-	 * Remove item from resource
-	 *
+	 * Remove user from resource
 	 * @param		integer		$id		Id of record to delete
 	 * @return		boolean
 	 */

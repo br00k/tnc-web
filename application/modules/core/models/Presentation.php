@@ -1,28 +1,5 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
 
-/** 
- * Presentation Model
- *
- * @package Core_Model
- * @author Christian Gijtenbeek
- */
 class Core_Model_Presentation extends TA_Model_Acl_Abstract
 {
 
@@ -59,7 +36,7 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 	 *
 	 * @return	array
 	 */
-	public function getPresentationsForSelect($empty = null, $truncate = true)
+	public function getPresentationsForSelect($conferenceId, $empty = null, $truncate = true)
 	{
 		if (!$this->checkAcl('list')) {
             throw new TA_Model_Acl_Exception("Insufficient rights");
@@ -67,20 +44,21 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
         if ($truncate) {
 			return array_map(function($val) {
 				return substr($val, 0, 50);
-			}, $this->getResource('presentations')->getPresentationsForSelect($empty));
+			}, $this->getResource('presentations')->getPresentationsForSelect($conferenceId, $empty));
 		}
-		return $this->getResource('presentations')->getPresentationsForSelect($empty);
+		return $this->getResource('presentations')->getPresentationsForSelect($conferenceId, $empty);
 	}
 
 	/**
 	 * Link submissions to presentation
 	 *
-	 * @param	Core_Resource_Submission_Set $submissions RowSet of submissionsview
+	 * @param Core_Resource_Submission_Set $submissions RowSet of submissionsview
 	 * @param	array	$post
-	 * @return	Zend_Db_Statement_Pdo on success False on failure
+	 * @return Zend_Db_Statement_Pdo on success False on failure
 	 */
 	public function linkSubmissions(Core_Resource_Submission_Set $submissions, $post = array())
 	{
+
 		$form = $this->getForm('submitImport');
 		// validate form
 		if (!$form->isValid($post)) {
@@ -89,10 +67,7 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 		$values = $form->getValues();
 
 		// import submissions
-		$valuesPu = $this->getResource('presentations')->linkSubmissions(
-			$submissions, 
-			new Zend_Config($values)
-		);
+		$import = $this->getResource('presentations')->linkSubmissions($submissions);
 
 		// give users the 'presenter' role
 		if ($values['set_role']) {
@@ -110,10 +85,14 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 		// link submitter (user) to presentation, eg. make user a speaker for this presentation
 		if ($values['set_link']) {
 			// @todo: gives notice, investigate!
-			$this->getResource('presentationsusers')->saveRows($valuesPu);
+			$this->getResource('presentationsusers')->saveRows();
 		}
 
-		return $valuesPu;
+		#if ($values['link_sessions']) {
+		#	$this->getResource('sessionspresentations')->saveRows($import);
+		#}
+
+		return $import;
 	}
 
 	/**

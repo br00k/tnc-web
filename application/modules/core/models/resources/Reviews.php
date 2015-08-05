@@ -1,27 +1,4 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
-
-/**
- *
- * @package Core_Resource
- * @author Christian Gijtenbeek <gijtenbeek@terena.org>
- */
 class Core_Resource_Reviews extends TA_Model_Resource_Db_Table_Abstract
 {
 
@@ -31,14 +8,9 @@ class Core_Resource_Reviews extends TA_Model_Resource_Db_Table_Abstract
 
 	protected $_rowClass = 'Core_Resource_Review_Item';
 
-	public function init()
-	{
-		$config = Zend_Registry::get('config');
-
-		if ($config->core->observer->review == 1) {
-			$this->attachObserver(new Core_Model_Observer_Review());
-		}
-		$this->attachObserver(new Core_Model_Observer_Reviewtiebreak());
+	public function init() 
+	{	
+		$this->attachObserver(new Core_Model_Observer_Review());
 	}
 
 	/**
@@ -50,26 +22,6 @@ class Core_Resource_Reviews extends TA_Model_Resource_Db_Table_Abstract
 		return $this->find( (int)$id )->current();
 	}
 
-	/**
-	 * Get a list of reviews indexed by submission_id
-	 *
-	 * @param	integer		$userId		User id of reviewer to filter by
-	 * @return	array
-	 */
-	public function getReviewsIndexedBySubmission($userId = null)
-	{
-		$query = "select user_id, submission_id, review_id, inserted from reviews";
-		if ($userId) {
-			$query .= " where user_id=".(int) $userId;
-		}
-
-		return $this->getAdapter()->fetchAll($query);
-	}
-
-	/**
-	 * Get all reviews
-	 *
-	 */
 	public function getReviews($paged=null, $order=array(), $filter=null)
 	{
 		$grid = array();

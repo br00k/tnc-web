@@ -1,0 +1,7 @@
+.svn
+library/Zend
+library/simplesaml
+library/yahoo-sdk
+data/
+uploads/
+application/modules/web/

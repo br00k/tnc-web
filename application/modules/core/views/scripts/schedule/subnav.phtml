@@ -1,7 +1,7 @@
 <ul id="daysnav">
 	<? foreach ($this->days as $day): ?>
 	<?
-	$zd = new Zend_Date($day, "dd/MM/YYYY");
+	$zd = new Zend_Date($day);	
 	$weekday = $zd->get('EEEE dd/MM');
 	?>
 	<? if ($this->filters['day'] == $day): ?>
@@ -25,8 +25,5 @@
 <? endif; ?>
 <? if ($this->feedbackid): // if feedback id is set, then show toggler ?>
 <li id="feedbacktoggler"><a href="<?= $this->url(array('action' => 'list', 'day' => urlencode($this->filters['day']), 'f' => ($this->feedback) ? null : true ), 'schedule') ?>" title="Toggle presentation feedback" class="feedback<? if ($this->feedback): ?>on<? endif; ?>">Toggle feedback</a></li>
-<? endif; ?>
-<? if ($this->aclCheck('event', 'new')): ?>
-<li><a href="<?= $this->url(array('controller' => 'event', 'action' => 'new'), 'main-module') ?>" class="add">Add event</a></li>
 <? endif; ?>
 </ul>

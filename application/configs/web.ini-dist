@@ -1,0 +1,16 @@
+[production]
+resources.multidb.webdb.adapter = "pdo_pgsql"
+resources.multidb.webdb.params.host = "localhost"
+resources.multidb.webdb.params.username = "postgres"
+resources.multidb.webdb.params.password = "password"
+resources.multidb.webdb.params.dbname = "dbname"
+resources.multidb.webdb.params.charset = "utf8"
+
+resources.multidb.webshop.adapter = "pdo_pgsql"
+resources.multidb.webshop.params.host = "localhost"
+resources.multidb.webshop.params.username = "postgres"
+resources.multidb.webshop.params.password = "password"
+resources.multidb.webshop.params.dbname = "webshop"
+resources.multidb.webshop.params.charset = "utf8"
+
+[development : production]

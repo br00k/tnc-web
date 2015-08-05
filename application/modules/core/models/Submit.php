@@ -1,27 +1,5 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
 
-/**
- *
- * @package Core_Model
- * @author Christian Gijtenbeek
- */
 class Core_Model_Submit extends TA_Model_Acl_Abstract
 {
 
@@ -120,7 +98,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 			$this->getResource('submissionsview')->getFileIds($filter)
 		);
 		$files = $files->getNormalizedFiles();
-
+		
 		$zip = new ZipArchive();
 		$conference = Zend_Registry::get('conference');
 		$zipFilename = $conference['abbreviation'].
@@ -133,9 +111,9 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 			}
 			$zip->close();
 		} else {
-			throw new TA_Model_Exception('unable to create archive');
+			throw new Exception('unable to create archive');
 		}
-
+		
 		return $zipFilename;
 	}
 
@@ -199,7 +177,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 		// get proposed sessions of the submissions
 		if ($statusId == 1) {
 			if (false == $sessions = $this->getResource('sessionsview')->getSessionsByIds($submissions) ) {
-				throw new TA_Model_Exception('Found accepted submission that does not belong to a session, please fix!');
+				throw new Exception('Found accepted submission that does not belong to a session, please fix!');
 			}
 			$chairs = $sessions->getChairs();
 		}
@@ -234,42 +212,14 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	/**
 	 * Get all submissions belonging to a conference that are accepted
 	 *
-	 * @param		array	$post	Post request
+	 * @param integer $conferenceId conference_id
 	 * @return Zend_Db_Table_Rowset
 	 */
-	public function getAcceptedSubmissions(array $post)
+	public function getAcceptedSubmissions($conferenceId = null)
 	{
-		$form = $this->getForm('submitImport');
-		// perform validation
-		if (!$form->isValid($post)) {
-			return false;
-		}
-
-		// get filtered values
-		$values = $form->getValues();
-		return $this->getResource('submissionsview')->getAcceptedSubmissions($values);
+		return $this->getResource('submissionsview')->getAcceptedSubmissions($conferenceId);
 	}
 
-	/**
-	 * Set reviewers tiebreaker value
-	 *
-	 * @param	integer		$id		user id
-	 * @param	boolean		$value
-	 */
-	public function setTiebreaker($id = null, $value = null)
-	{
-		if (!$this->checkAcl('reviewerSave')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
-		if ( ($id === null) || ($value === null) ) {
-			return false;
-		}
-		$id = (int) $id;
-
-		return $this->getResource('reviewerssubmissions')
-					->getItemById($id)
-					->setTiebreaker($value);
-	}
 
 	public function deleteReviewer($id = null)
 	{
@@ -442,5 +392,6 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 			throw new TA_Model_Exception($e->getMessage());
 		}
 	}
-	
+
+
 }

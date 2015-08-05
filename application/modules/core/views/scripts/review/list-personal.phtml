@@ -1,38 +1,20 @@
 <?
-if ($this->authInfo()->isAdmin() ):
-	
-	$userModel = new Core_Model_User();
-	
-	$reviewerSelect = $this->formSelect('user_id',
-		$this->user_id,
-		array("onchange" => "this.form.submit();"),
-		$userModel->getUsersForSelect(true, 'reviewer')
-	);	
-if (!$this->user_id):
-?>	
-	<p>Please select a reviewer from the list</p><? endif; ?>
-	<form id="filterform" action="<?= $this->url() ?>" method="post">
-	<?= $reviewerSelect ?>
-	</form>
-<?	
-endif;
-if (!empty($this->MySubmissionsToReview)):
-	$tb = $this->MySubmissionsToReview;
+if (!empty($this->mysubmissionstoreview)):
 
 	$reviewModel = new Core_Model_Review();
 	$filter = array();
-	$filter['user_id'] = ( ($this->authInfo()->isAdmin() ) && ($this->user_id) )
-		? $this->user_id 
-		: Zend_Auth::getInstance()->getIdentity()->user_id;
-	// get all reviews that I did
-	$reviews = $reviewModel->getReviews(null, null, $filter, true);
+	$filter['user_id'] = Zend_Auth::getInstance()->getIdentity()->user_id;
 
+	// get all reviews that I did
+	$reviews = $reviewModel->getReviews(null, null, $filter);
+	
 	$submissionsReviewed = array();
 	foreach ($reviews['rows']->toArray() as $review) {
 		$submissionsReviewed[$review['review_id']] = $review['submission_id'];
 	}
+
 	// merge id's of submission I reviewed with id's of papers I must review
-	$submissionIds = array_merge($submissionsReviewed, array_keys($tb));
+	$submissionIds = array_merge($submissionsReviewed, $this->mysubmissionstoreview);
 
 	$submitModel = new Core_Model_Submit();
 	$filter = new stdClass();
@@ -42,14 +24,7 @@ if (!empty($this->MySubmissionsToReview)):
 	// get all submissions I have either reviewed or should review
 	$submissions = $submitModel->getSubmissions(null, null, $filter);
 
-	$config = Zend_Registry::get('config');
-	
-	// Is user a tiebreaker?
-	$isTiebreaker = false;
-	
-	// build output
-	$completed = '<ul class="basic">';
-	$todo = '<ul id="myreviewstodo" class="basic">';
+	$completed = $todo = '<ul>';
 
 	foreach ($submissions['rows'] as $submission) {
 
@@ -60,30 +35,17 @@ if (!empty($this->MySubmissionsToReview)):
 			$completed .= '<li><a href="'.$href.'" title="edit your review">'.$submission->title.'</a></li>';
 		} else {
 			$href = $this->url(array('controller'=>'review', 'action'=>'new', 'id'=>$submission->submission_id), 'reviewnew');
-			if (isset($tb[$submission->submission_id]['tiebreak_required'])) {
-				$todo .= '<li><a href="'.$href.'" title="write a new review">'.$submission->title.'</a> <span class="meta">[new]</span></li>';
-				$isTiebreaker = true;
-			} else {
-				if ($tb[$submission->submission_id]['tiebreaker']) {
-			    	$todo .= '<li><a href="'.$href.'" title="write a new review" class="inactive">'.$submission->title.'</a> <span class="meta">[Your review is not yet required]</span></li>';
-			    	$isTiebreaker = true;
-			    } else {
-			    	$todo .= '<li><a href="'.$href.'" title="write a new review">'.$submission->title.'</a></li>';
-			    }
-			}
+			$todo .= '<li><a href="'.$href.'" title="write a new review">'.$submission->title.'</a></li>';
 		}
 
 	}
 
 ?>
-<h1><? if ($this->aclCheck('review', 'listpersonal')): ?>Papers assigned to reviewer<? else: ?>My submissions to review<? endif; ?> <span class="metanav"><? if ($isTiebreaker): ?><a href="#" id="toggler">Toggle required reviews</a></span><? endif; ?></h1>
-<? if ($isTiebreaker): ?>
-<p>The papers that are greyed out do not require your immediate attention.</p>
-<? endif; ?>
+<h1>My submissions to review</h1>
 <?= $todo; ?>
 </ul>
 <? if (!empty($submissionsReviewed)): ?>
-<h1><? if (!$this->aclCheck('review', 'listpersonal')): ?>My <? endif; ?>completed reviews</h1>
+<h1>My completed reviews</h1>
 <?= $completed; ?>
 </ul>
 <? endif; ?>

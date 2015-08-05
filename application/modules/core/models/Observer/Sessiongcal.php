@@ -1,28 +1,11 @@
 <?php
 /**
- * CORE Conference Manager
+ * Session observer.
  *
- * LICENSE
+ * I can implement the following methods here: _postUpdate, _postInsert, _postDelete
+ * This way I can have different behaviour for different actions. Eg, log a delete
+ * and send an email upon insert/update
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
- 
-/**
- * Session observer. 
- *
- * Following methods can be implemented: _postUpdate, _postInsert, _postDelete
- * @package Core_Model
- * @subpackage Core_Model_Observer
  */
 class Core_Model_Observer_Sessiongcal extends TA_Model_Acl_Abstract implements TA_Model_Observer_Interface
 {
@@ -36,7 +19,7 @@ class Core_Model_Observer_Sessiongcal extends TA_Model_Acl_Abstract implements T
 	 * Add session to Google Calendar and update session table with
 	 * resulting google calendar id.
 	 *
-	 * Weird. I have to refresh $subject in order for save() to work!
+	 * Major WTF - I have to refresh $subject in order for save() to work!
 	 *
 	 * @return void
 	 */

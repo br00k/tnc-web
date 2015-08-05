@@ -1,26 +1,4 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
- 
-/** 
- *
- * @package Core_Forms
- */  
 class Core_Form_Submit extends TA_Form_Abstract
 {
 
@@ -56,27 +34,6 @@ class Core_Form_Submit extends TA_Form_Abstract
 				->addMultiOptions($this->_getFieldValues('publish_paper', 'submit'))
 				->setSeparator('<br />')
 				->setDecorators(array('Composite'));
-				
-	    $topicsel = new Zend_Form_Element_Radio('topic');
-	    $topicsel->setLabel('Topic')
-				 ->setRequired(true)
-				 ->setAttrib('class', 'tiny')
-		         ->addMultiOptions($this->_getFieldValues('topic'))
-		         ->setSeparator('<br />')
- 				 ->setDecorators(array('Composite'));				
-	    
-	    $keywords = new Zend_Form_Element_Text('keywords');
-	    $keywords->setLabel('Keywords')
-	    	  	 ->setRequired(false)
-	    	  	 ->addValidator('StringLength', true, array(2, 500,
-			  	 	'messages' => array(
-			  	 		Zend_Validate_StringLength::TOO_SHORT => 'Please provide longer keywords',
-			  	 		Zend_Validate_StringLength::TOO_LONG => 'Your keywords are too long'
-			  	 	)
-	    	  	 ))
-	    	  	 ->setAttrib('class', 'medium')
-	    	  	 ->setDescription('Must be between 2 and 500 characters')
-			  	 ->setDecorators(array('Composite'));
 
 	    $comment = new Zend_Form_Element_Textarea('comment');
 	    $comment->setLabel('Comment')
@@ -110,8 +67,6 @@ class Core_Form_Submit extends TA_Form_Abstract
 			$title,
 			$audience,
 			$publish,
-			$topicsel,
-			$keywords,
 			$comment,
 			$file
 		));

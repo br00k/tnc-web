@@ -1,7 +1,7 @@
 <? $html = array() ?>
 <ul class="mainnav">
-    <? foreach ($this->container as $page): ?>
-    <li>
+    <? foreach ($this->container as $page): ?> 
+    <li> 
     <? $active = $page->isActive() ? 'selected' : '' ?>
     <?= '<a href="'.$page->getHref().'" class="'.$active.'">'.$page->getLabel().'</a>'; ?>
 	<?
@@ -11,6 +11,6 @@
     	}
     }
 	?>
-    </li>
+    </li> 
     <? endforeach;?>
 </ul>

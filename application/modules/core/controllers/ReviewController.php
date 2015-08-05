@@ -1,27 +1,5 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
 
-/**
- * ReviewController
- *
- * @package Core_Controllers
- */
 class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_Resource_Interface
 {
 
@@ -44,10 +22,6 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 		if ($page) {
 			$page->setActive();
 		}
-
-		$ajaxContext = $this->_helper->getHelper('AjaxContext');
-		$ajaxContext->addActionContext('list', 'json')
-					->initContext();
 	}
 
 	/**
@@ -65,11 +39,6 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 		return $this->_forward('list');
 	}
 
-	/**
-	 * Send email to all reviewers
-	 *
-	 * @return void
-	 */
 	public function mailAction()
 	{
 		$request = $this->getRequest();
@@ -124,29 +93,6 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 	}
 
 	/**
-	 * List reviews assigned to current user
-	 *
-	 */
-	public function listmineAction()
-	{
-		$this->view->headScript()->appendFile('/js/reviewtoggler.js');
-		$this->view->MySubmissionsToReview = $this->_reviewModel->getPersonalTiebreakers();
-		return $this->render('list-personal');
-	}
-
-	public function listpersonalAction()
-	{	
-		$this->view->headScript()->appendFile('/js/reviewtoggler.js');
-		if ($this->getRequest()->isPost()) {
-			$this->view->user_id = $userId = $this->getRequest()->getParam('user_id');
-			$this->view->MySubmissionsToReview = $this->_reviewModel->getPersonalTiebreakers(
-				$userId
-			);
-		} 
-		return $this->render('list-personal');
-	}
-
-	/**
 	 * List of reviews for a submission
 	 * This action also deals with managing the session status
 	 * (setting the status and 'proposed' session)
@@ -156,6 +102,11 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 	{
 		$request = $this->getRequest();
 		$submissionId = ($request->getParam('id')) ? $request->getParam('id') : $request->getParam('submission_id');
+
+		if (!$submissionId) {
+			$this->view->mysubmissionstoreview = Zend_Auth::getInstance()->getIdentity()->getSubmissionsToReview();
+			return $this->render('list-personal');
+		}
 
 		$filter = new stdClass();
 		$filter->submission_id = $submissionId;
@@ -169,7 +120,6 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 		$this->view->grid['params']['order'] = $this->_getParam('order');
 		$this->view->grid['params']['dir'] = $this->_getParam('dir');
 		$this->view->grid['params']['controller'] = $this->getRequest()->getControllerName();
-		$this->view->tiebreaker = $this->view->grid['rows']->getTieBreaker();
 
 		$submitModel = new Core_Model_Submit();
 		$this->view->submission = $submitModel->getAllSubmissionDataById($submissionId);
@@ -193,6 +143,8 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 		$this->_helper->flashMessenger('Submission status saved');
 		$url = $this->_helper->getHelper('Url')->url(array('controller'=>'submit', 'action'=>'list'), 'grid');
 		return $this->_helper->redirector->gotoUrl($url.'#s'.$submissionId);
+		
+
 	}
 
 	private function displayForm()
@@ -259,9 +211,9 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 	public function deleteAction()
 	{
 		if ( false === $this->_reviewModel->delete($this->_getParam('id')) ) {
-			throw new TA_Model_Exception('Something went wrong with deleting the review');
+			throw new Core_Model_Exception('Something went wrong with deleting the review');
 		}
-		return $this->_helper->redirector->gotoRoute(array('controller'=>'submit', 'action'=>'list'), 'grid');
+		return $this->_helper->redirector->gotoRoute(array('controller'=>'review', 'action'=>'list'), 'grid');
 	}
 
 	/**

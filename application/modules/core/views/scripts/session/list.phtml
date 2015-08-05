@@ -1,13 +1,11 @@
 <h1>Sessions</h1>
 <? if ($this->aclCheck('session', 'save')): ?>
-<div class="actions"><a href="/core/session/new" title="Add new session">add</a>
-<? if ($this->grid['rows']->count() > 0): ?>
+<div class="actions"><a href="/core/session/new" title="Add new session">add</a> |
 <? if ($this->aclCheck('session', 'googlesync')): ?>
-| <a href="/core/session/sync" title="Synchronize sessions with Google calendar">synchronize</a>
+<a href="/core/session/sync" title="Synchronize sessions with Google calendar">synchronize</a></div>
 <? endif; ?>
 <? endif; ?>
-</div>
-<? endif; ?>
+
 <?
 $presentationCount = $this->grid['rows']->getPresentationCount();
 // filter out hidden columns

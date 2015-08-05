@@ -1,21 +1,4 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
 
 class TA_Model_Resource_Db_Table_Row_Abstract extends Zend_Db_Table_Row_Abstract implements TA_Model_Observed_Interface {
 
@@ -26,37 +9,8 @@ class TA_Model_Resource_Db_Table_Row_Abstract extends Zend_Db_Table_Row_Abstract
 	 */
 	protected static $_observers = array();
 
-	/**
-	 * This runs on every query and makes sure that only records within the current
-	 * conference can be shown. Eg, you can't see presentations that belong to another
-	 * conference. If you do want this, remove this method.
-	 * For the Conference model this is different because this model allows you to edit
-	 * other conference info regardless the current conference_id (defined by hostname)
-	 *
-	 * This only affects the CORE module, @todo: maybe move to CORE specific abstract class?
-	 */
-	public function init()
-	{
-		if (isset($this->conference_id)) {
-			if (!$this->conference_id) {
-				return;
-			}
-		}
-		$request = Zend_Controller_Front::getInstance()->getRequest();
+	protected static $_count = array();
 
-		if ( ($request->getControllerName() != 'conference')
-		&& ($request->getModuleName() == 'core')
-		&& (isset($this->conference_id))
-		&& ($this->getTable()->getConferenceId()) ) {
-			try {
-				if ($this->getTable()->getConferenceId() != $this->conference_id) {
-					throw new TA_Model_Resource_Db_Table_Row_Exception('This record does not match the conference identifier, eg. you are trying to view a record not in this conference');
-				}
-			} catch (Zend_Db_Table_Row_Exception $e) {
-				//do nothing
-			}
-		}
-	}
 
 	/**
 	 * Return column/value pairs with date values
@@ -92,7 +46,7 @@ class TA_Model_Resource_Db_Table_Row_Abstract extends Zend_Db_Table_Row_Abstract
 		$zendDate = new Zend_Date(
 		    $value,
 		    Zend_Date::ISO_8601,
-		    Zend_Registry::get('Zend_Locale') //@todo: it seems I can remove this, because Zend gets this automatically
+		    Zend_Registry::get('Zend_Locale') //@todo: it seems I can remove this, because it gets it automatically
 		);
 		if ($dateFormat) {
 			return $zendDate->get($dateFormat);
@@ -155,11 +109,6 @@ class TA_Model_Resource_Db_Table_Row_Abstract extends Zend_Db_Table_Row_Abstract
 		$this->notifyObservers(__FUNCTION__);
 	}
 
-	/**
-	 * Get observers attached to this row
-	 *
-	 * @return	array
-	 */
 	public static function getObservers()
 	{
 		$observers = self::$_observers;
@@ -167,22 +116,22 @@ class TA_Model_Resource_Db_Table_Row_Abstract extends Zend_Db_Table_Row_Abstract
 	}
 
 	/**
-	 * Add a static Observer object to the class
-	 *
-	 * @param object $o Observer that implements the iObserver interface
-	 * @retunn void
-	 */
+	* Add a static Observer object to the class
+	*
+	* @param object $o Observer that implements the iObserver interface
+	* @retunn void
+	*/
 	public static function attachStaticObserver(TA_Model_Observer_Interface $o)
 	{
 		array_push(self::$_observers, $o);
 	}
 
 	/**
-	 * Remove a static observer object from the class
-	 *
-	 * @param	object	$o	Observer that implements the iObserver interface
-	 * @return	boolean	True on success
-	 */
+	* Remove a static observer object from the class
+	*
+	* @param	object	$o	Observer that implements the iObserver interface
+	* @return	boolean	True on success
+	*/
 	public static function detachStaticObserver(TA_Model_Observer_Interface $o)
 	{
 		foreach (self::$_observers as $key => $observer) {
@@ -195,13 +144,13 @@ class TA_Model_Resource_Db_Table_Row_Abstract extends Zend_Db_Table_Row_Abstract
 	}
 
 	/**
-	 * Notify any observers
-	 * use this if something happens the observers might be interested in
-	 *
-	 * @param	string	$method		Method to call on observer
-	 * @param	string	$msg 		The message you want to send to the observer
-	 * @return 	void
-	 */
+	* Notify any observers
+	* use this if something happens the observers might be interested in
+	*
+	* @param	string	$method		Method to call on observer
+	* @param	string	$msg 		The message you want to send to the observer
+	* @return 	void
+	*/
 	public function notifyObservers($method, $msg = null)
 	{
 		$observers = self::$_observers;
@@ -209,6 +158,12 @@ class TA_Model_Resource_Db_Table_Row_Abstract extends Zend_Db_Table_Row_Abstract
 		// loop through observers and notify each available observer method
 		foreach ($observers as $obs) {
 			if (is_callable(array($obs, $method))) {
+				#$ob = spl_object_hash($obs);
+				#if (isset(self::$_count[$ob])) {
+				#	self::$_count[$ob]++;
+				#} else {
+				#	self::$_count[$ob] = 1;
+				#}
 				$obs->$method($this, $msg);
 			}
 		}

@@ -1,27 +1,4 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
-
-/** 
- *
- * @package Core_Resource
- * @author Christian Gijtenbeek <gijtenbeek@terena.org>
- */
 class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 {
 
@@ -29,6 +6,7 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 
 	protected $_primary = 'submission_id';
 
+	#protected $_rowClass = 'Core_Resource_Submission_Item';
 	protected $_rowsetClass = 'Core_Resource_Submission_Set';
 
 	public function init() {}
@@ -53,29 +31,24 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 				left join submissions s on (st.submission_id = s.submission_id)
 				left join users_submissions us on (us.submission_id = st.submission_id)
 				left join users u on (u.user_id = us.user_id) where st.status='
-				.(int) $statusId . ' and s.conference_id='.$this->getConferenceId();
+				.(int) $statusId;
 		return $this->getAdapter()->fetchAll($query);
 	}
 
 	/**
-	 * Get all submissions that are accepted
+	 * Get all submissions belonging to a conference that are accepted
 	 *
-	 * @param	array	$values		Form values
-	 * @return	Zend_Db_Table_Rowset
+	 * @param integer $conferenceId conference_id
+	 * @return Zend_Db_Table_Rowset
 	 */
-	public function getAcceptedSubmissions($values)
+	public function getAcceptedSubmissions($conferenceId = null)
 	{
-		$start = new Zend_Date($values['submit_start']);
-		$end = new Zend_Date($values['submit_end']);
-
 		return $this->fetchAll($this->select()
 			->where('conference_id = ?', $this->getConferenceId())
 			->where('status = ?', $this->_getAcceptedValue())
-			->where('submission_insert > ?', $start->get(Zend_Date::ISO_8601))
-			->where('submission_insert < ?', $end->get(Zend_Date::ISO_8601))
 		);
 	}
-
+	
 	/**
 	 * @param	object	$filter
 	 * @param	boolean	$object		Return object
@@ -85,7 +58,7 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 	{
 		$select = $this->select()
 			   		   ->from( $this->info('name'), array('file_id', 'title'));
-
+		
 		// apply filters to grid
 		if ($filter->filters) {
 			foreach ($filter->filters as $field => $value) {
@@ -109,7 +82,7 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 	 * @param	object	$filter		Filter object, should contain 'filter' property
 	 * @return	array
 	 *
-	 */
+	 */	 
 	public function getSubmissions($paged=null, $order=array(), $filter=null)
 	{
 		$grid = array();
@@ -127,7 +100,7 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 		}
 		$select->order($order)
 			   ->from( $this->info('name'), array_keys($this->getGridColumns()) );
-
+		
 		// apply filters to grid
 		if ($filter->filters) {
 			foreach ($filter->filters as $field => $value) {

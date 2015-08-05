@@ -1,15 +1,14 @@
-<p><?= $this->conferenceInfo('name') ?>.</p></p>
+<p>TERENA Networking Conference 2011</p>
 
 <p>Dear <?= $this->values['fname'] ?> <?= $this->values['lname'] ?>,
 </p>
 
 <p>On behalf of the Programme Committee, it is my pleasure to inform you
 that your submitted paper entitled "<?= $this->values['title'] ?>" has been
-accepted for presentation at the <?= $this->conferenceInfo('name') ?>.</p>
+accepted for presentation at the <?= $this->conferenceInfo('name') ?> in Prague, Czech Republic.</p>
 
 
 <?
-// prepare dates and times
 $date = $this->formatDate($this->values['session']['tstart'], null, 'EEEE dd MMMM');
 $time = $this->formatDate($this->values['session']['tstart'], null, 'HH:mm').'-'.
 		$this->formatDate($this->values['session']['tend'], null, 'HH:mm');
@@ -18,15 +17,17 @@ $time = $this->formatDate($this->values['session']['tstart'], null, 'HH:mm').'-'
 
 <p>
 At present, you are scheduled to speak in a session on <?= $date ?>, from <?=$time?>.
-<?
-if ($chairs = $this->values['session']['chair']) {
-	foreach ($chairs as $chair) {
-		$chair = '<a href="mailto:'. $chair['email'] .'">'.$chair['fname']. ' '.$chair['lname'].'</a>';
-	}
-}
+<? 
+$chairs = $this->values['session']['chair'];
+foreach ($chairs as $chair) {
+	$chair = '<a href="mailto:'. $chair['email'] .'">'.$chair['fname']. ' '.$chair['lname'].'</a>';
+}	
 ?>
-<? if (isset($chair)): ?>Your session chair will be <?= $chair ?>. Please note that these details are subject to change.<? endif; ?>
+Your session chair will be <?= $chair ?>. Please note that these details are subject to change.
 <p>
+
+
+
 
 <p>Comments from the programme committee:
 <hr />
@@ -42,8 +43,10 @@ if ($chairs = $this->values['session']['chair']) {
 </p>
 
 
+
+
 <p>
-You will be hearing from us again very shortly, but in the meantime you should take the following steps to complete your involvement in <?= $this->conferenceInfo('abbreviation') ?>:</p>
+You will be hearing from us again very shortly, but in the meantime you should take the following steps to complete your involvement in TNC2011:</p>
 
 <p>
 <strong>1) Sign in to CORE</strong>
@@ -61,7 +64,36 @@ You will be hearing from us again very shortly, but in the meantime you should t
 <p>
 <strong>2) Update your personal information</strong> by clicking your name in the top right corner. The information you enter will be shown on your 'Speaker Details' webpage. This includes a landscape profile picture (minimum 300 x 200 pixels), a short biography (max 100 words). You should also make sure your name is spelled correctly and that the organisation which you will be representing is correct. Also check that the details of the presentation assigned to you are correct.
 </p>
+<p>
+Please make sure that these steps are completed by <strong>21 February</strong>.
+</p>
 
 <p>
-Sincerely,<br />
+When the conference registration commences on 21 February 2011, you will also receive a speaker code for the online registration. You must use this code to receive the speaker's discount. EVERYONE must register for the conference and the final amount due will be calculated correctly as long as you use the code provided.
 </p>
+
+<p>
+The Speakers' Reception will be held on the evening of Sunday 15 May so please keep this in mind when making your travel arrangements.
+</p>
+
+<p>
+If you have any queries please do not hesitate to contact me, I look forward to meeting you in Prague.
+</p>
+
+
+Sincerely,<br /><br /><br />
+-- <br />
+Gyöngyi Horváth<br />
+TERENA Conference and Workshop Organiser<br />
+<br />
+TERENA Networking Conference 2011<br />
+16 - 19 May 2011<br />
+Prague, Czech Republic<br />
+http://tnc2011.terena.org/<br />
+#TNC2011<br /><br />
+
+TERENA Secretariat<br />
+Singel 468 D, 1017 AW Amsterdam<br />
+The Netherlands<br />
+T +31 20 530 44 85 F +31 20 530 44 99<br />
+horvath@terena.org | www.terena.org

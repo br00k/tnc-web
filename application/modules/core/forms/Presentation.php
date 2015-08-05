@@ -1,26 +1,4 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
-
-/**
- *
- * @package Core_Forms
- */
 class Core_Form_Presentation extends TA_Form_Abstract
 {
 
@@ -48,14 +26,14 @@ class Core_Form_Presentation extends TA_Form_Abstract
 			  	 ->setRequired(true)
 				 ->setAttrib('class', 'medium')
 				 ->setDecorators(array('Composite'));
-
+				 
 	    $authors = new Zend_Form_Element_Textarea('authors');
 	    $authors->setLabel('Authors')
 				->setAttrib('class', 'medium')
 				->addFilter('Null')
 				->addFilter('StringTrim')
 				->setDescription('You can add multiple authors by putting each author on a new line')
-				->setDecorators(array('Composite'));
+				->setDecorators(array('Composite'));				 
 
 		$submissionModel = new Core_Model_Submit();
 
@@ -66,7 +44,7 @@ class Core_Form_Presentation extends TA_Form_Abstract
 				   ->addMultiOptions($submissionModel->getSubmissionsForSelect(null))
 				   ->setAttrib('class', 'medium')
 				   ->setDecorators(array('Composite'));
-
+				   
 	    $logo = new Zend_Form_Element_Select('image');
 	    $logo->setLabel('Logo')
 			 ->addMultiOption('', '---')
@@ -74,17 +52,17 @@ class Core_Form_Presentation extends TA_Form_Abstract
 			 ->addMultiOptions(array('geant' => 'geant'))
 			 ->setAttrib('class', 'medium')
 			 ->setDecorators(array('Composite'));
-
+				   
 		$this->addElements(array(
 			$title,
 			$abstract,
 			$authors
 		));
-
-		// @todo: by no means secure, you can still manually change the POST array
+		
+		// @todo: by no means secure, you can still manually change the POST array 
 		// to bypass this
 		if (Zend_Auth::getInstance()->getIdentity()->isAdmin()) {
-			$this->addElements(array($submission, $logo));
+			$this->addElements(array($submission, $logo));			
 		}
 
 	    $this->addElement('submit', 'submit', array(

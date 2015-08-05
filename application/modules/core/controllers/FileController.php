@@ -1,38 +1,18 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
- 
-/**
- * FileController
- *
- * @package Core_Controllers
- * @todo deleting presentation from session redirects wrong
- */  
+
 class Core_FileController extends Zend_Controller_Action
 {
-	
-    /**
-     * File model
-     *
-     * @var Core_Model_File
-     */
+
+	/**
+	 *  @todo: deleting presentation from session redirects wrong
+	 *
+	 */
 	protected $_fileModel;
 
+	/**
+	 *
+	 *
+	 */
 	public function init()
 	{
 		$this->_fileModel = new Core_Model_File();
@@ -40,10 +20,8 @@ class Core_FileController extends Zend_Controller_Action
     }
 
     /**
-	 * Get file details from the database and return the file as a download
+	 * Get a file from the database and return it as a download
 	 *
-	 * @param	integer	$id	The file to retrieve
-	 * @return	void
      */
     public function getfileAction()
     {
@@ -64,7 +42,6 @@ class Core_FileController extends Zend_Controller_Action
      *
      * @param	string	$file	The file to retrieve
      * @param	string	$type	The type of file you are retrieving
-     * @return	void
      */
     public function getstaticfileAction()
     {
@@ -92,9 +69,7 @@ class Core_FileController extends Zend_Controller_Action
 
     /**
      * Display a file inline. If there is a thumbnail it picks this over the normal file
-     *
-	 * @param	integer	$id	The file to retrieve
-     * @return	void
+     * @return void
      */
 	public function showAction()
 	{

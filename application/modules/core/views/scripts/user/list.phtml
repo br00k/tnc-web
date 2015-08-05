@@ -7,24 +7,11 @@ function globFilter($input)
 }
 $columns = array_filter($this->grid['cols'], 'globFilter');
 ?>
-
-<?		
-$searchField = $this->formText('search',
-	$this->searchString,
-	array("onchange" => "this.form.submit();", "class" => "medium", "title" => "search user")
-);
-$resetButton = $this->formSubmit('reset_search',
-	'reset',
-	array("onclick" => "this.form.submit();", "style" => 'width:100px;')
-);
-?>
-<form id="filterform" action="<?= $this->url() ?>" method="post"><p><?= $searchField ?> <?= $resetButton ?></p></form>
-
 <? if ($this->grid['rows']->count() !== 0): ?>
 <? if ( ($this->grid['rows'] instanceof Zend_Paginator) && ($this->grid['rows']->getTotalItemCount() > $this->grid['rows']->getItemCountPerPage()) ): ?>
 <?= $this->paginationControl($this->grid['rows'], 'Sliding', '_paginator.phtml', array('route_name' => 'grid')); ?>
 <? endif; ?>
-<table class="grid" cellspacing="0" summary="Users">
+<table class="grid" cellspacing="0">
 <thead>
 <tr>
 <th style="width:3px;padding:0;margin:0;"></th>
@@ -54,17 +41,15 @@ $resetButton = $this->formSubmit('reset_search',
   		<td>
   		<?
   		// apply modifiers
-		$output='';
   		if ( isset($columns[$col]['modifier']) ) {
   			if ($columns[$col]['modifier'] instanceof Closure) {
-				$output = $columns[$col]['modifier']($item->$col);
+				echo $columns[$col]['modifier']($item->$col);
   			} else {
-  				$output = call_user_func(array($this, $columns[$col]['modifier']), $item->$col);
+  				echo call_user_func(array($this, $columns[$col]['modifier']), $item->$col);
   			}
   		} else {
-  			$output = $item->$col;
+  			echo $item->$col;
   		}
-		echo htmlspecialchars($output);
   		?>
   		</td>
   	<? endforeach; ?>
@@ -82,29 +67,17 @@ $resetButton = $this->formSubmit('reset_search',
 	</tr>
 
 	<tr class="extra <?= $this->cycle(array('odd', 'even'))->current() ?>">
-	<td colspan="7">
-	
-	<!-- User information -->
-	<dl class="userinfo">
-	<dt>Identity</dt><dd>
-	<?if($item['uid']):?>
-		<?= htmlspecialchars($item['uid'])?>
-	<?else:?>
-		Not yet known because user has not used activation link in the invitation e-mail
-	<?endif;?></dd>
-	<dt>Inserted at</dt><dd><?= $this->formatDate($item['inserted']) ?></dd>
-	<dt>Method</dt><dd>
-	<?if ($metadata = $item->getAuditData()):?>
-		Invited as <?= htmlspecialchars('"' . $metadata['fname'] . ' ' . $metadata['lname'] .
-		' <' . $metadata['email'] . '>"') ?>
-	<?else:?>
-		Self registered
-	<?endif;?>
-	</dd>
-	</dl>
-	<!-- end User information -->
-	
-	
+	<td colspan="7"><? if ($item['smart_id']): ?><span class="meta"><?= $item['smart_id'] ?></span><br /><? endif; ?>
+	<span class="meta">inserted: <?= $this->formatDate($item['inserted']) ?></span>
+	<? 
+	if ($metadata = $item->getAuditData()):
+	echo '<br /><span class="meta">Invited user as: '
+	.$metadata['fname'].'&nbsp;'
+	.$metadata['lname'].'&nbsp;'
+	.$metadata['email']
+	.'</span>';
+	endif; 
+	?>	
 	</td>
 	</tr>
 <? endforeach; ?>

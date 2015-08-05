@@ -1,27 +1,5 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
 
-/**
- * SessionController
- *
- * @package Core_Controllers
- */
 class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_Resource_Interface
 {
 
@@ -204,7 +182,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 	}
 
 	/**
-	 * Swap order of sessions
+	 *
 	 *
 	 */
 	public function orderAction()
@@ -282,7 +260,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 	public function deleteAction()
 	{
 		if ( false === $this->_sessionModel->delete($this->_getParam('id')) ) {
-			throw new TA_Model_Exception('Something went wrong with deleting the user');
+			throw new Core_Model_Exception('Something went wrong with deleting the user');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'session', 'action'=>'list'), 'grid');
 	}
@@ -318,7 +296,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 	 * Delete user session link
 	 *
 	 */
-	public function deleteuserlinkAction()
+	public function deletechairAction()
 	{
 		$this->_sessionModel->deleteChair($this->_getParam('id'));
 		return $this->_helper->lastRequest();
@@ -340,14 +318,12 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 
 		// No post; display form
 		if ( !$request->isPost() )  {
-			$form = $this->view->sessionUserForm = $this->_sessionModel->getForm('sessionUser');
+			$this->view->sessionUserForm = $this->_sessionModel->getForm('sessionUser');
+			$this->view->chairs = $session->getChairs();
 			// populate form with defaults
 			$this->view->sessionUserForm->setDefaults(array(
 			   	'session_id' => $id
 			));
-			$form->getElement('user_id')->setTaRow(
-				$this->_sessionModel->getSessionById($id)
-			);
 			return $this->render('chairs');
 		}
 
@@ -420,6 +396,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 	/**
 	 * Export a CORE session to a persons Google Calendar
 	 *
+	 * @todo test
 	 */
 	public function exportAction()
 	{
@@ -439,11 +416,10 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		$this->_helper->flashMessenger('Succesfully saved this session to your personal Google calendar');
         $this->_redirectToSession();
 	}
-
+	
 	/**
 	 * Helper method for exportAction
 	 * redirects user to session details page
-	 *
 	 */
 	private function _redirectToSession()
 	{
@@ -452,7 +428,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		   	'controller'=>'session',
 		   	'action'=>'show',
 		   	'id'=>$this->_getParam('id')
-		   ), 'oneitem');
+		   ), 'oneitem');	
 	}
 
 }

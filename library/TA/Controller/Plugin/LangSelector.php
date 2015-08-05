@@ -1,28 +1,6 @@
 <?php
 /**
- * CORE Conference Manager
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
- 
-/**
- * Sets language
- *
- * @author Christian Gijtenbeek <gijtenbeek@terena.org>
- * @package TA_Controller
- * @subpackage Plugin
  */
 class TA_Controller_Plugin_LangSelector extends Zend_Controller_Plugin_Abstract {
 
@@ -43,6 +21,9 @@ class TA_Controller_Plugin_LangSelector extends Zend_Controller_Plugin_Abstract 
             case "en":
                 $langLocale = 'en_US';
                 break;
+            case "hu":
+            	$langLocale = 'hu_HU';
+            	break;
             default:
                 /**
                  * Get a previously set locale from session or set
@@ -54,7 +35,7 @@ class TA_Controller_Plugin_LangSelector extends Zend_Controller_Plugin_Abstract 
 
         $newLocale = new Zend_Locale();
         $newLocale->setLocale($langLocale);
-        Zend_Registry::set('Zend_Locale', $newLocale);        
+        Zend_Registry::set('Zend_Locale', $newLocale);
 
         $translate->setLocale($langLocale);
         $session->lang = $langLocale;

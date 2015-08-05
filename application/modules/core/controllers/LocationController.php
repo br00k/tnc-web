@@ -1,27 +1,5 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
 
-/**
- * LocationController
- *
- * @package Core_Controllers
- */ 
 class Core_LocationController extends Zend_Controller_Action implements Zend_Acl_Resource_Interface
 {
 
@@ -40,7 +18,6 @@ class Core_LocationController extends Zend_Controller_Action implements Zend_Acl
 			$page->setActive();
 		}
 		$this->view->threeColumnLayout = true;
-		$this->view->headScript()->appendFile('/js/conference.js');
 	}
 
 	/**
@@ -116,7 +93,7 @@ class Core_LocationController extends Zend_Controller_Action implements Zend_Acl
 	public function deleteAction()
 	{
 		if ( false === $this->_locationModel->delete($this->_getParam('id')) ) {
-			throw new TA_Model_Exception('Something went wrong with deleting the location');
+			throw new Core_Model_Exception('Something went wrong with deleting the location');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'location', 'action'=>'list'), 'grid');
 	}

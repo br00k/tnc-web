@@ -1,27 +1,4 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
-
-/** 
- *
- * @package Core_Resource
- * @author Christian Gijtenbeek <gijtenbeek@terena.org>
- */
 class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 {
 
@@ -30,19 +7,13 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 	protected $_primary = 'user_id';
 
 	protected $_rowClass = 'Core_Resource_User_Item';
-	
-	protected $_rowsetClass = 'Core_Resource_User_Set';
-
-	private $_config;
 
 	public function init() {
-		$this->_config = Zend_Registry::get('config');
 		$this->attachObserver(new Core_Model_Observer_User());
 	}
 
 	/**
 	 * Gets user by primary key
-	 *
 	 * @return object Core_Resource_User_Item
 	 */
 	public function getUserById($id)
@@ -50,18 +21,14 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 		return $this->find( (int)$id )->current();
 	}
 
-	/**
-	 * Get user by email
-	 *
-	 * @param	string	$email
-	 * @return	Core_Resource_User_Item
-	 */
 	public function getUserByEmail($email)
 	{
 		$select = $this->select();
 		$select->where('email = ?', $email);
 
-		return $this->fetchRow($select);
+		$row = $this->fetchRow($select);
+
+		return $row;
 	}
 
 	/**
@@ -76,8 +43,7 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 	public function mapFederatedToUser(array $federatedAttributes)
 	{
 		$required = array(
-//			'saml_uid_attribute',
-			'uid',
+			'smart_id',
 			'fname',
 			'lname',
 			'organisation',
@@ -85,69 +51,50 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 			'country',
 		);
 
-		foreach($required as $req) {
-			$configattr='saml_'.$req.'_attribute';
-			$required_in_saml[$req] = $this->_config->simplesaml->$configattr;
-		}
-
-		$missing = array_diff($required_in_saml, array_keys($federatedAttributes));
+		$missing = array_diff($required, array_keys($federatedAttributes));
 
 		if(count($missing) > 0) {
-			throw new TA_Exception("Missing required attribute(s): ".implode(', ', $missing).". This/these HAVE to be provided by the IdP, possibly by using the SmartAttr module.");
+			throw new Exception("Missing required attribute(s): ".implode(', ', $missing).". This/these HAVE to be provided by the IdP, possibly by using the SmartAttr module.");
 		}
 
-		foreach ($required_in_saml as $req=>$req2) {
-			$values[$req] = $federatedAttributes[$req2][0];
+		foreach ($required as $req) {
+			$values[$req] = $federatedAttributes[$req][0];
 		}
-
-		// Do some more magic here, maybe try to get rid of the s_mart_id module in SimpleSAML?
 		return $values;
 	}
 
 	/**
 	 * @param	$smartid
 	 */
-	public function getUserBySmartId($smart_id, $safe = false)
+	public function getUserBySmartId($smartid, $safe = false)
 	{
 		$select = $this->select();
-		$select->where('uid = ?', $smart_id);
+		$select->where('smart_id = ?', $smartid);
 
 		$row = $this->fetchRow($select);
 
 		return $row;
 	}
-	
-	/**
-	 * Search for string within user table
-	 * @param	string		$search		String to search for in user table
-	 * @return	array		Array of user_id
-	 */
-	 public function searchUser($string)
-	 {
-	 	$query = "select user_id from users where lname ilike '%".$string ."%' 
-	 	or fname ilike '%".$string ."%'";
-		$users = $this->getAdapter()->fetchCol(
-			$query
-		);
-		
-		if (!empty($users)) { 
-			return $users;
-		}
-	 }
 
-	/**
-	 * Get user by invite UUID
-	 *
-	 * @param	string	$hash	UUID
-	 * @return	Core_Resource_User_Item
-	 */
 	public function getUserByInvite($hash)
 	{
 		return $this->fetchRow(
 			$this->select()
 				 ->where('invite = ?', $hash)
-				 ->where("inserted > now() - INTERVAL ?", $this->_config->core->userInviteTtl)
+				 ->where('inserted > now() - INTERVAL \'6 months\'')
 		);
+	}
+
+	public function getUserIdByEmail($email)
+	{
+		$row = $this->fetchRow(
+			$this->select()
+				 ->from($this->_name, array('user_id'))
+				 ->where('email = ?', $email)
+		);
+		if ($row) return $row->user_id;
+
+		return false;
 	}
 
 	/**
@@ -162,11 +109,6 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 		return $this->getAdapter()->fetchCol($query, array(':user_id' => $id));
 	}
 
-	/**
-	 * Gets email/user_id data
-	 *
-	 * @return	array
-	 */
 	public function getUsersForSelect()
 	{
 		return $this->getAdapter()->fetchPairs(
@@ -178,8 +120,20 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 	}
 
 	/**
-	 * Save user role in reference table
+	 * Get certificates a user is allowed to edit
 	 *
+	 * @return	mixed	Certificates a user is allowed to edit, or false if none
+	 * @todo fingerprint_* must be removed from db table 'certificates'!
+	 * @todo not needed?!
+	 */
+	public function getCertificatesOfUser($id)
+	{
+		$query = "select * from certificates c inner join users_certificates uc on (c.cert_id = uc.cert_id) where uc.user_id=:user_id";
+		return $this->getAdapter()->query($query, array(':user_id' => $id))->fetchAll();
+	}
+
+	/**
+	 * Save user role in reference table
 	 * @param	integer	$id		user_id
 	 * @param	string	$role	user role
 	 */
@@ -250,8 +204,7 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 			'organisation' => array('field' => 'organisation', 'label' => 'Organisation', 'sortable' => true),
 			'lastlogin' => array('field' => 'lastlogin', 'label' => 'Last login', 'sortable' => true, 'modifier' => 'formatDate'),
 			'active' => array('field' => 'active', 'label' => 'Active', 'sortable' => false),
-//			'saml_uid_attribute' => array('field' => 'saml_uid_attribute', 'label' => 'saml_uid_attribute', 'sortable' => false, 'hidden' => true),
-			'uid' => array('field' => 'uid', 'label' => 'uid', 'sortable' => false, 'hidden' => true),
+			'smart_id' => array('field' => 'smart_id', 'label' => 'smart_id', 'sortable' => false, 'hidden' => true),
 			'invite' => array('field' => 'invite', 'label' => 'invite', 'sortable' => false, 'hidden' => true),
 			'inserted' => array('field' => 'inserted', 'label' => 'inserted', 'sortable' => false, 'hidden' => true)
 		);

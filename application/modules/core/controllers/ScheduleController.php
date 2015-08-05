@@ -1,27 +1,5 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
 
-/**
- * ScheduleController
- *
- * @package Core_Controllers
- */
 class Core_ScheduleController extends Zend_Controller_Action
 {
 
@@ -35,11 +13,6 @@ class Core_ScheduleController extends Zend_Controller_Action
 			$this->view->headScript()->appendFile('/js/move-session.js');
 		}
 		$this->view->threeColumnLayout = true;
-		
-		// add context switching for mobile app
-		$ajaxContext = $this->_helper->contextSwitch();
-		$ajaxContext->addActionContext('list', 'json')
-					->initContext();		
 	}
 
 	public function indexAction()
@@ -65,40 +38,21 @@ class Core_ScheduleController extends Zend_Controller_Action
 			$day = $this->_helper->conferenceInfo('start')->get('dd/MM/YYYY');
 		}
 
-		if ($loc = $this->_getParam('loc')) {
-			$datearray = array(
-			  'year' => 2012,
-			  'month' => 5,
-			  'day' => 22,
-			  'hour' => 16,
-			  'minute' => 35,
-			  'second' => 10);
-    		$zd = new Zend_Date($datearray);
-			
-			$sessions = $this->_scheduleModel->getStreamData($zd, $loc);
-			$this->view->session = current($sessions);
-			
-			$this->_helper->layout->assign('customlayout', true);
-			$this->_helper->layout->setLayout('core/locationlayout');
-		}
-		
-		$mobile = $this->_getParam('mobile', false);
-
-		// if feedback codes have been sent
-		if ($this->_helper->conferenceInfo()->isFeedbackOpen() ) {
+		// if conference is live and feedback code exists set view variables
+		//if ($this->_helper->conferenceInfo()->isLive() ) {
 			$feedbackModel = new Core_Model_Feedback();
 			if ($feedbackModel->getFeedbackId()) {
 				$this->view->feedbackid = true;
 				$this->view->feedback = $this->_getParam('f', false);
 			}
-		}
+		//}
 
 		$view = $this->_getParam('view', 'titles');
 		$timeslot = $this->_getParam('t', null);
 		$location = $this->_getParam('l', null);
 
 		$this->view->personal = $personal = $this->_getParam('personal', false);
-		$this->view->schedule = $this->_scheduleModel->getSchedule(null, array('view' => $view, 'day' => $day, 'personal' => $personal), $mobile);
+		$this->view->schedule = $this->_scheduleModel->getSchedule(null, array('view' => $view, 'day' => $day, 'personal' => $personal));
 		$this->view->days = $this->_scheduleModel->getDays();
 		$this->view->timeslots = $this->_scheduleModel->getTimeslots();
 
@@ -119,7 +73,7 @@ class Core_ScheduleController extends Zend_Controller_Action
 
 		if ($this->_getParam('size')) {
 			$this->_helper->layout->assign('customlayout', true);
-			$this->_helper->layout->setLayout('core/fullschedule');
+			$this->_helper->layout->setLayout('tnc2011/fullschedule');
 		}
 	}
 

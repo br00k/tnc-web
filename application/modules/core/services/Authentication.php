@@ -1,57 +1,14 @@
 <?php
-/**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
- */
 
-/**
- * Authentication Service
- *
- * @package		Core_Service
- * @author Christian Gijtenbeek
- */
 class Core_Service_Authentication {
 
-	/**
-	 * @var Core_Model_User
-	 */
 	protected $_userModel;
 
-	/**
-	 * @var Zend_Auth
-	 */
 	protected $_auth;
 
-	/**
-	 * Defines the type of authentication to use
-	 * @var string
-	 */
 	protected $_type;
 
-	/**
-	 * Invite hash
-	 * @var string
-	 */
 	protected $_invite;
-
-	/**
-	 * Redirect url
-	 * @var string
-	 */
-	protected $_returnTo;
 
 	/**
 	 * Constructor, loads user model
@@ -65,12 +22,6 @@ class Core_Service_Authentication {
 		$this->_invite = $invite;
 	}
 
-	/**
-	 * Perform authentication
-	 *
-	 * @param	array	$values
-	 * @return	mixed	true on success, else error message
-	 */
 	public function authenticate($values)
 	{
 		$adapter = $this->_getAuthAdapter($values);
@@ -99,6 +50,10 @@ class Core_Service_Authentication {
 
 			$user->updateAttributes();
 
+			if ($this->_getAuthType() === 'federated') {
+				// do some stuff with the federated attributes you can get with: $result->getIdentityAttributes()
+			}
+
 			$storage->write($user);
 
 			return true;
@@ -108,11 +63,6 @@ class Core_Service_Authentication {
 
 	}
 
-	/**
-	 * Gets Zend_Auth adapter
-	 *
-	 * @return Zend_Auth
-	 */
 	public function getAuth()
 	{
 		if (!$this->_auth) {
@@ -120,11 +70,6 @@ class Core_Service_Authentication {
 		}
 	}
 
-	/**
-	 * Get authentication type
-	 *
-	 * @return string
-	 */
 	protected function _getAuthType()
 	{
 		return $this->_type;
@@ -133,10 +78,9 @@ class Core_Service_Authentication {
 	/**
 	 * Get different authentication adapaters based on parameter
 	 *
-	 * @param	array	$values
-	 * @return	Zend_Auth_Adapter_Interface
+	 * @return Zend_Auth_Adapter_Interface
 	 */
-	protected function _getAuthAdapter(array $values)
+	protected function _getAuthAdapter($values)
 	{
 		if ( isset($values['authsource']) ) {
 			$this->_type = 'federated';
