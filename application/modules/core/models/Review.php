@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: Review.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
 /**
@@ -299,10 +299,8 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 			? $userId
 			: Zend_Auth::getInstance()->getIdentity()->user_id;
 
-		if (!$user = $this->getResource('users')->getUserById($userId)) {
-			throw new Exception('There is no user with id '. $userId );
-		}
-		
+		$user = $this->getResource('users')->getUserById($userId);
+
 		return $this->_calculateTiebreakers(
 			$user->getSubmissionsToReview(true, $excludeReviewed),
 			$excludeNoTiebreakNeeded

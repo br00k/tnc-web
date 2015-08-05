@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: Federated.php 29 2011-10-05 20:36:08Z gijtenbeek@terena.org $
  */
 
 /**

@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: Sessionsview.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
 
 /** 
@@ -90,6 +90,8 @@ class Core_Resource_Sessionsview extends TA_Model_Resource_Db_Table_Abstract
 	public function getSessionsBeforeDate(Zend_Date $date = null)
 	{
 		$date = new Zend_Date($date);
+		// archive is available 30 minutes later, change to more if encoding takes longer
+		$date->sub('3:00:00', Zend_Date::TIMES);
 		$zd = $date->get(Zend_Date::ISO_8601);
 
 		return $this->fetchAll(

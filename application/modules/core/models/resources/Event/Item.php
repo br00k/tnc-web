@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: Item.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
 
 /** 
@@ -35,5 +35,5 @@ class Core_Resource_Event_Item extends TA_Model_Resource_Db_Table_Row_Abstract
 	public function getCompleteDateTime()
 	{
 		return $this->_isoToNormalDate($this->tstart, 'dd/MM/yyyy HH:mm') . '-' . $this->_isoToNormalDate($this->tend, 'HH:mm');
-	}	
+	}
 }

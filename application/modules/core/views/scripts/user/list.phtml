@@ -7,19 +7,6 @@ function globFilter($input)
 }
 $columns = array_filter($this->grid['cols'], 'globFilter');
 ?>
-
-<?		
-$searchField = $this->formText('search',
-	$this->searchString,
-	array("onchange" => "this.form.submit();", "class" => "medium", "title" => "search user")
-);
-$resetButton = $this->formSubmit('reset_search',
-	'reset',
-	array("onclick" => "this.form.submit();", "style" => 'width:100px;')
-);
-?>
-<form id="filterform" action="<?= $this->url() ?>" method="post"><p><?= $searchField ?> <?= $resetButton ?></p></form>
-
 <? if ($this->grid['rows']->count() !== 0): ?>
 <? if ( ($this->grid['rows'] instanceof Zend_Paginator) && ($this->grid['rows']->getTotalItemCount() > $this->grid['rows']->getItemCountPerPage()) ): ?>
 <?= $this->paginationControl($this->grid['rows'], 'Sliding', '_paginator.phtml', array('route_name' => 'grid')); ?>

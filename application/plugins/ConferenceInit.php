@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: ConferenceInit.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
 /**
@@ -36,7 +36,7 @@ class Application_Plugin_ConferenceInit extends Zend_Controller_Plugin_Abstract
 		$hostname = getenv('HTTP_HOST');
 
 		#$cache->clean();
-
+		
 		if( ($result = $cache->load('conference'.md5($hostname))) === false ) {
 			$db = $bootstrap->getResource('db');
 

@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: Eventsview.php 63 2012-05-20 09:32:06Z gijtenbeek@terena.org $
  */
 
 /** 

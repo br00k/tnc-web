@@ -1,0 +1,12 @@
+.svn
+application/configs/core.crt
+application/configs/core.key
+application/configs/web.ini
+public/.htaccess
+library/Zend
+library/simplesaml
+library/yahoo-sdk
+data/
+logs/
+uploads/
+application/modules/web/

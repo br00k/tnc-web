@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: ConferenceController.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
 
 /**
@@ -213,7 +213,10 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 					  ->remove('conference'.md5($this->getRequest()->getPost('hostname')));
 	}
 
-
+	public function fixtzAction()
+	{
+		$this->_conferenceModel->fixTz();		
+	}
 }
 
 

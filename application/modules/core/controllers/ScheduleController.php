@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: ScheduleController.php 75 2012-10-28 15:45:29Z gijtenbeek@terena.org $
  */
 
 /**
@@ -70,8 +70,8 @@ class Core_ScheduleController extends Zend_Controller_Action
 			  'year' => 2012,
 			  'month' => 5,
 			  'day' => 22,
-			  'hour' => 16,
-			  'minute' => 35,
+			  'hour' => 13,
+			  'minute' => 01,
 			  'second' => 10);
     		$zd = new Zend_Date($datearray);
 			
@@ -119,7 +119,7 @@ class Core_ScheduleController extends Zend_Controller_Action
 
 		if ($this->_getParam('size')) {
 			$this->_helper->layout->assign('customlayout', true);
-			$this->_helper->layout->setLayout('core/fullschedule');
+			$this->_helper->layout->setLayout($this->_helper->conferenceInfo('abbreviation').'/fullschedule');
 		}
 	}
 

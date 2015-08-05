@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: SubmitController.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
 /**

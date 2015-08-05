@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: GoogleTest.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
 
 /**
@@ -69,9 +69,8 @@ class Core_Service_GoogleTest {
 	protected function _getAuthSubHttpClient()
 	{
 		$client = new Zend_Gdata_HttpClient();
-		#$this->_client = Zend_Gdata_AuthSub::getHttpClient($this->_sessionNs->sessionToken);
 		// This sets your private key to be used to sign subsequent requests
-		$client->setAuthSubPrivateKeyFile('/pub/www/core_live/application/configs/core.key', null, true);
+		$client->setAuthSubPrivateKeyFile('/pub/www/tnc2012/trunk/application/configs/core.key', null, true);
 		return $client;
 	}
 

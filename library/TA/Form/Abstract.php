@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: Abstract.php 30 2011-10-06 08:37:15Z gijtenbeek@terena.org $
  */
  
 /**
@@ -105,7 +105,7 @@ class TA_Form_Abstract extends Zend_Form
 		   'Form'
 		));
 
-		// filter nasty elements
+		// Strip whitespace from all elements
 		$this->addElementFilters(array('StringTrim', new TA_Filter_HTMLPurifier()));
 	}
 

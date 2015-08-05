@@ -1,0 +1,18 @@
+#
+SetEnv APPLICATION_ENV development 
+
+Order Deny,Allow
+Deny from all
+Allow from 192.87.30.0/24	# TERENA IPv4
+Allow from 2001:610:148::/48	# TERENA IPv6
+
+ErrorDocument 403 "This web site is not yet available"
+
+
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^.*$ index.php [NC,L]

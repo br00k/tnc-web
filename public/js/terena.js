@@ -133,36 +133,63 @@ $('#streamquality').click(function(){
 var active = $('#activestream').text();
 var quality = $('#quality').text();
 var type = ($('div#streams').hasClass('archive')) ? 'vod' : 'live';
-var file = active+'_'+quality+'.stream';
+//var file = active+'_'+quality+'.stream';
+var file = active;
 
 if (active) {
-	jwplayer('mediacontent_container').setup({
+	var setup = {
 	  'id': 'tncstreamer',
 	  'width': '590',
 	  'height': '357',
 	  'autostart':true,
 	  'controlbar':'bottom',
 	  'provider': 'rtmp',
-	  'file': file,
-	  'streamer': 'rtmp://tncs.cesnet.cz/'+type+'/',
+	  'file': 'stream'+file.substr(2,1),
+	  'streamer': 'rtmp://defr.le.tsicmds.com/nordunetlive/',
 	  'modes': [
 	  	  {type: 'flash', src: '/js/player.swf'},
 	      {
 	        type: 'html5',
 	        config: {
-			 'file': 'http://tncs.cesnet.cz/'+type+'/'+file+'/playlist.m3u8',
-	         'provider': 'http'
-	        }
-	      },
-	      {
-	        type: 'download',
-	        config: {
-	         'file': 'http://tncs.cesnet.cz/'+type+'/'+file+'/playlist.m3u8',
+			 'file': 'http://mps-ios-live.nordu.net:1935/live/stream'+file.substr(2,1)+'.sdp/playlist.m3u8',
 	         'provider': 'http'
 	        }
 	      }
-	  ]
-	});
+	  ]		
+	};
+	if (type == 'vod') {
+		
+		var setup = {
+		  'id': 'tncstreamer',
+		  'width': '590',
+		  'height': '357',
+		  'autostart':true,
+		  'controlbar':'bottom',
+		  'provider': 'rtmp',
+		  'file': 'tnc2012/rhnet/archives/'+file+'.mov',
+		  'streamer': 'rtmp://media.terena.org/fastplay',
+	  	  'modes': [
+	  	  	  {type: 'flash', src: '/js/player.swf'},
+	  	      {
+	  	        type: 'html5',
+	  	        config: {
+	  	  		 'file': 'http://media.terena.org:1935/fastplay/video/tnc2012/rhnet/archives/'+file+'.mov/playlist.m3u8',
+	  	         'provider': 'http'
+	  	        }
+	  	      },
+	  	      {
+	  	        type: 'download',
+	  	        config: {
+	  	  		'file': 'http://media.terena.org:1935/fastplay/video/tnc2012/rhnet/archives/'+file+'.mov/playlist.m3u8',
+	  	         'provider': 'http'
+	  	        }
+	  	      }
+	  	  ]	
+		};
+
+	}
+
+	jwplayer('mediacontent_container').setup(setup);
 }
 }
 
@@ -179,14 +206,14 @@ if (active) {
 	  'autostart':true,
 	  'controlbar':'bottom',
 	  'provider': 'rtmp',
-	  'file': 'tnc2011/interviews/'+active+'.mp4',
+	  'file': 'tnc2012/contest/'+active+'.mp4',
 	  'streamer': "rtmp://media.terena.org/fastplay",
 	  'modes': [
 	  	  {type: 'flash', src: '/js/player.swf'},
 	      {
 	        type: 'html5',
 	        config: {
-	         'file': 'http://media.terena.org:1935/fastplay/video/tnc2011/interviews/'+active+'.mp4/playlist.m3u8',
+	         'file': 'http://media.terena.org:1935/fastplay/video/tnc2012/contest/'+active+'.mp4/playlist.m3u8',
 	         'provider': 'http'
 	        }
 	      }

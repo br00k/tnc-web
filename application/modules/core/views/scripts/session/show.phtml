@@ -4,7 +4,8 @@ $files = $this->session->getFiles();
 $now = $this->session->isNow();
 $hasEnded = $this->session->hasEnded();
 $chairs = $this->session->getChairs(true);
-$speakers = $this->session->getGroupedSpeakers(true, true);
+#$speakers = $this->session->getGroupedSpeakers(true, true);
+$speakers = $this->session->getGroupedSpeakers(false, true);
 $day = urlencode(urlencode($this->formatDate($this->session->tstart, null, 'dd/MM/YYYY')));
 ?>
 <div class="content_left">
@@ -109,11 +110,10 @@ switch ($file['core_filetype']) {
 </ul>
 <? endforeach; ?>
 <? if ($now): ?>
-<!--<a class="video" href="<?= $this->url(array('controller'=>'media', 'action'=>'stream', 'stream'=>$this->session->number . $this->session->location_abbreviation), 'stream') ?>">Live stream</a>-->
-<a class="video" href="<?= $this->conferenceInfo('stream_url') ?>/archive/<?= $this->session->number . $this->session->location_abbreviation ?>">Live stream</a>
+<a class="video" href="<?= $this->url(array('controller'=>'media', 'action'=>'stream', 'stream'=>$this->session->number . $this->session->location_abbreviation), 'stream') ?>">Live stream</a>
 <? endif; ?>
 <? if ($hasEnded): ?>
-<a class="video" href="<?= $this->conferenceInfo('stream_url') ?>/archive/<?= $this->session->number . $this->session->location_abbreviation ?>">Archived stream</a>
+<a class="video" href="<?= $this->url(array('controller'=>'media', 'action'=>'archive', 'stream'=>$this->session->number . $this->session->location_abbreviation), 'stream') ?>">Archived stream</a>
 <? endif; ?>
 </div> <!-- infobox -->
 <? endif; ?>

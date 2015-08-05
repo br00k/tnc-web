@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: Abstract.php 33 2011-10-13 10:33:44Z gijtenbeek@terena.org $
  */
 
 class TA_Model_Resource_Db_Table_Row_Abstract extends Zend_Db_Table_Row_Abstract implements TA_Model_Observed_Interface {

@@ -6,7 +6,7 @@
  *
  */
 ?>
-<table id="paper_details">
+<table summary="paper details" id="paper_details">
 	<tbody>
 	<tr>
 	<th>Title</th>
@@ -25,10 +25,6 @@
 	<td><?= $this->getFormValue('publish_paper', $this->submission->publish_paper, 'submit') ?></td>
 	</tr>
 	<tr>
-	<th>Topic</th>
-	<td><?= $this->getFormValue('topic', $this->submission->topic, 'submit') ?></td>
-	</tr>
-	<tr>	
 	<th>Comment</th>
 	<td><?= $this->submission->comment ?></td>
 	</tr>

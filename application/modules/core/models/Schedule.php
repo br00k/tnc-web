@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: Schedule.php 74 2012-10-28 15:44:42Z gijtenbeek@terena.org $
  */
 
 /**
@@ -79,6 +79,7 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 				$presentations = $sessions->getAllPresentations(($mobile)?false:true);
 				if ($mobile) {
 					$speakers = $sessions->getAllSpeakers(false, true);
+					$chairs = $sessions->getChairs();
 				}
 			} elseif ($filter['view'] == 'speakers') {
 				$speakers = $sessions->getAllSpeakers();
@@ -113,6 +114,9 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 					);
 					if ($session) {
 						$session['loc_abbr'] = $location->abbreviation;
+						if ($mobile) {
+							$session['loc_name'] = $location->name;
+						}
 					}
 					$schedule[$day][$location->location_id][$timeslot['timeslot_id']] = $session ? $session : null;
 
@@ -130,7 +134,9 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 									}
 								}
 								$session['presentations'] = $presentations[$session['session_id']];
-
+								$session['chair'] = current(array_filter($chairs, function($val) use ($session) { 
+									return $val['session_id'] == $session['session_id'];
+								}));
 								$session['time_start'] = $startZd->get('EEEE H:mm');
 							}
 							$scheduleMobile[$day][$start .' - '. $end][] = $session;
@@ -196,7 +202,9 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 		} else {
 			$locationFilter->filters = array('type' => 1);
 		}
-		$locations = $this->getResource('locations')->getLocations(null, null, $locationFilter);
+		$locations = $this->getResource('locations')->getLocations(
+			null, array('abbreviation', 'asc'), $locationFilter
+		);
 
 		if ($locations['rows']->count() === 0) {
 			if (isset($location)) {

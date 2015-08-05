@@ -14,11 +14,11 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: UserCanUpdatePresentationAssertion.php 33 2011-10-13 10:33:44Z gijtenbeek@terena.org $
  */
 
 /**
- * Make sure presenters can only edit their own presentations
+ * Make sure session chairs can only change sessions assigned to them
  * Also checks if presentation is edited within edit deadline
  *
  * @package Core_Model

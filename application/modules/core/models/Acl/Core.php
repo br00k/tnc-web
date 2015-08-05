@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: Core.php 104 2013-04-08 11:58:49Z gijtenbeek@terena.org $
  */
 
 /**
@@ -118,6 +118,10 @@ class Core_Model_Acl_Core extends Zend_Acl {
 				 ->allow('guest', 'Feedback', 'save', new Core_Model_Acl_GuestCanSaveFeedbackAssertion())
 				 ->allow('guest', 'Feedback', array('index', 'feedbacksection', 'ratepres', 'ratings', 'voteposter'));
 		}
+		// secure web/media
+		if (!$this->has('Media')) {
+	        $this->add(new Web_Model_Media());
+		}	
 
 	}
 

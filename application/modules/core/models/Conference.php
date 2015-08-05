@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: Conference.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
 /**
@@ -178,7 +178,56 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 		return $this->getResource('timeslots')->saveRows($values);
 	}
 
+	public function fixTz()
+	{
+		$tables = array(
+			'timeslots',
+			'events'
+		);
 
+		foreach ($tables as $table) {
+			$resource = $this->getResource($table);
+			$adapter = $resource->getAdapter();
+
+			$metadata = $resource->info('metadata');
+
+			$timestampFields = array_filter($metadata, function($v){
+				return ($v['DATA_TYPE'] == 'timestamptz');
+			});
+
+			$primary = array_filter($metadata, function($v){
+				return ($v['PRIMARY'] == true);
+			});
+			$primaryKey = current(array_keys($primary));
+
+			$selectFields = array_merge(array_keys($primary), array_keys($timestampFields));
+
+			$select = $resource->select();
+			$select->from($table, $selectFields);
+			$results = $resource->fetchAll($select);
+			
+			$newData = array();
+			foreach ($results->toArray() as $key=>$row) {
+				foreach ($row as $field => $value) {
+					$where = $adapter->quoteInto($primaryKey.' = ?', $row[$primaryKey]);
+
+					if (in_array($field, array_keys($timestampFields))) {	
+			    		$zd = new Zend_Date($value);
+			    		$zd->add('1:00:00', Zend_Date::TIMES);
+			    		$newData[$field] = $zd->get(Zend_Date::ISO_8601);
+					}
+
+				}
+
+				#$resource->update($newData, $where);
+				
+			}
+			
+
+
+		}
+
+	}
 }
 
 

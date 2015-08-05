@@ -1,29 +1,10 @@
 <?
-if ($this->authInfo()->isAdmin() ):
-	
-	$userModel = new Core_Model_User();
-	
-	$reviewerSelect = $this->formSelect('user_id',
-		$this->user_id,
-		array("onchange" => "this.form.submit();"),
-		$userModel->getUsersForSelect(true, 'reviewer')
-	);	
-if (!$this->user_id):
-?>	
-	<p>Please select a reviewer from the list</p><? endif; ?>
-	<form id="filterform" action="<?= $this->url() ?>" method="post">
-	<?= $reviewerSelect ?>
-	</form>
-<?	
-endif;
 if (!empty($this->MySubmissionsToReview)):
 	$tb = $this->MySubmissionsToReview;
 
 	$reviewModel = new Core_Model_Review();
 	$filter = array();
-	$filter['user_id'] = ( ($this->authInfo()->isAdmin() ) && ($this->user_id) )
-		? $this->user_id 
-		: Zend_Auth::getInstance()->getIdentity()->user_id;
+	$filter['user_id'] = Zend_Auth::getInstance()->getIdentity()->user_id;
 	// get all reviews that I did
 	$reviews = $reviewModel->getReviews(null, null, $filter, true);
 
@@ -76,14 +57,14 @@ if (!empty($this->MySubmissionsToReview)):
 	}
 
 ?>
-<h1><? if ($this->aclCheck('review', 'listpersonal')): ?>Papers assigned to reviewer<? else: ?>My submissions to review<? endif; ?> <span class="metanav"><? if ($isTiebreaker): ?><a href="#" id="toggler">Toggle required reviews</a></span><? endif; ?></h1>
+<h1>My submissions to review <span class="metanav"><? if ($isTiebreaker): ?><a href="#" id="toggler">Toggle required reviews</a></span><? endif; ?></h1>
 <? if ($isTiebreaker): ?>
 <p>The papers that are greyed out do not require your immediate attention.</p>
 <? endif; ?>
 <?= $todo; ?>
 </ul>
 <? if (!empty($submissionsReviewed)): ?>
-<h1><? if (!$this->aclCheck('review', 'listpersonal')): ?>My <? endif; ?>completed reviews</h1>
+<h1>My completed reviews</h1>
 <?= $completed; ?>
 </ul>
 <? endif; ?>

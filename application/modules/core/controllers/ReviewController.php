@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: ReviewController.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
  */
 
 /**
@@ -131,18 +131,6 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 	{
 		$this->view->headScript()->appendFile('/js/reviewtoggler.js');
 		$this->view->MySubmissionsToReview = $this->_reviewModel->getPersonalTiebreakers();
-		return $this->render('list-personal');
-	}
-
-	public function listpersonalAction()
-	{	
-		$this->view->headScript()->appendFile('/js/reviewtoggler.js');
-		if ($this->getRequest()->isPost()) {
-			$this->view->user_id = $userId = $this->getRequest()->getParam('user_id');
-			$this->view->MySubmissionsToReview = $this->_reviewModel->getPersonalTiebreakers(
-				$userId
-			);
-		} 
 		return $this->render('list-personal');
 	}
 

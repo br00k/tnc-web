@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: AbstractController.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
 
 /**

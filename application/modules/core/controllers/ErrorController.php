@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: ErrorController.php 34 2011-10-13 13:05:17Z gijtenbeek@terena.org $
  */
 
 /**

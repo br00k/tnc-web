@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: Deadlines.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
 class Core_Resource_Deadlines extends TA_Model_Resource_Db_Table_Abstract
 {

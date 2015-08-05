@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: LangSelector.php 29 2011-10-05 20:36:08Z gijtenbeek@terena.org $
  */
  
 /**
@@ -38,7 +38,7 @@ class TA_Controller_Plugin_LangSelector extends Zend_Controller_Plugin_Abstract 
         // Register all your "approved" locales below.
         switch ($lang) {
             case "nl":
-                $langLocale = 'nl_NL';
+                $langLocale = 'en_GB';
                 break;
             case "en":
                 $langLocale = 'en_US';
