@@ -1,7 +1,6 @@
 <h1>Manage conference</h1>
 <?= $this->render('conference/subnav.phtml') ?>
-<? $values = $this->timeslotsForm->getValues(); if (count($values['dynamic']) == 0): ?>
-<a href="/core/conference/createslots/id/<?= $this->id ?>">Create smart defaults for</a>
-<input type="text" value="4" style="width:30px;" /> days with sessions that last <input type="text" value="90" style="width:30px;" /> minutes
-<? endif; ?>
+
+<?= $this->smartslotsForm; ?>
+
 <?= $this->timeslotsForm; ?>

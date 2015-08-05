@@ -1,3 +1,20 @@
+/**
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: terena.js 598 2011-09-15 20:55:32Z visser $
+ */
 $(function() {
 var counter = 1;
 
@@ -115,37 +132,64 @@ $('#streamquality').click(function(){
 
 var active = $('#activestream').text();
 var quality = $('#quality').text();
-//var type = ($('div#streams').hasClass('archive')) ? 'vod' : 'live';
-//var file = active+'u.stream';
+var type = ($('div#streams').hasClass('archive')) ? 'vod' : 'live';
+//var file = active+'_'+quality+'.stream';
+var file = active;
 
 if (active) {
-	jwplayer('mediacontent_container').setup({
+	var setup = {
 	  'id': 'tncstreamer',
 	  'width': '590',
 	  'height': '357',
 	  'autostart':true,
 	  'controlbar':'bottom',
 	  'provider': 'rtmp',
-	  'file': 'tnc2011/archives/'+active+'.mp4',
-	  'streamer': 'rtmp://media.terena.org/fastplay',
+	  'file': 'stream'+file.substr(2,1),
+	  'streamer': 'rtmp://defr.le.tsicmds.com/nordunetlive/',
 	  'modes': [
 	  	  {type: 'flash', src: '/js/player.swf'},
 	      {
 	        type: 'html5',
 	        config: {
-			 'file': 'http://media.terena.org:1935/fastplay/video/tnc2011/archives/'+active+'.mov/playlist.m3u8',
-	         'provider': 'http'
-	        }
-	      },
-	      {
-	        type: 'download',
-	        config: {
-			'file': 'http://media.terena.org:1935/fastplay/video/tnc2011/archives/'+active+'.mov/playlist.m3u8',
+			 'file': 'http://mps-ios-live.nordu.net:1935/live/stream'+file.substr(2,1)+'.sdp/playlist.m3u8',
 	         'provider': 'http'
 	        }
 	      }
-	  ]
-	});
+	  ]		
+	};
+	if (type == 'vod') {
+		
+		var setup = {
+		  'id': 'tncstreamer',
+		  'width': '590',
+		  'height': '357',
+		  'autostart':true,
+		  'controlbar':'bottom',
+		  'provider': 'rtmp',
+		  'file': 'tnc2012/rhnet/archives/'+file+'.mov',
+		  'streamer': 'rtmp://media.terena.org/fastplay',
+	  	  'modes': [
+	  	  	  {type: 'flash', src: '/js/player.swf'},
+	  	      {
+	  	        type: 'html5',
+	  	        config: {
+	  	  		 'file': 'http://media.terena.org:1935/fastplay/video/tnc2012/rhnet/archives/'+file+'.mov/playlist.m3u8',
+	  	         'provider': 'http'
+	  	        }
+	  	      },
+	  	      {
+	  	        type: 'download',
+	  	        config: {
+	  	  		'file': 'http://media.terena.org:1935/fastplay/video/tnc2012/rhnet/archives/'+file+'.mov/playlist.m3u8',
+	  	         'provider': 'http'
+	  	        }
+	  	      }
+	  	  ]	
+		};
+
+	}
+
+	jwplayer('mediacontent_container').setup(setup);
 }
 }
 
@@ -162,14 +206,14 @@ if (active) {
 	  'autostart':true,
 	  'controlbar':'bottom',
 	  'provider': 'rtmp',
-	  'file': 'tnc2011/interviews/'+active+'.mp4',
+	  'file': 'tnc2012/contest/'+active+'.mp4',
 	  'streamer': "rtmp://media.terena.org/fastplay",
 	  'modes': [
 	  	  {type: 'flash', src: '/js/player.swf'},
 	      {
 	        type: 'html5',
 	        config: {
-	         'file': 'http://media.terena.org:1935/fastplay/video/tnc2011/interviews/'+active+'.mp4/playlist.m3u8',
+	         'file': 'http://media.terena.org:1935/fastplay/video/tnc2012/contest/'+active+'.mp4/playlist.m3u8',
 	         'provider': 'http'
 	        }
 	      }
@@ -203,92 +247,5 @@ jwplayer('coredemo_container').setup({
 });
 
 }
-
-
-// add google maps style address completion (@todo: move to CORE)
-if ($("#location_element").length>0) {
-
-var geocoder;
-var map;
-var marker;
-
-var geocoder;
-var map;
-var marker;
-
-var DEFAULT_LATITUDE = 41.659;
-var DEFAULT_LONGITUDE = -4.714;
-
-function initialize(){
-	lat = $("#location_element input[name='lat']");
-	lng = $("#location_element input[name='lng']");
-	var latitude = lat.val();
-	var longitude = lng.val();
-
-	// use default location if nothing is saved
-    if (!latitude || !longitude) {
-        latitude = DEFAULT_LATITUDE;
-        longitude = DEFAULT_LONGITUDE;
-    }
-
-	var latlng = new google.maps.LatLng(latitude, longitude);
-
-	var options = {
-	  zoom: 16,
-	  center: latlng,
-	  mapTypeId: google.maps.MapTypeId.SATELLITE
-	};
-
-	map = new google.maps.Map(document.getElementById("map_canvas"), options);
-
-	geocoder = new google.maps.Geocoder();
-
-	marker = new google.maps.Marker({
-	  map: map,
-	  draggable: true
-	});
-}
-initialize();
-
-  $(function() {
-    $("#address").autocomplete({
-      //This bit uses the geocoder to fetch address values
-      source: function(request, response) {
-        geocoder.geocode( {'address': request.term }, function(results, status) {
-          response($.map(results, function(item) {
-            return {
-              label:  item.formatted_address,
-              value: item.formatted_address,
-              latitude: item.geometry.location.lat(),
-              longitude: item.geometry.location.lng()
-            }
-          }));
-        })
-      },
-      //This bit is executed upon selection of an address
-      select: function(event, ui) {
-        lat.val(ui.item.latitude);
-        lng.val(ui.item.longitude);
-        var location = new google.maps.LatLng(ui.item.latitude, ui.item.longitude);
-        marker.setPosition(location);
-        map.setCenter(location);
-      }
-    });
-  });
-
-// reverse geocoding
-google.maps.event.addListener(marker, 'drag', function() {
-  geocoder.geocode({'latLng': marker.getPosition()}, function(results, status) {
-    if (status == google.maps.GeocoderStatus.OK) {
-      if (results[0]) {
-        $('#address').val(results[0].formatted_address);
-        $('#latitude').val(marker.getPosition().lat());
-        $('#longitude').val(marker.getPosition().lng());
-      }
-    }
-  });
-});
-
-} // end address completion
 
 });

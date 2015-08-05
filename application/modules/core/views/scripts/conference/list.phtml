@@ -60,7 +60,6 @@ $columns = array_filter($this->grid['cols'], 'globFilter');
 	<td>
 		<a href="<?= $this->url(array('controller' => 'conference', 'action' => 'edit', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">edit</a>
 		| <a href="<?= $this->url(array('controller' => 'conference', 'action' => 'timeslots', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">timeslots</a>
-		| <a href="<?= $this->url(array('controller' => 'location', 'action' => 'list', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">locations</a>
 	</td>
   </tr>
 <? endforeach; ?>

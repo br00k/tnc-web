@@ -1,4 +1,27 @@
 <?php
+/**
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: Presentations.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
+ */
+
+/** 
+ *
+ * @package Core_Resource
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
 class Core_Resource_Presentations extends TA_Model_Resource_Db_Table_Abstract
 {
 
@@ -29,12 +52,13 @@ class Core_Resource_Presentations extends TA_Model_Resource_Db_Table_Abstract
 	 * @param	string	$empty	Empty string to prepend to array
 	 * @return	array
 	 */
-	public function getPresentationsForSelect($conferenceId, $empty = null)
+	public function getPresentationsForSelect($empty = null)
 	{
 		$return = array();
 
 		$return = $this->getAdapter()->fetchPairs($this->select()
 			->from('presentations', array('presentation_id', 'title'))
+			->where('conference_id = ?', $this->getConferenceId())
 			->order('lower(title) ASC')
 		);
 
@@ -49,10 +73,11 @@ class Core_Resource_Presentations extends TA_Model_Resource_Db_Table_Abstract
 	/**
 	 * Link submissions to presentation
 	 *
-	 * @param Core_Resource_Submission_Set $submissions RowSet of submissionsview
-	 * @return Zend_Db_Statement_Pdo on success, false on failure
+	 * @param	Core_Resource_Submission_Set $submissions RowSet of submissionsview
+	 * @param	Zend_Config		$config		Form values passed as config
+	 * @return	Zend_Db_Statement_Pdo on success, false on failure
 	 */
-	public function linkSubmissions(Core_Resource_Submission_Set $submissions)
+	public function linkSubmissions(Core_Resource_Submission_Set $submissions, Zend_Config $config)
 	{
 		if ($submissions->count() === 0) {
 			return false;
@@ -62,6 +87,7 @@ class Core_Resource_Presentations extends TA_Model_Resource_Db_Table_Abstract
 		$conferenceId = $this->getConferenceId();
 
 		foreach ($submissions as $submission) {
+			$submissionIds[] = $submission->submission_id;
 			$values[] = "("
 				.$conferenceId.','
 				.$submission->submission_id.','
@@ -69,40 +95,58 @@ class Core_Resource_Presentations extends TA_Model_Resource_Db_Table_Abstract
 				.")";
 		}
 		$values = implode(',', $values);
-
-		// Transaction takes too much memory!
-		#$db->beginTransaction();
+		$submissionIds = implode(',', $submissionIds);
 
 		try {
-			#$this->delete(
-			#	$db->quoteInto('conference_id = ?', $conferenceId)
-			#);
+			if ($config->_overwrite) {
+				$this->delete(
+				   $db->quoteInto('conference_id = ?', $conferenceId)
+				);
+			}
+
 			$query = "INSERT INTO " . $this->_name . "(conference_id, submission_id, title) VALUES ".$values;
 			$query = $db->query($query);
 
-			// get newly inserted presentations (inserted in last 10 seconds)
-			$presSess = "select p.presentation_id, ss.session_id from presentations p left join submission_status ss on (p.submission_id=ss.submission_id) where inserted > now() - INTERVAL '10 seconds'";
-			$presSess = $db->query($presSess)->fetchAll();
+			// get newly inserted presentations
+			$query = "select p.presentation_id, s.user_id, s.session_id, p.submission_id, s.file_id from presentations p ".
+			"left join vw_submissions s on (p.submission_id = s.submission_id) where p.submission_id IN (".$submissionIds.")";
+			$collection = $db->fetchAll($query);
 
-			foreach ($presSess as $ps) {
-				$insertValues[] = "("
-				.$ps['presentation_id'].','
-				.$ps['session_id'].','
-				.'999'
-				.")";
+			foreach ($collection as $value) {
+				$valuesPu[$value['presentation_id']] = $value['user_id'];
+
+				$valuesSp[] = "("
+					.$value['session_id'].","
+					.$value['presentation_id'].","
+					."999)";
+
+				$valuesPf[] = "("
+					.$value['file_id'].","
+					.$value['presentation_id'].")";
+					
+				$valuesF[] = $value['file_id'];
 			}
 
 			// insert session presentation links
-			$db->query(
-				"insert into sessions_presentations (presentation_id, session_id, displayorder) values "
-				.implode(',', $insertValues)
-			);
+			if ($config->link_sessions) {
+				$db->query(
+					"insert into sessions_presentations (session_id, presentation_id, displayorder) values ".
+					implode(',', $valuesSp)
+				);
+			}
 
-			#$db->commit();
+			// insert file presentation links
+			if ($config->link_files) {
+				$db->query(
+					"insert into presentations_files (file_id, presentation_id) values ".
+					implode(',', $valuesPf)
+				);
+				// update filetype to paper
+				$db->update('files', array('filetype' => 4), array('file_id IN (?)' => $valuesF));
+			}
 
-			return $query;
+			return $valuesPu;
 		} catch (Exception $e) {
-			$db->rollBack();
 			throw new TA_Model_Exception($e->getMessage());
 		}
 	}

@@ -1,5 +1,27 @@
 <?php
+/**
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: PresentationController.php 25 2011-10-04 20:46:05Z visser@terena.org $
+ */
 
+/**
+ * PresentationController
+ *
+ * @package Core_Controllers
+ */ 
 class Core_PresentationController extends Zend_Controller_Action implements Zend_Acl_Resource_Interface
 {
 
@@ -100,7 +122,7 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 	public function deleteAction()
 	{
 		if ( false === $this->_presentationModel->delete($this->_getParam('id')) ) {
-			throw new Core_Model_Exception('Something went wrong with deleting the user');
+			throw new TA_Model_Exception('Something went wrong with deleting the user');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'presentation', 'action'=>'list'), 'grid');
 	}
@@ -193,7 +215,7 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 		// everything went OK
 		return $this->_helper->lastRequest();
 	}
-	
+
 	/**
 	 * Helper method for filesAction
 	 *
@@ -202,7 +224,7 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 	{
 		$request = $this->getRequest();
 		$id = (int) ($request->getParam('id')) ? $request->getParam('id') : $request->getParam('presentation_id');
-		
+
 		$form = $this->view->presentationFilesForm = $this->_presentationModel->getForm('presentationFiles');
 		// workaround to fix permission problem
 		$form->setAction('/core/presentation/files/id/'.$id);
@@ -216,13 +238,12 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 		    	$file
 		   	);
 		}
-		return $this->render('files');	
+		return $this->render('files');
 	}
 
 	/**
 	 * Import submissions to presentations
 	 * The title of a submission is used as the title of a presentation
-	 * You can obviously change this easily...
 	 *
 	 */
 	public function importAction()
@@ -232,22 +253,22 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 		$conference = Zend_Registry::get('conference');
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if ( !$request->isPost() ) {
 			$this->view->importForm =
 			$this->_presentationModel->getForm('submitImport')->setDefaults(
 				array(
 		   			'status' => 1,
-		   			'submit_start' => $conference['submit_start'],
-		   			'submit_end' => $conference['submit_end']
+		   			'submit_start' => $conference['submit_start']->get('dd/MM/yyyy'),
+		   			'submit_end' => $conference['submit_end']->get('dd/MM/yyyy')
 		   		)
 			);
 			return $this->render('formImport');
 		}
 
 		if ($import = $this->_presentationModel->linkSubmissions(
-				$submissionModel->getAcceptedSubmissions(), $request->getPost()
+				$submissionModel->getAcceptedSubmissions($request->getPost()), $request->getPost()
 			)) {
-				$this->_helper->flashMessenger('Succesfully imported '.$import->rowCount().' submissions');
+				$this->_helper->flashMessenger('Succesfully imported '.count($import).' submissions');
 				$eventlogModel = new Core_Model_Eventlog();
 				$eventlogModel->saveEventlog(array(
 				    'event_type' => __METHOD__,
@@ -256,7 +277,18 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 			} else {
 				$this->_helper->flashMessenger('No submissions to import');
 			}
+
+		// everything went OK, redirect
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'presentation', 'action'=>'list'), 'grid');
 	}
 
 }
+
+
+
+
+
+
+
+
+

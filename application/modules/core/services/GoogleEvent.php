@@ -1,12 +1,31 @@
 <?php
 /**
- * Class to manage events stored in google calendar
+ * CORE Conference Manager
  *
- * @authors gijtenbeek@terena.org
- * @note http://framework.zend.com/manual/en/zend.gdata.calendar.html
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: GoogleEvent.php 57 2012-05-14 14:27:07Z gijtenbeek@terena.org $
  */
 
+/**
+ * Class to manage events stored in google calendar
+ *
+ * @package		Core_Service
+ * @author		Christian Gijtenbeek <gijtenbeek@terena.org>
+ * @see 		http://framework.zend.com/manual/en/zend.gdata.calendar.html
+ */
 class Core_Service_GoogleEvent {
+
 	/**
 	 * DAO Values
 	 * @var array
@@ -130,7 +149,7 @@ class Core_Service_GoogleEvent {
 	    # Event content
 	    $content = $this->_values['description'];
 
-		$link = 'http://tnc2011.terena.org/core/session/'.$this->_values['session_id'];
+		$link = 'http://'.$this->_config['hostname'].'/core/session/'.$this->_values['session_id'];
         $content.=  "<br /><a href='$link'>More information about this event<a/>";
 
 		$event->content = $this->_service->newContent($content);

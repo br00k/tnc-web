@@ -1,10 +1,34 @@
 <?php
+/**
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: Conference.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
+ */
 
+/**
+ * Conference Model
+ *
+ * @package Core_Model
+ * @author Christian Gijtenbeek
+ */
 class Core_Model_Conference extends TA_Model_Acl_Abstract
 {
 
 	/**
 	 * Get conference by id
+	 *
 	 * @param		integer		$id		Conference_id
 	 * @return		Core_Resource_Conference_Item
 	 */
@@ -18,12 +42,14 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 	}
 
 	/**
+	 * Get conference row by hostname
 	 *
-	 *
+	 * @param	string	$hostname
+	 * @return	object	Core_Resource_Conference_Item
 	 */
 	public function getConferenceByHostname($hostname)
 	{
-		$row = $this->getResource('conferences')->getConferenceByHostname( $hostname );
+		$row = $this->getResource('conferences')->getConferenceByHostname($hostname);
     	if ($row === null) {
     		throw new TA_Model_Exception('hostname not found');
     	}
@@ -33,6 +59,7 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 
 	/**
 	 * Get a list of conferences
+	 *
 	 * @param		integer		$page	Page number to show
 	 * @param		array		$order	Array with keys 'field' and 'direction'
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
@@ -48,18 +75,19 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 
 
 	/**
-	 * mockup
-	 * @todo: check
+	 * Create batch of timeslots
 	 *
+	 * @param	array	$post	Post request
 	 */
-	public function createTimeslots($conferenceId)
+	public function createTimeslots(array $post)
 	{
-		return $this->getResource('conferences')->createTimeslots($conferenceId);
+		return $this->getResource('conferences')->createTimeslots($post);
 	}
 
 
 	/**
-	 * Remove user from resource
+	 * Remove item from resource
+	 *
 	 * @param		integer		$id		Id of record to delete
 	 * @return		boolean
 	 */
@@ -150,7 +178,56 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 		return $this->getResource('timeslots')->saveRows($values);
 	}
 
+	public function fixTz()
+	{
+		$tables = array(
+			'timeslots',
+			'events'
+		);
 
+		foreach ($tables as $table) {
+			$resource = $this->getResource($table);
+			$adapter = $resource->getAdapter();
+
+			$metadata = $resource->info('metadata');
+
+			$timestampFields = array_filter($metadata, function($v){
+				return ($v['DATA_TYPE'] == 'timestamptz');
+			});
+
+			$primary = array_filter($metadata, function($v){
+				return ($v['PRIMARY'] == true);
+			});
+			$primaryKey = current(array_keys($primary));
+
+			$selectFields = array_merge(array_keys($primary), array_keys($timestampFields));
+
+			$select = $resource->select();
+			$select->from($table, $selectFields);
+			$results = $resource->fetchAll($select);
+			
+			$newData = array();
+			foreach ($results->toArray() as $key=>$row) {
+				foreach ($row as $field => $value) {
+					$where = $adapter->quoteInto($primaryKey.' = ?', $row[$primaryKey]);
+
+					if (in_array($field, array_keys($timestampFields))) {	
+			    		$zd = new Zend_Date($value);
+			    		$zd->add('1:00:00', Zend_Date::TIMES);
+			    		$newData[$field] = $zd->get(Zend_Date::ISO_8601);
+					}
+
+				}
+
+				#$resource->update($newData, $where);
+				
+			}
+			
+
+
+		}
+
+	}
 }
 
 

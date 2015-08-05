@@ -1,7 +1,28 @@
 <?php
 /**
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: User.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
+ */
+
+/**
+ * Custom User form element
  *
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ * @package TA_Form
+ * @subpackage Element
  */
 class TA_Form_Element_User extends Zend_Form_Element_Select
 {
@@ -12,19 +33,15 @@ class TA_Form_Element_User extends Zend_Form_Element_Select
 	 */
 	protected $_taRow;
 
-	protected $_taController;
-
 	/**
-	 * @todo: replace this method by an Ajax call
-	 *
+	 * Holds the controller name
+	 * @var	string
 	 */
-	public function init()
-	{
-		#$this->populateElement();
-	}
-
+	protected $_taController;
+	
 	/**
 	 * Populate element with user values
+	 *
 	 * @param	string	$role	Only show users that have this role
 	 * @return	TA_Form_Element_User	fluent interface
 	 */
@@ -66,16 +83,24 @@ class TA_Form_Element_User extends Zend_Form_Element_Select
 	 */
 	public function getTaRow()
 	{
+		if (!$this->_taRow instanceof TA_Form_Element_User_Interface) {
+			throw new TA_Exception('Row element must implement TA_Form_Element_User_Interface');
+		}
 		return $this->_taRow;
 	}
 
+	/**
+	 * Define default decorators
+	 *
+	 */
     public function loadDefaultDecorators()
     {
         if ($this->loadDefaultDecoratorsIsDisabled()) {
             return;
         }
-
+        
         $decorators = $this->getDecorators();
+        
         if (empty($decorators)) {
         	$this->addDecorator('User')
             	 ->addDecorator('ViewHelper')
@@ -85,9 +110,7 @@ class TA_Form_Element_User extends Zend_Form_Element_Select
                  ->addDecorator('Description', array('tag' => 'div',
                  'class' => 'description', 'escape' => false));
         }
-
-
-
+        
     }
 
 

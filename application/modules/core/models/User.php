@@ -1,5 +1,27 @@
 <?php
+/**
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: User.php 49 2011-12-09 08:47:23Z gijtenbeek@terena.org $
+ */
 
+/**
+ *
+ * @package Core_Model
+ * @author Christian Gijtenbeek
+ */
 class Core_Model_User extends TA_Model_Acl_Abstract
 {
 
@@ -73,12 +95,15 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 	 * Get a list of users
 	 * @param		integer		$page	Page number to show
 	 * @param		array		$order	Array with keys 'field' and 'direction'
+	 * @param		boolean		$bypassAcl
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
 	 */
-	public function getUsers($paged, $order, $filter=null)
+	public function getUsers($paged, $order, $filter=null, $bypassAcl = false)
 	{
-		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
+		if (!$bypassAcl) {
+			if (!$this->checkAcl('list')) {
+        	    throw new TA_Model_Acl_Exception("Insufficient rights");
+        	}
         }
 
 		return $this->getResource('users')->getUsers($paged, $order, $filter);

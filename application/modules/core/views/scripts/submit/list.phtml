@@ -2,35 +2,37 @@
 <?
 $submissionsReviewers = $this->grid['rows']->getNumberOfReviewers();
 
-// get all reviews of current user
-$reviews = $this->grid['rows']->getReviews($this->authInfo('user_id'));
-
 #if ($this->authInfo()->isAdmin() ):
 	$eventlogModel = new Core_Model_Eventlog();
 	$timestamps = $eventlogModel->getAllTimestamps();
-	
+
 	$selectValues = Zend_Registry::get('formconfig')->formdefaults->submit;
-	
+
 	$statusSelect = $this->formSelect('status',
 		$this->status,
 		array("onchange" => "this.form.submit();"),
 		$selectValues->status->toArray()
 	);
-	
+
 	$session = new Core_Model_Session();
 	$sessionValues = $session->getSessionsForSelect(null, '---');
-	
-	$sessionSelect = $this->formSelect('session_id',
-		$this->session_id,
-		array("onchange" => "this.form.submit();", "style" => "width:260px;"),
-		$sessionValues
-	);
+	if (count($sessionValues) > 1) {
+		$sessionSelect = $this->formSelect('session_id',
+			$this->session_id,
+			array("onchange" => "this.form.submit();", "style" => "width:260px;"),
+			$sessionValues
+		);
+	}
 #endif;
 $submitSelect = $this->formSelect('submission_id',
 	$this->submission_id,
 	array("onchange" => "this.form.submit();"),
 	array(0 => 'all submissions', 1 => 'submissions that I should review')
 );
+
+$reviewModel = new Core_Model_Review();
+$reviews = $reviewModel->getReviewsIndexedBySubmission($this->grid['rows'], $this->authInfo('user_id'));
+$tiebreakers = $reviewModel->getAllTiebreakers();
 ?>
 
 <? if ($this->authInfo()->isAdmin() ): ?>
@@ -44,13 +46,13 @@ $submitSelect = $this->formSelect('submission_id',
 	'There are no emails sent yet' ?>">email rejected</a></li>
 <li>
 <? if (isset($timestamps['mail_reviewers']['timestamp'])): ?>
-<a href="/core/review/mail/reminder/1" title="First emails send: 
+<a href="/core/review/mail/reminder/1" title="First emails sent:
 <?= $this->formatDate($timestamps['mail_reviewers']['timestamp'])?>
-	">email reviewers (reminder)</a></li>	
+	">email reviewers (reminder)</a></li>
 <? else: ?>
 <a href="/core/review/mail/" title="<?= (isset($timestamps['mail_reviewers']['timestamp'])) ?
 	'Last sent: '. $this->formatDate($timestamps['mail_reviewers']['timestamp']) :
-	'There are no emails sent yet' ?>">email reviewers</a></li>	
+	'There are no emails sent yet' ?>">email reviewers</a></li>
 <? endif; ?>
 </ul>
 <? endif; ?>
@@ -58,7 +60,7 @@ $submitSelect = $this->formSelect('submission_id',
 <form id="filterform" action="<?= $this->url() ?>" method="post">
 <p>
 Show or <a href="<?= $this->url(array('controller'=>'submit', 'action'=>'download'), 'main-module') ?>">download</a>
-<?= $submitSelect ?><? #if ($this->authInfo()->isAdmin() ): ?> with status <?= $statusSelect ?> in session <?= $sessionSelect ?><? #endif; ?>
+<?= $submitSelect ?> with status <?= $statusSelect ?> <? if (isset($sessionSelect)): ?> in session <?= $sessionSelect ?><? endif; ?>
 </p>
 </form>
 <?
@@ -79,42 +81,68 @@ $columns = array_filter($this->grid['cols'], 'globFilter');
 <th><a href="<?= $this->url(array('order' => 'date', 'dir' => $dir), 'grid') ?>">Date</a></th>
 <th><a href="<?= $this->url(array('order' => 'organisation', 'dir' => $dir), 'grid') ?>">Organisation</a></th>
 <th><a href="<?= $this->url(array('order' => 'lname', 'dir' => $dir), 'grid') ?>">Submitter</a></th>
-<? #if ($this->authInfo()->isAdmin() ): ?>
+<? if ($this->aclCheck('review', 'list')): ?>
 <th><a href="<?= $this->url(array('order' => 'status', 'dir' => $dir), 'grid') ?>">Status</a></th>
 <th><a href="<?= $this->url(array('order' => 'session_title', 'dir' => $dir), 'grid') ?>">Session</a></th>
-<? #endif; ?>
 <th><a href="<?= $this->url(array('order' => 'review_count', 'dir' => $dir), 'grid') ?>">Reviews</a></th>
+<? endif; ?>
 <th>Actions</th>
 </tr>
 </thead>
 <tbody>
 <? foreach ($this->grid['rows'] as $item): ?>
+	<?
+	// calculate tiebreaker for current submission
+	$t = false;
+	if (isset($tiebreakers[$item->submission_id]['tiebreak_required'])) {
+	    if (isset($tiebreakers[$item->submission_id]['evalue'])) {
+	    	$t = 'LOD: '. $tiebreakers[$item->submission_id]['_lod'];
+	    } else {
+	    	$t = 'WR';
+	    }
+	}
+	?>
   <tr class="<?= $this->cycle(array('odd', 'even'))->next() ?>">
 	<td><span class="meta"><?= $item->file_id ?></span></td>
 	<td><a name="s<?= $item->submission_id ?>" href="/getfile/<?= $item->file_id ?>"><?= htmlspecialchars($item->title) ?></a></td>
 	<td><?= $this->formatDate($item->date) ?></td>
 	<td><?= htmlspecialchars($item->organisation) ?></td>
 	<td><a href="mailto:<?=$item->email?>"><?= htmlspecialchars($item->fname.' '. $item->lname) ?></a></td>
-	<? #if ($this->authInfo()->isAdmin() ): ?>
+	<? if ($this->aclCheck('review', 'list')): ?>
 	<td><?= $selectValues->status->get($item->status) ?></td>
 	<td><?= htmlspecialchars($item->session_title) ?></td>
-	<? #endif; ?>
 
-	<td><a href="/core/review/list/<?= $item->{$this->grid['primary']} ?>" title="last review: <?= $this->formatDate($item->review_last) ?>">
+	<td class="<? if ($t) echo 'warning' ?>"><a href="/core/review/list/<?= $item->{$this->grid['primary']} ?>" title="last review: <?= $this->formatDate($item->review_last) ?>">
 	<? echo $item->review_count;
 	if (isset($submissionsReviewers[$item->submission_id])) {
 		echo '<span class="meta">&nbsp;('.round($item->review_count/$submissionsReviewers[$item->submission_id],2)*100 .'%)</span>';
 	}
+	if ($t) {
+		echo '<br /><span class="meta">'.$t.'</span>';
+	}
 	?></a></td>
+	<? endif; //aclCheck ?>
 	<td>
 		<ul>
 		<li>
+		<?
+		// decide if review action should get important class
+		$cls = false;
+		if ( array_key_exists($item->{$this->grid['primary']},
+			$mysub = $this->authInfo()->getSubmissionsToReview(true))
+		) {
+			$cls = true;
+			if ($mysub[$item->{$this->grid['primary']}] === true) {
+				if (!$t) {
+					$cls = false;
+				}
+			}
+		}
+		?>
 		<? if ( isset($reviews[$item->submission_id]) ): ?>
-		<a class="<? if (in_array($item->{$this->grid['primary']}, $this->authInfo('submissions_to_review') )):?>important<? endif; ?>"
-		href="/core/review/edit/<?= key($reviews[$item->submission_id]) ?>">edit&nbsp;review</a>		
+		<a <? if ($cls): ?> class="important" <? endif; ?>href="/core/review/edit/<?= key($reviews[$item->submission_id]) ?>">edit&nbsp;review</a>
 		<? else: ?>
-		<a class="<? if (in_array($item->{$this->grid['primary']}, $this->authInfo('submissions_to_review') )):?>important<? endif; ?>"
-		href="/core/review/new/<?= $item->{$this->grid['primary']} ?>">review</a>
+		<a <? if ($cls): ?> class="important" <? endif; ?>href="/core/review/new/<?= $item->{$this->grid['primary']} ?>">review</a>
 		<? endif; ?>
 		</li>
 		<? if ($this->authInfo()->isAdmin() ): ?>

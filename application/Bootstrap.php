@@ -1,22 +1,83 @@
 <?php
+/**
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: Bootstrap.php 69 2012-06-12 12:47:15Z gijtenbeek@terena.org $
+ */
 
+/**
+ * Bootstrapper
+ *
+ * @package Core
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 	public $frontController;
 
+	/**
+	 * Initialize mailer
+	 *
+	 */
 	protected function _initDefaultEmailTransport()
 	{
 		$this->bootstrap('mail');
 		$transport = $this->getResource('mail');
 	}
 
+	/**
+	 * Initialize config object and store in global Registry
+	 *
+	 */
+    protected function _initConfig()
+    {
+        $config = new Zend_Config($this->getOptions());
+
+ 		$frontendOptions = array(
+			'automatic_serialization' => true,
+		    'master_files' => array(
+		    	APPLICATION_PATH.'/configs/application.ini'
+		    )
+		);
+
+		$backendOptions = array(
+		    'cache_dir' => APPLICATION_PATH.'/../cache'
+		);
+
+		$cache = Zend_Cache::factory('File',
+		                             'File',
+		                             $frontendOptions,
+		                             $backendOptions);
+		#$cache->save($config, 'config');
+
+        Zend_Registry::set('config', $config);
+        return $config;
+    }
+
+    /**
+     * Initialize Logging
+     *
+     */
 	protected function _initLogging()
 	{
 		$this->bootstrap('log');
 		Zend_Registry::set('log', $log = $this->getResource('log'));
 
 		$mail = new Zend_Mail();
-		$mail->addTo('gijtenbeek@terena.org');
+		$config = Zend_Registry::get('config');
+		$mail->addTo($config->core->debugMailTo);
 
 		$layout = new Zend_Layout();
 		$layout->setLayout('errormail');
@@ -28,6 +89,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		#$log->addWriter($writer);
 	}
 
+	/**
+	 * Initialize Locale
+	 *
+	 */
 	protected function _initLocale()
 	{
 		$this->bootstrap('log');
@@ -56,33 +121,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	}
 
 	/**
-	 * Create the Zend_Config object and store to the registry.
+	 * Initialize view
+	 *
 	 */
-    protected function _initConfig()
-    {
-        $config = new Zend_Config($this->getOptions());
-
- 		$frontendOptions = array(
-			'automatic_serialization' => true,
-		    'master_files' => array(
-		    	APPLICATION_PATH.'/configs/application.ini'
-		    )
-		);
-
-		$backendOptions = array(
-		    'cache_dir' => APPLICATION_PATH.'/../cache'
-		);
-
-		$cache = Zend_Cache::factory('File',
-		                             'File',
-		                             $frontendOptions,
-		                             $backendOptions);
-		#$cache->save($config, 'config');
-
-        Zend_Registry::set('config', $config);
-        return $config;
-    }
-
 	protected function _initViewSettings()
 	{
 		$this->bootstrap('view');
@@ -90,6 +131,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$this->_view->doctype('XHTML1_STRICT');
 	}
 
+	/**
+	 * Initialize Database cache
+	 *
+	 * @todo move to config?
+	 */
 	protected function _initDbCache()
 	{
 		$this->bootstrap('cachemanager');
@@ -100,9 +146,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		}
 	}
 
-	/*
-	* Autoload Models/Forms/Plugins
-	*/
+	/**
+	 * Initialize autoloader for Models/Forms/Plugins
+	 *
+	 */
 	protected function _initModuleResourceAutoloader()
 	{
 		$this->_resourceLoader = new Zend_Application_Module_Autoloader(
@@ -119,9 +166,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			));
 	}
 
+	/**
+	 * Initialize custom CORE Routing
+	 *
+	 */
 	protected function _initRoutes()
 	{
-		$this->bootstrap( 'frontController' );
+		$this->bootstrap('frontController');
 		$router = $this->frontController->getRouter();
 		$router->removeDefaultRoutes();
 
@@ -216,14 +267,18 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	);
     	$router->addRoute('gridactions', $mainRoute->chain($gridActionsRoute));
 
-    	$route = new Zend_Controller_Router_Route(
-        	'/core/review/list/:id',
+      	$route = new Zend_Controller_Router_Route_Regex(
+        	'core/review/list/(\d+)',
 			array(
 				'lang'		=> ':lang',
 				'module'	=> 'core',
 				'controller'=> 'review',
 				'action'	=> 'list'
-			)
+			),
+			array(
+				1 => 'id'
+			),
+			'core/review/list/%d'
     	);
     	$router->addRoute('reviewlist', $mainRoute->chain($route));
 
@@ -309,16 +364,48 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	);
     	$router->addRoute('feedbacksection', $mainRoute->chain($route));
 
+		// feedback download results
+      	$route = new Zend_Controller_Router_Route_Regex(
+        	'core/feedback/getresults/(general|participant|logistics|programme)',
+			array(
+				'module'	=> 'core',
+				'controller'=> 'feedback',
+				'action'	=> 'getresults'
+			),
+			array(
+				1 => 'section'
+			),
+			'core/feedback/getresults/%s'
+    	);
+    	$router->addRoute('feedbackgetresults', $mainRoute->chain($route));
+    	
+		
+		#$route = new Zend_Controller_Router_Route(
+		#	'/register',
+		#	array (
+		#		'module' => 'web',
+		#		'controller' => 'participate',
+		#		'action' => 'register'
+		#	)
+		#);
+		#
+		#$router->addRoute('shortRegister', $mainRoute->chain($route));	    	
+
 	}
 
 	/**
-	 * Register Action helpers
+	 * Initialize Action helpers
+	 *
 	 */
 	protected function _initHelpers()
 	{
 		Zend_Controller_Action_HelperBroker::addHelper(new TA_Controller_Action_Helper_LastRequest());
 	}
 
+	/**
+	 * Initialize Resource Plugins
+	 *
+	 */
 	protected function _initPlugins()
 	{
 		$config = Zend_Registry::get('config');
@@ -336,375 +423,23 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 
 	/**
+	 * Initialize Navigation
+	 *
 	 * @note If any custom routes are used (see _initRoutes) then you have to list the name of those routes in the corresponding page entry
 	 * and set the other route keys to 'default'. If you do not do this, all the links of the navigation items will break!
-	 * @note If I set the custom route to 'grid' the sorting is inherited...
-	 * @todo add proper rendering of submenu items!
+	 * @note If I set the custom route to 'grid' the sorting is inherited.
+	 *
+	 * @see TA_Controller_Plugin_NavigationSelector
+	 *
 	 */
 	protected function _initNavigation()
 	{
-		$this->bootstrap ( 'routes' );
-		$router = $this->routes;
+    	$this->bootstrap('frontController');
+    	$frontController = $this->getResource('frontController');
 
-        $acl = new Core_Model_Acl_Core();
-
-        $auth = Zend_Auth::getInstance();
-        if (!$auth->hasIdentity()) {
-       		$role = 'guest';
-        } else {
-        	$role = $auth->getIdentity();
-        }
-
-		// store ACL in global registry
-        Zend_Registry::set('acl', $acl);
-
-		$pages = array(
-		    array(
-		    	'label' => 'Schedule',
-		    	'title' => 'Schedule',
-		    	'module' => 'core',
-		    	'controller' => 'schedule',
-		    	'action' => 'list',
-		    	'resource' => 'Schedule',
-		    	'privilege' => 'list',
-		    	'class' => 'schedule',
-		    	'route' => 'main-module',
-		    	'threeColumnLayout' => true,
-		    	'reset_params' => true,
-		    	'pages' => array(
-		    		array(
-		    			'label' => 'Speakers',
-		    			'title' => 'Speakers',
-		    			'module' => 'core',
-		    			'controller' => 'user',
-		    			'action' => 'speaker',
-		    			'resource' => 'User', // ACL baby!!!
-		    			'privilege' => 'show',
-		    			'route' => 'main-module', // see note!
-		    			'reset_params' => true
-		    		),
-		    		array(
-						'label' => 'Schedule',
-						'title' => 'Schedule',
-						'module' => 'core',
-						'controller' => 'schedule',
-						'resource' => 'Schedule', // ACL
-						'action' => 'list',
-						'privilege' => 'list',
-						'route' => 'main-module',
-						'threeColumnLayout' => true,
-						'reset_params' => true
-		    		),
-		    		array(
-		    			'label' => 'Sessions',
-		    			'title' => 'Sessions',
-		    			'module' => 'core',
-		    			'controller' => 'session',
-		    			'action' => 'list',
-		    			'resource' => 'Session',
-		    			'privilege' => 'list',
-		    			'route' => 'main-module',
-						'threeColumnLayout' => true,
-		    			'reset_params' => true
-		    		),
-		    		array(
-		    			'label' => 'Presentations',
-		    			'title' => 'Presentations',
-		    			'module' => 'core',
-		    			'controller' => 'presentation',
-		    			'resource' => 'Presentation',
-		    			'privilege' => 'list', // ACL, add to show button
-		    			'action' => 'list',
-		    			'route' => 'main-module',
-		    			'reset_params' => true
-		    		),
-		    		array(
-		    			'label' => 'Events',
-		    			'title' => 'Events',
-		    			'module' => 'core',
-		    			'controller' => 'event',
-		    			'resource' => 'Event',
-		    			'privilege' => 'list',
-		    			'action' => 'list',
-		    			'threeColumnLayout' => true,
-		    			'route' => 'grid',
-		    			'reset_params' => true
-		    		),
-		    		array(
-		    			'label' => 'Conferences',
-		    			'title' => 'Conference',
-		    			'module' => 'core',
-		    			'controller' => 'conference',
-		    			'action' => 'list',
-		    			'resource' => 'Conference',
-		    			'route' => 'main-module',
-		    			'reset_params' => true
-		    		),
-		    		array(
-		    			'label' => 'Users',
-		    			'title' => 'Users',
-		    			'module' => 'core',
-		    			'controller' => 'user',
-		    			'action' => 'list',
-		    			'resource' => 'User',
-		    			'route' => 'main-module',
-		    			'reset_params' => true
-		    		),
-		    		array(
-		    			'label' => 'Locations',
-		    			'title' => 'Locations',
-		    			'controller' => 'location',
-		    			'action' => 'list',
-		    			'resource' => 'Location',
-		    			'privilege' => 'list',
-		    			'route' => 'grid',
-		    			'reset_params' => true
-		    		),
-		    		array(
-		    		   'label' => 'Posters',
-		    		   'title' => 'Posters',
-		    		   'module' => 'core',
-		    		   'controller' => 'poster',
-		    		   'action' => 'list',
-		    		   'resource' => 'Poster',
-		    		   'privilege' => 'list',
-		    		   'route' => 'grid',
-		    		   'reset_params' => true
-		    		),
-		    		array(
-		    		   'label' => 'GN3 Workshops',
-		    		   'title' => 'GN3 Workshops',
-		    		   'module' => 'web',
-		    		   'controller' => 'schedule',
-		    		   'action' => 'gn3workshops',
-		    		   'threeColumnLayout' => true,
-		    		   'route' => 'main-module'
-		    		)
-		    	)
-		    ),
-		    array(
-		    	'label' => 'Venue',
-		    	'title' => 'Venue',
-		    	'module' => 'web',
-		    	'controller' => 'venue',
-		    	'action' => 'index',
-		    	'class' => 'venue',
-		    	'css' => true,
-		    	'route' => 'main-module',
-		    	'reset_params' => true,
-		    	'pages' => array(
-		    		array(
-		    			'label' => 'Location',
-		    			'title' => 'location',
-		    			'module' => 'web',
-		    			'controller' => 'venue',
-		    			'action' => 'index'
-		    		),
-		    		array(
-		    			'label' => 'Map',
-		    			'title' => 'map',
-		    			'threeColumnLayout' => true,
-		    			'module' => 'web',
-		    			'controller' => 'venue',
-		    			'action' => 'map'
-		    		),
-		    		array(
-		    			'label' => 'Tourist info',
-		    			'title' => 'tourist info',
-		    			'module' => 'web',
-		    			'controller' => 'venue',
-		    			'action' => 'tourist-info'
-		    		),
-		    		array(
-		    			'label' => 'Hotels',
-		    			'title' => 'hotels',
-		    			'module' => 'web',
-		    			'controller' => 'venue',
-		    			'action' => 'hotels',
-		    			'threeColumnLayout' => true
-		    		),
-		    		array(
-		    			'label' => 'Tours',
-		    			'title' => 'tours',
-		    			'module' => 'web',
-		    			'controller' => 'venue',
-		    			'action' => 'tours',
-		    			'threeColumnLayout' => true
-		    		)
-		    	)
-		    ),
-		    array(
-		    	'label' => 'Media',
-		    	'title' => 'Media',
-		    	'module' => 'web',
-		    	'controller' => 'media',
-		    	'action' => 'archive',
-		    	'class' => 'media',
-		    	'route' => 'main-module',
-		    	'reset_params' => true,
-		    	'pages' => array(
-		    		array(
-		    			'label' => 'Announcements',
-		    			'title' => 'Announcements',
-		    			'module' => 'web',
-		    			'controller' => 'media',
-		    			'action' => 'announcements',
-		    			'route' => 'main-module',
-		    			'reset_params' => false,
-		    			'reset_params' => true,
-		    			'threeColumnLayout' => true
-		    		),
-		    		array(
-		    			'label' => 'Live Video',
-		    			'title' => 'Live Video',
-		    			'module' => 'web',
-		    			'visible' => false,
-		    			'controller' => 'media',
-		    			'action' => 'stream',
-		    			'route' => 'main-module',
-		    			'reset_params' => false,
-		    			'reset_params' => true,
-		    			'threeColumnLayout' => true
-		    		),
-		    		array(
-		    			'label' => 'Archived Video',
-		    			'title' => 'Archived Video',
-		    			'module' => 'web',
-		    			'controller' => 'media',
-		    			'action' => 'archive',
-		    			'route' => 'main-module',
-		    			'reset_params' => false,
-		    			'reset_params' => true,
-		    			'threeColumnLayout' => true
-		    		),
-		    		array(
-		    			'label' => 'Daily impressions',
-		    			'title' => 'Daily impressions of TNC',
-		    			'module' => 'web',
-		    			'controller' => 'media',
-		    			'action' => 'video',
-		    			'route' => 'main-module',
-		    			'reset_params' => false,
-		    			'reset_params' => true,
-		    			'threeColumnLayout' => true
-		    		),
-		    		array(
-		    			'label' => 'News',
-		    			'title' => 'News',
-		    			'module' => 'web',
-		    			'controller' => 'media',
-		    			'action' => 'news',
-		    			'route' => 'main-module',
-		    			'reset_params' => false,
-		    			'reset_params' => true,
-		    			'threeColumnLayout' => true
-		    		),
-		    		array(
-		    			'label' => 'Photos',
-		    			'title' => 'Photos',
-		    			'module' => 'web',
-		    			'controller' => 'media',
-		    			'action' => 'photos',
-		    			'route' => 'main-module',
-		    			'reset_params' => false,
-		    			'reset_params' => true,
-		    			'threeColumnLayout' => true
-		    		),
-		    		array(
-		    			'label' => 'Coverage',
-		    			'title' => 'Coverage',
-		    			'module' => 'web',
-		    			'controller' => 'media',
-		    			'action' => 'coverage',
-		    			'route' => 'main-module',
-		    			'reset_params' => false,
-		    			'reset_params' => true,
-		    			'threeColumnLayout' => true
-		    		)
-		    	)
-		    ),
-		    array(
-		    	'label' => 'Participate',
-		    	'title' => 'Participate',
-		    	'module' => 'web',
-		    	'controller' => 'participate',
-		    	'action' => 'guidelines',
-		    	'class' => 'participate',
-		    	'route' => 'main-module',
-		    	'css' => true,
-		    	'reset_params' => true,
-		    	'pages' => array(
-		    		array(
-		    			'label' => 'Submissions',
-		    			'title' => 'List of submitted papers',
-		    			'module' => 'core',
-		    			'controller' => 'submit',
-		    			'resource' => 'Submit', // ACL
-		    			'action' => ($acl->isAllowed($role, 'Submit', 'list')) ? 'list' : 'new',
-		    			'route' => 'main-module',
-		    			'reset_params' => true,
-		    			'privilege' => ($acl->isAllowed($role, 'Submit', 'list')) ? 'list' : 'new'
-		    		),
-		    		array(
-		    			'label' => 'Review',
-		    			'title' => 'Review',
-		    			'module' => 'core',
-		    			'controller' => 'review',
-		    			'resource' => 'Review', // ACL
-		    			'action' => 'list',
-		    			'route' => 'main-module',
-		    			'reset_params' => false,
-		    			'privilege' => 'list',
-		    			'reset_params' => true
-		    		),
-		    		array(
-		    		    'label' => 'Guidelines',
-		    		    'title' => 'guidelines',
-		    		    'module' => 'web',
-		    		    'controller' => 'participate',
-		    		    'action' => 'guidelines',
-		    			'route' => 'main-module'
-		    		),
-		    		array(
-		    		    'label' => 'Topics',
-		    		    'title' => 'topics',
-		    		    'module' => 'web',
-		    		    'controller' => 'participate',
-		    		    'action' => 'topics',
-		    			'route' => 'main-module',
-		    			'threeColumnLayout' => true
-		    		),
-		    		array(
-		    		    'label' => 'Register',
-		    		    'title' => 'register',
-		    		    'module' => 'web',
-		    		    'controller' => 'participate',
-		    		    'action' => 'register',
-		    			'route' => 'main-module'
-		    		),
-		    		array(
-		    		    'label' => 'Participants',
-		    		    'title' => 'participants',
-		    		    'module' => 'web',
-		    		    'controller' => 'participate',
-		    		    'action' => 'participants',
-		    			'route' => 'main-module',
-		    			'threeColumnLayout' => true
-		    		)
-		    	)
-		    )
-		    
-		);
-
-		$container = new Zend_Navigation($pages);
-
-		// view helper
-		$nav = $this->_view->navigation($container);
-
-        // add ACL and default role to navigation
-        $nav->setAcl($acl)->setRole($role);
+		$navigationPlugin = $frontController->getPlugin('TA_Controller_Plugin_NavigationSelector');
 
 		// store the navigation in the resource registry
-		return $container;
+		return $navigationPlugin->getNavigation();
 	}
 }

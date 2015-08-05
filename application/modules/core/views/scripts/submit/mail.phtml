@@ -40,12 +40,9 @@ $name = $submission['email']. '_'. sha1($this->conferenceInfo('abbreviation').':
 $status = ($this->status == 1) ? 'accept' : 'reject';
 $template = $this->conferenceInfo('abbreviation') .'-submit-'. $status .'.phtml';
 ?>
-<p>
-The emails will be generated using a combination of a static and a dynamic template. The static template is called
-<code><?= $template ?></code> and can be found in <code>/application/modules/core/views/emails</code>.</p>
 <?= $this->mailForm ?>
 <? endif; ?>
 
 <? else: ?>
 <p>There are no papers with this status</p>
-<? endif; // if there are submissions ?>
+<? endif; // there are submissions ?>

@@ -1,12 +1,64 @@
 <?php
 /**
-	* This class represents a single record
-	* Methods in this class could include logic for a single record
-	* for example sticking first_name and last_name together in a getName() method
-	*
-	*/
-class Core_Resource_Session_Item extends TA_Model_Resource_Db_Table_Row_Abstract
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: Item.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
+ */
+
+/**
+ * Session row
+ *
+ * @package Core_Resource
+ * @subpackage Core_Resource_Session
+ * @author Christian Gijtenbeek <gijtenbeek@terena.org>
+ */
+class Core_Resource_Session_Item extends TA_Model_Resource_Db_Table_Row_Abstract implements TA_Form_Element_User_Interface
 {
+
+	protected $_manyToManyIds;
+
+	/**
+	 * Required by TA_Form_Element_User
+	 *
+	 */
+	public function getUsers($allData = null)
+	{
+		$this->_manyToManyIds = $userIds = $this->getTable()->getAdapter()->fetchPairs(
+			"select session_user_id, user_id from sessions_users where session_id=:session_id",
+			array(':session_id' => $this->session_id)
+		);
+
+		$userModel = new Core_Model_User();
+		$filter = new stdClass();
+		$filter->user_id = $userIds;
+		if ($userIds) {
+			$users = $userModel->getUsers(null, null, $filter);
+			return $users['rows'];
+		}
+		return false;
+	}
+
+	/**
+	 * Get primary key values of many to many join table
+	 * in this case sessions_users
+	 */
+	public function getManyToManyIds()
+	{
+		return array_flip($this->_manyToManyIds);
+	}
+
 	/**
 	 * Get chairs belonging to this session
 	 *

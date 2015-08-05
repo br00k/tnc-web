@@ -1,5 +1,27 @@
 <?php
+/**
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: Participant.php 25 2011-10-04 20:46:05Z visser@terena.org $
+ */
 
+/**
+ *
+ * @package Core_Forms
+ * @subpackage Core_Forms_Feedback
+ */
 class Core_Form_Feedback_Participant extends TA_Form_Abstract
 {
 	public function init()
@@ -15,6 +37,20 @@ class Core_Form_Feedback_Participant extends TA_Form_Abstract
 			   array('Int')
 		   )
 		   ->setDecorators(array('Composite'));
+
+	    $age = new Zend_Form_Element_Select('age');
+	    $age->setLabel('Age')
+			->setAttrib('class', 'small')
+			->setMultiOptions(array(
+				'0' => '---',
+ 				'1' => '20-25',
+ 				'2' => '26-30',
+ 				'3' => '31-40',
+ 				'4' => '41-50',
+ 				'5' => '51-60',
+ 				'6' => '60+'
+			))
+			->setDecorators(array('Composite'));
 
 		$country = new TA_Form_Element_Country('country');
 		$country->setLabel('Please select the country in which you work as primary place of employment.')
@@ -100,6 +136,7 @@ class Core_Form_Feedback_Participant extends TA_Form_Abstract
 
 		$this->addElements(array(
 			$id,
+			$age,
 			$country,
 			$orgType,
 			$orgOther,

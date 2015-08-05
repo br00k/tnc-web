@@ -1,5 +1,27 @@
 <?php
+/**
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: Session.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
+ */
 
+/** 
+ *
+ * @package Core_Model
+ * @author Christian Gijtenbeek
+ */
 class Core_Model_Session extends TA_Model_Acl_Abstract
 {
 
@@ -417,6 +439,7 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 
 	/**
 	 * Subscribe user to session
+	 *
 	 * @param	integer		$id		session_id
 	 * @return	boolean
 	 */
@@ -439,6 +462,7 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 
 	/**
 	 * Unsubscribe user from session
+	 *
 	 * @param	integer		$id		session_id
 	 * @return	boolean
 	 */
@@ -461,6 +485,9 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	/**
 	 * Get sessions user is subscribed to
 	 *
+	 * @param	integer		$userId	user_id
+	 * @param	integer		$sessionId	session_id
+	 * @return	mixed		array of session_id's
 	 */
 	public function getSubscriptions($userId = null, $sessionId = null)
 	{
@@ -478,7 +505,7 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 		$sessions = array();
 
 		if (count($data) !== 2) {
-			throw new Exception('This method needs two sessions');
+			throw new TA_Model_Exception('This method needs two sessions');
 		}
 
 		// cast data values to named variables
@@ -495,7 +522,7 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 
 		switch (count($sessions)) {
 			case 0:
-			    throw new Exception('You have chosen two empty slots in the programme. Please select at least 1 occupied slot');
+			    throw new TA_Model_Exception('You have chosen two empty slots in the programme. Please select at least 1 occupied slot');
 			break;
 			case 1:
 			    // updating one session

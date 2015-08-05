@@ -1,5 +1,27 @@
 <?php
+/**
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: Poster.php 104 2013-04-08 11:58:49Z gijtenbeek@terena.org $
+ */
 
+/** 
+ *
+ * @package Core_Model
+ * @author Christian Gijtenbeek
+ */
 class Core_Model_Poster extends TA_Model_Acl_Abstract
 {
 
@@ -39,6 +61,23 @@ class Core_Model_Poster extends TA_Model_Acl_Abstract
 	}
 
 	/**
+	 * Get a list of posters
+	 * @param		integer		$page	Page number to show
+	 * @param		array		$order	Array with keys 'field' and 'direction'
+	 * @param		boolean		$group	Group rows by date
+	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
+	 */	
+	public function getPostersByCategory($paged=null, $order=array(), $category=null)
+	{
+		if (!$this->checkAcl('list')) {
+            throw new TA_Model_Acl_Exception("Insufficient rights");
+        }	
+ 
+        $items = $this->getResource('posters')->getPosters($paged, $order, $category);  
+        return $items;     
+	}
+
+	/**
 	 * Remove poster from resource
 	 * @param		integer		$id		Id of record to delete
 	 * @return		boolean
@@ -56,7 +95,7 @@ class Core_Model_Poster extends TA_Model_Acl_Abstract
 
 		return $this->getPosterById($id)->delete();
 	}
-
+	
 	/**
 	 * Save poster to resource
 	 *

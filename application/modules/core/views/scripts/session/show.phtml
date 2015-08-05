@@ -4,7 +4,8 @@ $files = $this->session->getFiles();
 $now = $this->session->isNow();
 $hasEnded = $this->session->hasEnded();
 $chairs = $this->session->getChairs(true);
-$speakers = $this->session->getGroupedSpeakers(true, true);
+#$speakers = $this->session->getGroupedSpeakers(true, true);
+$speakers = $this->session->getGroupedSpeakers(false, true);
 $day = urlencode(urlencode($this->formatDate($this->session->tstart, null, 'dd/MM/YYYY')));
 ?>
 <div class="content_left">

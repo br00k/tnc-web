@@ -1,12 +1,30 @@
 <?php
+/**
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: SendFile.php 25 2011-10-04 20:46:05Z visser@terena.org $
+ */
 
 /**
-* Sends a file for download
-*
-* @category Noginn
-* @copyright Copyright (c) 2009 Tom Graham (http://www.noginn.com)
-* @license http://www.opensource.org/licenses/mit-license.php
-*/
+ * Sends a file for download
+ *
+ * @copyright Copyright (c) 2009 Tom Graham (http://www.noginn.com)
+ * @license http://www.opensource.org/licenses/mit-license.php
+ * @package TA_Controller
+ * @subpackage Plugin
+ */
 class TA_Controller_Action_Helper_SendFile extends Zend_Controller_Action_Helper_Abstract
 {
 	/**

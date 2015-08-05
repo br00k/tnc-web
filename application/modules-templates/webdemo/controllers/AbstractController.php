@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: AbstractController.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
 abstract class Webdemo_AbstractController extends Zend_Controller_Action
 {

@@ -1,3 +1,8 @@
 <?= $this->render('presentation/subnav.phtml') ?>
-<p>Can't find a speaker in the list? Send an email to <a href="mailto:<?= $this->conferenceInfo('email') ?>">the administrator</a></p>
 <?= $this->presentationUserForm ?>
+<? if ($this->authInfo()->isAdmin() ): ?>
+<p>This list only shows presenters. To add a user to this list, add the role 'presenter' to an existing user or <a href="/core/user/new/role_id/5">send out invite</a></p>
+<? else: ?>
+<p>Can't find a speaker in the list? Send an email to <a href="mailto:<?= $this->conferenceInfo('email') ?>">the administrator</a></p>
+<? endif; ?>
+

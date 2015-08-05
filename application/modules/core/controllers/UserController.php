@@ -1,5 +1,27 @@
 <?php
+/**
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: UserController.php 54 2012-04-03 15:29:26Z visser@terena.org $
+ */
 
+/**
+ * UserController
+ *
+ * @package Core_Controllers
+ */
 class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Resource_Interface
 {
 
@@ -75,7 +97,7 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 		#if( ($this->view->grid = $cache->load('speakerlist') === false ) ) {
 			$this->view->grid = $this->_userModel->getUsersWithRole(
 				null,
-				array($this->_getParam('order', null), $this->_getParam('dir', 'asc')),
+				array($this->_getParam('order', 'lname'), $this->_getParam('dir', 'asc')),
 				'presenter'
 			);
 			#$cache->save($this->view->grid, 'speakerlist');
@@ -83,18 +105,21 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 	}
 
 	/**
-	 * @todo: Add 'last login' date to success message
+	 * Sign in
+	 *
 	 */
 	public function loginAction()
 	{
-    	$auth = new Core_Service_Authentication( $this->getRequest()->getParam('id', null) );
+    	$auth = new Core_Service_Authentication(
+    		$this->getRequest()->getParam('id', null)
+    	);
 
-		// @todo authsource should be configurable
-		$authresult = $auth->authenticate(array('authsource'=>'default-sp'));
+    	$config = Zend_Registry::get('config');
+		$authresult = $auth->authenticate(array('authsource' => $config->simplesaml->authsource));
 
-		if ($authresult  === true) {
+		if ($authresult === true) {
 			$this->_helper->flashMessenger('Successful login');
-			$this->_redirect('/');
+			$this->_redirect( $this->getRequest()->getParam('redir', '/') );
 		} else {
 		   // failed login
 		   return $this->render('login');
@@ -154,15 +179,20 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 			return $this->render('formUserEdit');
 		}
 
-		// everything went OK, redirect to list action
+		// everything went OK, redirect
 		$this->_helper->flashMessenger('Successfully edited record');
-		return $this->_helper->lastRequest();
+
+		return $this->_helper->redirector->gotoRoute(array(
+			'controller' => 'user',
+			'action' => 'edit',
+			'id' => $this->view->id
+		), 'gridactions');
 	}
 
 	public function deleteAction()
 	{
 		if ( false === $this->_userModel->delete($this->_getParam('id')) ) {
-			throw new Core_Model_Exception('Something went wrong with deleting the user');
+			throw new TA_Model_Exception('Something went wrong with deleting the user');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'user', 'action'=>'list'), 'grid');
 	}

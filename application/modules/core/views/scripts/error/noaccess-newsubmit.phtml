@@ -1,8 +1,22 @@
-<h1>Oops</h1>
+<h1>Submission</h1>
+
 <? if ($this->authInfo()->isLoggedIn()): ?>
-<p>You are logged in as ' 
-<?= $this->authInfo()->getFullName() ?>', but you do not have access to this resource.
-</p>
+
+<p>You are logged in as '<?= $this->authInfo()->getFullName() ?>', but you do not have access to this resource.</p>
+
 <? else: ?>
-<p>You don't seem to be logged in, please <a href="/core/user/login<?= (isset($this->referrer)) ? '?redir='.$this->referrer : '' ?>">log in</a> to submit a paper.</p>
+
+<p>In order to submit your abstract you will first have to <a href="/core/user/login<?= (isset($this->referrer)) ? '?redir='.$this->referrer : '' ?>">log in</a>.</p>
+
+<p>This website uses federated login, which means that we do not provide usernames/passwords any more; instead you can log in using your own institutional account. If your institution is not listed, you can also use one of the guest providers such as Google, Yahoo!, Facebook, Twitter, LinkedIn, ProtectNetwork, Windows Live ID, etc.</p>
+
+<p>NOTE: While it’s possible to login to the conference website using several different accounts (for instance using your university, organisation, Google and Facebook accounts),  everything is linked to the account with which you login for the first time. This means that, for example, if you now use your institutional account to login, you should continue using that in the future.</p>
+
+<p>Once you are logged in, please update your profile by clicking ‘Edit account’. If you have logged in to the TERENA Networking Conference (TNC2011) website before, then all the details you added previously will still be available to you.</p>
+
+<p>If you have any questions concerning the conference website please contact: <a href="mailto:webmaster@terena.org">webmaster@terena.org</a></p>  
+<p>Concerning all non-technical questions please contact: <a href="mailto:tnc2012@terena.org">tnc2012@terena.org</a></p>
+
+<p>Authors should follow the guidelines for extended abstracts. The guidelines, topics and more detailed information about the Call for Papers are available on the TNC2012 website.</p>
+
 <? endif; ?>

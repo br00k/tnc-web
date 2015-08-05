@@ -5,6 +5,9 @@
 <?
 $zd = new Zend_Date($date);	
 $weekday = $zd->get('EEEE dd/MM');
+if (isset($_GET['c'])) {
+Zend_Debug::dump($date);exit();
+}
 ?>
 <table class="schedule" cellspacing="0" cellpadding="0">
 <? if ($this->filters['day'] == 'all'): ?><caption><?= $weekday ?></caption><? endif; ?>
@@ -28,7 +31,8 @@ $weekday = $zd->get('EEEE dd/MM');
 			<? endif; ?>
 			<? if ($sess): ?>
 				<? if ($this->authInfo()->isLoggedIn()): ?>
-				<? if ( ($this->subscriptions) && (in_array($sess['session_id'], $this->subscriptions)) ): ?><span>
+				<span>
+				<? if ( ($this->subscriptions) && (in_array($sess['session_id'], $this->subscriptions)) ): ?>
 				<a href="/core/session/unsubscribe/<?= $sess['session_id'] ?>/json" class="subscribeon subscriber" title="unsubscribe from this session"></a>
 				<? else: ?>
 				<a href="/core/session/subscribe/<?= $sess['session_id'] ?>/json" class="subscribe subscriber" title="subscribe to this session"></a>

@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id$
+ * @revision   $Id: Acl.php 40 2011-11-29 13:23:56Z gijtenbeek@terena.org $
  */
 
 /**
