@@ -100,82 +100,6 @@ class TA_Form_Decorator_Composite extends Zend_Form_Decorator_Abstract
 
     public function render($content)
     {
-    	if (getenv('REMOTE_ADDR') == '2001:610:148:b00b::160') {	
-
-
-
-
-        $element = $this->getElement();
-
-        if (!$element instanceof Zend_Form_Element) {
-            return $content;
-        }
-
-        if (null === $element->getView()) {
-            return $content;
-        }
-
-        $separator = $this->getSeparator();
-        $placement = $this->getPlacement();
-        $label     = $this->buildLabel();
-        $input     = $this->buildInput();
-        $errors    = $this->buildErrors();
-        $desc      = $this->buildDescription();
-
-        switch ( $element->getType() ) {
-        	case 'Zend_Form_Element_Textarea':
-				$output = '<div class="form-group">'. $label . $errors . $input . $desc . '</div>';
-        	break;
-
-        	case 'Zend_Form_Element_Text':
-				$output = '<div class="form-group">'. $label . $errors . $input . $desc . '</div>';
-        	break;
-
-        	case 'Zend_Form_Element_Checkbox':
-        		$output = '<div class="form-group">'. $input . $label . $errors . $desc . '</div>';
-        	break;
-
-        	case 'Zend_Form_Element_Radio':
-        		$output = '<div class="form-group">'. $label . $input . $errors . $desc . '</div>';
-        	break;
-
-        	case 'Zend_Form_Element_File':
-
-        	break;
-
-        	case 'Zend_Form_Element_Hidden':
-				$output = '<li class="hidden">'. $input . '</li>';
-        	break;
-
-        	case 'TA_Form_Element_Location':
-				$element->getView()->headScript()->appendFile('http://maps.google.com/maps/api/js?sensor=false');
-				$element->getView()->headScript()->appendFile('/js/jquery-ui/js/jquery-ui.min.js');
-				$output = '<li id="location_element">'. $label . $errors . $input . $desc
-				. '<input type="text" name="lat" value="" style="display:none;" />'
-				. '<input type="text" name="lng" value="" style="display:none;" />'
-				. '<div id="map_canvas" class="'.$element->getAttrib('class').'"></div></li>';
-        	break;
-
-        	default:
-        		$output = '<div class="form-group">'. $label . $input . $errors . $desc . '</div>';
-        	break;
-        }
-
-        switch ($placement) {
-            case (self::PREPEND):
-                return $output . $separator . $content;
-            case (self::APPEND):
-            default:
-                return $content . $separator . $output;
-        }
-
-
-
-
-
-
-    		
-    	} else {
         $element = $this->getElement();
 
         if (!$element instanceof Zend_Form_Element) {
@@ -239,8 +163,6 @@ class TA_Form_Decorator_Composite extends Zend_Form_Decorator_Abstract
             default:
                 return $content . $separator . $output;
         }
-        
-      }
 
     }
 

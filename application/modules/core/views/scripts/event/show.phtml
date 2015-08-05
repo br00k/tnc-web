@@ -1,22 +1,22 @@
 <div id="event_details">
-<h1><?= $this->event->category . ': ' . $this->event->title ?><? if ($this->event->closed): ?> (closed meeting)<? endif; ?>
+<h1><?= $this->event->category . ': ' . htmlspecialchars($this->event->title) ?><? if ($this->event->closed): ?> (closed meeting)<? endif; ?>
 <? if ($this->aclCheck('event', 'save')): ?>
 <span class="metanav"> <a href="<?= $this->url(array('controller' => 'event', 'action' => 'edit', 'id' => $this->event->event_id), 'gridactions') ?>">Edit</a></span>
 <? endif; ?>
 <? if ($this->aclCheck('event', 'delete')): ?>
 <span class="metanav"><a href="<?= $this->url(array('controller' => 'event', 'action' => 'delete', 'id' => $this->event->event_id), 'gridactions') ?>"> Delete</a></span>
 <? endif; ?>
-<!--<span class="metanav"> <a href="<?= $this->url(array('controller' => 'event', 'action' => 'export', 'id' => $this->event->event_id), 'main-module') ?>">Save to my Google calendar</a></span>--></h1>
+<span class="metanav"> <a href="<?= $this->url(array('controller' => 'event', 'action' => 'export', 'id' => $this->event->event_id), 'main-module') ?>">Save to my Google calendar</a></span></h1>
 <? if ($this->event->persons): ?>
 <div id="e_persons">
-<a title="" class="person"><?= $this->event->persons ?></a>
+<a title="" class="person"><?= htmlspecialchars($this->event->persons) ?></a>
 </div>
 <? endif; ?>
 <? if (!$this->event->cancelled): ?>
    	<div id="e_meta">
    	<? if ($this->event->file_id): ?>
     <div id="e_img">
-    	<img src="/core/file/<?= $this->event->file_id ?>" alt="<?= $this->event->title ?>" title="<?= $this->event->title ?>" />
+    	<img src="/core/file/<?= $this->event->file_id ?>" alt="<?= $this->event->title ?>" title="<?= htmlspecialchars($this->event->title) ?>" />
     </div>
     <? endif; ?>
     <? if ($this->event->tstart): ?>

@@ -16,7 +16,7 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: ImageResize.php 25 2011-10-04 20:46:05Z visser@terena.org $
  */
-#require_once dirname(dirname(__FILE__)).'../HTMLPurifier.php';
+require_once dirname(dirname(__FILE__)).'/phpthumb/ThumbLib.inc.php';
 
 /**
  * HTMLPurifier
@@ -34,9 +34,8 @@ class TA_Filter_HTMLPurifier implements Zend_Filter_Interface
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('Attr.EnableID', true);
 		$config->set('Attr.IDPrefix', 'MyPrefix_');
-		$config->set('HTML.AllowedElements', 'a, b, br');
 		$config->set('Cache.SerializerPath', APPLICATION_PATH.'/../cache');
-		$this->_purifier = new HTMLPurifier($config);	
+		$this->_purifier = new HTMLPurifier($config);		
 	}
 
 	/**

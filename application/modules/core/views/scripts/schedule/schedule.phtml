@@ -12,7 +12,7 @@ $weekday = $zd->get('EEEE dd/MM');
     <tr>
     <? foreach ($this->timeslots[$date] as $slot): ?>
     <? $range = $this->formatDate($slot['tstart'], null, 'H:m') . ' - ' . $this->formatDate($slot['tend'], null, 'H:m'); ?>
-	<th style="width: 20%;" <? if ($this->filters['timeslot'] == $slot['timeslot_id']): ?>class="active"<? endif; ?>><?= $range ?> <a href="https://www.timeanddate.com/time/zones/west" title="Western European Summer Time">WEST</a></th>
+	<th style="width: 20%;" <? if ($this->filters['timeslot'] == $slot['timeslot_id']): ?>class="active"<? endif; ?>><?= $range ?></th>
 	<? endforeach; // timeslots ?>
 
 	<? if (isset($this->events[$date])): ?>
@@ -45,7 +45,7 @@ $weekday = $zd->get('EEEE dd/MM');
 
 				<a class="sched_title" title="Show information about this session"
 				href="<?= $this->url(array('controller'=>'session', 'action'=>'show', 'id'=>$sess['session_id']), 'oneitem') ?>">
-				<?= ($this->timeslots[$date][$timeslot_id]['number'] !== 0) ? $this->timeslots[$date][$timeslot_id]['number']:''; ?><?= $sess['loc_abbr'] . ' - ' . $sess['title'] ?></a>
+				<?= ($this->timeslots[$date][$timeslot_id]['number'] !== 0) ? $this->timeslots[$date][$timeslot_id]['number']:''; ?><?= $sess['loc_abbr'] . ' - ' . htmlspecialchars($sess['title']) ?></a>
                 <br /><br />
 
 				<? if ( ($this->filters['view'] == 'speakers') && ($sess['speakers']) ): ?>
@@ -54,7 +54,7 @@ $weekday = $zd->get('EEEE dd/MM');
 							<li>
 							<a class="pres_info" title="Show information about this speaker"
 							href="<?= $this->url(array('controller'=>'user', 'action'=>'show', 'id'=>$speaker['user_id']), 'oneitem') ?>">
-							<?= $speaker['fname'] .' '. $speaker['lname'] ?>
+							<?= htmlspecialchars($speaker['fname'] .' '. $speaker['lname']) ?>
 							</a>
 							<?
 							// feedback toggler is set to true, show ratebox
@@ -73,7 +73,7 @@ $weekday = $zd->get('EEEE dd/MM');
 							<a class="pres_info"
 							title="Show information about this presentation"
 							href="<?= $this->url(array('controller'=>'presentation', 'action'=>'show', 'id'=>$pres['presentation_id']), 'oneitem') ?>">
-							<?= $pres['title'] ?>
+							<?= htmlspecialchars($pres['title']) ?>
 							</a>
 							<?
 							// feedback toggler is set to true, show ratebox
@@ -101,7 +101,7 @@ $weekday = $zd->get('EEEE dd/MM');
 				<? if (!empty($this->events[$date])): ?>
 					<ul class="titles">
 						<? foreach ($this->events[$date] as $event): ?>
-							<li><?= $event['location'] ?><br /><a href="/core/event/<?= $event['event_id'] ?>"><?= htmlspecialchars($event['title']) ?></a><br /><span class="meta"><?= $event->getCompleteTime() ?></span></li>
+							<li><a href="/core/event/<?= $event['event_id'] ?>"><?= htmlspecialchars($event['title']) ?></a><br /><span class="meta"><?= $event->getCompleteTime() ?></span></li>
 						<? endforeach; ?>
 					</ul>
 				<? endif; ?>

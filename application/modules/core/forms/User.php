@@ -32,18 +32,18 @@ class Core_Form_User extends TA_Form_Abstract
 	    $fname = new Zend_Form_Element_Text('fname');
 	    $fname->setLabel('First Name')
 	    	  ->setRequired(true)
-	    	  ->setAttrib('class', 'medium form-control')
+	    	  ->setAttrib('class', 'medium')
 	    	  ->setDecorators(array('Composite'));
 
 	    $lname = new Zend_Form_Element_Text('lname');
 	    $lname->setLabel('Last Name')
 	    	  ->setRequired(true)
-	    	  ->setAttrib('class', 'medium form-control')
+	    	  ->setAttrib('class', 'medium')
 	    	  ->setDecorators(array('Composite'));
 
 	    $organisation = new Zend_Form_Element_Text('organisation');
 	    $organisation->setLabel('Organisation')
-					 ->setAttrib('class', 'medium form-control')
+					 ->setAttrib('class', 'medium')
 					 ->setDecorators(array('Composite'));
 
 		$country = new TA_Form_Element_Country('country');
@@ -52,18 +52,18 @@ class Core_Form_User extends TA_Form_Abstract
 
 	    $jobtitle = new Zend_Form_Element_Text('jobtitle');
 	    $jobtitle->setLabel('Job title')
-				 ->setAttrib('class', 'medium form-control')
+				 ->setAttrib('class', 'medium')
 				 ->setDecorators(array('Composite'));
 
 	    $profile = new Zend_Form_Element_Textarea('profile');
 	    $profile->setLabel('Biography')
-				->setAttrib('class', 'medium form-control')
+				->setAttrib('class', 'medium')
 				->setDecorators(array('Composite'));
 
 	    $email = new Zend_Form_Element_Text('email');
 	    $email->setLabel('Email')
 	    	  ->setRequired(true)
-	    	  ->setAttrib('class', 'medium form-control')
+	    	  ->setAttrib('class', 'medium')
 	    	  ->setDescription('the invitation will be sent to this address')
 	    	  ->addValidators(array(
 				array('EmailAddress', true),

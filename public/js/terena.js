@@ -134,7 +134,6 @@ var active = $('#activestream').text();
 var quality = $('#quality').text();
 var type = ($('div#streams').hasClass('archive')) ? 'archive' : 'live';
 var file = 'stream'+active;
-var file = 'mp4:11647267-f3efd410d735fad9612b.mbr.mp4?a682f8a5050d0f22ff2e7f3227392f6b2eb85c58';
 
 if (active) {
 	var setup = {
@@ -145,12 +144,11 @@ if (active) {
 	  'controlbar':'bottom',
 	  'provider': 'rtmp',
 	  'file': file,
-	  'streamer': 'rtmp://live.visualplatform.net/live/',
-	  //'streamer': 'rtmp://nordunetlivefs.fplive.net/nordunetlive-'+type+'/',
+	  'streamer': 'rtmp://nordunetlivefs.fplive.net/nordunetlive-'+type+'/',
 	  'modes': [
 	  	  {type: 'flash', src: '/js/player.swf'},
 	      {type: 'html5', config: {
-		       'file': 'http://mps-ios-live.nordu.net:1935/'+type+'/'+file+'.sdp/playlist.m3u8',
+			 'file': 'http://mps-ios-live.nordu.net:1935/'+type+'/'+file+'.sdp/playlist.m3u8',
 	         'provider': 'http'
 	        }
 	      }
@@ -216,21 +214,11 @@ if ($('#coredemo_container').length>0) {
 	jwplayer('coredemo_container').setup({
 		'id': 'corestream',
 		'flashplayer': '/js/player.swf',
-		'file': 'https://youtu.be/wy04YVC0dI8',
-		'width': '900',
-		'height': '533',
-		'autostart': 'false'
-	});
-	
-	jwplayer('coredemo_container2').setup({
-		'id': 'corestream',
-		'flashplayer': '/js/player.swf',
-		'file': 'https://youtu.be/S6QnY3Vm90g',
+		'file': 'http://youtu.be/qdlwsPNyz7c',
 		'width': '900',
 		'height': '533',
 		'autostart': 'true'
-	});	
-	
+	});
 
 }
 

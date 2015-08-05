@@ -30,7 +30,7 @@ $columns = array_filter($this->grid['cols'], 'globFilter');
 <tbody>
 <? foreach ($this->grid['rows'] as $item): ?>
   <tr class="<?= $this->cycle(array('odd', 'even'))->next() ?>">
-	<td><a href="<?= $this->url(array('controller'=>'session', 'action'=>'show', 'id'=>$item->{$this->grid['primary']}), 'oneitem') ?>"><?= $item->title ?></a></td>
+	<td><a href="<?= $this->url(array('controller'=>'session', 'action'=>'show', 'id'=>$item->{$this->grid['primary']}), 'oneitem') ?>"><?= htmlspecialchars($item->title) ?></a></td>
 	<? if ($this->authInfo()->hasRole('chair')): ?><td><?= isset($presentationCount[$item->session_id]) ? $presentationCount[$item->session_id] : '-'; ?></td><? endif; ?>
 	<? if ($this->authInfo()->hasRole('chair')): ?>
 	<td>

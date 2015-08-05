@@ -3,13 +3,13 @@
 <? endif; ?>
 <div id="event_listing">
 <? foreach ($this->grid['rows'] as $category => $events): ?>
-    <h1><?= $category ?>s</h1>
+    <h1><?= htmlspecialchars($category) ?>s</h1>
     <ul class="basic">
 	<? foreach ($events as $event): ?>
 	<? if ($this->id != $event->event_id): ?>
-    <li><a title="Show event details" href="<?= $this->url(array('controller' => 'event', 'action' => 'show', 'id' => $event->event_id), 'oneitem') ?>"><?= $event->title ?></a></li>
+    <li><a title="Show event details" href="<?= $this->url(array('controller' => 'event', 'action' => 'show', 'id' => $event->event_id), 'oneitem') ?>"><?= htmlspecialchars($event->title) ?></a></li>
 	<? else: ?>
-	<li class="active"><?= $event->title ?></li>
+	<li class="active"><?= htmlspecialchars($event->title) ?></li>
 	<? endif; ?>
 	<? endforeach; ?>
     </ul><br />

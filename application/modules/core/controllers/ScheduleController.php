@@ -67,14 +67,13 @@ class Core_ScheduleController extends Zend_Controller_Action
 
 		if ($loc = $this->_getParam('loc')) {
 			$datearray = array(
-			  'year' => 2015,
-			  'month' => 6,
-			  'day' => 15,
-			  'hour' => 18,
-			  'minute' => 40,
+			  'year' => 2012,
+			  'month' => 5,
+			  'day' => 22,
+			  'hour' => 16,
+			  'minute' => 35,
 			  'second' => 10);
-    	#$zd = new Zend_Date($datearray);
-    	$zd = new Zend_Date();
+    		$zd = new Zend_Date($datearray);
 			
 			$sessions = $this->_scheduleModel->getStreamData($zd, $loc);
 			$this->view->session = current($sessions);
@@ -84,7 +83,7 @@ class Core_ScheduleController extends Zend_Controller_Action
 		}
 		
 		$mobile = $this->_getParam('mobile', false);
-		
+
 		// if feedback codes have been sent
 		if ($this->_helper->conferenceInfo()->isFeedbackOpen() ) {
 			$feedbackModel = new Core_Model_Feedback();
@@ -105,19 +104,8 @@ class Core_ScheduleController extends Zend_Controller_Action
 
 		$eventModel = new Core_Model_Event();
 		$events = $eventModel->getEvents(null, array('tstart', 'asc'), 'day');
-		if ($mobile) {
-			$eventJson = array();
-			foreach ($events['rows'] as $date => $events) {					
-			    foreach ($events as $event) {
-			    	$eventJson[$date][] = $event->toArray();
-			    }
-			} 
-			$this->view->events = $eventJson;
-		} else {
-			$this->view->events = $events['rows'];
-		}
+		$this->view->events = $events['rows'];
 
-		
 		$sessionModel = new Core_Model_Session();
 		$this->view->subscriptions = $sessionModel->getSubscriptions();
 
@@ -129,9 +117,7 @@ class Core_ScheduleController extends Zend_Controller_Action
 			'location' => $location
 		);
 
-		// @todo remove hardcoded directory path
 		if ($this->_getParam('size')) {
-			$this->view->fullscreen = true;
 			$this->_helper->layout->assign('customlayout', true);
 			$this->_helper->layout->setLayout('core/fullschedule');
 		}

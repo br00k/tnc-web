@@ -219,44 +219,6 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		$this->view->messages = '';
 		return;
 	}
-	
-	public function chairsinfoAction()
-	{
-		$this->view->Stylesheet('schedule.css');
-		$resource = $this->_sessionModel->getResource('sessionsusers');
-		$adapter = $resource->getAdapter();
-		$query = "select * from users u left join user_role ur on (u.user_id = ur.user_id) where ur.role_id=6";
-		$chairs = $adapter->fetchAssoc($query);
-		$chairs[161]['speakers'] = ['Andrea Biancini', 'Mandeep Saini', 'Niels van Dijk', 'David Simonsen', 'Rhys Smith', 'Jordi Ortiz'];
-		$chairs[316]['speakers'] = ['Bu Sung Lee', 'Shuji Shimizu', 'Askar Kutanov', 'Mary Fleming'];
-		$chairs[201]['speakers'] = ['Bu Sung Lee', 'Shuji Shimizu', 'Askar Kutanov', 'Mary Fleming', 'João Paulo Cunha', 'Michael Bredel', 'Catalin Meirosu', 'Yannis Mitsos'];
-		$chairs[83]['speakers'] = ["Ingrid Melve","Andrew Howard","Brian Nisbet","Thokozani Eric Khwela","Stratos Psomadakis","Linus Nordberg","Dave Wilson","Steve Wolff","Nicolas Loriau","Mark O'Leary","Lukáš Kekely","Viktor Puš","Brian Tierney","Hans Addleman","Sven Stauber", 'Jamie Sunderland', 'David Chadwick', 'David Wilde',"Roland Hedberg","Alex Reid","Steve Olshansky","Nikolas Pediaditis","Gloria Vuagnin","Luuk Hendriks","Peter Szegedi","Lauren Rotman","Jakub Moscicki","Andrew Lee","Roderick Mooi","Brian Nisbet","Rafael Diaz Maurin","Leif Johansson","Ann Harding","Ken Klingenstein"];
-		$chairs[742]['speakers'] = [ "Timo Lüge","Avis Yates Rivers",'Jamie Sunderland', 'David Chadwick', 'David Wilde', 'Ann West', 'John Suess', 'Licia Florio'];
-		$chairs[448]['speakers'] = ["Alejandro Perez-Mendez","Diego R. Lopez","Jan Stumpf", 'Manfred Laubichler', 'Sarah Kenderdine',  "Pierre Bruyère","Filipe Araújo","João Nuno Ferreira","Maria Leonor Parreira","Rodney Wilson","Klaas Wierenga","John Day"];
-		$chairs[195]['speakers'] = ['Richard Hughes-Jones', 'Sandra Jaque', 'Francesco Nisi', 'Barbara Angelucci', "Eli Dart","Sylvia Kuijpers","Jakob Tendel","Roberto Sabatino","Steve Cotter"];
-		$chairs[108]['speakers'] = ['Klaus Grobe', 'Soumya Roy', 'Geoff Bennett', 'Dale Smith', 'Iman Abuel Maaly Abdelrahman'];
-		$chairs[680]['speakers'] = ['Viviani Paz', 'Nicole Gregoire', 'Michael Enrico', 'Dale Finkelson', 'Yves Poppe', 'Erik-Jan Bos'];
-		$chairs[73]['speakers'] = [ "Ingrid Melve","Andrew Howard","Brian Nisbet","Thokozani Eric Khwela","Stratos Psomadakis","David Wilde","Linus Nordberg","Dave Wilson","Steve Wolff","Nicolas Loriau","Mark O'Leary","Lukáš Kekely","Viktor Puš","Brian Tierney","Hans Addleman","Sven Stauber", 'Jean Carlo Faustino', 'Maurice van den Akker', 'Vincenzo Capone', 'Maria Minaricova', "Roland Hedberg","Alex Reid","Steve Olshansky","Nikolas Pediaditis","Gloria Vuagnin","Luuk Hendriks","Peter Szegedi","Lauren Rotman","Jakub Moscicki","Andrew Lee","Roderick Mooi","Brian Nisbet","Rafael Diaz Maurin","Leif Johansson","Ann Harding","Ken Klingenstein"];
-		$chairs[291]['speakers'] = [ "Chris Phillips","Tomasz Wolniewicz","Stefan Winter","Gareth Ayres","Cristiano Bonato Both", 'Guy Halse', 'Philippe Hanset', 'Neil Witheridge', 'Rogier Spoor', 'Roland van Rijswijk', 'Domenico Vicinanza'];
-		$chairs[880]['speakers'] = ['Mark Johnston', 'Pieter Panis', 'Guy Roberts', 'Mian Usman'];
-		$chairs[197]['speakers'] = ['Dimitri Staessens', 'Eduard Grasa', 'Miguel Ponce de Leon', 'Diego R. Lopez'];
-		$chairs[572]['speakers'] = ['Lonneke Walk', 'Christoph Herzog', 'Johan Bergström',  "Alf Moens","Evelijn Jeunink","Domen Božeglav","Maja Vreča","Erik Huizer"];
-		$chairs[765]['speakers'] = ['Xavier Jeannin', 'Alaitz Mendiola', 'Grzegorz Rzym'];
-		$chairs[662]['speakers'] = [ "Pierre Bruyère","Filipe Araújo","João Nuno Ferreira","Maria Leonor Parreira","Rodney Wilson","Klaas Wierenga","John Day"];
-		$chairs[453]['speakers'] = ["Kireeti Kompella","Julio Ibarra","Dale Finkelson"];
-		$chairs[822]['speakers'] = ["Dale Smith","Iman Abuel Maaly Abdelrahman","Douglas Kunda"];
-		$chairs[870]['speakers'] = ["Eli Dart","Sylvia Kuijpers","Jakob Tendel","Roberto Sabatino","Steve Cotter"];
-		$chairs[212]['speakers'] = ["Andres Steijaert","Panos Louridas","Mandeep Saini","Michel Wets","Saša Čavara"];
-		$chairs[766]['speakers'] = ["Joe Mambretti","Jasone Astorga","Rodney Wilson"];
-		$chairs[27]['speakers'] = ["Roland van Rijswijk","Alf Moens","Rolf Sture Normann","Cezary Mazurek"];
-		$chairs[764]['speakers'] = ["Josef Vojtěch","Guy Roberts","Wojbor Bogacki","Jiří Dostál","Scott Koranda", "Benjamin Oshrin", "Robert Cowles"];
-		$chairs[672]['speakers'] = [ "Bruce Maas","Amin Qazi","Rafael Valle","Domenico Vicinanza"];
-		$chairs[453]['speakers'] =  ["Franck Rupin","Michael Stanton","Tatsuya Fujii","Tim Boundy","Bartlomiej Idzikowski"];
-		$chairs[651]['speakers'] = ["Alejandro Perez-Mendez","Diego R. Lopez","Jan Stumpf"];
-		$chairs[858]['speakers'] = ["Andres Steijaert","Panos Louridas","Mandeep Saini","Michel Wets","Saša Čavara"];
-		$chairs[520]['speakers'] = [ "Dimitri Staessens","Eduard Grasa","Miguel Ponce de Leon","Diego R. Lopez"];
-		$this->view->sessionchairs = $chairs;
-	}
 
 	/**
 	 * Delete presentation from session

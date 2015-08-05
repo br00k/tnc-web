@@ -48,11 +48,6 @@ class Core_FileController extends Zend_Controller_Action
     public function getfileAction()
     {
     	$file = $this->_fileModel->getFileById( $this->getRequest()->getParam('id') );
-    	
-    	if ($file === false) {
-    		$this->_helper->flashMessenger('Sorry, you can currently not download this file');    		
-			return $this->_helper->lastRequest();
-    	}
 
 		// not necessary but more pretty
 		#$filter = new Zend_Filter_RealPath();

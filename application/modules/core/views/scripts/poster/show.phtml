@@ -1,5 +1,5 @@
 <div>
-<h1><?= $this->poster->title ?>
+<h1><?= htmlspecialchars($this->poster->title) ?>
 <? if ($this->aclCheck('poster', 'save')): ?>
 <span class="metanav"> <a href="<?= $this->url(array('controller' => 'poster', 'action' => 'edit', 'id' => $this->poster->poster_id), 'gridactions') ?>">Edit</a></span>
 <? endif; ?>
@@ -9,7 +9,7 @@
 
 <? if ($this->poster->persons): ?>
 <p>
-<a title="" class="person"><?= $this->poster->persons ?></a>
+<a title="" class="person"><?= htmlspecialchars($this->poster->persons) ?></a>
 </p>
 <? endif; ?>
 

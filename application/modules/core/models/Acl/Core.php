@@ -63,7 +63,6 @@ class Core_Model_Acl_Core extends Zend_Acl {
 	        	 ->allow(array('presenter', 'chair', 'guest'), 'Session', array('show','subscribe', 'unsubscribe'))
 	        	 ->allow('chair', 'Session', array('edit', 'save'), new Core_Model_Acl_UserCanUpdateSessionAssertion())
 	        	 ->allow('chair', 'Session', array('order', 'presentationOrder'), new Core_Model_Acl_UserCanUpdateSessionAssertion())
-	        	 ->allow('chair', 'Session', array('chairsInfo'))
 	        	 ->allow('chair', 'Session', array('evaluate'));
 		}
 		if (!$this->has('Conference')) {
@@ -116,9 +115,7 @@ class Core_Model_Acl_Core extends Zend_Acl {
 		if (!$this->has('File')) {
 	        $this->add(new Core_Model_File())
 	        	 ->allow('guest', 'File', array('getfile', 'show', 'getstaticfile'))
-	        	 ->allow('reviewer', 'File', array('getsubmission', 'getpaper'))
-	        	 ->allow('chair', 'File', array('getslides'));       	 
-	        	 
+	        	 ->allow('reviewer', 'File', array('getsubmission', 'getpaper'));
 		}
 		if (!$this->has('Feedback')) {
 	        $this->add(new Core_Model_Feedback())

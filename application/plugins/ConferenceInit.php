@@ -67,17 +67,8 @@ class Application_Plugin_ConferenceInit extends Zend_Controller_Plugin_Abstract
 		//	date_default_timezone_set($result['timezone']);
 		//}
 
-		
-		if (substr(getenv('REMOTE_ADDR'),0,17) == '2001:610:148:b00b') {	
-			$c = $cache->load('conference'.md5($hostname));
-			$c['abbreviation'] = 'responsive';
-			Zend_Registry::set('conference', $c);
-			$view = Zend_Controller_Action_HelperBroker::getStaticHelper('Layout')->getView();
-			$view->setScriptPath('/pub/www/tnc15/trunk/application/modules/'.$this->getRequest()->getModuleName().'/views/scripts/responsive/');
+		Zend_Registry::set('conference', $cache->load('conference'.md5($hostname)));
 
-		} else {
-			Zend_Registry::set('conference', $cache->load('conference'.md5($hostname)));
-		}
 	}
 
 }
