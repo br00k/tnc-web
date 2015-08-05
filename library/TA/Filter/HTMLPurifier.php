@@ -34,6 +34,7 @@ class TA_Filter_HTMLPurifier implements Zend_Filter_Interface
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('Attr.EnableID', true);
 		$config->set('Attr.IDPrefix', 'MyPrefix_');
+		$config->set('Cache.SerializerPath', APPLICATION_PATH.'/../cache');
 		$this->_purifier = new HTMLPurifier($config);		
 	}
 
@@ -43,7 +44,7 @@ class TA_Filter_HTMLPurifier implements Zend_Filter_Interface
 	 */
 	public function filter($value)
 	{
-		return htmlspecialchars_decode($this->_purifier->purify($value));
+		return $this->_purifier->purify($value);
 	}
 
 

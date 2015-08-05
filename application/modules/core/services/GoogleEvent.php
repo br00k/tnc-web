@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: GoogleEvent.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
+ * @revision   $Id: GoogleEvent.php 57 2012-05-14 14:27:07Z gijtenbeek@terena.org $
  */
 
 /**
@@ -149,7 +149,7 @@ class Core_Service_GoogleEvent {
 	    # Event content
 	    $content = $this->_values['description'];
 
-		$link = 'http://tnc2013.terena.org/core/session/'.$this->_values['session_id'];
+		$link = 'http://'.$this->_config['hostname'].'/core/session/'.$this->_values['session_id'];
         $content.=  "<br /><a href='$link'>More information about this event<a/>";
 
 		$event->content = $this->_service->newContent($content);

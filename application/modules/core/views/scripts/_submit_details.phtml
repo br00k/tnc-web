@@ -26,7 +26,7 @@
 	</tr>
 	<tr>
 	<th>Topic</th>
-	<td><?= $this->getFormValue('topic', $this->submission->topic, 'submit') ?></td>
+	<td><?= $this->getFormValue('topic', unserialize($this->submission->topic), 'submit') ?></td>
 	</tr>
 	<tr>	
 	<th>Comment</th>

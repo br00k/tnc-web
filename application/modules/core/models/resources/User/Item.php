@@ -64,6 +64,10 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		$query = "select s.submission_id, s.title, s.date, s.file_id from submissions s left join users_submissions us ON (s.submission_id = us.submission_id) where us.user_id=:user_id";
 		$this->_data['my_submissions'] = $this->select()->getAdapter()->fetchAssoc($query, array(':user_id' => $this->user_id));
 
+		// my own files
+		$query = "select * from files where file_id in (select pf.file_id from presentations_files pf left join presentations_users pu ON (pf.presentation_id = pu.presentation_id) where pu.user_id=:user_id)";
+		$this->_data['my_files'] = $this->select()->getAdapter()->fetchAssoc($query, array(':user_id' => $this->user_id));
+
 		// my own presentations
 		$query = "select p.presentation_id from presentations p left join presentations_users pu on (p.presentation_id = pu.presentation_id) where pu.user_id=:user_id";
 		$this->_data['my_presentations'] = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
@@ -230,6 +234,12 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
     {
 		return $this->my_submissions;
     }
+
+    public function getMyFiles()
+    {
+		return $this->my_files;
+    }
+
 
     /**
      * Get presentations of the user

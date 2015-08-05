@@ -79,7 +79,7 @@ $columns = array_filter($this->grid['cols'], 'globFilter');
 <? $dir = ($this->grid['params']['dir'] === 'desc') ? 'asc' : 'desc' ?>
 <th><a href="<?= $this->url(array('order' => 'file_id', 'dir' => $dir), 'grid') ?>" title="file number">#</a></th>
 <th><a href="<?= $this->url(array('order' => 'title', 'dir' => $dir), 'grid') ?>">Title</a></th>
-<th><a href="<?= $this->url(array('order' => 'date', 'dir' => $dir), 'grid') ?>">Date</a></th>
+<th>Type</th>
 <th><a href="<?= $this->url(array('order' => 'organisation', 'dir' => $dir), 'grid') ?>">Organisation</a></th>
 <th><a href="<?= $this->url(array('order' => 'lname', 'dir' => $dir), 'grid') ?>">Submitter</a></th>
 <? if ($this->aclCheck('review', 'list')): ?>
@@ -106,7 +106,10 @@ $columns = array_filter($this->grid['cols'], 'globFilter');
   <tr class="<?= $this->cycle(array('odd', 'even'))->next() ?>">
 	<td><span class="meta"><?= $item->file_id ?></span></td>
 	<td><a name="s<?= $item->submission_id ?>" href="/getfile/<?= $item->file_id ?>"><?= htmlspecialchars($item->title) ?></a></td>
-	<td><?= $this->formatDate($item->date) ?></td>
+	<td><ul class="basic">
+	<? foreach (unserialize($item->submission_type) as $k => $v) { 
+	echo '<li>'.$selectValues->submission_type->get($v).'</li>'; 
+	} ?></ul></td>
 	<td><?= htmlspecialchars($item->organisation) ?></td>
 	<td><a href="mailto:<?=$item->email?>"><?= htmlspecialchars($item->fname.' '. $item->lname) ?></a></td>
 	<? if ($this->aclCheck('review', 'list')): ?>

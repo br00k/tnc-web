@@ -14,14 +14,14 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: ScheduleController.php 25 2011-10-04 20:46:05Z visser@terena.org $
+ * @revision   $Id: ScheduleController.php 75 2012-10-28 15:45:29Z gijtenbeek@terena.org $
  */
 
 /**
  * ScheduleController
  *
  * @package Core_Controllers
- */ 
+ */
 class Core_ScheduleController extends Zend_Controller_Action
 {
 
@@ -35,6 +35,11 @@ class Core_ScheduleController extends Zend_Controller_Action
 			$this->view->headScript()->appendFile('/js/move-session.js');
 		}
 		$this->view->threeColumnLayout = true;
+		
+		// add context switching for mobile app
+		$ajaxContext = $this->_helper->contextSwitch();
+		$ajaxContext->addActionContext('list', 'json')
+					->initContext();		
 	}
 
 	public function indexAction()
@@ -61,15 +66,15 @@ class Core_ScheduleController extends Zend_Controller_Action
 		}
 
 		if ($loc = $this->_getParam('loc')) {
-			#$datearray = array(
-			#  'year' => 2013,
-			#  'month' => 6,
-			#  'day' => 6,
-			#  'hour' => 07,
-			#  'minute' => 01,
-			#  'second' => 10);
-    		#$zd = new Zend_Date($datearray);
-    		$zd = Zend_Date::now();
+			$datearray = array(
+			  'year' => 2014,
+			  'month' => 5,
+			  'day' => 20,
+			  'hour' => 07,
+			  'minute' => 01,
+			  'second' => 10);
+    		$zd = new Zend_Date($datearray);
+    		#$zd = Zend_Date::now();
 			
 			$sessions = $this->_scheduleModel->getStreamData($zd, $loc);
 			$this->view->session = current($sessions);
@@ -94,14 +99,25 @@ class Core_ScheduleController extends Zend_Controller_Action
 		$location = $this->_getParam('l', null);
 
 		$this->view->personal = $personal = $this->_getParam('personal', false);
-		$this->view->schedule = $this->_scheduleModel->getSchedule(null, array('view' => $view, 'day' => $day, 'personal' => $personal));
+		$this->view->schedule = $this->_scheduleModel->getSchedule(null, array('view' => $view, 'day' => $day, 'personal' => $personal), $mobile);
 		$this->view->days = $this->_scheduleModel->getDays();
 		$this->view->timeslots = $this->_scheduleModel->getTimeslots();
 
 		$eventModel = new Core_Model_Event();
 		$events = $eventModel->getEvents(null, array('tstart', 'asc'), 'day');
-		$this->view->events = $events['rows'];
+		if ($mobile) {
+			$eventJson = array();
+			foreach ($events['rows'] as $date => $events) {					
+			    foreach ($events as $event) {
+			    	$eventJson[$date][] = $event->toArray();
+			    }
+			} 
+			$this->view->events = $eventJson;
+		} else {
+			$this->view->events = $events['rows'];
+		}
 
+		
 		$sessionModel = new Core_Model_Session();
 		$this->view->subscriptions = $sessionModel->getSubscriptions();
 

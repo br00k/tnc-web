@@ -159,30 +159,8 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 				'email' => 'gijtenbeek@terena.org',
 				'fname' => 'Christian',
 				'lname' => 'Gijtenbeek'
-			),
-			array(
-				'email' => 'zeker weten@(fout.nl',
-				'fname' => 'Mo',
-				'lname' => 'Dahhouch'
-			),
-			array(
-				'email' => 'visser@terena.org',
-				'fname' => 'Mo',
-				'lname' => 'sdfsd'
-			)	
+			)
 		);
-		
-		// this is really specific to TERENA, get participants from webshop (remote db)
-		#$config = new Zend_Config_Ini(
-		#    APPLICATION_PATH.'/configs/web.ini',
-		#    'development'
-		#);
-		#$db = Zend_Db::factory($config->resources->multidb->webshop);
-		#
-		#$query = "select fname, lname, email from vw_prodpart
-		#where product_id IN (92,93,94,95,96,97,98,99) and order_status NOT IN ('canceled', 'unpaid', 'pending', 'refund')";
-		#
-		#$participants = $db->query($query)->fetchAll();		
 
 		// generate feedback codes
 		$codes = $this->getResource('feedbackcodes')->createFeedbackCodes(

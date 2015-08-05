@@ -9,9 +9,10 @@ $weekday = $zd->get('EEEE dd/MM');
 <table class="schedule" cellspacing="0" cellpadding="0">
 <? if ($this->filters['day'] == 'all'): ?><caption><?= $weekday ?></caption><? endif; ?>
 	<thead>
-    <tr>
+    <tr><td colspan="5" style="font-size: 40px;">Last updated: <? echo date("l j F Y H:i:s") ?></td></tr>
+	<tr>
     <? foreach ($this->timeslots[$date] as $slot): ?>
-    <? $range = $this->formatDate($slot['tstart'], null, 'H:m') . ' - ' . $this->formatDate($slot['tend'], null, 'H:m'); ?>
+    <? $range = $this->formatDate($slot['tstart'], null, 'H:m') . ' - ' . $this->formatDate($slot['tend'], null, 'H:m') . ' <a href="http://www.timeanddate.com/library/abbreviations/timezones/eu/ist.html" title="Irish Standard Time (UTC/GMT +1)">IST</a>'; ?>
 	<th style="width: 20%;" <? if ($this->filters['timeslot'] == $slot['timeslot_id']): ?>class="active"<? endif; ?>><?= $range ?></th>
 	<? endforeach; // timeslots ?>
 

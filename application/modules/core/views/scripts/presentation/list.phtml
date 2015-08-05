@@ -20,7 +20,7 @@ $columns = array_filter($this->grid['cols'], function($val) use ($that) {
 <? if ( ($this->grid['rows'] instanceof Zend_Paginator) && ($this->grid['rows']->getTotalItemCount() > $this->grid['rows']->getItemCountPerPage()) ): ?>
 <?= $this->paginationControl($this->grid['rows'], 'Sliding', '_paginator.phtml', array('route_name' => 'grid')); ?>
 <? endif; ?>
-<table class="grid" cellspacing="0">
+<table class="grid" cellspacing="0" summary="presentations">
 <thead>
 <tr>
 <? foreach (array_keys($columns) as $col):  ?>

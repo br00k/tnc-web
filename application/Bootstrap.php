@@ -393,16 +393,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			'core/feedback/getresults/%s'
     	);
     	$router->addRoute('feedbackgetresults', $mainRoute->chain($route));
-    	
-  		$posterVoteRoute = new Zend_Controller_Router_Route(
-			'/postervote',
-			array (
-				'module' => 'core',
-				'controller' => 'poster',
-				'action' => 'liststudent'
-			)
-		);
-		$router->addRoute('postervote', $mainRoute->chain($posterVoteRoute));  	
 
 	}
 

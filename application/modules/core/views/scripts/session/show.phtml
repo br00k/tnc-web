@@ -56,7 +56,7 @@ $day = urlencode(urlencode($this->formatDate($this->session->tstart, null, 'dd/M
 <a href="/core/schedule/list/t/17/day/<?= $day ?>" title="Check the programme for parallel sessions">
 <?= $this->formatDate($this->session->tstart, null, 'EEEE, d MMMM') ?></a> from
 <?= $this->formatDate($this->session->tstart, null, 'H:m') ?> to
-<?= $this->formatDate($this->session->tend, null, 'H:m') ?>
+<?= $this->formatDate($this->session->tend, null, 'H:m'). ' <a href="http://www.timeanddate.com/library/abbreviations/timezones/eu/ist.html" title="Irish Standard Time (UTC/GMT +1)">IST</a>' ?>
 </dd>
 <dt>Location</dt>
 <dd>
@@ -109,11 +109,10 @@ switch ($file['core_filetype']) {
 </ul>
 <? endforeach; ?>
 <? if ($now): ?>
-<!--<a class="video" href="<?= $this->url(array('controller'=>'media', 'action'=>'stream', 'stream'=>$this->session->number . $this->session->location_abbreviation), 'stream') ?>">Live stream</a>-->
-<a class="video" href="<?= $this->conferenceInfo('stream_url') ?>/stream/<?= $this->session->location_abbreviation ?>">Live stream</a>
+<a class="video" href="<?= $this->url(array('controller'=>'media', 'action'=>'stream', 'stream'=> $this->session->location_abbreviation), 'streamlive') ?>">Live stream</a>
 <? endif; ?>
 <? if ($hasEnded): ?>
-<a class="video" href="<?= $this->conferenceInfo('stream_url') ?>/archive/<?= $this->session->number . $this->session->location_abbreviation ?>">Archived stream</a>
+<a class="video" href="<?= $this->conferenceInfo('stream_url') ?>/web/media/archive/<?= $this->session->number . $this->session->location_abbreviation ?>">Archived stream</a>
 <? endif; ?>
 </div> <!-- infobox -->
 <? endif; ?>
