@@ -196,6 +196,7 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 			'submission_id' => array('field' => 'submission_id', 'sortable' => true, 'hidden' => true),
 			'session_id' => array('field' => 'session_id', 'sortable' => true, 'hidden' => true),
 			'title' => array('field' => 'title', 'label' => 'Title', 'sortable' => true),
+			'submission_type' => array('field' => 'submission_type', 'label' => 'Type', 'sortable' => false),
 			'date' => array('field' => 'date', 'label' => 'Received', 'sortable' => true, 'modifier' => 'formatDate'),
 			'organisation' => array('field' => 'organisation', 'label' => 'Organisation', 'sortable' => true),
 			'fname' => array('field' => 'fname', 'label' => 'Fname', 'sortable' => true),

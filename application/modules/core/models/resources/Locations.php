@@ -78,7 +78,8 @@ class Core_Resource_Locations extends TA_Model_Resource_Db_Table_Abstract
 		$select = $this->select();
 
 		if (!empty($order[0])) {
-			$order = 'lower('.$order[0].') '.$order[1];
+			$order = 'comments ASC';
+			#$order = 'lower('.$order[0].') '.$order[1];
 		} else {
 			$order = 'lower(name) ASC';
 		}

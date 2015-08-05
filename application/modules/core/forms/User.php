@@ -74,7 +74,7 @@ class Core_Form_User extends TA_Form_Abstract
 	    $phone->setLabel('Phone number')
 	    	  ->setRequired(false)
 	    	  ->setAttrib('class', 'medium')
-	    	  ->setDecorators(array('Composite'));
+	    	  ->setDecorators(array('Composite'));	    	  
 
 		$resize = new TA_Filter_ImageResize();
 		$resize->setWidth(260)

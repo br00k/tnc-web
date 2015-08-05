@@ -1,8 +1,9 @@
 <p>Dear <?= $this->values['fname'] ?> <?= $this->values['lname'] ?>,</p>
 <p>
 The <?= $this->conferenceInfo('name') ?> paper submission has just closed.
-You have been assigned to review the following <?= (count($this->values['submission']) > 1) ? 'submissions' : 'submission' ?> listed below.
+You have been assigned to review the following <?= (count($this->values['submission']) > 1) ? 'submissions' : 'submission' ?> listed below. Please note that the list includes all papers also the tiebreaker ones (it may seem very long at the first sight). On the website you are able to see which paper is requiring your review and which only when a third review is necessary (tiebreaker).
 </p>
+<p>We would like to ask you to please scan the papers by <strong>13 December</strong> and come back to me if the paper definitely DO NOT belong to your area of expertise.</p>
 
 <p>To download these papers as a single ZIP archive please <a href="<?=$this->url(array('controller' => 'submit', 'action' => 'download'), 'main-module') ?>">click on this link</a>.</p>
 

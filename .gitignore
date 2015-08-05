@@ -9,4 +9,5 @@ library/yahoo-sdk
 data/
 logs/
 uploads/
+cache/
 application/modules/web/

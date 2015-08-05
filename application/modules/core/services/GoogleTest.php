@@ -24,7 +24,7 @@
  * since they basically do the same things
  * @package Core_Service
  * @author Christian Gijtenbeek <gijtenbeek@terena.org>
- * @see http://framework.zend.com/manual/en/zend.gdata.calendar.html 
+ * @see http://framework.zend.com/manual/en/zend.gdata.calendar.html
  */
 class Core_Service_GoogleTest {
 
@@ -69,8 +69,9 @@ class Core_Service_GoogleTest {
 	protected function _getAuthSubHttpClient()
 	{
 		$client = new Zend_Gdata_HttpClient();
+		#$this->_client = Zend_Gdata_AuthSub::getHttpClient($this->_sessionNs->sessionToken);
 		// This sets your private key to be used to sign subsequent requests
-		$client->setAuthSubPrivateKeyFile('/pub/www/tnc2013/trunk/application/configs/core.key', null, true);
+		$client->setAuthSubPrivateKeyFile('/pub/www/core_live/application/configs/core.key', null, true);
 		return $client;
 	}
 

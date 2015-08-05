@@ -27,19 +27,29 @@ class Core_Form_Submit extends TA_Form_Abstract
 	public function init()
 	{
 	    $this->setAction('/core/submit/new');
+			  
+	    $type = new Zend_Form_Element_MultiCheckbox('submission_type');
+	    $type->setLabel('')
+				 ->setRequired(false)
+				 ->setAttrib('class', 'tiny')
+		         ->addMultiOptions($this->_getFieldValues('submission_type'))
+		         ->setSeparator('<br />')
+ 				 ->setDecorators(array('Composite'));
 		
 	    $title = new Zend_Form_Element_Text('title');
-	    $title->setLabel('Title of paper')
+	    $title->setLabel('Title')
 	    	  ->setRequired(true)
-	    	  ->addValidator('StringLength', true, array(2, 150,
+	    	  ->addValidator('StringLength', true, array(2, 64,
 				'messages' => array(
 					Zend_Validate_StringLength::TOO_SHORT => 'Please provide a longer title',
 					Zend_Validate_StringLength::TOO_LONG => 'Your title is too long'
 				)
 	    	  ))
 	    	  ->setAttrib('class', 'medium')
-	    	  ->setDescription('Must be between 2 and 150 characters')
+	    	  ->setDescription('Must be between 2 and 64 characters')
+	    	  ->setAttrib('maxLength', 64)
 			  ->setDecorators(array('Composite'));
+
 
 	    $audience = new Zend_Form_Element_Radio('target_audience');
 	    $audience->setLabel('Please mark the target audience for your presentation')
@@ -57,11 +67,11 @@ class Core_Form_Submit extends TA_Form_Abstract
 				->setSeparator('<br />')
 				->setDecorators(array('Composite'));
 				
-	    $topicsel = new Zend_Form_Element_Radio('topic');
+	    $topicsel = new Zend_Form_Element_MultiCheckbox('topic');
 	    $topicsel->setLabel('Topic')
 				 ->setRequired(true)
 				 ->setAttrib('class', 'tiny')
-		         ->addMultiOptions($this->_getFieldValues('topic'))
+		         ->setMultiOptions($this->_getFieldValues('topic'))
 		         ->setSeparator('<br />')
  				 ->setDecorators(array('Composite'));				
 	    
@@ -107,9 +117,10 @@ class Core_Form_Submit extends TA_Form_Abstract
 		$subform->setDecorators(array('FormElements'));
 
 		$subform->addElements(array(
+			$type,
 			$title,
 			$audience,
-			$publish,
+			#$publish,
 			$topicsel,
 			$keywords,
 			$comment,
@@ -122,5 +133,16 @@ class Core_Form_Submit extends TA_Form_Abstract
 			'decorators' => $this->_buttonElementDecorator
 	    ));
 	}
+	
+	/**
+	 * Override method to unserialize multiCheckbox values
+	 *
+	 */
+	public function setDefaults(array $defaults)
+	{
+		$defaults['topic'] = (isset($defaults['topic']) ) ? unserialize($defaults['topic']) : null;
+		$defaults['submission_type'] = (isset($defaults['submission_type']) ) ? unserialize($defaults['submission_type']) : null;
+		parent::setDefaults($defaults);
+	}	
 
 }

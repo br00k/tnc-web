@@ -38,6 +38,13 @@ class Core_View_Helper_GetFormValue extends Zend_View_Helper_Abstract
     		$formConfig = new Zend_Config(require APPLICATION_PATH.'/configs/formdefaults.php');
 			Zend_Registry::set('formconfig', $formConfig);
 		}
+		if (is_array($dbValue)) {
+			$return = '';
+			foreach ($dbValue as $k => $v) {
+				$return .= Zend_Registry::get('formconfig')->formdefaults->$form->$field->get($v) . ',';
+			}
+			return substr($return, 0, -1);
+		}
 		return Zend_Registry::get('formconfig')->formdefaults->$form->$field->get($dbValue);
 
 	}

@@ -108,6 +108,11 @@ ul{
 	padding-top:0.2em;
 	padding-left:1.6em;
 }
+.add {
+	background:transparent url(../gfx/icons/add.gif) no-repeat scroll left center;
+	padding-top:0.2em;
+	padding-left:1.3em;	
+}
 .staron, .subscribeon{
 	background:transparent url(../gfx/icons/star_on.gif) no-repeat scroll left center;
 	padding-top:0.2em;

@@ -118,10 +118,6 @@ input.tiny, select.tiny {
 input.tags{
 	width:315px;
 }
-input.active {
-	color: #888;
-	font-style: italic;
-}
 textarea.small {
 	width:100%;
 	height:5.5em;

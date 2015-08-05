@@ -98,17 +98,6 @@ class Core_FeedbackController extends Zend_Controller_Action
 					    'params' => array('f'=>1),
 					    'visible' => true,
 					    'reset_params' => true
-					),
-					array(
-					    'label' => 'Student Posters',
-					    'title' => 'Rate student posters',
-					    'module' => 'core',
-					    'controller' => 'poster',
-					    'action' => 'liststudent',
-					    'route' => 'main-module',
-					    'params' => array('f'=>1),
-					    'visible' => true,
-					    'reset_params' => true
 					)
 				)
 			)
@@ -223,7 +212,7 @@ class Core_FeedbackController extends Zend_Controller_Action
 		);
 		
 		$this->_helper->flashMessenger('Thank you for your vote!');
-		return $this->_helper->redirector->gotoRoute(array('controller'=>'poster', 'action'=>'liststudent'), 'main-module');
+		return $this->_helper->redirector->gotoRoute(array('controller'=>'poster', 'action'=>'list'), 'grid');
 	}
 
 	/**

@@ -51,6 +51,26 @@ class Core_Model_File extends TA_Model_Acl_Abstract
 				throw new TA_Model_Exception('Insufficient rights for downloading this type of file');
     		}
     	}
+
+		if ($row->core_filetype == 'slides') {		
+    		$presentationModel = new Core_Model_Presentation();
+
+    		$presentationStart = $presentationModel->getSessionStartByFile($row->file_id);
+    		$now = new Zend_Date();
+    		if ($presentationStart) {
+				if (!$this->checkAcl('getslides')) {
+    				if ( $now->isEarlier($presentationStart) ) {	
+						$identity = Zend_Auth::getInstance()->getIdentity();
+						
+						if (!in_array( $row->file_id, array_keys($identity->getMyFiles()) ) ) {
+							throw new TA_Model_Exception('Insufficient rights for downloading this type of file');
+						}    					
+					}
+    			}
+    		}
+		
+		}
+    		
     	return $row;
 	}
 

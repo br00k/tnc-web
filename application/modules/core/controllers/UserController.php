@@ -119,7 +119,7 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 		#if( ($this->view->grid = $cache->load('speakerlist') === false ) ) {
 			$this->view->grid = $this->_userModel->getUsersWithRole(
 				null,
-				array($this->_getParam('order', 'lname'), $this->_getParam('dir', 'asc')),
+				array($this->_getParam('order', 'fname'), $this->_getParam('dir', 'asc')),
 				'presenter'
 			);
 			#$cache->save($this->view->grid, 'speakerlist');

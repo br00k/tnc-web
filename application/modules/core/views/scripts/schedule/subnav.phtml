@@ -2,7 +2,7 @@
 	<? foreach ($this->days as $day): ?>
 	<?
 	$zd = new Zend_Date($day, "dd/MM/YYYY");
-	$weekday = $zd->get('EEEE dd/MMM');
+	$weekday = $zd->get('EEEE dd/MM');
 	?>
 	<? if ($this->filters['day'] == $day): ?>
 	    <li class="active"><?= $weekday ?></li>
