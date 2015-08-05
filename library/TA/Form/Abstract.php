@@ -104,7 +104,7 @@ class TA_Form_Abstract extends Zend_Form
 		    array('HtmlTag', array('tag'=>'ol')),
 		   'Form'
 		));
-
+		
 		// Strip whitespace from all elements
 		$this->addElementFilters(array('StringTrim', new TA_Filter_HTMLPurifier()));
 	}

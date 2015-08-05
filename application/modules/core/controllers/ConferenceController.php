@@ -123,7 +123,7 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 			return $this->render('formEdit');
 		}
 
-		// try to persist item
+		// try to persist item		
 		if ( $this->_conferenceModel->saveConference($request->getPost(), 'edit') === false ) {
 			$this->view->conferenceForm = $this->_conferenceModel->getForm('conferenceEdit');
 			return $this->render('formEdit');
@@ -213,10 +213,7 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 					  ->remove('conference'.md5($this->getRequest()->getPost('hostname')));
 	}
 
-	public function fixtzAction()
-	{
-		$this->_conferenceModel->fixTz();		
-	}
+
 }
 
 

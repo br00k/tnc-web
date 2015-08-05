@@ -14,10 +14,10 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Set.php 73 2012-10-28 15:24:43Z gijtenbeek@terena.org $
+ * @revision   $Id: Set.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
 
-/**
+/** 
  * Session rowset
  *
  * @package Core_Resource
@@ -36,7 +36,7 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 	public function group($by = 'day')
 	{
 		$list = array();
-
+		
 		$by = strtolower($by);
 
 		$values = $this->toArray();
@@ -56,7 +56,7 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 		ksort($list);
 		return $list;
 	}
-
+	
 	/**
 	 * Get all chairs
 	 *

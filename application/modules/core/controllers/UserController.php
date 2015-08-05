@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: UserController.php 54 2012-04-03 15:29:26Z visser@terena.org $
+ * @revision   $Id: UserController.php 90 2012-12-10 15:39:29Z gijtenbeek@terena.org $
  */
 
 /**
@@ -71,13 +71,35 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 
 	public function listAction()
 	{
+		$session = new Zend_Session_Namespace('userlist');
+
+		if (!isset($session->filters)) {
+			$session->filters = new stdClass();
+		}
+		
+		if ($this->getRequest()->getParam('reset_search')) {
+			unset($session->filters);
+			unset($session->searchString);
+		} else if ($searchString = $this->getRequest()->getParam('search')) {			
+			$session->searchString = $searchString;
+			if ($userIds = $this->_userModel->searchUser($searchString)) {
+				$session->filters->user_id = $userIds;	
+			} else {
+				unset($session->filters->user_id);			
+				$session->searchString = null;
+			}
+		}
+		
+		$this->view->searchString = $session->searchString;
+		
 		$this->view->headScript()->appendFile('/js/jquery-ui/js/jquery-ui.min.js');
 		$this->view->headLink()->appendStylesheet('/js/jquery-ui/css/ui-lightness/jquery-ui.css');
 		$this->view->headScript()->appendFile('/js/users.js');
 
 		$this->view->grid = $this->_userModel->getUsers(
 			$this->_getParam('page', 1),
-			array($this->_getParam('order', null), $this->_getParam('dir', 'asc'))
+			array($this->_getParam('order', null), $this->_getParam('dir', 'asc')),
+			$session->filters
 		);
 
 		$this->view->grid['params']['order'] = $this->_getParam('order');

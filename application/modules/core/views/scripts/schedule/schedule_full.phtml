@@ -71,24 +71,21 @@ $weekday = $zd->get('EEEE dd/MM');
 						<? endforeach; // speakers ?>
 					</ul>
 				<? elseif ( ($this->filters['view'] == 'titles') && ($sess['presentations']) ): ?>
-					<ul class="titles">
+					<ul class="titles titlerow_0 <? if (count($sess['presentations']) > 5): ?>titlecarousel<? endif; ?>">
+						<? $tt=0; ?>
 						<? foreach ($sess['presentations'] as $pres): ?>
+							<? $tt++; ?> 
 							<li>
 							<a class="pres_info"
 							title="Show information about this presentation"
 							href="<?= $this->url(array('controller'=>'presentation', 'action'=>'show', 'id'=>$pres['presentation_id']), 'oneitem') ?>">
 							<?= htmlspecialchars($pres['title']) ?>
 							</a>
-							<?
-							// feedback toggler is set to true, show ratebox
-							if ($this->feedback):
-							$this->presentation_id = $pres['presentation_id'];
-							echo $this->render('schedule/ratebox.phtml');
-							endif;
-							?>
 							</li>
+						<? if ( (count($sess['presentations']) > 6) && ($tt % 6 == 0) ): ?></ul><ul class="titles titlecarousel titlerow_<?= $tt/6 ?>" style="display:none;"><? endif; ?>
 						<? endforeach; // titles ?>
 					</ul>
+					<? if (count($sess['presentations']) > 5): ?><br />…Wait, there is more!<? endif; ?>
 				<? endif; ?>
 
 			<? else: ?>

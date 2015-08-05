@@ -100,7 +100,7 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 			foreach ($submissions->toArray() as $val) {
 				$userIds[] = $val['user_id'];
 			}
-
+			
 			$this->getResource('userroles')->saveRows(array(
 				'role_id' => $this->getResource('roles')->getRoleIdByName('presenter'),
 				'user_id' => $userIds

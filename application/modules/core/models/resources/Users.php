@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Users.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
+ * @revision   $Id: Users.php 91 2012-12-10 15:39:51Z gijtenbeek@terena.org $
  */
 
 /** 
@@ -116,6 +116,24 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 
 		return $row;
 	}
+	
+	/**
+	 * Search for string within user table
+	 * @param	string		$search		String to search for in user table
+	 * @return	array		Array of user_id
+	 */
+	 public function searchUser($string)
+	 {
+	 	$query = "select user_id from users where lname ilike '%".$string ."%' 
+	 	or fname ilike '%".$string ."%'";
+		$users = $this->getAdapter()->fetchCol(
+			$query
+		);
+		
+		if (!empty($users)) { 
+			return $users;
+		}
+	 }
 
 	/**
 	 * Get user by invite UUID

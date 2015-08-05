@@ -654,13 +654,3 @@ blockquote div {
     background: url("../gfx/layout/quote_close.gif") no-repeat scroll right bottom transparent;
     padding: 0 40px;
 }
-.star {
-	background:transparent url(../gfx/icons/star_off.gif) no-repeat scroll left center;
-	padding-top:0.2em;
-	padding-left:1.6em;
-}
-.stargold {
-    background: url("../gfx/icons/star_on.gif") no-repeat scroll 2px center transparent;
-	padding-top:0.2em;
-	padding-left:1.6em;
-}

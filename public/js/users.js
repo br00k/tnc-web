@@ -23,4 +23,18 @@ $(function(){
 			$(this).next('tr.extra').toggle();	
 		})
 	$('.grid tr.extra').hide();	
+	
+	var searchElm = $('#search');	
+	var defaultVal = searchElm.attr('title');
+	searchElm.focus(function(){
+		if ($(this).val() == defaultVal) {
+			$(this).removeClass('active').val('');
+		}
+	});
+	searchElm.blur(function(){
+		if ($(this).val() == ''){
+			$(this).addClass('active').val(defaultVal);
+		}
+	});
+	searchElm.blur().addClass('active');
 });

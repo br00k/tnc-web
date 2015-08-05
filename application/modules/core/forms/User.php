@@ -70,6 +70,12 @@ class Core_Form_User extends TA_Form_Abstract
 	    	  ))
 	    	  ->setDecorators(array('Composite'));
 
+	    $phone = new Zend_Form_Element_Text('phone');
+	    $phone->setLabel('Phone number')
+	    	  ->setRequired(false)
+	    	  ->setAttrib('class', 'medium')
+	    	  ->setDecorators(array('Composite'));
+
 		$resize = new TA_Filter_ImageResize();
 		$resize->setWidth(260)
 			   ->setHeight(170);
@@ -94,6 +100,7 @@ class Core_Form_User extends TA_Form_Abstract
 	    	$lname,
 	    	$organisation,
 	    	$email,
+	    	$phone,
 	    	$country,
 	    	$jobtitle,
 	    	$profile,

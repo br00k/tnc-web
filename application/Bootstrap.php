@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Bootstrap.php 69 2012-06-12 12:47:15Z gijtenbeek@terena.org $
+ * @revision   $Id: Bootstrap.php 79 2012-12-05 09:44:49Z gijtenbeek@terena.org $
  */
 
 /**
@@ -282,6 +282,21 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	);
     	$router->addRoute('reviewlist', $mainRoute->chain($route));
 
+      	$route = new Zend_Controller_Router_Route_Regex(
+        	'core/review/listpersonal/(\d+)',
+			array(
+				'lang'		=> ':lang',
+				'module'	=> 'core',
+				'controller'=> 'review',
+				'action'	=> 'listpersonal'
+			),
+			array(
+				1 => 'id'
+			),
+			'core/review/listpersonal/%d'
+    	);
+    	$router->addRoute('reviewlistpersonal', $mainRoute->chain($route));
+
 	   	$route = new Zend_Controller_Router_Route(
         	'/core/review/new/:id',
 			array(
@@ -379,17 +394,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	);
     	$router->addRoute('feedbackgetresults', $mainRoute->chain($route));
     	
-		
-		#$route = new Zend_Controller_Router_Route(
-		#	'/register',
-		#	array (
-		#		'module' => 'web',
-		#		'controller' => 'participate',
-		#		'action' => 'register'
-		#	)
-		#);
-		#
-		#$router->addRoute('shortRegister', $mainRoute->chain($route));	    	
+  		$posterVoteRoute = new Zend_Controller_Router_Route(
+			'/postervote',
+			array (
+				'module' => 'core',
+				'controller' => 'poster',
+				'action' => 'liststudent'
+			)
+		);
+		$router->addRoute('postervote', $mainRoute->chain($posterVoteRoute));  	
 
 	}
 

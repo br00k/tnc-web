@@ -89,13 +89,14 @@ class Core_Resource_Session_Item extends TA_Model_Resource_Db_Table_Row_Abstract
 	 */
 	public function isNow()
 	{
-		//$date = new Zend_Date(array(
-		//  'year' => 2011,
-		//  'month' => 5,
-		//  'day' => 16,
-		//  'hour' => 14,
-		//  'minute' => 10,
-		//  'second' => 10));
+		#$date = new Zend_Date(array(
+		#  'year' => 2013,
+		#  'month' => 6,
+		#  'day' => 3,
+		#  'hour' => 14,
+		#  'minute' => 10,
+		#  'second' => 10));		
+		#$date = new Zend_Date($date);
 
 		$date = new Zend_Date();
 
@@ -113,13 +114,14 @@ class Core_Resource_Session_Item extends TA_Model_Resource_Db_Table_Row_Abstract
 	 */
 	public function hasEnded()
 	{
-		//$date = new Zend_Date(array(
-		//  'year' => 2011,
-		//  'month' => 5,
-		//  'day' => 18,
-		//  'hour' => 14,
-		//  'minute' => 10,
-		//  'second' => 10));
+		#$date = new Zend_Date(array(
+		#  'year' => 2013,
+		#  'month' => 6,
+		#  'day' => 3,
+		#  'hour' => 16,
+		#  'minute' => 10,
+		#  'second' => 10));
+		#$date = new Zend_Date($date);
 
 		$date = new Zend_Date();
 

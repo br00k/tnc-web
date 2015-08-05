@@ -5,19 +5,46 @@
 <?= $this->headMeta() ?>
 <?= $this->headStyle() ?>
 <?= $this->headScript() ?>
-<meta http-equiv="Refresh" content="300;url=<?=Zend_Controller_Front::getInstance()->getRequest()->getRequestUri()?>"></meta>
+<script type="text/javascript" src="/js/terena.js"></script>
+<script type="text/javascript">
+$(function() {
+	if ( $('#programme ul.titlecarousel').length > 1 ) {
+
+		interval = setInterval(function(){
+			var cur = $('#programme ul.showtitles');
+			console.log(cur);
+
+			if (cur.next('ul').length == 0) {
+				$('#programme ul.titlecarousel').first().addClass('showtitles').css('display', 'block');
+			} else {
+				cur.next('ul').addClass('showtitles').css('display', 'block');
+			}
+			cur.removeClass('showtitles').css('display', 'none');
+		}, 10000);
+	}
+});
+</script>
+<meta http-equiv="Refresh" content="5;url=<?=Zend_Controller_Front::getInstance()->getRequest()->getRequestUri()?>"></meta>
 <style type="text/css">
 html, body, #programme {
-	height:100%;	
+	height:80%;	
 	margin:0;
 	padding:0;
+	font-size: 9px;
+	background-color:white;
 }
 table.schedule {
 	height:100%;
 	margin:0;
 }
 table.schedule tbody {
-	height:95%;
+	height:100%;
+}
+.schedule thead th {
+	height:12px;
+}
+td {
+	height:50px !important;
 }
 #newsticker {
 	position:fixed;
@@ -29,16 +56,31 @@ table.schedule tbody {
 	width:100%;
 	font-size:14px;
 	text-align:left;
+	color:#D12031 !important;
+}
+ul.titles li {
+	background:none;
+	list-style: inside;
+	text-align: left;
+	margin:0;
+	padding:0;
+	margin-top:2px;
+	
+}
+.eve_prog ul.titles li {
+	list-style:none;
 }
 a {
 	color:#000 !important;
 }
+
 </style>
 </head>
 <body>
-<?= $this->render('schedule/schedule.phtml') ?>
-<div id="newsticker">
-
+<?= $this->render('schedule/schedule_full.phtml') ?>
+<div id="newsticker" style="padding:2px;font-size:11px; height:12px;">
+<a href="/web/media/announcements"><img alt="placeholder" src="/includes/<?= $this->conferenceInfo('abbreviation'); ?>/gfx/icons/next.gif" id="nextimg" /></a>
+<span id="section"></span> <span class="news_text">&nbsp;</span>
 </div>
 </body>
 </html>
