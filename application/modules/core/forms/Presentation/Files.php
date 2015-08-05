@@ -67,23 +67,12 @@ class Core_Form_Presentation_Files extends TA_Form_Abstract
 			      array('Count', true, 1),
 			      array('Size', true, array('max' => '64Mb'))
 			  ));
-			  
-	    $abstract = new TA_Form_Element_MagicFile('abstract');
-	    $abstract->setLabel('Abstract')
-			  ->setDescription('')
-			  ->addDecorators($this->_magicFileElementDecorator)
-			  ->setValueDisabled(true)
-			  ->addValidators(array(
-			      array('Count', true, 1),
-			      array('Size', true, array('max' => '64Mb'))
-			  ));			  
 
 		$subForm = new Zend_Form_SubForm();
 		$subForm->addElements(array(
 	    	$paper,
 	    	$slides,
-	    	$file1,
-	    	$abstract
+	    	$file1
 		))->setDecorators(array('FormElements'));
 
 		$this->addSubForm($subForm, 'files');

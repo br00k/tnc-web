@@ -84,18 +84,11 @@ class TA_Form_Decorator_MagicFile extends Zend_Form_Decorator_Abstract
 		   		break;		   		
 		   		case 'misc':
 		   			$date = new Zend_Date($file->modified, Zend_Date::ISO_8601);
-		   			$output = '<li><a title="download misc file" href="/core/file/getfile/id/'.$file->file_id.'">'
+		   			$output = '<li><a title="download slides" href="/core/file/getfile/id/'.$file->file_id.'">'
 		   			.htmlspecialchars($file->filename_orig)
 		   			.'</a> ('.$view->timeSince($date->getTimestamp()).' ago'
 		   			.')</li>';				   		
 		   		break;
-		   		case 'abstract':
-		   			$date = new Zend_Date($file->modified, Zend_Date::ISO_8601);
-		   			$output = '<li><a title="download abstract" href="/core/file/getfile/id/'.$file->file_id.'">'
-		   			.htmlspecialchars($file->filename_orig)
-		   			.'</a> ('.$view->timeSince($date->getTimestamp()).' ago'
-		   			.')</li>';				   		
-		   		break;		   		
 		   		default:
 		   			$date = new Zend_Date($file->modified, Zend_Date::ISO_8601);
 		   			$output = '<li><a title="download file" href="/core/file/getfile/id/'.$file->file_id.'">'

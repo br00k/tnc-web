@@ -109,22 +109,22 @@ $columns = array_filter($this->grid['cols'], 'globFilter');
 	<!--<td><span class="meta"><?= $item->file_id ?></span></td>-->
 	<td>	
 	<? if ($item->file_id): ?>
-	<a name="s<?= $item->submission_id ?>" href="/getfile/<?= $item->file_id ?>"><?= $item->title ?></a>
+	<a name="s<?= $item->submission_id ?>" href="/getfile/<?= $item->file_id ?>"><?= htmlspecialchars($item->title) ?></a>
 	<? else: ?>
-	<?= $item->title ?>
+	<?= htmlspecialchars($item->title) ?>
 	<? endif; ?>
 	</td>
 	<td><ul class="basic">
 	<? foreach (unserialize($item->submission_type) as $k => $v) { 
 	echo '<li>'.$selectValues->submission_type->get($v).'</li>'; 
 	} ?></ul></td>
-	<td><?= $item->organisation ?></td>
+	<td><?= htmlspecialchars($item->organisation) ?></td>
 	<td>
-	<a href="mailto:<?=$item->email?>"><?= $item->fname.' '. $item->lname ?></a>
+	<a href="mailto:<?=$item->email?>"><?= htmlspecialchars($item->fname.' '. $item->lname) ?></a>
 	</td>
 	<? if ($this->aclCheck('review', 'list')): ?>
 	<td><?= $selectValues->status->get($item->status) ?></td>
-	<td><?= $item->session_title ?></td>
+	<td><?= htmlspecialchars($item->session_title) ?></td>
 
 	<td class="<? if ($t) echo 'warning' ?>"><a href="/core/review/list/<?= $item->{$this->grid['primary']} ?>" title="last review: <?= $this->formatDate($item->review_last) ?>">
 	<? echo $item->review_count;

@@ -65,7 +65,7 @@ $resetButton = $this->formSubmit('reset_search',
   		} else {
   			$output = $item->$col;
   		}
-		echo $output;
+		echo htmlspecialchars($output);
   		?>
   		</td>
   		
@@ -93,14 +93,15 @@ $resetButton = $this->formSubmit('reset_search',
 	<dl class="userinfo">
 	<dt>Identity</dt><dd>
 	<?if($item['uid']):?>
-		<?= $item['uid']?>
+		<?= htmlspecialchars($item['uid'])?>
 	<?else:?>
 		Not yet known because user has not used activation link in the invitation e-mail
 	<?endif;?></dd>
 	<dt>Inserted at</dt><dd><?= $this->formatDate($item['inserted']) ?></dd>
 	<dt>Method</dt><dd>
 	<?if ($metadata = $item->getAuditData()):?>
-		Invited as <?= '"' . $metadata['fname'] . ' ' . $metadata['lname'] .' <' . $metadata['email'] . '>"' ?>
+		Invited as <?= htmlspecialchars('"' . $metadata['fname'] . ' ' . $metadata['lname'] .
+		' <' . $metadata['email'] . '>"') ?>
 	<?else:?>
 		Self registered
 	<?endif;?>

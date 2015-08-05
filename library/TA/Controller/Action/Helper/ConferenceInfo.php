@@ -42,6 +42,7 @@ class TA_Controller_Action_Helper_ConferenceInfo extends Zend_Controller_Action_
 		if (!$this->_conference) {
 			$this->_conference = Zend_Registry::get('conference');
 		}
+
 		if ($info) {
 			return $this->_conference[$info];
 		} else {

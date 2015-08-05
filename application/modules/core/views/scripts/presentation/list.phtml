@@ -58,9 +58,9 @@ $columns = array_filter($this->grid['cols'], function($val) use ($that) {
   			}
   		} else {
   			if ($col == 'presentation_title') {
-  				echo '<a href="/core/presentation/'.$item->{$this->grid['primary']}.'" title="show presentation details">'.$item->$col.'</a>';
+  				echo '<a href="/core/presentation/'.$item->{$this->grid['primary']}.'" title="show presentation details">'.htmlspecialchars($item->$col).'</a>';
   			} elseif ($col == 'session_title') {
-  				echo '<a href="/core/session/'.$item->session_id.'" title="show session details">'.$item->$col.'</a>';
+  				echo '<a href="/core/session/'.$item->session_id.'" title="show session details">'.htmlspecialchars($item->$col).'</a>';
   			} else {
   				echo $item->$col;
   			}

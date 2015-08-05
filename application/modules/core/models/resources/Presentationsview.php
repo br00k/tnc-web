@@ -32,21 +32,7 @@ class Core_Resource_Presentationsview extends TA_Model_Resource_Db_Table_Abstrac
 	protected $_rowClass = 'Core_Resource_Presentation_Item';
 
 	public function init() {}
-	
-	public function getSessionStartByFile($id)
-	{
-		return $this->getAdapter()->fetchOne(
-			"select tstart from vw_sessions left join vw_session_presentations sp
-			ON (vw_sessions.session_id = sp.session_id) where presentation_id IN (
-		   		select presentation_id from vw_presentations p where presentation_id IN 
-		   		(select presentation_id from presentations_files where file_id=:file_id)
-		   	)",
-		   array(
-		   	'file_id' => $id
-		   )
-		);	
-	}
-	
+
 	/**
 	 * Gets presentation by primary key
 	 * @return object Core_Resource_Presentation_Item

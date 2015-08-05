@@ -43,12 +43,11 @@ class Core_Model_Acl_UserCanUpdatePresentationAssertion implements Zend_Acl_Asse
 		} else {
 			return false;
 		}
+
 		$request = Zend_Controller_Front::getInstance()->getRequest();
 		$param = ( $request->getParam('id') ) ? $request->getParam('id') : $request->getParam('presentation_id');
 
-		if ($param != null) {
-			$presentation = $model->getPresentationById($param);
-		}
+		$presentation = $model->getPresentationById($param);
 
 		// perform check
 		if ($param !== null && $presentation->isBeforeEditDeadline() && in_array( (int) $param, $presentations, true)) {

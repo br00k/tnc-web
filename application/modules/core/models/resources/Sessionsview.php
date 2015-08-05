@@ -76,10 +76,9 @@ class Core_Resource_Sessionsview extends TA_Model_Resource_Db_Table_Abstract
 		return $this->fetchAll(
 			$this->select()
 			    ->where("tstart >= '".$zd."'")
-			    //->where("date_trunc('day', tstart)::date = (select DATE '".$zd."')")
+			    ->where("date_trunc('day', tstart) = (select DATE '".$zd."')")
 			    ->order('tstart')
 			);
-			
 	}
 
 	/**

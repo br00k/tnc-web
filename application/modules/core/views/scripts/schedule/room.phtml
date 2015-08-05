@@ -1,4 +1,3 @@
-<br />
 <div id="container">
 <? 
 if ($this->session['session']) {
@@ -8,6 +7,7 @@ if ($this->session['session']) {
 	$session = $this->session['upcoming'];
 	$upcoming = true;
 }
+
 ?>
 
 <h3>
@@ -29,7 +29,8 @@ if ($upcoming) {
 
 <!--<p><?= $session['session']['description'] ?></p>-->
 
-<ul class="basic">
+<h3>Presentations</h3>
+<ul>
 <? foreach ($session['presentations'] as $presentation): ?>
 <li><?= $presentation['title'] ?></li>
 <? endforeach; ?>
@@ -37,39 +38,28 @@ if ($upcoming) {
 <br />
 
 
-<table id="sessionspeakers">
-<tr class="speakerrow_0 active" >
-<? 
-$i=0;
-foreach ($session['speakers'] as $speaker): 
-$i++; 
-?>
-<td>
+<div>
+<? foreach ($session['speakers'] as $speaker): ?>
+<div>
 <span><?= $speaker['fname'] ." ". $speaker['lname'] ?></span>
 <? if ($speaker['file_id']): ?>
-
 <div style="border: 1px solid black;
             border-radius: 10px;
             -moz-border-radius: 10px;
             -khtml-border-radius: 10px;
             -webkit-border-radius: 10px;
-            width:170px;
-            height:212px;
+            width: 260px;
+            height: 170px;
             background:url(/core/file/<?= $speaker['file_id'] ?>)">
-
+</div>
 <? else: ?>
-<div>
-<img src="/includes/core/gfx/no_image.gif" />
+<img alt="<?=$speaker['lname'] ?>" src="/includes/core/gfx/no_image.gif" />
 <? endif; ?>
 </div>
-</td>
-<? if ( (count($session['speakers']) > 3) && ($i % 3 == 0) ): ?></tr><tr class="speakerrow_<?= $i/3 ?>" style="display:none;"><? endif; ?>
 <? endforeach; ?>
-</tr>
-</table>
-<br />
+
 </div>
 
 
 
-
+</div>

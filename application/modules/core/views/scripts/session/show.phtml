@@ -12,7 +12,7 @@ $day = urlencode(urlencode($this->formatDate($this->session->tstart, null, 'dd/M
 <? if ($this->aclCheck('session', 'save')): ?>
 <span class="metanav"> <a href="<?= $this->url(array('controller' => 'session', 'action' => 'edit', 'id' => $this->session->session_id), 'gridactions') ?>">Edit</a></span>
 <? endif; ?>
-<!--<span class="metanav"> <a href="<?= $this->url(array('controller' => 'session', 'action' => 'export', 'id' => $this->session->session_id), 'main-module') ?>">Save to my Google calendar</a></span>--></h1>
+<span class="metanav"> <a href="<?= $this->url(array('controller' => 'session', 'action' => 'export', 'id' => $this->session->session_id), 'main-module') ?>">Save to my Google calendar</a></span></h1>
 <p><?= nl2br($this->session->description) ?></p>
 
 <? if (count($presentations) > 0): ?>
@@ -109,10 +109,11 @@ switch ($file['core_filetype']) {
 </ul>
 <? endforeach; ?>
 <? if ($now): ?>
-<a class="video" href="<?= $this->url(array('controller'=>'media', 'action'=>'stream', 'stream'=> $this->session->location_abbreviation), 'streamlive') ?>">Live stream</a>
+<!--<a class="video" href="<?= $this->url(array('controller'=>'media', 'action'=>'stream', 'stream'=>$this->session->number . $this->session->location_abbreviation), 'stream') ?>">Live stream</a>-->
+<a class="video" href="<?= $this->conferenceInfo('stream_url') ?>/archive/<?= $this->session->number . $this->session->location_abbreviation ?>">Live stream</a>
 <? endif; ?>
 <? if ($hasEnded): ?>
-<a class="video" href="<?= $this->conferenceInfo('stream_url') ?>/web/media/archive/<?= $this->session->number . $this->session->location_abbreviation ?>">Archived stream</a>
+<a class="video" href="<?= $this->conferenceInfo('stream_url') ?>/archive/<?= $this->session->number . $this->session->location_abbreviation ?>">Archived stream</a>
 <? endif; ?>
 </div> <!-- infobox -->
 <? endif; ?>
