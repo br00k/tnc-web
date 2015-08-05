@@ -4,7 +4,6 @@
 <? endif; ?>
 <br />
 <? if ($this->grid['rows']->count() != 0): ?>
-<form method="post" action="/core/poster/vote">
 <? $i=0; ?><div id="persons">
 	<ul class="longlist">
 	<? foreach ($this->grid['rows'] as $posters => $poster): ?>
@@ -14,9 +13,6 @@
 		'id' => $poster->poster_id),
 		'gridactions') ?>
 		<li>
-		<? if ($this->feedback): ?>
-		<a class="star<? if ($this->feedback_defaults->poster_id == $poster->poster_id): ?>gold<? endif; ?>" href="/core/feedback/voteposter/id/<?= $poster->poster_id ?>"></a>
-		<? endif; ?>
 		<? if ($this->poster_id != $poster->poster_id): ?>
 		<a href="<?= $this->url(array('controller' => 'poster', 'action' => 'show', 'id' => $poster->poster_id), 'oneitem') ?>"><?= $poster->title ?></a>
 		<? else: ?>
@@ -28,7 +24,6 @@
 	<? endforeach; ?>
 	</ul>
 </div>
-</form>
 <div class="clearer"></div>
 <? else: ?>
 <p>There are no posters in CORE.</p> 

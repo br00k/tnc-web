@@ -14,7 +14,7 @@
  *
  * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
  * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Eventsview.php 63 2012-05-20 09:32:06Z gijtenbeek@terena.org $
+ * @revision   $Id: Eventsview.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
  */
 
 /** 
@@ -96,7 +96,6 @@ class Core_Resource_Eventsview extends TA_Model_Resource_Db_Table_Abstract
 			'tend' => array('field' => 'tend', 'label' => 'end', 'sortable' => false),
 			'category' => array('field' => 'category', 'label' => 'category', 'sortable' => false),
 			'persons' => array('field' => 'persons', 'label' => 'persons', 'sortable' => false),
-			'location' => array('field' => 'location', 'label' => 'location', 'sortable' => false),
 			'category_id' => array('field' => 'category_id', 'label' => 'category_id', 'sortable' => false)
 		);
 	}

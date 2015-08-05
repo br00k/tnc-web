@@ -38,10 +38,10 @@ class TA_Controller_Plugin_LangSelector extends Zend_Controller_Plugin_Abstract 
         // Register all your "approved" locales below.
         switch ($lang) {
             case "nl":
-                $langLocale = 'en_GB';
+                $langLocale = 'nl_NL';
                 break;
             case "en":
-                $langLocale = 'en_US';
+                $langLocale = 'en_GB';
                 break;
             default:
                 /**

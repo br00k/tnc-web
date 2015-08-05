@@ -35,5 +35,5 @@ class Core_Resource_Event_Item extends TA_Model_Resource_Db_Table_Row_Abstract
 	public function getCompleteDateTime()
 	{
 		return $this->_isoToNormalDate($this->tstart, 'dd/MM/yyyy HH:mm') . '-' . $this->_isoToNormalDate($this->tend, 'HH:mm');
-	}
+	}	
 }

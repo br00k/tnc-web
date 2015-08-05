@@ -1,4 +1,7 @@
 <h1>Student Posters</h1>
+<? if ($this->feedback): ?>
+<p class="notice">To vote please click the star next to the title.</p>
+<? endif; ?>
 <? if ($this->authInfo()->isAdmin() ): ?>
 <div class="actions"><a href="/core/poster/new" title="Add new poster">add</a></div>
 <? endif; ?>
@@ -28,7 +31,7 @@
 		<span class="active"><?= $poster->title ?></span>
 		<? endif; ?>
 		<? if ($this->aclCheck('session', 'save')): ?><span class="delete metanav"><a href="/core/poster/edit/<?=$poster->poster_id?>">Edit</a> <a href="<?=$link?>">Delete</a></span><? endif; ?>
-	<p><img src="/includes/<?= $this->conferenceInfo('abbreviation'); ?>/gfx/poster_<?= $poster->poster_id ?>.jpg" /></p>
+	<p><img src="/includes/core/gfx/poster_<?= $poster->poster_id ?>.jpg" /></p>
 	</td>	
 <? $i++; ?>		
 <? endforeach; ?>

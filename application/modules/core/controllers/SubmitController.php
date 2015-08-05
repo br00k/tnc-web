@@ -399,8 +399,10 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 			'to_name' => $identity->fname.' '.$identity->lname
 		), $request->getPost());
 
-		// everything went OK, redirect
-		$this->_helper->flashMessenger('Thank you for your paper submission, a confirmation email has been sent');
+		// everything went OK, redirect		
+		$this->_helper->flashMessenger('Thank you for submitting your paper, a confirmation email has been sent to you - 
+		please also remember to <a href="/core/user/edit/'.$identity->user_id.'">edit your account</a> 
+		to make sure that the following details are correct: FIRST NAME, LAST NAME, EMAIL, PHONE NUMBER.');
 		if (Zend_Auth::getInstance()->getIdentity()->role != 'admin') {
 			// reload session because user details have changed (their submission data)
 			$userModel = new Core_Model_User();

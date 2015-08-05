@@ -39,21 +39,23 @@ class Core_Form_Presentation extends TA_Form_Abstract
 	    		'table' => 'presentations',
 	    	 	'field' => 'title'
 	    	 )))
-			  ->setAttrib('class', 'medium')
+			  ->setAttrib('class', 'medium')			 
+			  ->addFilter('StripTags')
 			  ->setDescription('Must be between 2 and 100 characters, only letters, numbers and spaces allowed')
 			  ->setDecorators(array('Composite'));
 
 	    $abstract = new Zend_Form_Element_Textarea('abstract');
 	    $abstract->setLabel('Abstract')
 			  	 ->setRequired(true)
-				 ->setAttrib('class', 'medium')
+				 ->setAttrib('class', 'medium')	
 				 ->setDecorators(array('Composite'));
 
 	    $authors = new Zend_Form_Element_Textarea('authors');
 	    $authors->setLabel('Authors')
 				->setAttrib('class', 'medium')
 				->addFilter('Null')
-				->addFilter('StringTrim')
+				->addFilter('StringTrim')			 
+				->addFilter('StripTags')
 				->setDescription('You can add multiple authors by putting each author on a new line')
 				->setDecorators(array('Composite'));
 

@@ -16,7 +16,7 @@ function globFilter($input)
 $columns = array_filter($this->grid['cols'], 'globFilter');
 ?>
 <? if ($this->grid['rows']->count() !== 0): ?>
-<table summary="Grid" class="grid" cellspacing="0">
+<table class="grid" cellspacing="0">
 <thead>
 <tr>
 <? foreach (array_keys($columns) as $col):  ?>

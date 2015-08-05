@@ -32,7 +32,6 @@ class TA_Filter_HTMLPurifier implements Zend_Filter_Interface
 	{
 		HTMLPurifier_Bootstrap::registerAutoLoad();
 		$config = HTMLPurifier_Config::createDefault();
-		$config->set('HTML.Strict', true);
 		$config->set('Attr.EnableID', true);
 		$config->set('Attr.IDPrefix', 'MyPrefix_');
 		$this->_purifier = new HTMLPurifier($config);		
@@ -44,7 +43,7 @@ class TA_Filter_HTMLPurifier implements Zend_Filter_Interface
 	 */
 	public function filter($value)
 	{
-		return $this->_purifier->purify($value);
+		return htmlspecialchars_decode($this->_purifier->purify($value));
 	}
 
 

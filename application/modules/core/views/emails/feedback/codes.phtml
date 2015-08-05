@@ -1,6 +1,13 @@
 Dear Sir/Madam,
-<p>
-This e-mail provides you with the anonymised link which you should follow to provide feedback for <?= $this->conferenceInfo('name') ?>. Please click the following link to provide your feedback:
+<p>This e-mail provides you with the anonymised link which you should follow to provide feedback about various aspects of <?= $this->conferenceInfo('name') ?>.</p>
+
+<ul>
+<li>Vote for the best Student Poster. For the first time this year all participants can cast their vote. The winner of the Student Poster Contest will be announced during the closing plenary.
+</li>
+<li>Rate the presentations.</li>
+<li>Provide feedback about the overall conference.</li>
+</ul>
+<p>Please click the following link to provide your feedback:
 <br><br>
 <? $link = $this->url(array('controller' => 'feedback', 'action' => 'index', 'uuid' => $this->values['uuid']), 'feedback'); ?>
 <a href="<?=$link ?>"><?= $link ?></a>
