@@ -1,0 +1,91 @@
+<h1>Presentations</h1>
+<? if ($this->authInfo()->isAdmin() ): ?>
+<div class="actions">
+<a href="/core/presentation/new" title="Add new presentation">add</a> |
+<a href="/core/presentation/import" title="Import accepted submissions">import</a>
+</div>
+<? endif;
+// filter out hidden columns and perform acl check
+
+$that = $this; // haha LOL
+$columns = array_filter($this->grid['cols'], function($val) use ($that) {
+	if (isset($val['resource'])) {
+		return $that->aclCheck($val['resource'], $val['privilege']);
+	}
+	return !isset($val['hidden']);
+});
+
+?>
+<? if ($this->grid['rows']->count() !== 0): ?>
+<? if ( ($this->grid['rows'] instanceof Zend_Paginator) && ($this->grid['rows']->getTotalItemCount() > $this->grid['rows']->getItemCountPerPage()) ): ?>
+<?= $this->paginationControl($this->grid['rows'], 'Sliding', '_paginator.phtml', array('route_name' => 'grid')); ?>
+<? endif; ?>
+<table class="table table-striped" cellspacing="0">
+<thead>
+<tr>
+<? foreach (array_keys($columns) as $col):  ?>
+<? $dir = ($this->grid['params']['dir'] === 'desc') ? 'asc' : 'desc' ?>
+<th>
+	<? if ($columns[$col]['sortable'] === true): ?>
+	<a href="<?= $this->url(array('order' => $col, 'dir' => $dir), 'grid') ?>"><?= $columns[$col]['label'] ?></a>
+	<? else: ?>
+	<?= $columns[$col]['label'] ?>
+	<? endif; ?>
+	<? if ($columns[$col]['field'] === $this->grid['params']['order']): ?>
+	<img class="" src="/includes/core/gfx/icons/sort_<?=$dir?>.gif" alt="sort icon" />
+	<? endif; ?>
+</th>
+<? endforeach; ?>
+<? if ($this->authInfo()->hasRole('presenter')): ?><th>Actions</th><? endif; ?>
+</tr>
+</thead>
+<tbody>
+<? foreach ($this->grid['rows'] as $item): ?>
+  <tr class="<?= $this->cycle(array('odd', 'even'))->next() ?>">
+  	<? foreach (array_keys($columns) as $col):  ?>
+  		<td>
+  		<? if ( isset($prevId) && ($prevId == $item->presentation_id) && ($col != 'email') ): ?>
+  		&nbsp;
+  		<? else: ?>
+  		<?
+  		// apply modifiers
+  		// @todo: migrate this Closure testing to _grid.phtml
+  		if ( isset($columns[$col]['modifier']) ) {
+  			if ($columns[$col]['modifier'] instanceof Closure) {
+				echo $columns[$col]['modifier']($item->$col);
+  			} else {
+  				echo call_user_func(array($this, $columns[$col]['modifier']), $item->$col);
+  			}
+  		} else {
+  			if ($col == 'presentation_title') {
+  				echo '<a href="/core/presentation/'.$item->{$this->grid['primary']}.'" title="show presentation details">'.$item->$col.'</a>';
+  			} elseif ($col == 'session_title') {
+  				echo '<a href="/core/session/'.$item->session_id.'" title="show session details">'.$item->$col.'</a>';
+  			} else {
+  				echo $item->$col;
+  			}
+  		}
+  		?>
+  		<? endif; ?>
+  		</td>
+  	<? endforeach; ?>
+  	<? if ($this->authInfo()->hasRole('presenter')): ?>
+	<td>
+		<? if ( $this->authInfo()->isAdmin() ||
+		in_array($item->{$this->grid['primary']}, $this->authInfo()->getMyPresentations()) ): ?>
+		<a href="<?= $this->url(array('controller' => 'presentation', 'action' => 'edit', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">edit</a>
+		<? endif; ?>
+		<? if ($this->aclCheck('presentation', 'delete')): ?>
+		| <a onclick="return confirm('Do you really want to delete this session?');" href="<?= $this->url(array('controller' => 'presentation', 'action' => 'delete', 'id' => $item->{$this->grid['primary']}), 'gridactions') ?>">delete</a>
+		<? endif; ?>
+	</td>
+	<? endif; ?>
+  </tr>
+<? $prevId = $item->presentation_id; ?>
+<? endforeach; ?>
+</tbody>
+</table>
+<? endif; ?>
+<? if ( ($this->grid['rows'] instanceof Zend_Paginator) && ($this->grid['rows']->getTotalItemCount() > $this->grid['rows']->getItemCountPerPage()) ): ?>
+<?= $this->paginationControl($this->grid['rows'], 'Sliding', '_paginator.phtml', array('route_name' => 'grid')); ?>
+<? endif; ?>

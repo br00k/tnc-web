@@ -1,0 +1,31 @@
+<? foreach ($this->sessionchairs as $chair): ?>
+
+<div class="grey_widebox">
+<div class="body">
+<div id="person_meta">
+<div style="border: 1px solid black;
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -khtml-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            width:170px;
+            height:212px;
+            background:url(/core/file/<?= $chair['file_id']; ?>)">
+</div>
+
+</div>
+
+<div id="person_details">
+<h1><?= $chair['fname'] ?> <?= $chair['lname'] ?></h1>
+<ul>
+	<? foreach ($chair["speakers"] as $speaker): ?>
+		<li><h2><?= $speaker ?></h2></li>
+	<? endforeach; ?>
+	</ul>
+        </div>
+<div class="clearer"></div>
+</div>
+<div class="closer"></div>
+</div>
+
+<? endforeach; ?>

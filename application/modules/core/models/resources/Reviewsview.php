@@ -137,7 +137,7 @@ class Core_Resource_Reviewsview extends TA_Model_Resource_Db_Table_Abstract
 			'user_id' => array('field' => 'user_id', 'label' => 'Reviewer'),
 			'fname' => array('field' => 'fname', 'label' => 'First name', 'hidden' => true),
 			'lname' => array('field' => 'lname', 'label' => 'Last name', 'hidden' => true),
-			'email' => array('field' => 'email', 'label' => 'Email', 'hidden' => true),
+			'email' => array('field' => 'email', 'label' => 'Email', 'hidden' => true)
 
 		);
 

@@ -49,10 +49,11 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 	 * @todo cache the output of this method
 	 * @return		array		Schedule
 	 */
-	public function getSchedule($conferenceId = null, $filter = null, $mobile = false)
+	public function getSchedule($conferenceId = null, $filter = null, $mobile = false, $pivot = false)
 	{
 
 		$schedule = array();
+		$schedulePivot = array();
 		$scheduleMobile = array();
 		$groupedTimeslots = array();
 
@@ -62,11 +63,9 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 		$locations = $this->getResource('locations')->getLocations(
 			null, array('abbreviation', 'asc'), $locationFilter
 		);
-
-		#$locations = $this->getResource('locations')->getLocations(
-		#	null, array('abbreviation', 'asc'), $locationFilter
-		#);
 		
+		$this->_locations = $locations;
+
 		// get only timeslots of type 'presentation'
 		$timeslots = $this->getResource('timeslots')->getTimeslots(1);
 
@@ -83,7 +82,6 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 				$presentations = $sessions->getAllPresentations(($mobile)?false:true);
 				if ($mobile) {
 					$speakers = $sessions->getAllSpeakers(false, true);
-					$chairs = $sessions->getChairs();
 				}
 			} elseif ($filter['view'] == 'speakers') {
 				$speakers = $sessions->getAllSpeakers();
@@ -106,6 +104,7 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 		foreach ($days as $day) {
 
 			$timeslots = $groupedTimeslots[$day];
+			
 			foreach ($locations['rows'] as $location) {
 				foreach ($timeslots as $timeslot) {
 					// filter out session array by specific timeslot/location combo
@@ -117,13 +116,11 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 						})
 					);
 					if ($session) {
-						$session['loc_abbr'] = $location->abbreviation;						
-						if ($mobile) {
-							$session['loc_name'] = $location->name;
-						}
+						$session['loc_abbr'] = $location->abbreviation;
 					}
-					$schedule[$day][$location->location_id][$timeslot['timeslot_id']] = $session ? $session : null;
-
+					$schedule[$day][$location->location_id][$timeslot['timeslot_id']] = $session ? $session : null;					
+					$schedulePivot[$day][$timeslot['timeslot_id']][$location->location_id] = $session ? $session : null;					
+					
 					if ($mobile) {
 						$startZd = new Zend_Date($timeslot['tstart'], Zend_Date::ISO_8601,Zend_Registry::get('Zend_Locale'));
 						$start = $startZd->get('HH:mm');
@@ -138,9 +135,7 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 									}
 								}
 								$session['presentations'] = $presentations[$session['session_id']];
-								$session['chair'] = current(array_filter($chairs, function($val) use ($session) { 
-									return $val['session_id'] == $session['session_id'];
-								}));
+
 								$session['time_start'] = $startZd->get('EEEE H:mm');
 							}
 							$scheduleMobile[$day][$start .' - '. $end][] = $session;
@@ -151,31 +146,37 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 								$val = (isset($speakers[$session['session_id']]))
 									? $speakers[$session['session_id']]
 									: null;
-								$schedule[$day][$location->location_id][$timeslot['timeslot_id']]['speakers'] = $val;
+								$schedule[$day][$location->location_id][$timeslot['timeslot_id']]['speakers'] = $val;								
+								$schedulePivot[$day][$timeslot['timeslot_id']][$location->location_id]['speakers'] = $val;																
 							} else {
 								$val = (isset($presentations[$session['session_id']]))
 									? $presentations[$session['session_id']]
 									: null;
-								$schedule[$day][$location->location_id][$timeslot['timeslot_id']]['presentations'] = $val;
-							}
+								$schedule[$day][$location->location_id][$timeslot['timeslot_id']]['presentations'] = $val;								
+								$schedulePivot[$day][$timeslot['timeslot_id']][$location->location_id]['presentations'] = $val;							}
 						}
 					}
+				
 				}
 
 			}
-
 		}
 
-
 		if ( ($filter['day'] != 'all') && (!empty($schedule)) ) {
+			if ($pivot) {			
+				$scheduleDay[$filter['day']] = $schedulePivot[$filter['day']];
+				return $scheduleDay;
+			}	
 			$scheduleDay[$filter['day']] = $schedule[$filter['day']];
 			return $scheduleDay;
 		}
+		if ($pivot) {			
+			return $schedulePivot;
+		}
 		if ($mobile) {
 			return $scheduleMobile;
-		} else {
-			return $schedule;
 		}
+		return $schedule;
 
 	}
 
@@ -281,6 +282,11 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 	public function getTimeslots()
 	{
 		return $this->_timeslots;
+	}
+	
+	public function getLocations()
+	{
+		return $this->_locations['rows']->toArray();
 	}
 
 

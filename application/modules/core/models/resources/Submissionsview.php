@@ -79,17 +79,23 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 	/**
 	 * @param	object	$filter
 	 * @param	boolean	$object		Return object
+	 * @param	boolean $submissionId	Include submission id
 	 * @return	mixed
 	 */
-	public function getFileIds($filter, $object=false)
+	public function getFileIds($filter, $object=false, $submissionId=false)
 	{
 		$select = $this->select()
 			   		   ->from( $this->info('name'), array('file_id', 'title'));
+			   		   
+		if ($submissionId) {
+			$select = $this->select()
+			   		   	   ->from( $this->info('name'), array('file_id', 'submission_id'));			
+		}
 
 		// apply filters to grid
 		if ($filter->filters) {
 			foreach ($filter->filters as $field => $value) {
-			    if (is_array($value)) {
+				if (is_array($value)) {
 			        $select->where( $field.' IN (?)', $value);
 			    } else {
 			        $select->where( $field.' = ?', $value);
@@ -98,6 +104,9 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 		}
 		if ($object) {
 			return $this->fetchAll($select);
+		}
+		if ($submissionId) {
+			return $this->getAdapter()->fetchPairs($select);
 		}
 		return $this->getAdapter()->fetchCol($select);
 	}

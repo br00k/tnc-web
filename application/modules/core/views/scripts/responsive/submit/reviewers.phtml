@@ -1,0 +1,10 @@
+<h1>Submission</h1>
+<div id="submission_info" class="infobox">
+
+<?= $this->render('/_submit_details.phtml') ?>
+
+</div>
+<h1>Reviewers</h1>
+<?= $this->submitUserForm; ?>
+
+<p>This list only shows reviewers. To add a user to this list, add the role 'reviewer' to an existing user or <a href="/core/user/new/role_id/3">invite a user</a></p>

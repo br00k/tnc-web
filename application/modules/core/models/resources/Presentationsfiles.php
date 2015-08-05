@@ -128,5 +128,4 @@ class Core_Resource_Presentationsfiles extends TA_Model_Resource_Db_Table_Abstra
 		return true;
 	}
 
-
 }

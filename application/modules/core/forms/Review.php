@@ -51,7 +51,7 @@ class Core_Form_Review extends TA_Form_Abstract
 				   ->setDecorators(array('Composite'));
 
 	    $rating = new Zend_Form_Element_Select('rating');
-	    $rating->setLabel('Overall recommendation')
+	    $rating->setLabel('Decision')
 	   		   ->setAttrib('class', 'medium')
 			   ->setMultiOptions($this->_getFieldValues('rating', 'review'))
 			   ->setDecorators(array('Composite'));
@@ -85,14 +85,14 @@ class Core_Form_Review extends TA_Form_Abstract
 				   ->setDecorators(array('Composite'));
 
 		$this->addElements(array(
-			$suitability,
-			$quality,
-			$importance,
 			$rating,
+			#$suitability,
+			$quality,
+			#$importance,
 			$assess,
+			$comAuthors,
 			$comPresentation,
-			$comPc,
-			$comAuthors
+			$comPc
 		));
 
 	    $this->addElement('submit', 'submit', array(

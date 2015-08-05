@@ -91,7 +91,7 @@ return array(
 			    'action' => 'list',
 			    'resource' => 'User',
 			    'route' => 'main-module',
-			    'reset_params' => true
+			    'reset_params' => true,
 			),
 			array(
 			    'label' => 'Locations',

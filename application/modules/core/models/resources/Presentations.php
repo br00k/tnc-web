@@ -91,6 +91,7 @@ class Core_Resource_Presentations extends TA_Model_Resource_Db_Table_Abstract
 			$values[] = "("
 				.$conferenceId.','
 				.$submission->submission_id.','
+				.$db->quote($submission->abstract).','
 				.$db->quote($submission->title)
 				.")";
 		}
@@ -104,7 +105,7 @@ class Core_Resource_Presentations extends TA_Model_Resource_Db_Table_Abstract
 				);
 			}
 
-			$query = "INSERT INTO " . $this->_name . "(conference_id, submission_id, title) VALUES ".$values;
+			$query = "INSERT INTO " . $this->_name . "(conference_id, submission_id, abstract, title) VALUES ".$values;
 			$query = $db->query($query);
 
 			// get newly inserted presentations

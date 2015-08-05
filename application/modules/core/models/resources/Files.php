@@ -122,6 +122,9 @@ class Core_Resource_Files extends TA_Model_Resource_Db_Table_Abstract
 				case 'slides':
 					$data['_filetype'] = 5;
 				break;
+				case 'abstract':
+					$data['_filetype'] = 8;
+				break;
 				default:
 					$data['_filetype'] = 3;
 				break;

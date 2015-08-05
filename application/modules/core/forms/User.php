@@ -32,18 +32,18 @@ class Core_Form_User extends TA_Form_Abstract
 	    $fname = new Zend_Form_Element_Text('fname');
 	    $fname->setLabel('First Name')
 	    	  ->setRequired(true)
-	    	  ->setAttrib('class', 'medium')
+	    	  ->setAttrib('class', 'medium form-control')
 	    	  ->setDecorators(array('Composite'));
 
 	    $lname = new Zend_Form_Element_Text('lname');
 	    $lname->setLabel('Last Name')
 	    	  ->setRequired(true)
-	    	  ->setAttrib('class', 'medium')
+	    	  ->setAttrib('class', 'medium form-control')
 	    	  ->setDecorators(array('Composite'));
 
 	    $organisation = new Zend_Form_Element_Text('organisation');
 	    $organisation->setLabel('Organisation')
-					 ->setAttrib('class', 'medium')
+					 ->setAttrib('class', 'medium form-control')
 					 ->setDecorators(array('Composite'));
 
 		$country = new TA_Form_Element_Country('country');
@@ -52,37 +52,31 @@ class Core_Form_User extends TA_Form_Abstract
 
 	    $jobtitle = new Zend_Form_Element_Text('jobtitle');
 	    $jobtitle->setLabel('Job title')
-				 ->setAttrib('class', 'medium')
+				 ->setAttrib('class', 'medium form-control')
 				 ->setDecorators(array('Composite'));
 
 	    $profile = new Zend_Form_Element_Textarea('profile');
 	    $profile->setLabel('Biography')
-				->setAttrib('class', 'medium')
+				->setAttrib('class', 'medium form-control')
 				->setDecorators(array('Composite'));
 
 	    $email = new Zend_Form_Element_Text('email');
 	    $email->setLabel('Email')
 	    	  ->setRequired(true)
-	    	  ->setAttrib('class', 'medium')
+	    	  ->setAttrib('class', 'medium form-control')
 	    	  ->setDescription('the invitation will be sent to this address')
 	    	  ->addValidators(array(
 				array('EmailAddress', true),
 	    	  ))
 	    	  ->setDecorators(array('Composite'));
 
-	    $phone = new Zend_Form_Element_Text('phone');
-	    $phone->setLabel('Phone number')
-	    	  ->setRequired(false)
-	    	  ->setAttrib('class', 'medium')
-	    	  ->setDecorators(array('Composite'));	    	  
-
 		$resize = new TA_Filter_ImageResize();
-		$resize->setWidth(260)
-			   ->setHeight(170);
+		$resize->setWidth(170)
+			   ->setHeight(212);
 
 	    $image = new TA_Form_Element_MagicFile('file');
 	    $image->setLabel('Picture')
-	    	  ->setDescription('Image should be at least 300 pixels wide and 200 pixels high, and not be over 5Mb')
+	    	  ->setDescription('Image should be at least 500 pixels wide and 600 pixels high, and not be over 5Mb')
 			  ->addDecorators($this->_magicFileElementDecorator)
 			  ->addFilter($resize)
 			  ->addValidators(array(
@@ -90,8 +84,8 @@ class Core_Form_User extends TA_Form_Abstract
 			      array('IsImage', true),
 			      array('Size', true, array('max' => '5Mb')),
 			      array('ImageSize', true, array(
-					'minwidth' => 300,
-					'minheight' => 200
+					'minwidth' => 500,
+					'minheight' => 600
 			      ))
 			  ));
 
@@ -100,7 +94,6 @@ class Core_Form_User extends TA_Form_Abstract
 	    	$lname,
 	    	$organisation,
 	    	$email,
-	    	$phone,
 	    	$country,
 	    	$jobtitle,
 	    	$profile,

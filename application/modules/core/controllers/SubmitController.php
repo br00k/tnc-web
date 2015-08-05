@@ -333,11 +333,13 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 				$defaults = $this->_submitModel->getSubmissionById($this->_getParam('id'))->toArray()
 			);
 
-			$fileModel = new Core_Model_File();
-			// add currently linked file to file input box
-			$this->view->submitForm->submission->file->setTaFile(
-				$fileModel->getFileById($defaults['file_id'])
-			);
+			if (isset($defaults['file_id'])) {
+				$fileModel = new Core_Model_File();
+				// add currently linked file to file input box
+				$this->view->submitForm->submission->file->setTaFile(
+					$fileModel->getFileById($defaults['file_id'])
+				);
+			}
 
 			return $this->render('formEdit');
 		}
@@ -358,7 +360,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'submit', 'action'=>'list'), 'grid');
 	}
-
+	
 	/**
 	 *
 	 *
@@ -382,6 +384,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 
 		// try to persist data
 		if ( $this->_submitModel->saveSubmission($request->getPost()) === false ) {
+			$this->view->error = true;
 			return $this->displayForm();
 		}
 
@@ -393,19 +396,25 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		$conference = Zend_Registry::get('conference');
 		$emailHelper->sendEmail(array(
 		    'template' => 'submit/new',
-		    'subject' => 'Paper submission',
+		    'subject' => 'TNC15 submission',
 			'html' => true,
 		    'to_email' => $identity->email,
 			'to_name' => $identity->fname.' '.$identity->lname
 		), $request->getPost());
 
 		// everything went OK, redirect
-		$this->_helper->flashMessenger('Thank you for your paper submission, a confirmation email has been sent');
+		$this->_helper->flashMessenger('Thank you for your submission, please check your details below');
 		if (Zend_Auth::getInstance()->getIdentity()->role != 'admin') {
 			// reload session because user details have changed (their submission data)
+			$userId = Zend_Auth::getInstance()->getIdentity()->user_id;
 			$userModel = new Core_Model_User();
-			$userModel->getUserById(Zend_Auth::getInstance()->getIdentity()->user_id)->reloadSession();
-			return $this->_helper->lastRequest();
+			$userModel->getUserById($userId)->reloadSession();
+			#return $this->_helper->lastRequest();
+			return $this->_helper->redirector->gotoRoute(array(
+				'controller'=>'user', 
+				'action'=>'edit', 
+				'id' => $userId
+			), 'gridactions');			
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'submit', 'action'=>'list'), 'grid');
 	}

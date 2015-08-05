@@ -12,7 +12,7 @@ $day = urlencode(urlencode($this->formatDate($this->session->tstart, null, 'dd/M
 <? if ($this->aclCheck('session', 'save')): ?>
 <span class="metanav"> <a href="<?= $this->url(array('controller' => 'session', 'action' => 'edit', 'id' => $this->session->session_id), 'gridactions') ?>">Edit</a></span>
 <? endif; ?>
-<span class="metanav"> <a href="<?= $this->url(array('controller' => 'session', 'action' => 'export', 'id' => $this->session->session_id), 'main-module') ?>">Save to my Google calendar</a></span></h1>
+<!--<span class="metanav"> <a href="<?= $this->url(array('controller' => 'session', 'action' => 'export', 'id' => $this->session->session_id), 'main-module') ?>">Save to my Google calendar</a></span>--></h1>
 <p><?= nl2br($this->session->description) ?></p>
 
 <? if (count($presentations) > 0): ?>
@@ -56,7 +56,7 @@ $day = urlencode(urlencode($this->formatDate($this->session->tstart, null, 'dd/M
 <a href="/core/schedule/list/t/17/day/<?= $day ?>" title="Check the programme for parallel sessions">
 <?= $this->formatDate($this->session->tstart, null, 'EEEE, d MMMM') ?></a> from
 <?= $this->formatDate($this->session->tstart, null, 'H:m') ?> to
-<?= $this->formatDate($this->session->tend, null, 'H:m'). ' <a href="http://www.timeanddate.com/library/abbreviations/timezones/eu/ist.html" title="Irish Standard Time (UTC/GMT +1)">IST</a>' ?>
+<?= $this->formatDate($this->session->tend, null, 'H:m') ?>
 </dd>
 <dt>Location</dt>
 <dd>

@@ -1,0 +1,11 @@
+<h2>Session evaluation</h2>
+<? if ($this->updated): ?>
+<span class="infotext">Last evaluated by 
+<? if ($this->authInfo('user_id') == $this->user->user_id): ?>
+you
+<? else: ?>
+<a href="mailto:<?= $this->user->email?>"><?= $this->user->getFullName()?></a>
+<? endif; ?>
+on <?= $this->formatDate($this->updated) ?></span>
+<? endif; ?>
+<?= $this->evaluationForm ?>

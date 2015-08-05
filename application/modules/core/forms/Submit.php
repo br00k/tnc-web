@@ -67,11 +67,15 @@ class Core_Form_Submit extends TA_Form_Abstract
 				->setSeparator('<br />')
 				->setDecorators(array('Composite'));
 				
+
+		$topicModel = new Core_Model_Topic();			
+		$topicsForSelect = $topicModel->getTopicsForSelect();
+						
 	    $topicsel = new Zend_Form_Element_MultiCheckbox('topic');
 	    $topicsel->setLabel('Topic')
-				 ->setRequired(true)
+				 ->setRequired(false)
 				 ->setAttrib('class', 'tiny')
-		         ->setMultiOptions($this->_getFieldValues('topic'))
+	    		 ->setMultiOptions($topicsForSelect)
 		         ->setSeparator('<br />')
  				 ->setDecorators(array('Composite'));				
 	    
@@ -87,9 +91,23 @@ class Core_Form_Submit extends TA_Form_Abstract
 	    	  	 ->setAttrib('class', 'medium')
 	    	  	 ->setDescription('Must be between 2 and 500 characters')
 			  	 ->setDecorators(array('Composite'));
+			  	 
+	    $abstract = new Zend_Form_Element_Textarea('abstract');
+	    $abstract->setLabel('Submission Summary (If your submission is accepted, this will be publicly visible!)')
+	    	 	->setAttrib('class', 'small')
+	    	 	->setDescription('Must be between 5 and 2000 characters')
+	    	 	->setRequired(false)
+	    	 	->addValidator('StringLength', true, array(5, 2000,
+	    	 	'messages' => array(
+					Zend_Validate_StringLength::TOO_SHORT => 'Please provide a longer abstract',
+					Zend_Validate_StringLength::TOO_LONG => 'Your abstract is too long'
+				)
+	    	 	))
+			 	->setDecorators(array('Composite'));
+
 
 	    $comment = new Zend_Form_Element_Textarea('comment');
-	    $comment->setLabel('Comment')
+	    $comment->setLabel('Information for Reviewers')
 	    	 	->setAttrib('class', 'small')
 	    	 	->setDescription('Must be between 5 and 1000 characters')
 	    	 	->setRequired(false)
@@ -102,29 +120,31 @@ class Core_Form_Submit extends TA_Form_Abstract
 			 	->setDecorators(array('Composite'));
 
 	    $file = new TA_Form_Element_MagicFile('file');
-	    $file->setLabel('Your submission')
-			 ->setRequired(true)
+	    $file->setLabel('Your submission (File must be pdf and no bigger than 10Mb) *')
+			 ->setRequired(false)
 			 ->addDecorators($this->_magicFileElementDecorator)
-			 ->setDescription('File must be a maximum of 10Mb')
 			 ->addValidators(array(
 			    array('Count', true, 1),
-			    array('Size', true, 10000000)
-			    #array('Extension', true, array('pdf', 'case' => true)),
-			    #array('MimeType', false, array('text/plain; charset=us-ascii'))
+			    array('Size', true, 10000000),
+			    array('Extension', true, array('pdf', 'case' => true)),
+			    array('MimeType', false, array('application/pdf'))
 			 ));
+			 
+		$file->getValidator('Extension')->setMessage('Only pdf files are allowed!');	 
 
 		$subform = new Zend_Form_SubForm();
 		$subform->setDecorators(array('FormElements'));
 
 		$subform->addElements(array(
 			$type,
+			$file,
 			$title,
 			$audience,
 			#$publish,
 			$topicsel,
 			$keywords,
-			$comment,
-			$file
+			$abstract,
+			$comment
 		));
 		$this->addSubForm($subform, 'submission');
 

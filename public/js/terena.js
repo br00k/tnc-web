@@ -15,7 +15,6 @@
  * @license    http://www.terena.org/license/new-bsd     New BSD License
  * @revision   $Id: terena.js 598 2011-09-15 20:55:32Z visser $
  */
- 
 $(function() {
 var counter = 1;
 
@@ -135,78 +134,40 @@ var active = $('#activestream').text();
 var quality = $('#quality').text();
 var type = ($('div#streams').hasClass('archive')) ? 'archive' : 'live';
 var file = 'stream'+active;
-if (active) {
+var file = 'mp4:11647267-f3efd410d735fad9612b.mbr.mp4?a682f8a5050d0f22ff2e7f3227392f6b2eb85c58';
 
+if (active) {
 	var setup = {
-		'id': 'tncstreamer',
-		'width': 537,
-		'height': 326,
-		'autostart': true,
-		'provider': 'rtmp',
-		'file': file,
-		'streamer' : 'rtmp://nordunetlivefs.fplive.net/nordunetlive-'+type+'/',
-		'modes': [
-			{type: 'flash', src: '/js/jwplayer.flash.swf'},
-			 {type: 'html5', config: {
-				'file': 'http://mps-ios-live.nordu.net:1935/'+type+'/'+file+'.sdp/playlist.m3u8',
-                 		'provider': 'http'
-				}
-			}
-		]
+	  'id': 'tncstreamer',
+	  'width': '537',
+	  'height': '326',
+	  'autostart':true,
+	  'controlbar':'bottom',
+	  'provider': 'rtmp',
+	  'file': file,
+	  'streamer': 'rtmp://live.visualplatform.net/live/',
+	  //'streamer': 'rtmp://nordunetlivefs.fplive.net/nordunetlive-'+type+'/',
+	  'modes': [
+	  	  {type: 'flash', src: '/js/player.swf'},
+	      {type: 'html5', config: {
+		       'file': 'http://mps-ios-live.nordu.net:1935/'+type+'/'+file+'.sdp/playlist.m3u8',
+	         'provider': 'http'
+	        }
+	      }
+	  ]
 	};
-		
-	
-	if (type == 'archive') {
+	if (type == 'archive') {	
 		var mapping = {
-		
-			// NORDUNET team - edit this array below.
-			// Don't forget, last entry NO comma.
-			'1P': "http://youtu.be/hEtf8saGxaQ",
-			'2A': "http://youtu.be/ifYDyjmMjTA",
-			'2B': "http://youtu.be/BqrfBePrRXQ",
-			'2C': "http://youtu.be/z1GQA0vhAGM",
-			'2D': "http://youtu.be/7Q5PNTzYUVI",
-			'3P': "http://youtu.be/2-TiLF40bEE",
-			'4A': "http://youtu.be/dXjjBObFiBY",
-			'4B': "http://youtu.be/rf-8OcfDmkk",
-			'4C': "http://youtu.be/vt6hXtZAyEI",
-			'4D': "http://youtu.be/pJYUCZet5Ow",
-			'5A': "http://youtu.be/x1fhMqLKP28",
-			'5B': "http://youtu.be/963iWj65gm8",
-			'5C': "http://youtu.be/Vcwy6r4FAqo",
-			'5D': "http://youtu.be/6JYAq_2TAfw",
-			'6A': "http://youtu.be/eR8rJtvjqfg",
-			'6B': "http://youtu.be/_Mipk6nDPJ0",
-			'6C': "http://youtu.be/Asfdd9MzRgU",
-			'6D': "http://youtu.be/gHTcKvka2qI",
-			'7P': "http://youtu.be/505rW8F1Onw",
-			'8A': "http://youtu.be/J-cRPyslLmE",
-			'8B': "http://youtu.be/oldmjXatyB8",
-			'8C': "http://youtu.be/YNZsRdaDRc4",
-			'8D': "http://youtu.be/OGYESvwPrkk",
-			'9A': "http://youtu.be/Jbn3aNkud6Y",
-			'9B': "http://youtu.be/iSdG-rkR9dw",
-			'9C': "http://youtu.be/mjQ9EiTekNk",
-			'9D': "http://youtu.be/Sp1Tt-DVU3Y",
-			'10A': "http://youtu.be/tl0VtlLsBlE",
-			'10B': "http://youtu.be/cOLCk4NKb_E",
-			'10C': "http://youtu.be/0dXI9b-gBN8",
-			'10D': "http://youtu.be/p30hsEQwj3Q",
-			'11A': "http://youtu.be/HMeQCb5VzWY",
-			'11B': "http://youtu.be/IfhHzgBvCR8",
-			'11C': "http://youtu.be/nkcVdQmHkGQ",
-			'11D': "http://youtu.be/rz1A9HmJDV0",
-			'12P': "http://youtu.be/b1dPSHSJl8E"
-			
+			'1A': "http://youtu.be/5IlGRSlfoJs"
 		};	
 		var setup = {
-			flashplayer: '/js/player6.swf',
-			id: 'tncstreamer',
-			width: 537,
-			height: 326,
-			autostart: true,
-			controlbar: 'bottom',
-			file: mapping[active]
+		  'flashplayer': '/js/player.swf',
+		  'id': 'tncstreamer',
+		  'width': '537',
+		  'height': '326',
+		  'autostart':true,
+		  'controlbar':'bottom',
+		  'file': mapping[active]
 		};
 
 	}
@@ -215,23 +176,25 @@ if (active) {
 }
 }
 
-// add video (interviews etc.)
-// TODO refactor for new Jwplayer 6 DV
-if ($('#medialist2').length>0) {
-	var active = $('#activestream').text();
 
-	if (active) {
-		jwplayer('mediacontent_container').setup({
-			'id': 'tncstream',
-			'width': '768',
-			'height': '451',
-			'autostart':true,
-			'controlbar':'bottom',
-			'provider': 'rtmp',
-			'file': 'tnc2011/interviews/'+active+'.mp4',
-			'streamer': "rtmp://media.terena.org/fastplay",
-			'modes': [
-				{type: 'flash', src: '/js/jwplayer.flash.swf'},
+// add video (interviews etc.)
+if ($('#medialist2').length>0) {
+
+var active = $('#activestream').text();
+
+/*
+if (active) {
+	jwplayer('mediacontent_container').setup({
+	  'id': 'tncstream',
+	  'width': '768',
+	  'height': '451',
+	  'autostart':true,
+	  'controlbar':'bottom',
+	  'provider': 'rtmp',
+	  'file': 'tnc2011/interviews/'+active+'.mp4',
+	  'streamer': "rtmp://media.terena.org/fastplay",
+	  'modes': [
+	  	  {type: 'flash', src: '/js/player.swf'},
 	      {
 	        type: 'html5',
 	        config: {
@@ -242,23 +205,33 @@ if ($('#medialist2').length>0) {
 	  ]
 	});
 }
+*/
+
 }
 
-// promo video
-// HTML5 only works on mobile devices (limitation of jwplayer)
+
+//  Promo video!!!
 if ($('#coredemo_container').length>0) {
+
 	jwplayer('coredemo_container').setup({
-		id: 'corestream',
-		flashplayer: '/js/player6.swf',
-		file: 'http://youtu.be/ohXS-lWKrVE',
-		width: 900,
-		height: 533,
-		autostart: true
+		'id': 'corestream',
+		'flashplayer': '/js/player.swf',
+		'file': 'https://youtu.be/wy04YVC0dI8',
+		'width': '900',
+		'height': '533',
+		'autostart': 'false'
 	});
+	
+	jwplayer('coredemo_container2').setup({
+		'id': 'corestream',
+		'flashplayer': '/js/player.swf',
+		'file': 'https://youtu.be/S6QnY3Vm90g',
+		'width': '900',
+		'height': '533',
+		'autostart': 'true'
+	});	
+	
+
 }
-
-
-
-
 
 });

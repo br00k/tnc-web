@@ -1,0 +1,40 @@
+<h1>Edit account</h1>
+<? if ($this->authInfo()->isAdmin()): ?>
+<a href="<?= $this->url(array('action'=>'roles', 'id'=>$this->id), 'main-module') ?>">roles</a>
+<? endif; ?>
+<?= $this->userForm ?>
+
+<? if ($myPresentations = Zend_Auth::getInstance()->getIdentity()->getMyPresentations()):
+$presModel = new Core_Model_Presentation();
+$filter = new stdClass();
+$filter->filters = new stdClass();
+$filter->filters->presentation_id = $myPresentations;
+$presentations = $presModel->getPresentations(null, array('presentation_title', 'asc'), $filter, true);
+?>
+<? if ($presentations): ?>
+<h2>My presentatio<?= (count($presentations['rows']) == 1) ? 'n': 'ns' ?></h2>
+<ul class="titles">
+<? foreach ($presentations['rows'] as $presentation): ?>
+<li><a href="<?= $this->url(array('controller' => 'presentation', 'action' => 'show', 'id' => $presentation['presentation_id']), 'oneitem') ?>" title="edit presentation">
+<?= $presentation['presentation_title'] ?></a>
+</li>
+<? endforeach; ?>
+</ul>
+<? endif; ?>
+<? endif; ?>
+
+<? 
+$submitLive = $this->conferenceInfo()->isSubmitLive();
+if ($mySubmits = Zend_Auth::getInstance()->getIdentity()->getMySubmissions()): ?>
+<br />
+
+<h2>My Submitted pape<?= (count($mySubmits) == 1) ? 'r': 'rs' ?> <? if (!$submitLive): ?><span class="meta">(not possible to edit because submission deadline has passed)</span><? endif; ?></h2>
+<ul>
+<? foreach ($mySubmits as $submit): ?>
+<li><? if ($submitLive): ?><a href="<?= $this->url(array('controller' => 'submit', 'action' => 'edit', 'id' => $submit['submission_id'])) ?>" title="edit submission"><? endif; ?>
+<?= $submit['title'] ?><? if ($submitLive): ?></a><? endif; ?>
+ (<?= $this->formatDate($submit['date']) ?>)
+</li>
+<? endforeach; ?>
+</ul>
+<? endif; ?>

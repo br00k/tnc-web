@@ -1,0 +1,40 @@
+<?
+/*
+See http://developer.yahoo.com/ypatterns/pattern.php?pattern=searchpagination
+
+The url view helper can use a custom route. In order to do that you have to set the parameter route_name to the name of the route
+eg. $this->paginationControl($this->presentations, 'Sliding', '_paginator.phtml', array('route_name' => 'presentations'));
+*/
+?>
+
+<? if ($this->pageCount): ?>
+<ul class="pagination">
+<!-- Previous page link -->
+<? if (isset($this->previous)): ?>
+  <li><a href="<? echo $this->url(array('page' => $this->previous), $this->route_name); ?>"> &lt; Previous</a></li>
+<? else: ?>
+  <li class="disabled"><a href="#">&lt; Previous</a></li>
+<? endif; ?>
+
+<!-- Numbered page links -->
+<? foreach ($this->pagesInRange as $page): ?>
+  <? if ($page != $this->current): ?>
+    <li><a href="<? echo $this->url(array('page' => $page), $this->route_name); ?>">
+        <? echo $page; ?>
+    </a></li>
+  <? else: ?>
+    <li class="active"><a href="#"><? echo $page; ?></a></li>
+  <? endif; ?>
+<? endforeach; ?>
+
+<!-- Next page link -->
+<? if (isset($this->next)): ?>
+  <li><a href="<? echo $this->url(array('page' => $this->next), $this->route_name); ?>">
+    Next &gt;
+  </a></li>
+<? else: ?>
+  <li class="disabled"><a href="#">Next &gt;</a></li>
+<? endif; ?>
+</ul>
+<? endif; ?>
+

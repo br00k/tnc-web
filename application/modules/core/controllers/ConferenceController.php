@@ -213,10 +213,7 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 					  ->remove('conference'.md5($this->getRequest()->getPost('hostname')));
 	}
 
-	public function fixtzAction()
-	{
-		$this->_conferenceModel->fixTz();		
-	}
+
 }
 
 

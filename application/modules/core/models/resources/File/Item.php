@@ -74,8 +74,11 @@ class Core_Resource_File_Item extends TA_Model_Resource_Db_Table_Row_Abstract
 	 * Get filename prefixed with file id
 	 * @return string
 	 */
-	public function getIndexedName()
+	public function getIndexedName($submissionId=null)
 	{
+		if ($submissionId) {
+			return $submissionId . '_' . $this->filename_orig; 
+		}
 		return $this->file_id . '_' . $this->filename_orig;
 	}
 	

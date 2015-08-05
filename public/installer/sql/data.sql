@@ -13,14 +13,14 @@ SET escape_string_warning = off;
 -- Name: feedback; Type: SCHEMA; Schema: -; Owner: -
 --
 
-CREATE SCHEMA feedback;
+-- CREATE SCHEMA feedback;
 
 
 --
 -- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: -
 --
 
-CREATE PROCEDURAL LANGUAGE plpgsql;
+-- CREATE PROCEDURAL LANGUAGE plpgsql;
 
 
 SET search_path = public, pg_catalog;

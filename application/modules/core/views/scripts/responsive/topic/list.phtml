@@ -1,0 +1,5 @@
+<h1>Conference topics</h1>
+<? if ($this->authInfo()->isAdmin() ): ?>
+<div class="actions"><a href="/core/topic/new" title="Add new topic">add</a></div>
+<? endif; ?>
+<?= $this->render('/_grid.phtml'); ?>

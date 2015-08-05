@@ -1,0 +1,71 @@
+<form id="exampleForm" action="<?php echo $this->element->getAction() ?>" method="<?php echo $this->element->getMethod() ?>">
+
+<ol id="formfields">
+
+<li class="hidden">
+<?= $this->element->conference_id ?>
+</li>
+
+<li>
+
+<label class="desc">Conference Details</label>
+<div class="lefter">
+<?= $this->element->name ?>
+<label class="under"><?= $this->element->name->getLabel() ?></label>
+</div>
+<div class="righter">
+<?= $this->element->abbreviation ?>
+<label class="under"><?= $this->element->abbreviation->getLabel() ?></label>
+</div>
+
+</li>
+
+<li>
+<label class="desc">Description</label>
+<?= $this->element->description ?>
+<div class="description"><?= $this->element->description->getDescription() ?></div>
+</li>
+
+
+<li>
+
+<label class="desc">Submission</label>
+<span>
+<?= $this->element->submit_start ?>
+<label class="under"><?= $this->element->submit_start->getLabel() ?></label>
+</span>
+
+<span>
+<?= $this->element->submit_end ?>
+<label class="under"><?= $this->element->submit_end->getLabel() ?></label>
+</span>
+
+</li>
+
+<li>
+
+<label class="desc">Conference</label>
+<span>
+<?= $this->element->conference_start ?>
+<label class="under"><?= $this->element->conference_start->getLabel() ?></label>
+</span>
+
+<span>
+<?= $this->element->conference_end ?>
+<label class="under"><?= $this->element->conference_end->getLabel() ?></label>
+</span>
+</li>
+
+<li>
+<label class="desc">Description</label>
+<?= $this->element->description ?>
+<div class="description"><?= $this->element->description->getDescription() ?></div>
+</li>
+
+<li>
+<?= $this->element->submit ?>
+</li>
+
+</ol>
+
+</form>
