@@ -306,7 +306,7 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 				 ->getPresentationById($values['presentation_id']) : null;
 
 		return $this->getResource('presentations')->saveRow($values, $presentation);
-	}
+	}	
 	
 	public function getSessionStartByFile($id)
 	{

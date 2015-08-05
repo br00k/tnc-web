@@ -12,8 +12,8 @@ $countries = (Zend_Locale::getTranslationList('territory', null, 2));
             -moz-border-radius: 10px;
             -khtml-border-radius: 10px;
             -webkit-border-radius: 10px;
-            width: 260px;
-            height: 170px;
+            width:170px;
+            height:212px;
             background:url(/core/file/<?= $this->user->file_id ?>)">
 </div>
 <? else: ?>
@@ -27,7 +27,7 @@ $countries = (Zend_Locale::getTranslationList('territory', null, 2));
 
 <div id="person_details">
 <h1><?= $this->user->getFullName() ?></h1>
-<p class="shorttext"><?= nl2br(htmlspecialchars($this->user['profile'])) ?></p>      
+<p class="shorttext"><?= nl2br($this->user['profile']) ?></p>      
         <? if ($this->sessions): ?>
     	<div>
     		<h2><?= $this->user->getFullName()?> is chairing the following sessions:</h2>

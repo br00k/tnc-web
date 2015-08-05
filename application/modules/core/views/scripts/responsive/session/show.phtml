@@ -1,0 +1,123 @@
+<?
+$presentations = $this->session->getPresentations();
+$files = $this->session->getFiles();
+$now = $this->session->isNow();
+$hasEnded = $this->session->hasEnded();
+$chairs = $this->session->getChairs(true);
+$speakers = $this->session->getGroupedSpeakers(true, true);
+$day = urlencode(urlencode($this->formatDate($this->session->tstart, null, 'dd/MM/YYYY')));
+?>
+<div class="content_left">
+<h1><?= $this->session->title ?>
+<? if ($this->aclCheck('session', 'save')): ?>
+<span class="metanav"> <a href="<?= $this->url(array('controller' => 'session', 'action' => 'edit', 'id' => $this->session->session_id), 'gridactions') ?>">Edit</a></span>
+<? endif; ?>
+<!--<span class="metanav"> <a href="<?= $this->url(array('controller' => 'session', 'action' => 'export', 'id' => $this->session->session_id), 'main-module') ?>">Save to my Google calendar</a></span>--></h1>
+<p><?= nl2br($this->session->description) ?></p>
+
+<? if (count($presentations) > 0): ?>
+<h2>Presentations</h2>
+<ul id="sortable">
+<? foreach ($presentations as $presentation): ?>
+<? $link = $this->url(array(
+		'controller' => 'session',
+		'action' => 'deletepresentation',
+		'id' => $presentation['session_presentation_id']),
+		'gridactions') ?>
+<li id="sp_<?= $presentation['session_presentation_id'] ?>"><!--<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>-->
+<a class="title" title="show presentation information" href="<?= $this->url(array('controller' => 'presentation', 'action' => 'show', 'id' => $presentation['presentation_id']), 'oneitem') ?>"><?= $presentation['title'] ?></a>
+<div>
+
+<? if (isset($speakers[$presentation['presentation_id']])) : foreach ($speakers[$presentation['presentation_id']] as $speaker): ?>
+<a class="person" href="/core/user/<?=$speaker['user_id']?>" title="show speaker information"><?= $speaker['fname'] ?> <?= $speaker['lname'] ?></a>
+<? endforeach; endif; ?>
+</div>
+
+<? if ($this->aclCheck('session', 'presentationDelete')): ?><span class="delete metanav"><a href="<?=$link?>">Delete</a></span><? endif; ?>
+</li>
+<? endforeach; ?>
+</ul>
+<? endif; ?>
+
+<? if ($this->aclCheck('session', 'presentationSave')): ?>
+<div>
+<br />
+<?= $this->presentationForm ?>
+<p>The presentation is not in the list. Let me <a href="<?= $this->url(array('controller'=>'presentation', 'action'=>'new'), 'main-module') ?>">create a new presentation</a></p>
+</div>
+<? endif; ?>
+</div>
+
+<div class="content_right">
+<div class="infobox">
+<dl class="infolist">
+<dt>Time</dt>
+<dd>
+<a href="/core/schedule/list/t/17/day/<?= $day ?>" title="Check the programme for parallel sessions">
+<?= $this->formatDate($this->session->tstart, null, 'EEEE, d MMMM') ?></a> from
+<?= $this->formatDate($this->session->tstart, null, 'H:m') ?> to
+<?= $this->formatDate($this->session->tend, null, 'H:m') ?>
+</dd>
+<dt>Location</dt>
+<dd>
+<a href="/core/schedule/list/l/<?=$this->session->location_id?>/day/<?=$day?>" title="check the programme for parallel sessions"><?= $this->session->location_name ?></a>
+</dd>
+<? if ($chairs): ?>
+<dt>Chair<? if (count($chairs) > 1): ?>s<? endif; ?></dt>
+<dd>
+
+<? if (count($chairs) > 1): ?><ul class="basic"><? endif; ?>
+<? foreach ( $chairs as $chair):
+$url = $this->url(
+	array('controller'=>'user', 'action'=>'show', 'id'=>$chair['user_id']),
+	'oneitem'
+);
+$chairData = '<a href="'.$url.'">'.$chair['fname'] .' '. $chair['lname'] .'</a> '. $chair['organisation'];
+if (count($chairs) == 1):
+echo $chairData;
+else: ?>
+<li><?= $chairData ?></li>
+
+<? endif; ?>
+<? endforeach; ?>
+<? if (count($chairs) > 1): ?></ul><? endif; ?>
+
+
+</dd>
+<? endif; ?>
+</dl>
+</div>
+
+<? if ( count($files) > 0 || $now || $hasEnded ): ?>
+
+<div class="infobox">
+<h1>Related documents</h1>
+<? foreach ( $files as $file):
+?>
+<ul>
+<?
+switch ($file['core_filetype']) {
+	case 'slides':
+		$type = 'Download slides';
+	break;
+	case 'misc':
+		$type = 'Download extra file';
+	break;
+}
+?>
+<li><a class="" href="/getfile/<?= $file['file_id'] ?>"><?= $type ?></a> (<?= $this->fileSize($file['filesize'])?>)</li>
+</ul>
+<? endforeach; ?>
+<? if ($now): ?>
+<!--<a class="video" href="<?= $this->url(array('controller'=>'media', 'action'=>'stream', 'stream'=>$this->session->number . $this->session->location_abbreviation), 'stream') ?>">Live stream</a>-->
+<a class="video" href="<?= $this->conferenceInfo('stream_url') ?>/archive/<?= $this->session->number . $this->session->location_abbreviation ?>">Live stream</a>
+<? endif; ?>
+<? if ($hasEnded): ?>
+<a class="video" href="<?= $this->conferenceInfo('stream_url') ?>/archive/<?= $this->session->number . $this->session->location_abbreviation ?>">Archived stream</a>
+<? endif; ?>
+</div> <!-- infobox -->
+<? endif; ?>
+
+</div> <!-- content_right -->
+
+<div class="clear"></div>

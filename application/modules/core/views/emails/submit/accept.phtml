@@ -43,32 +43,11 @@ if ($chairs = $this->values['session']['chair']) {
 
 
 <p>
-You will be hearing from us again very shortly, but in the meantime you should take the following steps to complete your involvement in <?= $this->conferenceInfo('abbreviation') ?>:</p>
+You will be hearing from us again very shortly with some information related to the event.</p>
 
 <p>
-<strong>1) Sign in to CORE</strong>
-<? if (!empty($this->values['invite'])): ?>
-&nbsp;using this unique invitation link:<br />
-<a href="https://<?= $this->conferenceInfo('hostname') ?>/core/user/login/?id=<?= $this->values['invite'] ?>">https://<?= $this->conferenceInfo('hostname') ?>/core/user/login/?id=<?= $this->values['invite'] ?></a>.
+Sincerely,<br /><br />
 
-
-<? else: ?>
-:&nbsp;<a href="https://<?= $this->conferenceInfo('hostname') ?>/core/user/login">https://<?= $this->conferenceInfo('hostname') ?>/core/user/login</a>.
-<? endif; ?>
-</p>
-
-
-<p>
-<strong>2) Update your personal information</strong> by clicking your name in the top right corner. The information you enter will be shown on your 'Speaker Details' webpage. This includes a landscape profile picture (minimum 300 x 200 pixels), a short biography (max 100 words). You should also make sure your name is spelled correctly and that the organisation which you will be representing is correct. Also check that the details of the presentation assigned to you are correct.
-</p>
-
-<p>3) Next Monday on 27 January, you will also receive a speaker discount of 100 euro on the registration. This discount will be sent to you shortly with an individual link for the online registration. You must use this link when registering online to receive the speaker discount. EVERYONE must register for the conference and the final amount due will be calculated correctly as long as you use your speaker code.</p>
-
-<p>4) You are invited for the Speakers' Reception will be held on Sunday evening, 18 May. This is an invitation only event where speaker and session chairs meet and discuss their session details. Please keep this in mind when making your travel arrangements.</p>
-
-<p>
-Kind regards,<br /><br />
-
-Gyongyi Horvath<br />
-on behalf of the TNC2014 Programme Committee
+Gyöngyi Horváth<br />
+Conference Organiser
 </p>

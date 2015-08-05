@@ -1,15 +1,35 @@
-This is an automated message.
+<?
+$scope = $this;
+$submission_types = array_map(function($val) use($scope) {
+	return $scope->getFormValue('submission_type', $val, 'submit');
+},$this->values['submission_type']);
+?>
+This is an automated message. Thank you for your submission of "<?= $this->values['title'] ?>", (<?= implode(', ',$submission_types) ?>) for the TNC15 Conference.
+The decision for acceptance will be made at the programme committee meeting in January 2015. By the end of that month, you will be advised of the committee's decision. 
 
-Thank you for your paper (extended abstract) submission for the <?= $this->conferenceInfo('name') ?>.
+To edit your submission(s):
 
-You can update your submission until 29 November 2013.
 
-At least two members of the Programme Committee will review your submission and the decision for acceptance will be made at the programme committee meeting in January 2014. By the end of that month, you will be advised of the committee's decision.
+- visit https://tnc15.terena.org/
+- click on Sign in
+- click on Edit account
+- scroll down to the bottom of the page and edit the paper(s) listed there
+- please append a version number (v2, v3, etc.)
 
-NOTE: If you wish to update your paper, you can use the 'Edit account' option at the top right of the TNC2014 page, and click the paper listed under 'My Submissions'. You should submit the updated document to this location. Please be sure to append a version number (v2, v3, etc.) to the filename.
 
-Thank you for your interest in the conference. We look forward to seeing you in Dublin.
+We look forward to seeing you in Porto. Sincerely,
 
-Sincerely,
 
-TNC2014 Event team
+TERENA TNC15
+
+Singel 468 D
+Amsterdam, 1017 AW
+The Netherlands
+
+T: +31 20 530 44 88
+F: +31 20 530 44 99
+
+Email: tnc15@terena.org
+Url: http://tnc15.terena.org/
+
+

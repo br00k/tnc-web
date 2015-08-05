@@ -40,6 +40,7 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 		}
 
 		//$this->_helper->cache(array('speakers'), array('speakersaction'));
+		$this->view->threeColumnLayout = true;
 	}
 
 	/**

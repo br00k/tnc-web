@@ -1,0 +1,58 @@
+<?
+$countries = (Zend_Locale::getTranslationList('territory', null, 2));
+?>
+<h1>Speaker details</h1>
+
+<div class="well">
+	<div class="row">
+		<div class="col-md-4">
+			<? if ($this->user->file_id): ?>
+			<div style="border: 1px solid black;
+			            border-radius: 10px;
+			            -moz-border-radius: 10px;
+			            -khtml-border-radius: 10px;
+			            -webkit-border-radius: 10px;
+			            width:170px;
+			            height:212px;
+			            background:url(/core/file/<?= $this->user->file_id ?>)">
+			</div>
+			<? else: ?>
+			<img alt="<?=$this->user['lname'] ?>" src="/includes/core/gfx/no_image.gif" />
+			<? endif; ?>
+			<? if ($this->aclCheck('user', 'viewemail')): ?>
+			<p><?= $this->user['email'] ?></p>
+			<? endif; ?>
+			<p><?= $this->user['organisation'] ?> <? if ($this->user['country']) { echo '('.$countries[$this->user['country']].')'; } ?></p>
+
+			<? if ($this->sessions): ?>
+				<div>
+					<strong><?= $this->user->getFullName()?> is chairing the following sessions:</strong>
+						<ul>
+						<? foreach ($this->sessions as $session): ?>
+							<li><a class="emph" href="<?= $this->url(array('controller'=> 'session', 'action'=>'show', 'id'=>$session['session_id']), 'oneitem') ?>"><?= $session['title']?></a></li>
+						<? endforeach; ?>
+						</ul>
+				</div>
+			<? endif; ?>
+
+			<? if ($this->presentations): ?>
+				<div>
+					<strong><?= $this->user->getFullName()?> is a speaker in the following presentations:</strong>
+						<ul class="titles">
+						<? foreach ($this->presentations as $presentation): ?>
+							<li class="space"><a class="emph" href="<?= $this->url(array('controller'=> 'presentation', 'action'=>'show', 'id'=>$presentation['presentation_id']), 'oneitem') ?>"><?= $presentation['presentation_title']?></a>
+							<? if (!empty($presentation['session_id'])): ?>
+							which is part of session <a class="emph" href="<?= $this->url(array('controller'=> 'session', 'action'=>'show', 'id'=>$presentation['session_id']), 'oneitem') ?>"><?= $presentation['session_title']?></a></li>
+							<? endif; ?>
+						<? endforeach; ?>
+						</ul>
+				</div>
+			<? endif; ?>
+		</div>
+
+		<div class="col-md-8">
+			<h1><?= $this->user->getFullName() ?></h1>
+			<p class="shorttext"><?= nl2br($this->user['profile']) ?></p>
+		</div> <!-- /col -->
+	</div> <!-- /row -->
+</div> <!-- /well -->

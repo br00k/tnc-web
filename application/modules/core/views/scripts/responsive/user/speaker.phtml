@@ -1,0 +1,21 @@
+<? if ($this->grid): ?>
+<h1>Speakers</h1>
+<div class="row">
+	<div class="col-md-12">
+		<ul>
+		<? foreach ($this->grid['rows'] as $speakers => $speaker): ?>	
+			<li>
+			<? if ($this->user_id != $speaker->user_id): ?>
+			<a href="<?= $this->url(array('controller' => 'user', 'action' => 'show', 'id' => $speaker->user_id)) ?>"><?= $speaker->getFullName() ?></a>
+			<? else: ?>
+			<span class="active"><?= $speaker->getFullName() ?></span>
+			<? endif; ?>
+			</li>
+		<? endforeach; ?>
+		</ul>
+	</div>
+</div>
+
+<? else: ?>
+<p>There are no speakers in CORE.</p>
+<? endif; ?>

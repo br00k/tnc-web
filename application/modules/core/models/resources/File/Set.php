@@ -27,11 +27,17 @@
 class Core_Resource_File_Set extends Zend_Db_Table_Rowset_Abstract
 {
 
-	public function getNormalizedFiles()
+	public function getNormalizedFiles($fileIdsSubmissionIds=null)
 	{
 		foreach ($this as $row) {
-			$filenames[$row->getFullFilePath()] = $row->getIndexedName();
+			$submissionId = $fileIdsSubmissionIds[$row->file_id];
+			if ($submissionId) {
+				$filenames[$row->getFullFilePath()] = $row->getIndexedName($submissionId);
+			} else {
+				$filenames[$row->getFullFilePath()] = $row->getIndexedName();
+			}
 		}
 		return $filenames;
 	}
+	
 }

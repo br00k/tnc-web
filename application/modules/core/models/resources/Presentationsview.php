@@ -46,7 +46,7 @@ class Core_Resource_Presentationsview extends TA_Model_Resource_Db_Table_Abstrac
 		   )
 		);	
 	}
-
+	
 	/**
 	 * Gets presentation by primary key
 	 * @return object Core_Resource_Presentation_Item

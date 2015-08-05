@@ -42,7 +42,8 @@ $resetButton = $this->formSubmit('reset_search',
 </th>
 <? endforeach; ?>
 <? if ($this->authInfo()->isAdmin() ): ?>
-<th>Actions</th>
+<th>Roles</th>
+<th style="width:3px;padding:0;margin:0;">A</th>
 <? endif; ?>
 </tr>
 </thead>
@@ -64,10 +65,13 @@ $resetButton = $this->formSubmit('reset_search',
   		} else {
   			$output = $item->$col;
   		}
-		echo htmlspecialchars($output);
+		echo $output;
   		?>
   		</td>
+  		
   	<? endforeach; ?>
+  	
+	<td><?= implode(", ", $item->getRoles(true)) ?></td>
   	<? if ($this->gridactions): ?>
   	<? $this->item = $item; ?>
   	<?= $this->render($this->gridactions) ?>
@@ -79,6 +83,7 @@ $resetButton = $this->formSubmit('reset_search',
 		</td>
 	<? endif; ?>
   	<? endif; ?>
+  	
 	</tr>
 
 	<tr class="extra <?= $this->cycle(array('odd', 'even'))->current() ?>">
@@ -88,15 +93,14 @@ $resetButton = $this->formSubmit('reset_search',
 	<dl class="userinfo">
 	<dt>Identity</dt><dd>
 	<?if($item['uid']):?>
-		<?= htmlspecialchars($item['uid'])?>
+		<?= $item['uid']?>
 	<?else:?>
 		Not yet known because user has not used activation link in the invitation e-mail
 	<?endif;?></dd>
 	<dt>Inserted at</dt><dd><?= $this->formatDate($item['inserted']) ?></dd>
 	<dt>Method</dt><dd>
 	<?if ($metadata = $item->getAuditData()):?>
-		Invited as <?= htmlspecialchars('"' . $metadata['fname'] . ' ' . $metadata['lname'] .
-		' <' . $metadata['email'] . '>"') ?>
+		Invited as <?= '"' . $metadata['fname'] . ' ' . $metadata['lname'] .' <' . $metadata['email'] . '>"' ?>
 	<?else:?>
 		Self registered
 	<?endif;?>

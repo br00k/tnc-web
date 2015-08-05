@@ -1,0 +1,51 @@
+<? if ($this->reviewers != 0): ?>
+
+<h1>Send <? if ($this->reminder): ?>reminder<? endif; ?> mail to reviewers [<?= $this->reviewers; ?>]</h1>
+<?
+$eventlogModel = new Core_Model_Eventlog();
+$eventType = ($this->reminder) ? 'mail_reviewers-reminder' : 'mail_reviewers';
+if ($mailout = $eventlogModel->getTimestampByType($eventType)): ?>
+<p class="notice">
+Last email run went out: <?=$this->timeSince($mailout->getTimestamp())?> ago, on <?=$this->formatDate($mailout)?>
+</p>
+<? endif; ?>
+<? if (!empty($this->sent)): ?>
+<? if ($this->dummy == 1): ?>
+Testrun complete; The following emails were generated, please check them before sending (to send: 
+<a href="<?= $this->url(array('controller' => 'review', 'action' => 'mail')) ?>">go back</a> and uncheck the 'test run' box).
+<? else: ?>
+Successfully mailed <?= $this->reviewers; ?> reviewers
+<? endif; ?>
+
+<ul>
+<? foreach ($this->sent as $reviewer): ?>
+<?
+$name = $reviewer['email']. '_'. sha1($this->conferenceInfo('abbreviation').' Review') .'.eml'
+?>
+<li>
+	<? if ($this->dummy == 1): ?>
+	<? // dummy is set: make hyperlinks to generated emails so user can review them ?>
+	<a href="/core/file/getstaticfile/file/<?= $name ?>/type/mail" title="download email">
+	<?= $reviewer['email'] ?>
+	</a>
+	<? else: ?>
+	<?= $reviewer['email'] ?>
+	<? endif; ?>
+</li>
+<? endforeach; ?>
+</ul>
+
+<? else: ?>
+<?
+$template = $this->conferenceInfo('abbreviation') .'-reviewers.phtml';
+?>
+<p>
+All users who have been assigned to review a submission will get an email with a list of submissions they should review.</p>
+<p>
+To add text to this email change the template <code>/application/modules/core/views/emails/<?= $template ?></code></p>
+<?= $this->mailForm ?>
+<? endif; ?>
+
+<? else: ?>
+<p>There are no reviewers assigned to any papers</p>
+<? endif; // there are submissions ?>

@@ -48,29 +48,34 @@ class Core_Model_File extends TA_Model_Acl_Abstract
 			});
     		// check if submission file is owned by this user
     		if (empty($temp)) {
-				throw new TA_Model_Exception('Insufficient rights for downloading this type of file');
+				throw new TA_Model_Exception('Sorry, you are not allowed to download this file');
     		}
-    	}
-
+    	}    	
+    	
 		if ($row->core_filetype == 'slides') {		
     		$presentationModel = new Core_Model_Presentation();
 
     		$presentationStart = $presentationModel->getSessionStartByFile($row->file_id);
+    		$presentationStart = new Zend_Date($presentationStart, Zend_Date::ISO_8601);
+    		
     		$now = new Zend_Date();
     		if ($presentationStart) {
 				if (!$this->checkAcl('getslides')) {
-    				if ( $now->isEarlier($presentationStart) ) {	
-						$identity = Zend_Auth::getInstance()->getIdentity();
-						
-						if (!in_array( $row->file_id, array_keys($identity->getMyFiles()) ) ) {
-							throw new TA_Model_Exception('Insufficient rights for downloading this type of file');
-						}    					
+					// before session started
+    				if ( $presentationStart->isLater($now) ) {
+						$identity = Zend_Auth::getInstance()->getIdentity();	
+						if (isset($identity)) {		
+							if ( in_array( $row->file_id, array_keys($identity->getMyFiles()) ) ) {
+								return $row;
+							} 
+						}							
+						return $row;							  					
 					}
     			}
     		}
 		
 		}
-    		
+    	
     	return $row;
 	}
 

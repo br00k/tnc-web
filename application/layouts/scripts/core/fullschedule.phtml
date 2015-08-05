@@ -27,10 +27,10 @@ $(function() {
 <meta http-equiv="Refresh" content="50;url=<?=Zend_Controller_Front::getInstance()->getRequest()->getRequestUri()?>"></meta>
 <style type="text/css">
 html, body, #programme {
-	height:100%;	
+	height:99%;	
 	margin:0;
 	padding:0;
-	font-size: 10px;
+	font-size: 17px;
 	background:white;
 }
 table.schedule {
@@ -44,19 +44,21 @@ table.schedule tbody {
 	height:12px;
 }
 td {
-	height:50px !important;
+	height:40px !important;
 }
 #newsticker {
 	position:fixed;
 	bottom:0px;
 	left:0px;
-	padding:12px;
+	padding:14px;
 	margin:0;
 	border-top:1px solid black;
 	width:100%;
-	font-size:14px;
+	font-size:15px;
 	text-align:left;
 	color:#D12031 !important;
+	text-align: center;
+	font-weight:bold;
 }
 ul.titles li {
 	background:none;
@@ -65,20 +67,23 @@ ul.titles li {
 	margin:0;
 	padding:0;
 	margin-top:2px;
-	
 }
 .eve_prog ul.titles li {
 	list-style:none;
+	margin-bottom:20px;
 }
 a {
 	color:#000 !important;
+}
+.sched_title {
+	text-align:left !important;
 }
 
 </style>
 </head>
 <body>
 <?= $this->render('schedule/schedule_full.phtml') ?>
-<div id="newsticker" style="padding:2px;font-size:11px; height:12px;">
+<div id="newsticker" style="padding:2px;font-size:18px; height:22px;">
 <a href="/web/media/announcements"><img alt="placeholder" src="/includes/<?= $this->conferenceInfo('abbreviation'); ?>/gfx/icons/next.gif" id="nextimg" /></a>
 <span id="section"></span> <span class="news_text">&nbsp;</span>
 </div>

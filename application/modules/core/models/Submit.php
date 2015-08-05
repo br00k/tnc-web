@@ -115,11 +115,13 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 		if (!$this->checkAcl('list')) {
             throw new TA_Model_Acl_Exception("Insufficient rights");
         }
+        
+        $fileIdsSubmissionIds = $this->getResource('submissionsview')->getFileIds($filter, false, true);
 
 		$files = $this->getResource('filesview')->getFilesByIds(
-			$this->getResource('submissionsview')->getFileIds($filter)
+			array_keys($fileIdsSubmissionIds)
 		);
-		$files = $files->getNormalizedFiles();
+		$files = $files->getNormalizedFiles($fileIdsSubmissionIds);
 
 		$zip = new ZipArchive();
 		$conference = Zend_Registry::get('conference');
@@ -356,6 +358,13 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 
 		// persist submission
 		$submissionId = $this->getResource('submissions')->saveRow($values, $submit);
+			// persist user_submission only on 'new' action
+			if ($action != 'edit') {
+				$userSubmission = $this->getResource('submissions')->saveUserSubmission(array(
+					'user_id' => Zend_Auth::getInstance()->getIdentity()->user_id,
+					'submission_id' => $submissionId
+				));
+			}		
 		return $submissionId;
 	}
 
@@ -410,7 +419,6 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 
 		$db = $this->getResource('files')->getAdapter();
 		$db->beginTransaction();
-
 		try {
 			// persist file
 			$fileId = $this->getResource('files')->saveRow($fileInfo);

@@ -91,9 +91,9 @@ return array(
 				'high' => 'Highly technical audience'
 			),
 			'submission_type' => array(
-				'abstract' => 'Abstract',
-				'full' => 'Full paper',
-				'sessprop' => 'Session proposal',
+				//'abstract' => 'Presentation',
+				//'full' => 'Full paper',
+				//'sessprop' => 'Session proposal',
 				'ltalk' => 'Lightning talk',
 				'poster' => 'Poster'
 			),
@@ -102,14 +102,10 @@ return array(
 				'no' => 'no'
 			),
 			'topic' => array(
-				'big' => "How to Support Big & Open Science",
-				'minds' => "Connecting Minds",
-				'nren' => "The `E` in NREN",
-				'experiments' => "Experimentation as a Service",
-				'fail' => "Epic Fail",
-				'cloud' => "Shaping Cloud Services",
-				'safe' => "Better Safe Than Private?",
-				'relevance' => "Are NRENs Still Relevant?"
+				'nren' => 'NREN 3.0',
+				'openscience' => 'OPEN SCIENCE, BIG DATA',
+				'solutions' => 'CREATING SOLUTIONS',
+				'infra' => 'CREATING INFRASTRUCTURES'
 			)
 		),
 

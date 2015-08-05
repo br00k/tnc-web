@@ -82,7 +82,7 @@ class TA_Model_Resource_Db_Table_Abstract extends Zend_Db_Table_Abstract {
 			$row = $this->createRow();
 		}
 
-		$metadata = $this->info('metadata');
+		$metadata = $this->info('metadata');	
 
 		// automatically add conference_id value
 		if ( isset($metadata['conference_id'])

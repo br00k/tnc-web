@@ -9,10 +9,10 @@ $weekday = $zd->get('EEEE dd/MM');
 <table class="schedule" cellspacing="0" cellpadding="0">
 <? if ($this->filters['day'] == 'all'): ?><caption><?= $weekday ?></caption><? endif; ?>
 	<thead>
-    <tr><td colspan="5" style="font-size: 40px;">Last updated: <? echo date("l j F Y H:i:s") ?></td></tr>
+    
 	<tr>
     <? foreach ($this->timeslots[$date] as $slot): ?>
-    <? $range = $this->formatDate($slot['tstart'], null, 'H:m') . ' - ' . $this->formatDate($slot['tend'], null, 'H:m') . ' <a href="http://www.timeanddate.com/library/abbreviations/timezones/eu/ist.html" title="Irish Standard Time (UTC/GMT +1)">IST</a>'; ?>
+    <? $range = $this->formatDate($slot['tstart'], null, 'H:m') . ' - ' . $this->formatDate($slot['tend'], null, 'H:m'); ?>
 	<th style="width: 20%;" <? if ($this->filters['timeslot'] == $slot['timeslot_id']): ?>class="active"<? endif; ?>><?= $range ?></th>
 	<? endforeach; // timeslots ?>
 
@@ -80,13 +80,13 @@ $weekday = $zd->get('EEEE dd/MM');
 							<a class="pres_info"
 							title="Show information about this presentation"
 							href="<?= $this->url(array('controller'=>'presentation', 'action'=>'show', 'id'=>$pres['presentation_id']), 'oneitem') ?>">
-							<?= htmlspecialchars($pres['title']) ?>
+							<?= $pres['title'] ?>
 							</a>
 							</li>
 						<? if ( (count($sess['presentations']) > 6) && ($tt % 6 == 0) ): ?></ul><ul class="titles titlecarousel titlerow_<?= $tt/6 ?>" style="display:none;"><? endif; ?>
 						<? endforeach; // titles ?>
 					</ul>
-					<? if (count($sess['presentations']) > 5): ?><br />…Wait, there is more!<? endif; ?>
+					<? if (count($sess['presentations']) > 5): ?><br /><span style="color:#D12031 !important;"><strong>…Wait, there is more!</strong></span><? endif; ?>
 				<? endif; ?>
 
 			<? else: ?>
@@ -103,7 +103,7 @@ $weekday = $zd->get('EEEE dd/MM');
 				<? if (!empty($this->events[$date])): ?>
 					<ul class="titles">
 						<? foreach ($this->events[$date] as $event): ?>
-							<li><a href="/core/event/<?= $event['event_id'] ?>"><?= htmlspecialchars($event['title']) ?></a><br /><span class="meta"><?= $event->getCompleteTime() ?></span></li>
+							<li><?= $event['location'] ?><br /><a href="/core/event/<?= $event['event_id'] ?>"><?= htmlspecialchars($event['title']) ?></a><br /><span class="meta" style="font-size:14px !important;"><?= $event->getCompleteTime() ?></span></li>
 						<? endforeach; ?>
 					</ul>
 				<? endif; ?>

@@ -1,0 +1,7 @@
+<ul class="navlist">
+<li <? if ($this->active == 'details'):echo 'class="active"'; endif; ?>><a href="<?= $this->url(array('action' => 'edit', 'id' => $this->id), 'gridactions') ?>">details</a></li>
+<li><a href="<?= $this->url(array('action' => 'timeslots', 'id' => $this->id), 'timeslots') ?>">timeslots</a></li>
+<li><a href="<?= $this->url(array('controller' => 'location', 'action' => 'list'), 'grid') ?>">locations</a></li>
+<li><a href="<?= $this->url(array('controller' => 'feedback', 'action' => 'mailall')) ?>">feedback/mail all participants</a></li>
+<li><a href="<?= $this->url(array('controller' => 'feedback', 'action' => 'mailto')) ?>">feedback/send single code</a></li>
+</ul>

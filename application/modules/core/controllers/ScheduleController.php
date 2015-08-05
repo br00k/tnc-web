@@ -67,14 +67,14 @@ class Core_ScheduleController extends Zend_Controller_Action
 
 		if ($loc = $this->_getParam('loc')) {
 			$datearray = array(
-			  'year' => 2014,
-			  'month' => 5,
-			  'day' => 20,
-			  'hour' => 07,
-			  'minute' => 01,
+			  'year' => 2015,
+			  'month' => 6,
+			  'day' => 15,
+			  'hour' => 18,
+			  'minute' => 40,
 			  'second' => 10);
-    		$zd = new Zend_Date($datearray);
-    		#$zd = Zend_Date::now();
+    	#$zd = new Zend_Date($datearray);
+    	$zd = new Zend_Date();
 			
 			$sessions = $this->_scheduleModel->getStreamData($zd, $loc);
 			$this->view->session = current($sessions);
