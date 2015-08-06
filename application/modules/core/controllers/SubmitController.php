@@ -129,9 +129,9 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 	 *								tiebreakers)
 	 * @return	mixed	Array of submission_id or false
 	 */
-	private function _personalReviewFilter($tiebreak=null)
+	private function _personalReviewFilter($tiebreak = null)
 	{
-	   	if ( $submissions = Zend_Auth::getInstance()->getIdentity()->getSubmissionsToReview() ) {
+	   	if ($submissions = Zend_Auth::getInstance()->getIdentity()->getSubmissionsToReview()) {
 			if ($tiebreak) {
 				return array_keys(
 					array_filter($submissions, function($val) use($tiebreak) {
@@ -167,7 +167,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 					// default value for form element
 					$this->view->{$field} = $value;
 					if ($value == 1) {
-	   					if ( $filter = $this->_personalReviewFilter() ) {
+	   					if ($filter = $this->_personalReviewFilter()) {
 							$session->filters->{$field} = $filter;
 						}
 					} else {
