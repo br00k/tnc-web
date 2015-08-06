@@ -29,13 +29,13 @@ class Core_Form_User_Edit extends Core_Form_User
 		parent::init();
 
 		$this->setAction('/core/user/edit');
-	    $this->addElement('hidden', 'user_id', array(
+		$this->addElement('hidden', 'user_id', array(
 			'validators' => array(
 				array('Int')
 			),
 			'required' => true,
 			'decorators' => $this->_hiddenElementDecorator
-	    ));
+		));
 		$this->removeElement('password');
 		$this->removeElement('passwordCheck');
 		$this->removeElement('invite'); // @todo: no longer needed

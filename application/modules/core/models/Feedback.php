@@ -96,7 +96,7 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 	 */
 	public function getFeedbackByUuid($uuid)
 	{
-		$row = $this->getResource('feedbackcodes')->getFeedbackByUuid( $uuid );
+		$row = $this->getResource('feedbackcodes')->getFeedbackByUuid($uuid);
 		if ($row === null) {
 			throw new TA_Model_Exception('Feedback code not found');
 		}
@@ -114,7 +114,7 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 	 {
 	 	$section = 'feedback'.$section;
 
-		$row = $this->getResource($section)->getFeedbackById( $id );
+		$row = $this->getResource($section)->getFeedbackById($id);
 		return $row;
 	 }
 

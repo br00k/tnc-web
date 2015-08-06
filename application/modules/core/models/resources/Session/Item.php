@@ -99,8 +99,8 @@ class Core_Resource_Session_Item extends TA_Model_Resource_Db_Table_Row_Abstract
 
 		$date = new Zend_Date();
 
-		if ( ( $date->isLater($this->tstart, Zend_Date::ISO_8601)  ) &&
-		( $date->isEarlier($this->tend, Zend_Date::ISO_8601) )  ) {
+		if (($date->isLater($this->tstart, Zend_Date::ISO_8601)) &&
+		($date->isEarlier($this->tend, Zend_Date::ISO_8601))) {
 			return $date;
 		}
 		return false;
@@ -123,7 +123,7 @@ class Core_Resource_Session_Item extends TA_Model_Resource_Db_Table_Row_Abstract
 
 		$date = new Zend_Date();
 
-		if ( $date->isLater($this->tend, Zend_Date::ISO_8601) )  {
+		if ($date->isLater($this->tend, Zend_Date::ISO_8601)) {
 			return $date;
 		}
 		return false;
