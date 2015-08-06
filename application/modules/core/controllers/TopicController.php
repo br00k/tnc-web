@@ -36,7 +36,7 @@ class Core_TopicController extends Zend_Controller_Action implements Zend_Acl_Re
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 
 		// Set navigation to active for all actions within this controller
-		$page = $this->view->navigation()->findOneByController( $this->getRequest()->getControllerName() );
+		$page = $this->view->navigation()->findOneByController($this->getRequest()->getControllerName());
 		if ($page) {
 			$page->setActive();
 		}
@@ -82,7 +82,7 @@ class Core_TopicController extends Zend_Controller_Action implements Zend_Acl_Re
 		$this->view->id = (int) $request->getParam('id');
 
 		// No post; display form
-		if ( !$request->isPost() ) {
+		if (!$request->isPost()) {
 			$this->view->topicForm = $this->_topicModel->getForm('topicEdit');
 			// populate form with defaults
 			$this->view->topicForm->setDefaults(
@@ -93,7 +93,7 @@ class Core_TopicController extends Zend_Controller_Action implements Zend_Acl_Re
 		}
 
 		// try to persist item
-		if ( $this->_topicModel->saveTopic($request->getPost(), 'edit') === false ) {
+		if ($this->_topicModel->saveTopic($request->getPost(), 'edit') === false) {
 			$this->view->topicForm = $this->_topicModel->getForm('topicEdit');
 			return $this->render('formEdit');
 		}
@@ -105,7 +105,7 @@ class Core_TopicController extends Zend_Controller_Action implements Zend_Acl_Re
 
 	public function deleteAction()
 	{
-		if ( false === $this->_topicModel->delete($this->_getParam('id')) ) {
+		if (false === $this->_topicModel->delete($this->_getParam('id'))) {
 			throw new TA_Model_Exception('Something went wrong with deleting the topic');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'topic', 'action'=>'list'), 'grid');
@@ -116,7 +116,7 @@ class Core_TopicController extends Zend_Controller_Action implements Zend_Acl_Re
 		$request = $this->getRequest();
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->topicForm = $this->_topicModel->getForm('topic');
 			// set default values from request parameters
 			$this->view->topicForm->setDefaults(
@@ -126,7 +126,7 @@ class Core_TopicController extends Zend_Controller_Action implements Zend_Acl_Re
 		}
 
 		// try to persist topic
-		if ( $this->_topicModel->savetopic($request->getPost()) === false ) {
+		if ($this->_topicModel->savetopic($request->getPost()) === false) {
 			return $this->displayForm();
 		}
 

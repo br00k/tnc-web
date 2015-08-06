@@ -193,7 +193,7 @@ class Core_Form_Conference extends TA_Form_Abstract
 			->setAttrib('class', 'medium')
 			->addValidators(array(
 						array('EmailAddress', true)
-					     ))
+						 ))
 			->setDecorators(array('Composite'));
 
 		$tz = new Zend_Form_Element_Text('timezone');

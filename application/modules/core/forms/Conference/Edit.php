@@ -29,13 +29,13 @@ class Core_Form_Conference_Edit extends Core_Form_Conference
 		parent::init();
 
 		$this->setAction('/core/conference/edit');
-	    $this->addElement('hidden', 'conference_id', array(
+		$this->addElement('hidden', 'conference_id', array(
 			'validators' => array(
 				array('Int')
 			),
 			'required' => true,
 			'decorators' => $this->_hiddenElementDecorator
-	    ));
+		));
 	}
 
 	/**
@@ -47,18 +47,18 @@ class Core_Form_Conference_Edit extends Core_Form_Conference
 	public function isValid($data)
 	{
 		$this->getElement('abbreviation')
-		     ->getValidator('Zend_Validate_Db_NoRecordExists')
-		     ->setExclude(array(
-		        'field' => 'conference_id',
-		        'value' => $data['conference_id']
-		     ));
+			 ->getValidator('Zend_Validate_Db_NoRecordExists')
+			 ->setExclude(array(
+				'field' => 'conference_id',
+				'value' => $data['conference_id']
+			 ));
 
 		$this->getElement('hostname')
-		     ->getValidator('Zend_Validate_Db_NoRecordExists')
-		     ->setExclude(array(
-		        'field' => 'conference_id',
-		        'value' => $data['conference_id']
-		     ));
+			 ->getValidator('Zend_Validate_Db_NoRecordExists')
+			 ->setExclude(array(
+				'field' => 'conference_id',
+				'value' => $data['conference_id']
+			 ));
 
 		return parent::isValid($data);
 	}

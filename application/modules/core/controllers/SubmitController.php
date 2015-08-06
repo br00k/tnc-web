@@ -35,12 +35,12 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 
 		// @todo: remove this
 		if (!Zend_Registry::isRegistered('formconfig')) {
-    		$formConfig = new Zend_Config(require APPLICATION_PATH.'/configs/formdefaults.php');
+			$formConfig = new Zend_Config(require APPLICATION_PATH.'/configs/formdefaults.php');
 			Zend_Registry::set('formconfig', $formConfig);
 		}
 
 		// Set navigation to active for all actions within this controller
-		$page = $this->view->navigation()->findOneByController( $this->getRequest()->getControllerName() );
+		$page = $this->view->navigation()->findOneByController($this->getRequest()->getControllerName());
 		if ($page) {
 			$page->setActive();
 		}
@@ -72,7 +72,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		$request = $this->getRequest();
 		$id = $request->getParam('id');
 
-		if (false == $submitters = $this->_submitModel->getSubmissionsForMail($id) ) {
+		if (false == $submitters = $this->_submitModel->getSubmissionsForMail($id)) {
 			return;
 		}
 
@@ -80,7 +80,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		$this->view->status = $id;
 		$this->view->dummy = $request->getParam('dummy');
 
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->mailForm = $this->_submitModel->getForm('submitMail');
 			$this->view->mailForm->setDefaults(array(
 				'id' => $id
@@ -115,8 +115,8 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		if ($this->view->dummy == 0) {
 			$eventlogModel = new Core_Model_Eventlog();
 			$eventlogModel->saveEventlog(array(
-			    'event_type' => ($id == 1) ? 'mail_accepted' : 'mail_rejected',
-			    'timestamp' => 'now()'
+				'event_type' => ($id == 1) ? 'mail_accepted' : 'mail_rejected',
+				'timestamp' => 'now()'
 			));
 		}
 	}
@@ -131,20 +131,20 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 	 */
 	private function _personalReviewFilter($tiebreak=null)
 	{
-       	if ( $submissions = Zend_Auth::getInstance()->getIdentity()->getSubmissionsToReview() ) {
-		    if ($tiebreak) {
-		    	return array_keys(
-		    	    array_filter($submissions, function($val) use($tiebreak) {
-       	    	    	return ($val === $tiebreak);
-       	    	    })
-       	    	);
-       	    }
-       	    $reviewModel = new Core_Model_Review();
+	   	if ( $submissions = Zend_Auth::getInstance()->getIdentity()->getSubmissionsToReview() ) {
+			if ($tiebreak) {
+				return array_keys(
+					array_filter($submissions, function($val) use($tiebreak) {
+	   					return ($val === $tiebreak);
+	   				})
+	   			);
+	   		}
+	   		$reviewModel = new Core_Model_Review();
 			return array_keys(
 				$reviewModel->getPersonalTiebreakers(null, false, true)
 			);
-        }
-        return false;
+		}
+		return false;
 	}
 
 	/**
@@ -167,13 +167,13 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 					// default value for form element
 					$this->view->{$field} = $value;
 					if ($value == 1) {
-       					if ( $filter = $this->_personalReviewFilter() ) {
+	   					if ( $filter = $this->_personalReviewFilter() ) {
 							$session->filters->{$field} = $filter;
-        				}
-        			} else {
-        				unset($session->filters->$field);
-        			}
-        		} else {
+						}
+					} else {
+						unset($session->filters->$field);
+					}
+				} else {
 					if ((int) $value !== 0) {
 						$session->filters->$field = $value;
 					} else {
@@ -245,7 +245,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 	 */
 	public function deleteAction()
 	{
-		if ( false === $this->_submitModel->delete($this->_getParam('id')) ) {
+		if (false === $this->_submitModel->delete($this->_getParam('id'))) {
 			throw new TA_Model_Exception('Something went wrong with deleting the user');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'submit', 'action'=>'list'), 'grid');
@@ -295,7 +295,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		$this->view->submission = $submission = $this->_submitModel->getSubmissionById($id);
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$form = $this->view->submitUserForm = $this->_submitModel->getForm('submitUser');
 			// populate form with defaults
 			$this->view->submitUserForm->setDefaults(array(
@@ -308,7 +308,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		}
 
 		// persist user/submission mapping
-		if ( $this->_submitModel->saveReviewers($request->getPost()) === false ) {
+		if ($this->_submitModel->saveReviewers($request->getPost()) === false) {
 			$this->_helper->lastRequest();
 		}
 
@@ -326,7 +326,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		$request = $this->getRequest();
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->submitForm = $this->_submitModel->getForm('submitEdit');
 			// populate form with defaults
 			$this->view->submitForm->setDefaults(
@@ -345,7 +345,7 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		}
 
 		// try to save submission to database
-		if ( $this->_submitModel->saveSubmission($request->getPost(), 'edit') === false ) {
+		if ($this->_submitModel->saveSubmission($request->getPost(), 'edit') === false) {
 			$this->view->submitForm = $this->_submitModel->getForm('submitEdit');
 			return $this->render('formEdit');
 		}
@@ -377,13 +377,13 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 		$request = $this->getRequest();
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->submitForm = $this->_submitModel->getForm('submit');
 			return $this->render('formNew');
 		}
 
 		// try to persist data
-		if ( $this->_submitModel->saveSubmission($request->getPost()) === false ) {
+		if ($this->_submitModel->saveSubmission($request->getPost()) === false) {
 			$this->view->error = true;
 			return $this->displayForm();
 		}
@@ -395,10 +395,10 @@ class Core_SubmitController extends Zend_Controller_Action implements Zend_Acl_R
 
 		$conference = Zend_Registry::get('conference');
 		$emailHelper->sendEmail(array(
-		    'template' => 'submit/new',
-		    'subject' => 'TNC15 submission',
+			'template' => 'submit/new',
+			'subject' => 'TNC15 submission',
 			'html' => true,
-		    'to_email' => $identity->email,
+			'to_email' => $identity->email,
 			'to_name' => $identity->fname.' '.$identity->lname
 		), $request->getPost());
 

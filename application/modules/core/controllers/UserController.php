@@ -34,7 +34,7 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 
 		// Set navigation to active for all actions within this controller
-		$page = $this->view->navigation()->findOneByController( $this->getRequest()->getControllerName() );
+		$page = $this->view->navigation()->findOneByController($this->getRequest()->getControllerName());
 		if ($page) {
 			$page->setActive();
 		}
@@ -110,7 +110,7 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 
 	public function speakerAction()
 	{
-    	$bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
+		$bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
 		$cache = $bootstrap->getResource('cachemanager')
 						   ->getCache('apc');
 
@@ -133,16 +133,16 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 	 */
 	public function loginAction()
 	{
-    	$auth = new Core_Service_Authentication(
-    		$this->getRequest()->getParam('id', null)
-    	);
+		$auth = new Core_Service_Authentication(
+			$this->getRequest()->getParam('id', null)
+		);
 
-    	$config = Zend_Registry::get('config');
+		$config = Zend_Registry::get('config');
 		$authresult = $auth->authenticate(array('authsource' => $config->simplesaml->authsource));
 
 		if ($authresult === true) {
 			$this->_helper->flashMessenger('Successful login');
-			$this->_redirect( $this->getRequest()->getParam('redir', '/') );
+			$this->_redirect($this->getRequest()->getParam('redir', '/'));
 		} else {
 		   // failed login
 		   return $this->render('login');
@@ -176,7 +176,7 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 
 		$this->view->id = $request->getParam('id', $request->getParam('user_id'));
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->userForm = $this->_userModel->getForm('userEdit');
 			// populate form with defaults
 			$this->view->userForm->setDefaults(
@@ -197,7 +197,7 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 		}
 
 		// try to save user to database
-		if ( $this->_userModel->saveUser($request->getPost(), 'edit') === false ) {
+		if ($this->_userModel->saveUser($request->getPost(), 'edit') === false) {
 			$this->view->userForm = $this->_userModel->getForm('userEdit');
 			return $this->render('formUserEdit');
 		}
@@ -214,7 +214,7 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 
 	public function deleteAction()
 	{
-		if ( false === $this->_userModel->delete($this->_getParam('id')) ) {
+		if (false === $this->_userModel->delete($this->_getParam('id'))) {
 			throw new TA_Model_Exception('Something went wrong with deleting the user');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'user', 'action'=>'list'), 'grid');
@@ -230,7 +230,7 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 		$id = $this->view->id = $request->getParam('id', $request->getParam('user_id'));
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$form = $this->view->userRoleForm = $this->_userModel->getForm('userRole');
 			$this->view->roles = $this->_userModel->getUserById($id)->getRoles();
 			$form->setDefaults(array(
@@ -241,7 +241,7 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 		}
 
 		// persist user/presentation mapping
-		if ( $this->_userModel->saveRoles($request->getPost()) === false ) {
+		if ($this->_userModel->saveRoles($request->getPost()) === false) {
 			$this->_helper->lastRequest();
 		}
 
@@ -267,7 +267,7 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 		$request = $this->getRequest();
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->userForm = $this->_userModel->getForm('userInvite');
 			$this->view->userForm->setDefaults(
 				$request->getParams()
@@ -276,7 +276,7 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 		}
 
 		// try to persist user
-		if ( $this->_userModel->saveUser($request->getPost()) === false ) {
+		if ($this->_userModel->saveUser($request->getPost()) === false) {
 			$this->view->userForm = $this->_userModel->getForm('userInvite');
 			return $this->render('formUserAdd');
 		}
@@ -290,10 +290,10 @@ class Core_UserController extends Zend_Controller_Action implements Zend_Acl_Res
 
 		$conference = Zend_Registry::get('conference');
 		$emailHelper->sendEmail(array(
-		    'template' => $template,
-		    'subject' => 'Activate your CORE account',
+			'template' => $template,
+			'subject' => 'Activate your CORE account',
 			'html' => true,
-		    'to_email' => $post['email'],
+			'to_email' => $post['email'],
 			'to_name' => $post['fname'].' '.$post['lname']
 		), $post);
 
