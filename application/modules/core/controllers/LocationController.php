@@ -35,7 +35,7 @@ class Core_LocationController extends Zend_Controller_Action implements Zend_Acl
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 
 		// Set navigation to active for all actions within this controller
-		$page = $this->view->navigation()->findOneByController( $this->getRequest()->getControllerName() );
+		$page = $this->view->navigation()->findOneByController($this->getRequest()->getControllerName());
 		if ($page) {
 			$page->setActive();
 		}
@@ -83,7 +83,7 @@ class Core_LocationController extends Zend_Controller_Action implements Zend_Acl
 		$request = $this->getRequest();
 		
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->locationForm = $this->_locationModel->getForm('locationEdit');
 			// populate form with defaults
 			$this->view->locationForm->setDefaults(
@@ -103,7 +103,7 @@ class Core_LocationController extends Zend_Controller_Action implements Zend_Acl
 		}
 
 		// try to persist item
-		if ( $this->_locationModel->saveLocation($request->getPost(), 'edit') === false ) {
+		if ($this->_locationModel->saveLocation($request->getPost(), 'edit') === false) {
 			$this->view->locationForm = $this->_locationModel->getForm('locationEdit');
 			return $this->render('formEdit');
 		}
@@ -115,7 +115,7 @@ class Core_LocationController extends Zend_Controller_Action implements Zend_Acl
 
 	public function deleteAction()
 	{
-		if ( false === $this->_locationModel->delete($this->_getParam('id')) ) {
+		if (false === $this->_locationModel->delete($this->_getParam('id'))) {
 			throw new TA_Model_Exception('Something went wrong with deleting the location');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'location', 'action'=>'list'), 'grid');
@@ -126,7 +126,7 @@ class Core_LocationController extends Zend_Controller_Action implements Zend_Acl
 		$request = $this->getRequest();
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->locationForm = $this->_locationModel->getForm('location');
 			// set default values from request parameters
 			$this->view->locationForm->setDefaults(
@@ -136,7 +136,7 @@ class Core_LocationController extends Zend_Controller_Action implements Zend_Acl
 		}
 
 		// try to persist user
-		if ( $this->_locationModel->saveLocation($request->getPost()) === false ) {
+		if ($this->_locationModel->saveLocation($request->getPost()) === false) {
 			return $this->displayForm();
 		}
 

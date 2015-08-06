@@ -37,7 +37,7 @@ class Core_Resource_Subscriberssessions extends TA_Model_Resource_Db_Table_Abstr
 	 */
 	public function getItemById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -68,7 +68,7 @@ class Core_Resource_Subscriberssessions extends TA_Model_Resource_Db_Table_Abstr
 	{
 		// no user_id provided, get one from the auth service
 		if (!isset($user_id)) {
-			if ($auth = Zend_Auth::getInstance()->getIdentity() ) {
+			if ($auth = Zend_Auth::getInstance()->getIdentity()) {
 				$userId = ($userId) ? $userId : $auth->user_id;
 			} else {
 				return false;

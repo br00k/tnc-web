@@ -31,28 +31,28 @@ class Core_Form_Submit_User extends TA_Form_Abstract
 
 		$this->setAction('/core/submit/reviewers');
 
-	    $submissionId = new Zend_Form_Element_Hidden('submission_id');
-	    $submissionId->setRequired(true)
-	    			 ->addValidators(
-	    			 	array('Int')
-	    			 )
-	    			 ->setDecorators(array('Composite'));
+		$submissionId = new Zend_Form_Element_Hidden('submission_id');
+		$submissionId->setRequired(true)
+					 ->addValidators(
+					 	array('Int')
+					 )
+					 ->setDecorators(array('Composite'));
 
 		$users = new TA_Form_Element_User('user_id');
 		$users->setTaController('submit')
 			  ->populateElement('reviewer')
 			  ->setAttrib('onchange', "this.form.submit()");
         
-        // use custom decorator for this element
-        $users->removeDecorator('User');
-        $users->addDecorator('Userreviewer', array(
-        	'placement' => 'prepend'
-        ));
+		// use custom decorator for this element
+		$users->removeDecorator('User');
+		$users->addDecorator('Userreviewer', array(
+			'placement' => 'prepend'
+		));
         
-	    $this->addElements(array(
-	    	$submissionId,
-	    	$users
-	    ));
+		$this->addElements(array(
+			$submissionId,
+			$users
+		));
 
 	}
 

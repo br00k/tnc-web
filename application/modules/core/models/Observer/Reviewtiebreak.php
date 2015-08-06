@@ -51,12 +51,12 @@ class Core_Model_Observer_Reviewtiebreak extends TA_Model_Acl_Abstract implement
 		$reviewModel = new Core_Model_Review();
 
 		// get reviews of submission
-		$reviews = $reviewModel->getReviews(null,  null, array(
+		$reviews = $reviewModel->getReviews(null, null, array(
 			'submission_id' => $subject->submission_id
 		), true);
 
 		// trigger when user is wrong reviewer
-		if ( ($subject->self_assessment == 1) && ($reviews['rows']->count() <= 2) ) {
+		if (($subject->self_assessment == 1) && ($reviews['rows']->count() <= 2)) {
 			$this->_mailTiebreakers($subject);
 		} elseif ($reviews['rows']->count() == 2) {
 			// store values

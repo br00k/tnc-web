@@ -50,7 +50,7 @@ class DB_PgSQL
 	{
 		try {
 			$this->dbh = new PDO("pgsql:dbname={$params['db_name']};host={$params['db_host']}", $params['db_user'], $params['db_pass']);
-		} catch(PDOException $e) {
+		} catch (PDOException $e) {
 			$this->error = $e->getMessage();
 			return false;
 		}
@@ -108,9 +108,9 @@ class DB_PgSQL
 	{
 		$result = $this->dbh->query($sql);
 			
-		if($result === false) {
+		if ($result === false) {
 			$errorinfo = $this->dbh->errorInfo();
-			if(!$soft) {
+			if (!$soft) {
 				$this->error = $errorinfo[2];
 			}
 		}
@@ -127,10 +127,9 @@ class DB_PgSQL
 	 */
 	function error($sql = '')
 	{
-		if ( $this->config['db_show_queries'] && $sql ) {
+		if ($this->config['db_show_queries'] && $sql) {
 			$this->error = sprintf($this->language['db_error_query'], @pg_last_error($this->link), $sql);
-		}
-		else {
+		} else {
 			$this->error = sprintf($this->language['db_error'], @pg_last_error($this->link));
 		}
 

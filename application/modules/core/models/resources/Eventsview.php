@@ -42,10 +42,10 @@ class Core_Resource_Eventsview extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getEventById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
-	public function getEvents($paged=null, $order=array())
+	public function getEvents($paged = null, $order = array())
 	{
 		$grid = array();
 		$grid['cols'] = $this->getGridColumns();
@@ -54,21 +54,21 @@ class Core_Resource_Eventsview extends TA_Model_Resource_Db_Table_Abstract
 		$select = $this->select();
 
 		if (!empty($order[0])) {
-			$order = $order[0] .' '.$order[1];
+			$order = $order[0].' '.$order[1];
 		} else {
 			$order = 'lower(title) ASC';
 		}
 		$select->order($order);
 
-		$select->from( 'vw_events', array_keys($this->getGridColumns()) )
-			   ->where( 'conference_id = ?', $this->getConferenceId());
+		$select->from('vw_events', array_keys($this->getGridColumns()))
+			   ->where('conference_id = ?', $this->getConferenceId());
 
 		if ($paged) {
 
 			$adapter = new Zend_Paginator_Adapter_DbTableSelect($select);
 
 			$paginator = new Zend_Paginator($adapter);
-			$paginator->setCurrentPageNumber( (int)$paged )
+			$paginator->setCurrentPageNumber((int) $paged)
 					  ->setItemCountPerPage(20);
 
 			$grid['rows'] = $paginator;

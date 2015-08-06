@@ -39,10 +39,10 @@ class Core_Resource_Posters extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getPosterById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
-	public function getPosters($paged=null, $order=array(), $filter=null)
+	public function getPosters($paged = null, $order = array(), $filter = null)
 	{
 		$grid = array();
 		$grid['cols'] = $this->getGridColumns();
@@ -51,17 +51,17 @@ class Core_Resource_Posters extends TA_Model_Resource_Db_Table_Abstract
 		$select = $this->select();
 
 		if (!empty($order[0])) {
-			$order = $order[0] .' '.$order[1];
+			$order = $order[0].' '.$order[1];
 		} else {
 			$order = 'lower(title) ASC';
 		}
 		$select->order($order);		
 
-		$select->from( 'posters', array_keys($this->getGridColumns()) )
-			   ->where( 'conference_id = ?', $this->getConferenceId());
+		$select->from('posters', array_keys($this->getGridColumns()))
+			   ->where('conference_id = ?', $this->getConferenceId());
 			   
 		if ($filter) {
-			$select->where( 'category = ?', (int) $filter);
+			$select->where('category = ?', (int) $filter);
 		}			   
 
 		if ($paged) {
@@ -69,7 +69,7 @@ class Core_Resource_Posters extends TA_Model_Resource_Db_Table_Abstract
 			$adapter = new Zend_Paginator_Adapter_DbTableSelect($select);
 
 			$paginator = new Zend_Paginator($adapter);
-			$paginator->setCurrentPageNumber( (int)$paged )
+			$paginator->setCurrentPageNumber((int) $paged)
 					  ->setItemCountPerPage(20);
 
 			$grid['rows'] = $paginator;

@@ -29,13 +29,13 @@ class Core_Form_Location_Edit extends Core_Form_Location
 		parent::init();
 
 		$this->setAction('/core/location/edit');
-	    $this->addElement('hidden', 'location_id', array(
+		$this->addElement('hidden', 'location_id', array(
 			'validators' => array(
 				array('Int')
 			),
 			'required' => true,
 			'decorators' => $this->_hiddenElementDecorator
-	    ));	    
+		));	    
 	    
 	}
 	
@@ -47,8 +47,8 @@ class Core_Form_Location_Edit extends Core_Form_Location
 	public function isValid($data)
 	{
 		$this->getElement('abbreviation')
-		     ->getValidator('Zend_Validate_Db_NoRecordExists')     
-		     ->setExclude('location_id !='.$data['location_id'] . ' and conference_id='.$this->_conference['conference_id']);
+			 ->getValidator('Zend_Validate_Db_NoRecordExists')     
+			 ->setExclude('location_id !='.$data['location_id'] . ' and conference_id='.$this->_conference['conference_id']);
 
 		return parent::isValid($data);
 	}	

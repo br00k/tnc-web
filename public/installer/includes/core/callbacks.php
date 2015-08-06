@@ -43,23 +43,23 @@ class Callbacks_Core
 	 *
 	 * @access	public
 	 * @param	array
-	 * @return	object
+	 * @return	null|boolean
 	 */
 	function db_init($params)
 	{
 		$dbtype = isset($params['db_type']) ? $params['db_type'] : $this->config['db_type'];
 
 		// include database class
-		if ( !@is_file(BASE_PATH . 'includes/db/'.$dbtype.'.php') ) {
+		if (!@is_file(BASE_PATH.'includes/db/'.$dbtype.'.php')) {
 			die('"includes/db/'.$dbtype.'.php" file was not found.');
 		}
-		include BASE_PATH . 'includes/db/'.$dbtype.'.php';
+		include BASE_PATH.'includes/db/'.$dbtype.'.php';
 
 		$class = 'DB_'.$dbtype;
 
 		$this->db = new $class($this->config, $this->language);
 
-		if ( !$this->db_connect($params) ) {
+		if (!$this->db_connect($params)) {
 			return false;
 		}
 
@@ -77,7 +77,7 @@ class Callbacks_Core
 	 */
 	function db_connect($params)
 	{
-		if ( !$this->db->connect($params) ) {
+		if (!$this->db->connect($params)) {
 			$this->error = $this->db->error;
 			return false;
 		}
@@ -108,7 +108,7 @@ class Callbacks_Core
 	 */
 	function db_query($sql, $soft = false)
 	{
-		if ( !($result = $this->db->query($sql, $soft)) ) {
+		if (!($result = $this->db->query($sql, $soft))) {
 			$this->error = $this->db->error;	
 		}
 
@@ -141,7 +141,7 @@ class Callbacks_Core
 	 */
 	function db_fetch($result, $type = 'object')
 	{
-		if ( !($row = $this->db->fetch($result, $type)) ) {
+		if (!($row = $this->db->fetch($result, $type))) {
 			$this->error = $this->db->error;
 		}
 
@@ -156,7 +156,7 @@ class Callbacks_Core
 	 */
 	function db_last_insert_id()
 	{
-		if ( !($id = $this->db->last_insert_id()) ) {
+		if (!($id = $this->db->last_insert_id())) {
 			$this->error = $this->db->error;
 		}
 
@@ -169,12 +169,13 @@ class Callbacks_Core
 	 * @access	public
 	 * @param	string
 	 * @param	array
+	 * @param string $filename
 	 * @return	boolean
 	 */
 	function db_import_file($filename, $replace = array())
 	{
 		// does file exist?
-		if ( @file_exists($filename) ) {
+		if (@file_exists($filename)) {
 
 			$queries = array();
 			$query = '';
@@ -184,15 +185,13 @@ class Callbacks_Core
 			$data = @file_get_contents($filename);
 
 			// does data variable have anything in it?
-			if ( $data ) {
+			if ($data) {
 
 				return $this->db_import_sql($data, $replace);
-			}
-			else {
+			} else {
 				$this->error = sprintf($this->language['db_file'], $filename);
 			}
-		}
-		else {
+		} else {
 			$this->error = sprintf($this->language['db_file'], $filename);
 		}
 
@@ -212,14 +211,14 @@ class Callbacks_Core
 			Multiline queries have embedded Carriage Returns
 		*/
 		
-		$pat[]=      '!/\*.*?\*/!s';
-		$repl[]=     '';
+		$pat[] = '!/\*.*?\*/!s';
+		$repl[] = '';
 
-		$pat[]=      '/\n\s*\n/';
-		$repl[]=     "\n";
+		$pat[] = '/\n\s*\n/';
+		$repl[] = "\n";
 
-		$pat[]=      "/^--(.*)/m";
-		$repl[]=     '';
+		$pat[] = "/^--(.*)/m";
+		$repl[] = '';
 
 		# Remove comments
 		$sql = trim(preg_replace($pat, $repl, $sql));
@@ -228,7 +227,7 @@ class Callbacks_Core
 
 		$queries = array_map(
 				function($q) {
-						if(substr($q, -1) === ';') {
+						if (substr($q, -1) === ';') {
 								return trim($q);
 						} else {
 								return trim($q).';';
@@ -236,18 +235,18 @@ class Callbacks_Core
 				}, $queries);
 
 		// loop through queries
-		foreach ( $queries as $query) {
+		foreach ($queries as $query) {
 			// do we need to replace anything?
-			if ( $replace ) {
+			if ($replace) {
 				// loop through the replacement array
-				foreach ( $replace as $replace_from => $replace_to ) {
+				foreach ($replace as $replace_from => $replace_to) {
 					// replace values
 					$query = preg_replace('#'.preg_quote($replace_from, '#').'#i', $replace_to, $query);
 				}
 			}
 
 			// run query
-			if ( $this->db_query($query) === false ) {
+			if ($this->db_query($query) === false) {
 				$this->error = $this->db->error;
 				return false;
 			}

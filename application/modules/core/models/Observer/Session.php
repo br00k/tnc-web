@@ -38,10 +38,10 @@ class Core_Model_Observer_Sessionsubscriber extends TA_Model_Acl_Abstract implem
 
 		  $mailer = new TA_Controller_Action_Helper_SendEmail();
 		  $mailer->sendEmail(array(
-		     'to_email' => $subscriptions,
-		     'html' => true,
-		     'subject' => $conference['name']. ': Session updated',
-		     'template' => 'session/observer'
+			 'to_email' => $subscriptions,
+			 'html' => true,
+			 'subject' => $conference['name']. ': Session updated',
+			 'template' => 'session/observer'
 		  ), $subject->toArray());
 
 		}

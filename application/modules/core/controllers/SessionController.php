@@ -34,7 +34,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 
 		// Set navigation to active for all actions within this controller
-		$page = $this->view->navigation()->findBy('controller', $this->getRequest()->getControllerName() );
+		$page = $this->view->navigation()->findBy('controller', $this->getRequest()->getControllerName());
 		if ($page) {
 			$page->setActive();
 
@@ -89,8 +89,8 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 
 			$eventlogModel = new Core_Model_Eventlog();
 			$eventlogModel->saveEventlog(array(
-			    'event_type' => __METHOD__,
-			    'timestamp' => 'now()'
+				'event_type' => __METHOD__,
+				'timestamp' => 'now()'
 			));
 		}
 	}
@@ -130,21 +130,21 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		$this->view->evaluationForm = $this->_sessionModel->getForm('sessionEvaluation');
 		$defaults = $this->_sessionModel->getEvaluationBySessionId($id);
 		if ($defaults) {
-			$this->view->updated = (isset($defaults['updated'])) ? $defaults['updated']: $defaults['inserted'];
+			$this->view->updated = (isset($defaults['updated'])) ? $defaults['updated'] : $defaults['inserted'];
 			$userModel = new Core_Model_User();
 			$this->view->user = $userModel->getUserById($defaults['user_id']);
 		}
 		$defaults['session_id'] = $id;
 
 		// No post;
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			// populate form with defaults
 			$this->view->evaluationForm->setDefaults($defaults);
 			return $this->render('evaluate');
 		}
 
 		// try to persist evaluation
-		if ( $this->_sessionModel->saveEvaluation($request->getPost()) === false ) {
+		if ($this->_sessionModel->saveEvaluation($request->getPost()) === false) {
 			$this->view->evaluationForm = $this->_sessionModel->getForm('sessionEvaluation');
 			return $this->render('evaluate');
 		}
@@ -177,7 +177,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		if ( $this->_sessionModel->checkAcl('evaluate') ) {
 			// add evaluate action to the stack!
 			$this->_helper->actionStack('evaluate');
-        }
+		}
 
 		// No post;
 		if ( !$request->isPost() )  {
@@ -190,7 +190,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		// persist presentation/session mapping
 		$save = $this->_sessionModel->savePresentations($request->getPost());
 
-		if ($save === false ) {
+		if ($save === false) {
 			$this->_helper->flashMessenger(
 				'Something went wrong adding the presentation to this session'
 			);
@@ -259,7 +259,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		$this->view->id = (int) $request->getParam('id');
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->sessionForm = $this->_sessionModel->getForm('sessionEdit');
 			// populate form with defaults
 			$this->view->sessionForm->setDefaults(
@@ -269,7 +269,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		}
 
 		// try to save user to database
-		if ( $this->_sessionModel->saveSession($request->getPost(), 'edit') === false ) {
+		if ($this->_sessionModel->saveSession($request->getPost(), 'edit') === false) {
 			$this->view->sessionForm = $this->_sessionModel->getForm('sessionEdit');
 			return $this->render('formEdit');
 		}
@@ -281,7 +281,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 
 	public function deleteAction()
 	{
-		if ( false === $this->_sessionModel->delete($this->_getParam('id')) ) {
+		if (false === $this->_sessionModel->delete($this->_getParam('id'))) {
 			throw new TA_Model_Exception('Something went wrong with deleting the user');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'session', 'action'=>'list'), 'grid');
@@ -292,7 +292,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		$request = $this->getRequest();
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->sessionForm = $this->_sessionModel->getForm('session');
 			// set default values from request parameters
 			$this->view->sessionForm->setDefaults(
@@ -302,7 +302,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		}
 
 		// try to persist user
-		if ( $this->_sessionModel->saveSession($request->getPost()) === false ) {
+		if ($this->_sessionModel->saveSession($request->getPost()) === false) {
 			return $this->displayForm();
 		}
 
@@ -339,7 +339,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		$this->view->session = $session = $this->_sessionModel->getSessionById($id);
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$form = $this->view->sessionUserForm = $this->_sessionModel->getForm('sessionUser');
 			// populate form with defaults
 			$this->view->sessionUserForm->setDefaults(array(
@@ -352,7 +352,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		}
 
 		// persist user/session mapping
-		if ( $this->_sessionModel->saveChairs($request->getPost()) === false ) {
+		if ($this->_sessionModel->saveChairs($request->getPost()) === false) {
 			$this->_helper->lastRequest();
 		}
 
@@ -372,7 +372,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		$this->view->session = $this->_sessionModel->getSessionById($this->view->id);
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$form = $this->view->sessionFilesForm = $this->_sessionModel->getForm('sessionFiles');
 			$form->setDefaults(array(
 			   	'session_id' => $id
@@ -389,7 +389,7 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		}
 
 		// persist user/files
-		if ( $this->_sessionModel->saveFiles($request->getPost()) === false ) {
+		if ($this->_sessionModel->saveFiles($request->getPost()) === false) {
 			$this->_helper->lastRequest();
 		}
 
@@ -427,17 +427,17 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 			$googleTest = new Core_Service_GoogleTest();
 
 			$idUrl = $googleTest->createEvent(
-			   $this->_sessionModel->getAllSessionDataById( $this->_getParam('id') )
+			   $this->_sessionModel->getAllSessionDataById($this->_getParam('id'))
 			);
 		} catch (Zend_Gdata_App_AuthException $e) {
 			$this->_helper->flashMessenger('Something went wrong saving this session to your personal calendar - please contact the admins of this site');
 			$log = Zend_Registry::get('log');
-        	$log->emerg($e);
-        	$this->_redirectToSession();
+			$log->emerg($e);
+			$this->_redirectToSession();
 		}
 
 		$this->_helper->flashMessenger('Succesfully saved this session to your personal Google calendar');
-        $this->_redirectToSession();
+		$this->_redirectToSession();
 	}
 
 	/**

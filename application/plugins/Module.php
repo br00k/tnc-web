@@ -26,8 +26,8 @@
 class Application_Plugin_Module extends Zend_Controller_Plugin_Abstract
 {
 
-    public function preDispatch(Zend_Controller_Request_Abstract $request)
-    {
+	public function preDispatch(Zend_Controller_Request_Abstract $request)
+	{
 		if ($request->getModuleName() == 'web') {
 
 			$conference = Zend_Registry::get('conference');

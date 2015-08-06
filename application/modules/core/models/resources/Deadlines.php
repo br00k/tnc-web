@@ -31,7 +31,7 @@ class Core_Resource_Deadlines extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getDeadlineById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 }

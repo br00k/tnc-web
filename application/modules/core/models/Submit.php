@@ -1,21 +1,21 @@
 <?php
 /**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Submit.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
- */
+	 * CORE Conference Manager
+	 *
+	 * LICENSE
+	 *
+	 * This source file is subject to the new BSD license that is bundled
+	 * with this package in the file LICENSE.txt.
+	 * It is also available through the world-wide-web at this URL:
+	 * http://www.terena.org/license/new-bsd
+	 * If you did not receive a copy of the license and are unable to
+	 * obtain it through the world-wide-web, please send an email
+	 * to webmaster@terena.org so we can send you a copy immediately.
+	 *
+	 * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+	 * @license    http://www.terena.org/license/new-bsd     New BSD License
+	 * @revision   $Id: Submit.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
+	 */
 
 /**
  *
@@ -33,10 +33,10 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	public function getSubmissionById($id)
 	{
 		$row = $this->getResource('submissions')->getSubmissionById( (int) $id );
-    	if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	/**
@@ -49,10 +49,10 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	{
 		$return = array('submission_id'=>$id);
 		$row = $this->getResource('submissionstatus')->getStatusBySubmissionId( (int) $id );
-    	if ($row === null) {
-    		return $return;
-    	}
-    	return $row->toArray();
+		if ($row === null) {
+			return $return;
+		}
+		return $row->toArray();
 	}
 
 	/**
@@ -65,7 +65,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	{
 		if (!$this->checkAcl('statusSave')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+		}
 
 		$form = $this->getForm('submitStatus');
 		// perform validation
@@ -92,15 +92,15 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	 * If a user is allowed to review submissions, only the submissions they should
 	 * review are shown
 	 *
-	 * @param		integer		$page	Page number to show
+	 * @param		integer		$paged	Page number to show
 	 * @param		array		$order	Array with keys 'field' and 'direction'
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
 	 */
 	public function getSubmissions($paged = null, $order = array(), $session = null)
 	{
 		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		return $this->getResource('submissionsview')->getSubmissions($paged, $order, $session);
 	}
@@ -110,13 +110,13 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	 *
 	 * @return	string	filename
 	 */
-	public function getArchiveBySubmissionIds($filter, $format='zip')
+	public function getArchiveBySubmissionIds($filter, $format = 'zip')
 	{
 		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
         
-        $fileIdsSubmissionIds = $this->getResource('submissionsview')->getFileIds($filter, false, true);
+		$fileIdsSubmissionIds = $this->getResource('submissionsview')->getFileIds($filter, false, true);
 
 		$files = $this->getResource('filesview')->getFilesByIds(
 			array_keys($fileIdsSubmissionIds)
@@ -149,10 +149,10 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	public function getAllSubmissionDataById($id)
 	{
 		$row = $this->getResource('submissionsview')->getSubmissionById( (int) $id );
-    	if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	/**
@@ -186,7 +186,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	{
 		if (!$this->checkAcl('mail')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+		}
 
 		$list = array();
 
@@ -200,7 +200,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 
 		// get proposed sessions of the submissions
 		if ($statusId == 1) {
-			if (false == $sessions = $this->getResource('sessionsview')->getSessionsByIds($submissions) ) {
+			if (false == $sessions = $this->getResource('sessionsview')->getSessionsByIds($submissions)) {
 				throw new TA_Model_Exception('Found accepted submission that does not belong to a session, please fix!');
 			}
 			$chairs = $sessions->getChairs();
@@ -211,7 +211,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 
 			// only reviews of this submission
 			$review = array_filter($reviews->toArray(), function($val) use($submission) {
-		        return ($val['submission_id'] == $submission['submission_id']);
+				return ($val['submission_id'] == $submission['submission_id']);
 			});
 			$list[$submission['submission_id']]['reviews'] = $review ? $review : null;
 
@@ -219,10 +219,10 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 				// get session that this submission belongs to
 				// use current because a submission can only belong to one session
 				$session = current(array_filter($sessions->toArray(), function($val) use($submission) {
-		    	    return ($val['session_id'] == $submission['session_id']);
+					return ($val['session_id'] == $submission['session_id']);
 				}));
 				$chair = array_filter($chairs, function($val) use($submission) {
-		    	    return ($val['session_id'] == $submission['session_id']);
+					return ($val['session_id'] == $submission['session_id']);
 				});
 				$list[$submission['submission_id']]['session'] = $session ? $session : null;
 				$list[$submission['submission_id']]['session']['chair'] = $chair ? $chair : null;
@@ -237,7 +237,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	 * Get all submissions belonging to a conference that are accepted
 	 *
 	 * @param		array	$post	Post request
-	 * @return Zend_Db_Table_Rowset
+	 * @return Core_Resource_Submission_Set
 	 */
 	public function getAcceptedSubmissions(array $post)
 	{
@@ -261,8 +261,8 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	public function setTiebreaker($id = null, $value = null)
 	{
 		if (!$this->checkAcl('reviewerSave')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 		if ( ($id === null) || ($value === null) ) {
 			return false;
 		}
@@ -276,8 +276,8 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	public function deleteReviewer($id = null)
 	{
 		if (!$this->checkAcl('reviewerDelete')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;
@@ -291,7 +291,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	{
 		if (!$this->checkAcl('reviewerSave')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+		}
 
 		$form = $this->getForm('submitUser');
 		// perform validation
@@ -322,8 +322,8 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	public function delete($id = null)
 	{
 		if (!$this->checkAcl('delete')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;
@@ -341,7 +341,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	 */
 	public function saveSubmissionOnly(array $post, $action = null)
 	{
-        // get different form based on action parameter
+		// get different form based on action parameter
 		$formName = ($action) ? 'submit' . ucfirst($action) : 'submit';
 		$form = $this->getForm($formName);
 
@@ -378,10 +378,10 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	public function saveSubmission(array $post, $action = null)
 	{
 		if (!$this->checkAcl('save')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        // get different form based on action parameter
+		// get different form based on action parameter
 		$formName = ($action) ? 'submit' . ucfirst($action) : 'submit';
 		$form = $this->getForm($formName);
 
@@ -391,7 +391,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 		}
 
 		// no file upload, so only save submission
-		if ( !$form->submission->file->isUploaded() ) {
+		if (!$form->submission->file->isUploaded()) {
 			return $this->saveSubmissionOnly($post, $action);
 		}
 
@@ -399,15 +399,15 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 		try {
 			$fileInfo = array();
 			$adapter = $form->submission->file->getTransferAdapter();
-		    $hash = $adapter->getHash('sha1');
+			$hash = $adapter->getHash('sha1');
 
-		    $form->submission->file->addFilter('rename', array(
-		        'target' => Zend_Registry::get('config')->directories->uploads.$hash,
-		        'overwrite' => true // @todo: set to FALSE when debugging is over!
-		    ));
+			$form->submission->file->addFilter('rename', array(
+				'target' => Zend_Registry::get('config')->directories->uploads.$hash,
+				'overwrite' => true // @todo: set to FALSE when debugging is over!
+			));
 
-		    $origName = $adapter->getFileName();
-		    $adapter->receive();
+			$origName = $adapter->getFileName();
+			$adapter->receive();
 			$fileInfo = $adapter->getFileInfo();
 			$fileInfo['file']['_filename_original'] = $origName;
 			$fileInfo['file']['_filehash'] = $hash;

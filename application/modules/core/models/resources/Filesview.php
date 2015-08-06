@@ -37,7 +37,7 @@ class Core_Resource_Filesview extends TA_Model_Resource_Db_Table_Abstract
 
 	public function getFileById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 	
 	/**
@@ -48,7 +48,7 @@ class Core_Resource_Filesview extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getFilesByIds($ids)
 	{
-		return $this->find( array_filter($ids) );
+		return $this->find(array_filter($ids));
 	}
 
 }

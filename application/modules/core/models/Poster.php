@@ -33,26 +33,26 @@ class Core_Model_Poster extends TA_Model_Acl_Abstract
 	public function getPosterById($id)
 	{
 		$row = $this->getResource('posters')->getPosterById( (int) $id );
-    	if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	/**
 	 * Get a list of posters
-	 * @param		integer		$page	Page number to show
+	 * @param		integer		$paged	Page number to show
 	 * @param		array		$order	Array with keys 'field' and 'direction'
 	 * @param		boolean		$group	Group rows by date
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
 	 */
-	public function getPosters($paged=null, $order=array(), $group = false)
+	public function getPosters($paged = null, $order = array(), $group = false)
 	{
 		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        $items = $this->getResource('posters')->getPosters($paged, $order);
+		$items = $this->getResource('posters')->getPosters($paged, $order);
 
 		if ($group) {
 			$items['rows'] = $items['rows']->group();
@@ -62,19 +62,19 @@ class Core_Model_Poster extends TA_Model_Acl_Abstract
 
 	/**
 	 * Get a list of posters
-	 * @param		integer		$page	Page number to show
+	 * @param		integer		$paged	Page number to show
 	 * @param		array		$order	Array with keys 'field' and 'direction'
-	 * @param		boolean		$group	Group rows by date
+	 * @param integer $category
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
 	 */	
-	public function getPostersByCategory($paged=null, $order=array(), $category=null)
+	public function getPostersByCategory($paged = null, $order = array(), $category = null)
 	{
 		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }	
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}	
  
-        $items = $this->getResource('posters')->getPosters($paged, $order, $category);  
-        return $items;     
+		$items = $this->getResource('posters')->getPosters($paged, $order, $category);  
+		return $items;     
 	}
 
 	/**
@@ -85,8 +85,8 @@ class Core_Model_Poster extends TA_Model_Acl_Abstract
 	public function delete($id = null)
 	{
 		if (!$this->checkAcl('delete')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;
@@ -107,10 +107,10 @@ class Core_Model_Poster extends TA_Model_Acl_Abstract
 	{
 		// perform ACL check
 		if (!$this->checkAcl('save')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        // get different form based on action parameter
+		// get different form based on action parameter
 		$formName = ($action) ? 'poster' . ucfirst($action) : 'poster';
 		$form = $this->getForm($formName);
 
@@ -119,20 +119,20 @@ class Core_Model_Poster extends TA_Model_Acl_Abstract
 			return false;
 		}
 
-		if ( $form->file->isUploaded() ) {
+		if ($form->file->isUploaded()) {
 			// save file to filesystem
 			try {
 				$fileInfo = array();
 				$adapter = $form->file->getTransferAdapter();
-			    $hash = $adapter->getHash('sha1');
+				$hash = $adapter->getHash('sha1');
 
-			    $form->file->addFilter('rename', array(
-			        'target' => Zend_Registry::get('config')->directories->uploads.$hash,
-			        'overwrite' => true
-			    ));
+				$form->file->addFilter('rename', array(
+					'target' => Zend_Registry::get('config')->directories->uploads.$hash,
+					'overwrite' => true
+				));
 
-			    $origName = $adapter->getFileName();
-			    $adapter->receive();
+				$origName = $adapter->getFileName();
+				$adapter->receive();
 				$fileInfo = $adapter->getFileInfo();
 				$fileInfo['file']['_filename_original'] = $origName;
 				$fileInfo['file']['_filehash'] = $hash;
@@ -149,7 +149,7 @@ class Core_Model_Poster extends TA_Model_Acl_Abstract
 			// get filtered values
 			$values = $form->getValues();
 
-			if ( $form->file->isUploaded() ) {
+			if ($form->file->isUploaded()) {
 				// persist file
 				$fileId = $this->getResource('files')->saveRow($fileInfo);
 				$values['file_id'] = $fileId;

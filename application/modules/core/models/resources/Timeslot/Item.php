@@ -29,12 +29,12 @@ class Core_Resource_Timeslot_Item extends TA_Model_Resource_Db_Table_Row_Abstrac
 	// returns concatenated start/end time, eg: "10/11/2010 09:00-11:00"
 	public function getCompleteTimeslot()
 	{
-		return $this->_isoToNormalDate($this->tstart, 'dd/MM/yyyy HH:mm') . '-' . $this->_isoToNormalDate($this->tend, 'HH:mm');
+		return $this->_isoToNormalDate($this->tstart, 'dd/MM/yyyy HH:mm').'-'.$this->_isoToNormalDate($this->tend, 'HH:mm');
 	}
 	
 	public function getTimeslotTimes()
 	{
-		return $this->_isoToNormalDate($this->tstart, 'HH:mm') . '-' . $this->_isoToNormalDate($this->tend, 'HH:mm');
+		return $this->_isoToNormalDate($this->tstart, 'HH:mm').'-'.$this->_isoToNormalDate($this->tend, 'HH:mm');
 	}
 	
 	public function getStartDay()

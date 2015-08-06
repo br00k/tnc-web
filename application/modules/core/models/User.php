@@ -1,21 +1,21 @@
 <?php
 /**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: User.php 88 2012-12-10 11:54:14Z gijtenbeek@terena.org $
- */
+	 * CORE Conference Manager
+	 *
+	 * LICENSE
+	 *
+	 * This source file is subject to the new BSD license that is bundled
+	 * with this package in the file LICENSE.txt.
+	 * It is also available through the world-wide-web at this URL:
+	 * http://www.terena.org/license/new-bsd
+	 * If you did not receive a copy of the license and are unable to
+	 * obtain it through the world-wide-web, please send an email
+	 * to webmaster@terena.org so we can send you a copy immediately.
+	 *
+	 * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+	 * @license    http://www.terena.org/license/new-bsd     New BSD License
+	 * @revision   $Id: User.php 88 2012-12-10 11:54:14Z gijtenbeek@terena.org $
+	 */
 
 /**
  *
@@ -42,10 +42,10 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 	public function getUserById($id)
 	{
 		$row = $this->getResource('users')->getUserById( (int) $id );
-    	if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 	 */
 	public function getUserByEmail($email)
 	{
-		return $this->getResource('users')->getUserByEmail( $email );
+		return $this->getResource('users')->getUserByEmail($email);
 	}
 
 	/**
@@ -65,7 +65,7 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 	 */
 	public function getUserBySmartId($smartid)
 	{
-		return $this->getResource('users')->getUserBySmartId( $smartid );
+		return $this->getResource('users')->getUserBySmartId($smartid);
 	}
 
 	/**
@@ -98,25 +98,25 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 	public function searchUser($search)
 	{
 		if (!$this->checkAcl('searchUser')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }	
-        return $this->getResource('users')->searchUser($search);        
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}	
+		return $this->getResource('users')->searchUser($search);        
 	}
 
 	/**
 	 * Get a list of users
-	 * @param		integer		$page	Page number to show
+	 * @param		integer		$paged	Page number to show
 	 * @param		array		$order	Array with keys 'field' and 'direction'
 	 * @param		boolean		$bypassAcl
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
 	 */
-	public function getUsers($paged, $order, $filter=null, $bypassAcl = false)
+	public function getUsers($paged, $order, $filter = null, $bypassAcl = false)
 	{
 		if (!$bypassAcl) {
 			if (!$this->checkAcl('list')) {
-        	    throw new TA_Model_Acl_Exception("Insufficient rights");
-        	}
-        }
+				throw new TA_Model_Acl_Exception("Insufficient rights");
+			}
+		}
 
 		return $this->getResource('users')->getUsers($paged, $order, $filter);
 	}
@@ -130,7 +130,7 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 		if (!$role) {
 			throw new TA_Model_Exception('Please provide a role');
 		}
-		if ( $this->getResource('roles')->getRoleIdByName($role) ) {
+		if ($this->getResource('roles')->getRoleIdByName($role)) {
 			$filter = new stdClass();
 			$filter->filters = new stdClass();
 			$filter->filters->role_name = $role;
@@ -153,6 +153,9 @@ class Core_Model_User extends TA_Model_Acl_Abstract
         return $this->getResource('users')->getRolesOfUser($id);
 	}
 
+	/**
+	 * @param string $addEmpty
+	 */
 	public function getRolesForSelect($addEmpty = null)
 	{
 		if (!$this->checkAcl('showRoles')) {
@@ -170,8 +173,8 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 	public function delete($id = null)
 	{
 		if (!$this->checkAcl('delete')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;
@@ -191,10 +194,10 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 	public function saveUser(array $post, $action = null)
 	{
 		if (!$this->checkAcl('save')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        // get different form (needed to validate values against) based on action parameter
+		// get different form (needed to validate values against) based on action parameter
 		$formName = ($action) ? 'user' . ucfirst($action) : 'userInvite';
 		$form = $this->getForm($formName);
 
@@ -203,21 +206,21 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 			return false;
 		}
 
-		if ( $form->file->isUploaded() ) {
+		if ($form->file->isUploaded()) {
 
 			// save file to filesystem
 			try {
 				$fileInfo = array();
 				$adapter = $form->file->getTransferAdapter();
-			    $hash = $adapter->getHash('sha1');
+				$hash = $adapter->getHash('sha1');
 
-			    $form->file->addFilter('rename', array(
-			        'target' => Zend_Registry::get('config')->directories->uploads.$hash,
-			        'overwrite' => true // @todo: set to FALSE when debugging is over!
-			    ));
+				$form->file->addFilter('rename', array(
+					'target' => Zend_Registry::get('config')->directories->uploads.$hash,
+					'overwrite' => true // @todo: set to FALSE when debugging is over!
+				));
 
-			    $origName = $adapter->getFileName();
-			    $adapter->receive();
+				$origName = $adapter->getFileName();
+				$adapter->receive();
 				$fileInfo = $adapter->getFileInfo();
 				$fileInfo['file']['_filename_original'] = $origName;
 				$fileInfo['file']['_filehash'] = $hash;
@@ -235,7 +238,7 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 			// get filtered values
 			$values = $form->getValues();
 
-			if ( $form->file->isUploaded() ) {
+			if ($form->file->isUploaded()) {
 				// persist file
 				$fileId = $this->getResource('files')->saveRow($fileInfo);
 				$values['file_id'] = $fileId;
@@ -250,19 +253,19 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 
 			// Give user a role
 			if ($this->checkAcl('roleSave')) {
-				if ( array_key_exists('role_id', $values) ) {
+				if (array_key_exists('role_id', $values)) {
 					$data = array('user_id' => $userId, 'role_id' => $values['role_id']);
 					if (!$this->getResource('userroles')->getItemByValues($data)) {
-					    $this->getResource('userroles')->saveRow($data);
+						$this->getResource('userroles')->saveRow($data);
 					}
 				}
-        	}
+			}
 
-        	// store invitee data in audit table
-        	if (!$user) {
-        		$values['user_id'] = $userId;
-        		$this->saveUseraudit($values);
-        	}
+			// store invitee data in audit table
+			if (!$user) {
+				$values['user_id'] = $userId;
+				$this->saveUseraudit($values);
+			}
 
 			$db->commit();
 			if ($user) {
@@ -284,23 +287,23 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 	{
 		if (!$this->checkAcl('audit')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
-        $this->getResource('useraudit')->saveRow($values);
+		}
+		$this->getResource('useraudit')->saveRow($values);
 	}
 
 
 	/**
-     * Save user/role link
-     *
-     * @param	array	$post	Post variable
-     * @return	mixed	The primary key of the inserted record if insert went OK
-     *					false if user already belongs to this session
-     */
+	 * Save user/role link
+	 *
+	 * @param	array	$post	Post variable
+	 * @return	mixed	The primary key of the inserted record if insert went OK
+	 *					false if user already belongs to this session
+	 */
 	public function saveRoles(array $post)
 	{
 		if (!$this->checkAcl('roleSave')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+		}
 
 		$form = $this->getForm('userRole');
 		// perform validation
@@ -329,8 +332,8 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 	public function deleteRole($id = null)
 	{
 		if (!$this->checkAcl('roleDelete')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;

@@ -30,9 +30,9 @@ class Core_Form_Feedback_Logistics extends TA_Form_Abstract
 
 		$this->setAction('/core/feedback/logistics');
 
-	    $id = new Zend_Form_Element_Hidden('id');
-	    $id->setRequired(true)
-	       ->setLabel('id')
+		$id = new Zend_Form_Element_Hidden('id');
+		$id->setRequired(true)
+		   ->setLabel('id')
 		   ->addValidators(
 			   array('Int')
 		   )
@@ -55,23 +55,23 @@ class Core_Form_Feedback_Logistics extends TA_Form_Abstract
 
 		// add all elements in loop, since they are all the same
 		foreach ($elements as $name => $label) {
-	    	$newSelect = new Zend_Form_Element_Radio($name);
-	    	$newSelect->setLabel($label)
+			$newSelect = new Zend_Form_Element_Radio($name);
+			$newSelect->setLabel($label)
 					  ->setAttrib('class', 'tiny')
 					  //->setOptions(array("listsep" => ' '))
 					  ->setMultiOptions($this->_getFieldValues('rating', 'feedback'))
 					  ->setDecorators(array('Composite'));
 
-	    	$newText = new Zend_Form_Element_Text('remarks_'.$name);
-	    	$newText->setDescription('Comments')
+			$newText = new Zend_Form_Element_Text('remarks_'.$name);
+			$newText->setDescription('Comments')
 					->setAttrib('class', 'medium')
 					->setDecorators(array('Composite'));
 
 			$this->addElements(array($newSelect, $newText));
 		}
 
-	    $accomodation = new Zend_Form_Element_Radio('vfm_accomodation');
-	    $accomodation->setLabel('Accommodation')
+		$accomodation = new Zend_Form_Element_Radio('vfm_accomodation');
+		$accomodation->setLabel('Accommodation')
 					 ->setAttrib('class', 'tiny')
 					 //->setOptions(array("listsep" => ' '))
 					 ->setMultiOptions(array(
@@ -85,17 +85,17 @@ class Core_Form_Feedback_Logistics extends TA_Form_Abstract
 		$regfee->setName('vfm_regfee')
 			   ->setLabel('Registration fee');
 
-	    $comments = new Zend_Form_Element_Textarea('comments');
-	    $comments->setLabel('Comments on the logistical arrangements')
-	    	 	 ->setAttrib('class', 'medium')
-	    	 	 ->setDescription('Please limit your comments to 1000 characters')
-	    	 	 ->setRequired(false)
-	    	 	 ->addValidator('StringLength', true, array(1, 5000,
-	    	 	 	'messages' => array(
+		$comments = new Zend_Form_Element_Textarea('comments');
+		$comments->setLabel('Comments on the logistical arrangements')
+			 	 ->setAttrib('class', 'medium')
+			 	 ->setDescription('Please limit your comments to 1000 characters')
+			 	 ->setRequired(false)
+			 	 ->addValidator('StringLength', true, array(1, 5000,
+			 	 	'messages' => array(
 			 	 		Zend_Validate_StringLength::TOO_SHORT => 'Please provide a longer comment',
 			 	 		Zend_Validate_StringLength::TOO_LONG => 'Your comment is too long'
 			 	 	)
-	    	 	 ))
+			 	 ))
 			 	 ->setDecorators(array('Composite'));
 
 		$this->addElements(array(
@@ -105,9 +105,9 @@ class Core_Form_Feedback_Logistics extends TA_Form_Abstract
 			$comments
 		));
 		
-	    $this->addElement('submit', 'submit', array(
+		$this->addElement('submit', 'submit', array(
 			'decorators' => $this->_buttonElementDecorator
-	    ));
+		));
 	}
 
 

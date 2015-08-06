@@ -34,12 +34,11 @@ abstract class Webdemo_AbstractController extends Zend_Controller_Action
 	 *
 	 * @param boolean $flag
 	 */
-	protected function enableSharedViews($flag=true)
+	protected function enableSharedViews($flag = true)
 	{
-		if($flag) {
+		if ($flag) {
 			$this->_helper->viewRenderer->setViewScriptPathSpec('_shared/:action.:suffix');
-		}
-		else {
+		} else {
 			$this->_helper->viewRenderer->setViewScriptPathSpec(':action.:suffix');
 		}
 	}
@@ -47,14 +46,14 @@ abstract class Webdemo_AbstractController extends Zend_Controller_Action
 	public function init()
 	{
 		$this->_conference = Zend_Registry::get('conference');
-    	$this->view->messages = $this->_helper->flashMessenger->getMessages();
-    	$page = $this->view->navigation()->findBy('controller', $this->getRequest()->getControllerName() );
+		$this->view->messages = $this->_helper->flashMessenger->getMessages();
+		$page = $this->view->navigation()->findBy('controller', $this->getRequest()->getControllerName() );
 
 		// add controller specific css
 		if ($page->css) {
-    		$this->view->headLink()->appendStylesheet(
-    			'/includes/'.strtolower($this->_conference['abbreviation']).'/css/' . $this->getRequest()->getControllerName() . '.css'
-    		);
+			$this->view->headLink()->appendStylesheet(
+				'/includes/'.strtolower($this->_conference['abbreviation']).'/css/' . $this->getRequest()->getControllerName() . '.css'
+			);
 		}
 		
 		// three column layout?
@@ -78,11 +77,11 @@ abstract class Webdemo_AbstractController extends Zend_Controller_Action
 	 */
 	public function __call($method, $args)
 	{
-	    if ('Action' == substr($method, -6)) {
-	        $action = $this->getRequest()->getActionName();
-	        return $this->render($action);
-	    }
+		if ('Action' == substr($method, -6)) {
+			$action = $this->getRequest()->getActionName();
+			return $this->render($action);
+		}
 
-	    throw new Exception('Invalid method');
+		throw new Exception('Invalid method');
 	}
 }

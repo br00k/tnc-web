@@ -35,69 +35,69 @@ class Core_FeedbackController extends Zend_Controller_Action
 
 		$this->view->navigation()->addPages(array(
 			array(
-			    'label' => '',
-			    'title' => '',
-			    'module' => 'core',
-			    'controller' => 'feedback',
-			    'action' => 'index',
-			    'route' => 'main-module',
-			    'active' => true,
-			    'reset_params' => true,
-			    'pages' => array(
+				'label' => '',
+				'title' => '',
+				'module' => 'core',
+				'controller' => 'feedback',
+				'action' => 'index',
+				'route' => 'main-module',
+				'active' => true,
+				'reset_params' => true,
+				'pages' => array(
 					array(
-					    'label' => 'Participant',
-					    'corename' => 'feedback.participant',
-					    'title' => 'participant',
-					    'module' => 'core',
-					    'controller' => 'feedback',
-					    'action' => 'participant',
-					    'route' => 'main-module',
-					    'visible' => true,
-					    'reset_params' => true
+						'label' => 'Participant',
+						'corename' => 'feedback.participant',
+						'title' => 'participant',
+						'module' => 'core',
+						'controller' => 'feedback',
+						'action' => 'participant',
+						'route' => 'main-module',
+						'visible' => true,
+						'reset_params' => true
 					),
 					array(
-					    'label' => 'General',
-					    'corename' => 'feedback.general',
-					    'title' => 'general',
-					    'module' => 'core',
-					    'controller' => 'feedback',
-					    'action' => 'general',
-					    'route' => 'main-module',
-					    'visible' => true,
-					    'reset_params' => true
+						'label' => 'General',
+						'corename' => 'feedback.general',
+						'title' => 'general',
+						'module' => 'core',
+						'controller' => 'feedback',
+						'action' => 'general',
+						'route' => 'main-module',
+						'visible' => true,
+						'reset_params' => true
 					),
 					array(
-					    'label' => 'Logistics',
-					    'corename' => 'feedback.logistics',
-					    'title' => 'logistics',
-					    'module' => 'core',
-					    'controller' => 'feedback',
-					    'action' => 'logistics',
-					    'route' => 'main-module',
-					    'visible' => true,
-					    'reset_params' => true
+						'label' => 'Logistics',
+						'corename' => 'feedback.logistics',
+						'title' => 'logistics',
+						'module' => 'core',
+						'controller' => 'feedback',
+						'action' => 'logistics',
+						'route' => 'main-module',
+						'visible' => true,
+						'reset_params' => true
 					),
 					array(
-					    'label' => 'Programme',
-					    'corename' => 'feedback.programme',
-					    'title' => 'programme',
-					    'module' => 'core',
-					    'controller' => 'feedback',
-					    'action' => 'programme',
-					    'route' => 'main-module',
-					    'visible' => true,
-					    'reset_params' => true
+						'label' => 'Programme',
+						'corename' => 'feedback.programme',
+						'title' => 'programme',
+						'module' => 'core',
+						'controller' => 'feedback',
+						'action' => 'programme',
+						'route' => 'main-module',
+						'visible' => true,
+						'reset_params' => true
 					),
 					array(
-					    'label' => 'Presentations',
-					    'title' => 'Rate presentations',
-					    'module' => 'core',
-					    'controller' => 'schedule',
-					    'action' => 'list',
-					    'route' => 'schedule',
-					    'params' => array('f'=>1),
-					    'visible' => true,
-					    'reset_params' => true
+						'label' => 'Presentations',
+						'title' => 'Rate presentations',
+						'module' => 'core',
+						'controller' => 'schedule',
+						'action' => 'list',
+						'route' => 'schedule',
+						'params' => array('f'=>1),
+						'visible' => true,
+						'reset_params' => true
 					)
 				)
 			)
@@ -141,15 +141,15 @@ class Core_FeedbackController extends Zend_Controller_Action
 		$formName = 'feedback'.ucfirst($section);
 
 		// set active nav for pages (this is not automatic because the use of a catchall action)
-		if ($page = $this->view->navigation()->menu()->findOneBy('corename', 'feedback.'.$section) ) {
+		if ($page = $this->view->navigation()->menu()->findOneBy('corename', 'feedback.'.$section)) {
 			$page->setActive();
 		}
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->feedbackForm = $this->_feedbackModel->getForm($formName);
 			// populate form with defaults
-			$defaults = ($row = $this->_feedbackModel->getFeedbackById($id, $section) )
+			$defaults = ($row = $this->_feedbackModel->getFeedbackById($id, $section))
 				? $row->toArray()
 				: array('id' => $id);
 			$this->view->feedbackForm->setDefaults($defaults);
@@ -158,7 +158,7 @@ class Core_FeedbackController extends Zend_Controller_Action
 		}
 
 		// try to persist feedback
-		if ( $this->_feedbackModel->saveFeedback($request->getPost(), $section) === false ) {
+		if ($this->_feedbackModel->saveFeedback($request->getPost(), $section) === false) {
 			$this->view->feedbackForm = $this->_feedbackModel->getForm($formName);
 			return $this->render($section);
 		}
@@ -223,13 +223,13 @@ class Core_FeedbackController extends Zend_Controller_Action
 	{
 		$request = $this->getRequest();
 
-		if (false == $participants = $this->_feedbackModel->getParticipants() ) {
+		if (false == $participants = $this->_feedbackModel->getParticipants()) {
 			return;
 		}
 
 		$this->view->participants = $participants;
 		$this->view->dummy = $request->getParam('dummy');
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->mailForm = $this->_feedbackModel->getForm('feedbackMail');
 			return $this->render();
 		}
@@ -246,7 +246,7 @@ class Core_FeedbackController extends Zend_Controller_Action
 				'dummy' => $request->getParam('dummy'),
 				'template' => 'feedback/codes',
 				'html' => true,
-				'subject' => strtoupper($conference['abbreviation']) . ' Feedback',
+				'subject' => strtoupper($conference['abbreviation']).' Feedback',
 				'to_email' => $participant['email'],
 				'to_name' => $participant['fname'].' '.$participant['lname']
 			), $participant);
@@ -260,8 +260,8 @@ class Core_FeedbackController extends Zend_Controller_Action
 		if ($this->view->dummy == 0) {
 			$eventlogModel = new Core_Model_Eventlog();
 			$eventlogModel->saveEventlog(array(
-			    'event_type' => __METHOD__,
-			    'timestamp' => 'now()'
+				'event_type' => __METHOD__,
+				'timestamp' => 'now()'
 			));
 		}
 	}
@@ -279,17 +279,17 @@ class Core_FeedbackController extends Zend_Controller_Action
 
 		$form = $this->_feedbackModel->getForm('feedbackMailto');
 
-		if ( !$this->getRequest()->isPost() || !$form->isValid($this->getRequest()->getPost()) )  {
+		if (!$this->getRequest()->isPost() || !$form->isValid($this->getRequest()->getPost())) {
 			$this->view->mailForm = $form;
 			return $this->render();
 		}
 
 		$emailHelper->sendEmail(array(
-		    'dummy' => false,
-		    'template' => 'feedback/codes',
-		    'html' => true,
-		    'subject' => $conference['abbreviation'] . ' Feedback',
-		    'to_email' => $form->getValue('email')
+			'dummy' => false,
+			'template' => 'feedback/codes',
+			'html' => true,
+			'subject' => $conference['abbreviation'] . ' Feedback',
+			'to_email' => $form->getValue('email')
 		), array('uuid' => $this->_feedbackModel->createFeedbackCode()) );
 
 		$this->view->email = $form->getValue('email');
@@ -313,11 +313,11 @@ class Core_FeedbackController extends Zend_Controller_Action
 		$fp = fopen($fname, 'w');
 
 		foreach ($results as $fields) {
-		    fputcsv($fp, $fields);
+			fputcsv($fp, $fields);
 		}
 
 		fclose($fp);
-    	$this->_helper->SendFile($fname, 'text/csv');
+		$this->_helper->SendFile($fname, 'text/csv');
 	}
 
 }

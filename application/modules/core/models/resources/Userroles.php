@@ -37,7 +37,7 @@ class Core_Resource_Userroles extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getItemById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -76,13 +76,13 @@ class Core_Resource_Userroles extends TA_Model_Resource_Db_Table_Abstract
 		foreach ($values['user_id'] as $val) {
 			if (!in_array($val, $currentValues)) {
 				// using $val as key keeps the entries unique (in case one user submitted multiple papers)
-				$insertValues[$val] = '('. $val . ',' . $values['role_id'] .')';
+				$insertValues[$val] = '('.$val.','.$values['role_id'].')';
 			}
 		}
 		
 		// only insert users if they are not already inserted
 		if (isset($insertValues)) {
-			$query = "INSERT INTO " . $this->_name . " (user_id, role_id) VALUES ".implode(',', $insertValues);
+			$query = "INSERT INTO ".$this->_name." (user_id, role_id) VALUES ".implode(',', $insertValues);
 			return $db->query($query);
 		}
 	}

@@ -23,16 +23,16 @@ class Webdemo_IndexController extends Webdemo_AbstractController
 
 	public function init()
 	{
-    	$this->view->messages = $this->_helper->flashMessenger->getMessages();
-    	$this->view->threeColumnLayout = true;
+		$this->view->messages = $this->_helper->flashMessenger->getMessages();
+		$this->view->threeColumnLayout = true;
 		$this->_helper->getHelper('AjaxContext')
 					  ->addActionContext('announcement', 'json')
 					  ->initContext();
 	}
 
-    public function indexAction()
-    {
-    	$this->view->threeColumnLayout = false;
+	public function indexAction()
+	{
+		$this->view->threeColumnLayout = false;
 		$this->view->stylesheet('home.css');
 
 		$schedule = new Core_Model_Schedule();
@@ -49,7 +49,7 @@ class Webdemo_IndexController extends Webdemo_AbstractController
 		//	'hour' => 9,
 		//	'minute' => 1,
 		//	'second' => 10);
-    	//$zd = new Zend_Date($datearray);		
+		//$zd = new Zend_Date($datearray);		
 		//$this->view->roomsessions = $schedule->getStreamData($zd);		
 	}
 

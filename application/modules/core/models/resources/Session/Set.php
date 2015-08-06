@@ -111,7 +111,7 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 	 *
 	 * @return array
 	 */
-	public function getAllPresentations($presentationKey=true)
+	public function getAllPresentations($presentationKey = true)
 	{
 		$list = array();
 
@@ -123,7 +123,7 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 
 		$query = "select * from sessions_presentations sp
 		left join presentations p on (sp.presentation_id = p.presentation_id)
-		where sp.session_id IN (".implode(',',$sessionIds).") order by displayorder asc";
+		where sp.session_id IN (".implode(',', $sessionIds).") order by displayorder asc";
 
 		$presentations = $this->getTable()->getAdapter()->fetchAll($query);
 
@@ -159,7 +159,7 @@ class Core_Resource_Session_Set extends Zend_Db_Table_Rowset_Abstract
 		}
 
 		$query = "select user_id, session_id, presentation_id, fname, lname, email, organisation, file_id
-		 from vw_sessions_speakers where session_id IN (".implode(',',$sessionIds).")";
+		 from vw_sessions_speakers where session_id IN (".implode(',', $sessionIds).")";
 
 		$speakers = $this->getTable()->getAdapter()->$method($query);
 

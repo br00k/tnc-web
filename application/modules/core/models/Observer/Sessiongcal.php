@@ -60,7 +60,7 @@ class Core_Model_Observer_Sessiongcal extends TA_Model_Acl_Abstract implements T
 		} catch (Exception $e) {
 			// Intercept exception so we can fail without halting the application
 			$log = Zend_Registry::get('log');
-        	$log->emerg($e);
+			$log->emerg($e);
 			return $flash->addMessage('Something went wrong updating Google Calendar');
 		}
 
@@ -79,12 +79,12 @@ class Core_Model_Observer_Sessiongcal extends TA_Model_Acl_Abstract implements T
 			$googleEvent = new Core_Service_GoogleEvent();
 
 			$sessionModel = new Core_Model_Session();
-			$session = $sessionModel->getAllSessionDataById( $subject->session_id );
+			$session = $sessionModel->getAllSessionDataById($subject->session_id);
 
 			$googleEvent->update($session->toArray());
 		} catch (Exception $e) {
 			$log = Zend_Registry::get('log');
-        	$log->emerg($e);
+			$log->emerg($e);
 			return $flash->addMessage('Something went wrong updating Google Calendar');
 		}
 
@@ -105,7 +105,7 @@ class Core_Model_Observer_Sessiongcal extends TA_Model_Acl_Abstract implements T
 			$googleEvent->delete($subject->toArray());
 		} catch (Exception $e) {
 			$log = Zend_Registry::get('log');
-        	$log->emerg($e);
+			$log->emerg($e);
 			return $flash->addMessage('Something went wrong updating Google Calendar');
 		}
 

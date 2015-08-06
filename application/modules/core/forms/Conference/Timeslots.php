@@ -33,18 +33,18 @@ class Core_Form_Conference_Timeslots extends TA_Form_Abstract
 
 		$this->setAction('/core/conference/timeslots');
 
-	    $conferenceId = new Zend_Form_Element_Hidden('conference_id');
-	    $conferenceId->setRequired(true)
-	    			 ->addValidators(
-	    			 	array('Int')
-	    			 )
-	    			 ->setDecorators($this->_hiddenElementDecorator);
+		$conferenceId = new Zend_Form_Element_Hidden('conference_id');
+		$conferenceId->setRequired(true)
+					 ->addValidators(
+					 	array('Int')
+					 )
+					 ->setDecorators($this->_hiddenElementDecorator);
 
-	    $timeslot = new TA_Form_Element_Timeslot('timeslot_1');
+		$timeslot = new TA_Form_Element_Timeslot('timeslot_1');
 		$timeslot->clearDecorators()
-        		 ->addDecorator(new TA_Form_Decorator_Timeslot())
-        		 ->setIgnore(true) // don't include in values array
-        		 ->setAttrib('class', 'hidden'); // since this element will be used as a template, hide it!
+				 ->addDecorator(new TA_Form_Decorator_Timeslot())
+				 ->setIgnore(true) // don't include in values array
+				 ->setAttrib('class', 'hidden'); // since this element will be used as a template, hide it!
 
 		// add timeslot elements to subform so in isValid() I only have to loop over that form
 		$subform = new Zend_Form_SubForm();
@@ -55,19 +55,19 @@ class Core_Form_Conference_Timeslots extends TA_Form_Abstract
 		));
 		$this->addSubForm($subform, 'dynamic');
 
-	    $this->addElements(array(
-	    	$conferenceId
-	    ));
+		$this->addElements(array(
+			$conferenceId
+		));
 
 		$this->addElement('button', 'add', array(
 			'label' => 'Add new timeslot',
 			'decorators' => $this->_buttonElementDecorator
 		));
 
-	    $this->addElement('submit', 'submit', array(
+		$this->addElement('submit', 'submit', array(
 			'label' => 'Submit',
 			'decorators' => $this->_buttonElementDecorator
-	    ));
+		));
 	}
 
 	/**
@@ -79,26 +79,26 @@ class Core_Form_Conference_Timeslots extends TA_Form_Abstract
 	private function addDynamicElement($element, $values = null)
 	{
 		$timeslotsForm = $this->getSubForm('dynamic');
-		if ( $timeslotsForm->getElement($element) ) {
+		if ($timeslotsForm->getElement($element)) {
 			return;
 		}
-	    $timeslot = new TA_Form_Element_Timeslot($element);
+		$timeslot = new TA_Form_Element_Timeslot($element);
 		$timeslot->clearDecorators()
-        		 ->addValidator(new TA_Form_Validator_Timeslot(), true)
-        		 ->addDecorator(new TA_Form_Decorator_Timeslot())
-        		 ->addDecorator('Errors', array('placement'=>'prepend'));
+				 ->addValidator(new TA_Form_Validator_Timeslot(), true)
+				 ->addDecorator(new TA_Form_Decorator_Timeslot())
+				 ->addDecorator('Errors', array('placement'=>'prepend'));
 
-        $timeslotsForm->addElement($timeslot);
+		$timeslotsForm->addElement($timeslot);
 
-        return $timeslot;
+		return $timeslot;
 	}
 
 	/**
 	 * Validate the form
 	 * Override method to add form elements that were dynamically added
 	 *
-     * @param  array $data
-     * @return boolean
+	 * @param  array $data
+	 * @return boolean
 	 */
 	public function isValid($data)
 	{
@@ -114,7 +114,6 @@ class Core_Form_Conference_Timeslots extends TA_Form_Abstract
 	 * Override method to add form elements that were dynamically added
 	 * Every row in the dynamic value array adds the form element
 	 *
-     * @param  array $defaults
      * @return Zend_Form
 	 */
 	public function setDefaults(array $values)

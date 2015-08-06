@@ -33,7 +33,7 @@ class Core_EventController extends Zend_Controller_Action implements Zend_Acl_Re
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 
 		// Set navigation to active for all actions within this controller
-		$page = $this->view->navigation()->findOneByController( $this->getRequest()->getControllerName() );
+		$page = $this->view->navigation()->findOneByController($this->getRequest()->getControllerName());
 		if ($page) {
 			$page->setActive();
 		}
@@ -91,12 +91,12 @@ class Core_EventController extends Zend_Controller_Action implements Zend_Acl_Re
 		$request = $this->getRequest();
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			return $this->_displayForm();
 		}
 
 		// try to persist user
-		if ( $this->_eventModel->saveEvent($request->getPost()) === false ) {
+		if ($this->_eventModel->saveEvent($request->getPost()) === false) {
 			return $this->_displayForm();
 		}
 
@@ -113,7 +113,7 @@ class Core_EventController extends Zend_Controller_Action implements Zend_Acl_Re
 		$request = $this->getRequest();
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->eventForm = $this->_eventModel->getForm('eventEdit');
 			// populate form with defaults
 			$this->view->eventForm->setDefaults(
@@ -132,7 +132,7 @@ class Core_EventController extends Zend_Controller_Action implements Zend_Acl_Re
 		}
 
 		// try to persist item
-		if ( $this->_eventModel->saveEvent($request->getPost(), 'edit') === false ) {
+		if ($this->_eventModel->saveEvent($request->getPost(), 'edit') === false) {
 			$this->view->eventForm = $this->_eventModel->getForm('eventEdit');
 			return $this->render('formEdit');
 		}
@@ -144,7 +144,7 @@ class Core_EventController extends Zend_Controller_Action implements Zend_Acl_Re
 
 	public function deleteAction()
 	{
-		if ( false === $this->_eventModel->delete($this->_getParam('id')) ) {
+		if (false === $this->_eventModel->delete($this->_getParam('id'))) {
 			throw new TA_Model_Exception('Something went wrong with deleting the event');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'event', 'action'=>'list'), 'grid');
@@ -159,7 +159,7 @@ class Core_EventController extends Zend_Controller_Action implements Zend_Acl_Re
 		$googleTest = new Core_Service_GoogleTest();
 		
 		$idUrl = $googleTest->createEvent(
-		   $this->_eventModel->getAllEventDataById( $this->_getParam('id') )
+		   $this->_eventModel->getAllEventDataById($this->_getParam('id'))
 		);
 
 		$this->_helper->flashMessenger('Succesfully saved this event to your personal Google calendar');

@@ -34,10 +34,10 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 	public function getPresentationById($id)
 	{
 		$row = $this->getResource('presentations')->getPresentationById( (int) $id );
-    	if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	/**
@@ -47,24 +47,25 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 	 */
 	public function getAllPresentationDataById($id)
 	{
-		$row = $this->getResource('presentations')->getPresentationById( (int) $id );
+		$row = $this->getResource('presentations')->getPresentationById((int) $id);
 		if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	/**
 	 * Gets array of presentations for use in select box.
 	 *
 	 * @return	array
+	 * @param string $empty
 	 */
 	public function getPresentationsForSelect($empty = null, $truncate = true)
 	{
 		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
-        if ($truncate) {
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
+		if ($truncate) {
 			return array_map(function($val) {
 				return substr($val, 0, 50);
 			}, $this->getResource('presentations')->getPresentationsForSelect($empty));
@@ -117,17 +118,17 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 	}
 
 	/**
-     * Save user/presentation link
-     *
-     * @param	array	$post	Post variable
-     * @return	mixed	The primary key of the inserted record if insert went OK
-     *					false if user already belongs to this presentation
-     */
+	 * Save user/presentation link
+	 *
+	 * @param	array	$post	Post variable
+	 * @return	mixed	The primary key of the inserted record if insert went OK
+	 *					false if user already belongs to this presentation
+	 */
 	public function saveSpeakers(array $post)
 	{
 		if (!$this->checkAcl('speakersSave')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+		}
 
 		$form = $this->getForm('presentationUser');
 		// perform validation
@@ -157,8 +158,8 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 	public function deleteSpeaker($id = null)
 	{
 		if (!$this->checkAcl('speakerDelete')) {
-            #throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			#throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;
@@ -170,17 +171,17 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 
 
 	/**
-     * Save files and user/files link
-     *
-     * @param	array	$post	Post variable
-     * @return	mixed	The primary key of the inserted record if insert went OK
-     *					false if file already belongs to this presentation
-     */
+	 * Save files and user/files link
+	 *
+	 * @param	array	$post	Post variable
+	 * @return	mixed	The primary key of the inserted record if insert went OK
+	 *					false if file already belongs to this presentation
+	 */
 	public function saveFiles(array $post)
 	{
 		if (!$this->checkAcl('filesSave')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+		}
 
 		$form = $this->getForm('presentationFiles');
 		// perform validation
@@ -202,12 +203,12 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 					$hash = $element->getHash('sha1');
 
 					$element->addFilter('rename', array(
-		    		    'target' => Zend_Registry::get('config')->directories->uploads.$hash,
-		    		    'overwrite' => true
-		    		));
+						'target' => Zend_Registry::get('config')->directories->uploads.$hash,
+						'overwrite' => true
+					));
 
-		    		$originalName = $element->getFileName();
-		    		$element->receive();
+					$originalName = $element->getFileName();
+					$element->receive();
 					$fileInfo = $element->getFileInfo();
 					$fileInfo[$file]['_filename_original'] = $originalName;
 					$fileInfo[$file]['_filehash'] = $hash;
@@ -243,15 +244,15 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 
 	/**
 	 * Get a list of presentations
-	 * @param		integer		$page	Page number to show
+	 * @param		integer		$paged	Page number to show
 	 * @param		array		$order	Array with keys 'field' and 'direction'
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
 	 */
-	public function getPresentations($paged=null, $order=array(), $filter=null, $unique=false)
+	public function getPresentations($paged = null, $order = array(), $filter = null, $unique = false)
 	{
 		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		return $this->getResource('presentationsview')->getPresentations($paged, $order, $filter, $unique);
 	}
@@ -264,8 +265,8 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 	public function delete($id = null)
 	{
 		if (!$this->checkAcl('delete')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;
@@ -286,10 +287,10 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 	{
 		// perform ACL check
 		if (!$this->checkAcl('save')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        // get different form based on action parameter
+		// get different form based on action parameter
 		$formName = ($action) ? 'presentation' . ucfirst($action) : 'presentation';
 		$form = $this->getForm($formName);
 

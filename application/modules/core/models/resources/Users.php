@@ -43,11 +43,12 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 	/**
 	 * Gets user by primary key
 	 *
+	 * @param integer $id
 	 * @return object Core_Resource_User_Item
 	 */
 	public function getUserById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -85,14 +86,14 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 			'country',
 		);
 
-		foreach($required as $req) {
-			$configattr='saml_'.$req.'_attribute';
+		foreach ($required as $req) {
+			$configattr = 'saml_'.$req.'_attribute';
 			$required_in_saml[$req] = $this->_config->simplesaml->$configattr;
 		}
 
 		$missing = array_diff($required_in_saml, array_keys($federatedAttributes));
 
-		if(count($missing) > 0) {
+		if (count($missing) > 0) {
 			throw new TA_Exception("Missing required attribute(s): ".implode(', ', $missing).". This/these HAVE to be provided by the IdP, possibly by using the SmartAttr module.");
 		}
 
@@ -119,13 +120,12 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 	
 	/**
 	 * Search for string within user table
-	 * @param	string		$search		String to search for in user table
 	 * @return	array		Array of user_id
 	 */
 	 public function searchUser($string)
 	 {
-	 	$query = "select user_id from users where lname ilike '%".$string ."%' 
-	 	or fname ilike '%".$string ."%'";
+	 	$query = "select user_id from users where lname ilike '%".$string."%' 
+	 	or fname ilike '%".$string."%'";
 		$users = $this->getAdapter()->fetchCol(
 			$query
 		);
@@ -185,12 +185,12 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function addUserRole($id, $role)
 	{
-		if ( $user = $this->getUserById($id) ) {
+		if ($user = $this->getUserById($id)) {
 			return $user->addRoleByName($role);
 		}
 	}
 
-	public function getUsers($paged=null, $order=array(), $filter=null)
+	public function getUsers($paged = null, $order = array(), $filter = null)
 	{
 		$grid = array();
 		$grid['cols'] = $this->getGridColumns();
@@ -209,11 +209,11 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 		// apply filters to grid
 		if ($filter) {
 			foreach ($filter as $field => $value) {
-			    if (is_array($value)) {
-			        $select->where( $field.' IN (?)', $value);
-			    } else {
-			        $select->where( $field.' = ?', $value);
-			    }
+				if (is_array($value)) {
+					$select->where( $field.' IN (?)', $value);
+				} else {
+					$select->where( $field.' = ?', $value);
+				}
 			}
 		}
 
@@ -222,7 +222,7 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 			$adapter = new Zend_Paginator_Adapter_DbTableSelect($select);
 
 			$paginator = new Zend_Paginator($adapter);
-			$paginator->setCurrentPageNumber( (int)$paged )
+			$paginator->setCurrentPageNumber((int) $paged)
 					  ->setItemCountPerPage(20);
 
 			$grid['rows'] = $paginator;
@@ -246,7 +246,7 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 			'user_id' => array('field' => 'user_id', 'sortable' => true, 'hidden' => true),
 			'fname' => array('field' => 'fname', 'label' => 'First name', 'sortable' => true),
 			'lname' => array('field' => 'lname', 'label' => 'Last name', 'sortable' => true),
-			'email' => array('field' => 'email', 'label' => 'Email', 'sortable' => true, 'modifier'=>function($v){return substr($v, 0, 30);}),
+			'email' => array('field' => 'email', 'label' => 'Email', 'sortable' => true, 'modifier'=>function($v) {return substr($v, 0, 30); }),
 			'organisation' => array('field' => 'organisation', 'label' => 'Organisation', 'sortable' => true),
 			'lastlogin' => array('field' => 'lastlogin', 'label' => 'Last login', 'sortable' => true, 'modifier' => 'formatDate'),
 			'active' => array('field' => 'active', 'label' => 'Active', 'sortable' => false),

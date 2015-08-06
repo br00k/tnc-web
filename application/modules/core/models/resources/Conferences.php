@@ -40,7 +40,7 @@ class Core_Resource_Conferences extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getConferenceById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -62,7 +62,7 @@ class Core_Resource_Conferences extends TA_Model_Resource_Db_Table_Abstract
 	 *
 	 * @return array
 	 */
-	public function getConferences($paged=null, $order=array())
+	public function getConferences($paged = null, $order = array())
 	{
 		$grid = array();
 		$grid['cols'] = $this->getGridColumns();
@@ -77,14 +77,14 @@ class Core_Resource_Conferences extends TA_Model_Resource_Db_Table_Abstract
 		}
 		$select->order($order);
 
-		$select->from( 'conferences', array_keys($this->getGridColumns()) );
+		$select->from('conferences', array_keys($this->getGridColumns()));
 
 		if ($paged) {
 
 			$adapter = new Zend_Paginator_Adapter_DbTableSelect($select);
 
 			$paginator = new Zend_Paginator($adapter);
-			$paginator->setCurrentPageNumber( (int)$paged )
+			$paginator->setCurrentPageNumber((int) $paged)
 					  ->setItemCountPerPage(20);
 
 			$grid['rows'] = $paginator;
@@ -125,8 +125,8 @@ class Core_Resource_Conferences extends TA_Model_Resource_Db_Table_Abstract
 
 		$dt = new Zend_Date($post['start'], 'dd/MM/YYYY hh:mm');
 
-		$sql = 'insert into timeslots (tstart, tend, number, type, conference_id)' .
-			   'values (:tstart, :tend, :number, :type, '. (int) $post['id'] .')';
+		$sql = 'insert into timeslots (tstart, tend, number, type, conference_id)'.
+			   'values (:tstart, :tend, :number, :type, '.(int) $post['id'].')';
 
 		$stmt = new Zend_Db_Statement_Pdo($db, $sql);
 
@@ -135,52 +135,52 @@ class Core_Resource_Conferences extends TA_Model_Resource_Db_Table_Abstract
 		for ($i = 1; $i <= $post['days']; $i++) {
 
 			$stmt->execute(array(
-			    ':tstart' => $dt->get(Zend_Date::ISO_8601),
-			    ':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
-			    ':number' => $n+1,
-			    ':type' => 1
+				':tstart' => $dt->get(Zend_Date::ISO_8601),
+				':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
+				':number' => $n+1,
+				':type' => 1
 			));
 
 			$stmt->execute(array(
-			    ':tstart' => $dt->get(Zend_Date::ISO_8601),
-			    ':tend' => $dt->add('30', 'mm')->get(Zend_Date::ISO_8601),
-			    ':number' => 0,
-			    ':type' => 2
+				':tstart' => $dt->get(Zend_Date::ISO_8601),
+				':tend' => $dt->add('30', 'mm')->get(Zend_Date::ISO_8601),
+				':number' => 0,
+				':type' => 2
 			));
 
 			$stmt->execute(array(
-			    ':tstart' => $dt->get(Zend_Date::ISO_8601),
-			    ':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
-			    ':number' => $n+2,
-			    ':type' => 1
+				':tstart' => $dt->get(Zend_Date::ISO_8601),
+				':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
+				':number' => $n+2,
+				':type' => 1
 			));
 
 			$stmt->execute(array(
-			    ':tstart' => $dt->get(Zend_Date::ISO_8601),
-			    ':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
-			    ':number' => 0,
-			    ':type' => 3
+				':tstart' => $dt->get(Zend_Date::ISO_8601),
+				':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
+				':number' => 0,
+				':type' => 3
 			));
 
 			$stmt->execute(array(
-			    ':tstart' => $dt->get(Zend_Date::ISO_8601),
-			    ':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
-			    ':number' => $n+3,
-			    ':type' => 1
+				':tstart' => $dt->get(Zend_Date::ISO_8601),
+				':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
+				':number' => $n+3,
+				':type' => 1
 			));
 
 			$stmt->execute(array(
-			    ':tstart' => $dt->get(Zend_Date::ISO_8601),
-			    ':tend' => $dt->add('30', 'mm')->get(Zend_Date::ISO_8601),
-			    ':number' => 0,
-			    ':type' => 2
+				':tstart' => $dt->get(Zend_Date::ISO_8601),
+				':tend' => $dt->add('30', 'mm')->get(Zend_Date::ISO_8601),
+				':number' => 0,
+				':type' => 2
 			));
 
 			$stmt->execute(array(
-			    ':tstart' => $dt->get(Zend_Date::ISO_8601),
-			    ':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
-			    ':number' => $n = $n+4,
-			    ':type' => 1
+				':tstart' => $dt->get(Zend_Date::ISO_8601),
+				':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
+				':number' => $n = $n+4,
+				':type' => 1
 			));
 
 			// reset date and add a day

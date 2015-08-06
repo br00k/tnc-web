@@ -30,25 +30,25 @@ class Core_Form_Feedback_Programme extends TA_Form_Abstract
 
 		$this->setAction('/core/feedback/programme');
 
-	    $id = new Zend_Form_Element_Hidden('id');
-	    $id->setRequired(true)
-	       ->setLabel('id')
+		$id = new Zend_Form_Element_Hidden('id');
+		$id->setRequired(true)
+		   ->setLabel('id')
 		   ->addValidators(
 			   array('Int')
 		   )
 		   ->setDecorators(array('Composite'));
 
-	    $best = new Zend_Form_Element_Textarea('best_stuff');
-	    $best->setLabel('Which sessions or presentations were the best – and why?')
-	    	 	 ->setAttrib('class', 'medium')
-	    	 	 ->setDescription('Please limit your comments to 1000 characters')
-	    	 	 ->setRequired(false)
-	    	 	 ->addValidator('StringLength', true, array(1, 5000,
-	    	 	 	'messages' => array(
+		$best = new Zend_Form_Element_Textarea('best_stuff');
+		$best->setLabel('Which sessions or presentations were the best – and why?')
+			 	 ->setAttrib('class', 'medium')
+			 	 ->setDescription('Please limit your comments to 1000 characters')
+			 	 ->setRequired(false)
+			 	 ->addValidator('StringLength', true, array(1, 5000,
+			 	 	'messages' => array(
 			 	 		Zend_Validate_StringLength::TOO_SHORT => 'Please provide a longer comment',
 			 	 		Zend_Validate_StringLength::TOO_LONG => 'Your comment is too long'
 			 	 	)
-	    	 	 ))
+			 	 ))
 			 	 ->setDecorators(array('Composite'));
 
 		$worst = clone($best);
@@ -74,14 +74,14 @@ class Core_Form_Feedback_Programme extends TA_Form_Abstract
 
 		// add all elements in loop, since they are all the same
 		foreach ($elements as $name => $label) {
-	    	$newSelect = new Zend_Form_Element_Radio($name);
-	    	$newSelect->setLabel($label)
+			$newSelect = new Zend_Form_Element_Radio($name);
+			$newSelect->setLabel($label)
 					  ->setAttrib('class', 'tiny')
 					  ->setMultiOptions($this->_getFieldValues('rating', 'feedback'))
 					  ->setDecorators(array('Composite'));					  
 
-	    	$newText = new Zend_Form_Element_Text('remarks_'.$name);
-	    	$newText->setDescription('Comments')
+			$newText = new Zend_Form_Element_Text('remarks_'.$name);
+			$newText->setDescription('Comments')
 					->setAttrib('class', 'medium')
 					->setDecorators(array('Composite'));
 
@@ -90,9 +90,9 @@ class Core_Form_Feedback_Programme extends TA_Form_Abstract
 		
 		$this->addElement($comments);
 
-	    $this->addElement('submit', 'submit', array(
+		$this->addElement('submit', 'submit', array(
 			'decorators' => $this->_buttonElementDecorator
-	    ));
+		));
 	}
 
 

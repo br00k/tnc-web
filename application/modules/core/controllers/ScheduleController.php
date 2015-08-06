@@ -73,7 +73,7 @@ class Core_ScheduleController extends Zend_Controller_Action
 			  'hour' => 16,
 			  'minute' => 35,
 			  'second' => 10);
-    		$zd = new Zend_Date($datearray);
+			$zd = new Zend_Date($datearray);
 			
 			$sessions = $this->_scheduleModel->getStreamData($zd, $loc);
 			$this->view->session = current($sessions);
@@ -85,7 +85,7 @@ class Core_ScheduleController extends Zend_Controller_Action
 		$mobile = $this->_getParam('mobile', false);
 
 		// if feedback codes have been sent
-		if ($this->_helper->conferenceInfo()->isFeedbackOpen() ) {
+		if ($this->_helper->conferenceInfo()->isFeedbackOpen()) {
 			$feedbackModel = new Core_Model_Feedback();
 			if ($feedbackModel->getFeedbackId()) {
 				$this->view->feedbackid = true;

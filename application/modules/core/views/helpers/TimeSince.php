@@ -29,82 +29,82 @@
  */
 class Zend_View_Helper_TimeSince extends Zend_View_Helper_Abstract
 {
-    /**
-     * Time chunks in seconds => string format
-     *
-     * Order is FIFO largest to smallest
-     *
-     * @var array
-     */
-    protected $_dateChucks = array(
-        31536000 => 'year',
-        2592000 => 'month',
-        604800 => 'week',
-        86400 => 'day',
-        3600 => 'hour',
-        60 => 'minute',
-        1 => 'second'
-    );
+	/**
+	 * Time chunks in seconds => string format
+	 *
+	 * Order is FIFO largest to smallest
+	 *
+	 * @var array
+	 */
+	protected $_dateChucks = array(
+		31536000 => 'year',
+		2592000 => 'month',
+		604800 => 'week',
+		86400 => 'day',
+		3600 => 'hour',
+		60 => 'minute',
+		1 => 'second'
+	);
 
-    /**
-     * Formats a date as the time since that date (e.g., “4 weeks ago”).
-     *
-     * @param integer $timestamp
-     * @param integer $time Timestamp to use instead of time()
-     */
-    public function timeSince($timestamp, $time = null)
-    {
-        $output = '';
-        $translator = $this->view->getHelper('translate');
+	/**
+	 * Formats a date as the time since that date (e.g., “4 weeks ago”).
+	 *
+	 * @param integer $timestamp
+	 * @param integer $time Timestamp to use instead of time()
+	 */
+	public function timeSince($timestamp, $time = null)
+	{
+		$output = '';
+		$translator = $this->view->getHelper('translate');
 
-        if ($time === null) {
-            $time = time();
-        }
+		if ($time === null) {
+			$time = time();
+		}
 
-        // Seconds since
-        $since = $time - $timestamp;
+		// Seconds since
+		$since = $time - $timestamp;
 
-        foreach ($this->_dateChucks as $seconds => $name) {
-            if (!isset($largestChunk)) {
-                $ratio = $since / $seconds;
-                $chunk = ($since < 0) ? -floor(abs($ratio)) : floor($ratio);
-            }
+		foreach ($this->_dateChucks as $seconds => $name) {
+			if (!isset($largestChunk)) {
+				$ratio = $since / $seconds;
+				$chunk = ($since < 0) ? -floor(abs($ratio)) : floor($ratio);
+			}
 
-            // Compute chunks
-            if (isset($chunk) && $chunk != 0 && !isset($largestChunk)) {
-                $largestChunk = $chunk;
-                $largestChunkName = ($chunk == 1) ? $name : $name . 's';
-                $largestChunkSeconds = $seconds;
-            } else if (isset($chunk) && $chunk == 0 && !isset($largestChunk)) {
-                // Handle if it 0 seconds
-                $output = $translator->translate('less than a second');
-            } else if (isset($largestChunk)) {
-                $ratio = ($since - ($largestChunkSeconds * $largestChunk)) / $seconds;
-                $chunk = ($since < 0) ? -floor(abs($ratio)) : floor($ratio);
+			// Compute chunks
+			if (isset($chunk) && $chunk != 0 && !isset($largestChunk)) {
+				$largestChunk = $chunk;
+				$largestChunkName = ($chunk == 1) ? $name : $name . 's';
+				$largestChunkSeconds = $seconds;
+			} else if (isset($chunk) && $chunk == 0 && !isset($largestChunk)) {
+				// Handle if it 0 seconds
+				$output = $translator->translate('less than a second');
+			} else if (isset($largestChunk)) {
+				$ratio = ($since - ($largestChunkSeconds * $largestChunk)) / $seconds;
+				$chunk = ($since < 0) ? -floor(abs($ratio)) : floor($ratio);
 
-                if ($chunk != 0) {
-                    $secondChunk = $chunk;
-                    $secondChunkName = ($chunk == 1) ? $name : $name . 's';
-                }
+				if ($chunk != 0) {
+					$secondChunk = $chunk;
+					$secondChunkName = ($chunk == 1) ? $name : $name . 's';
+				}
 
-                break;
-            }
-        }
+				break;
+			}
+		}
 
-        if ($translator->getTranslator() === null) {
-            if (isset($secondChunk)) {
-                $output = sprintf("%d $largestChunkName and %d $secondChunkName", $largestChunk, $secondChunk);
-            } else if (isset($largestChunk)) {
-                $output = sprintf("%d $largestChunkName", $largestChunk);
-            }
-        } else {
-            if (isset($secondChunk)) {
-                $output = $translator->translate("%d $largestChunkName and %d $secondChunkName", $largestChunk, $secondChunk);
-            } else if (isset($largestChunk)) {
-                $output = $translator->translate("%d $largestChunkName", $largestChunk);
-            }
-        }
+		if ($translator->getTranslator() === null) {
+			if (isset($secondChunk)) {
+				$output = sprintf("%d $largestChunkName and %d $secondChunkName", $largestChunk, $secondChunk);
+			} else if (isset($largestChunk)) {
+				$output = sprintf("%d $largestChunkName", $largestChunk);
+			}
+		} else {
+			if (isset($secondChunk)) {
+				$output = $translator->translate("%d $largestChunkName and %d $secondChunkName", $largestChunk, $secondChunk);
+			} else if (isset($largestChunk)) {
+				$output = $translator->translate("%d $largestChunkName", $largestChunk);
+			}
+		}
 
-        return $output;
-    }
+		return $output;
+	}
 }

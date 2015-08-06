@@ -49,7 +49,7 @@ class Core_View_Helper_ConferenceInfo extends Zend_View_Helper_Abstract
 	{
 		if (isset($this->_conference['gcal_url']) &&
 			isset($this->_conference['gcal_username']) &&
-			isset($this->_conference['gcal_password']) )
+			isset($this->_conference['gcal_password']))
 			return true;
 		else return false;
 	}
@@ -59,40 +59,40 @@ class Core_View_Helper_ConferenceInfo extends Zend_View_Helper_Abstract
 	 *
 	 * @return	mixed	boolean on false or Zend_Date on true
 	 */
-    public function isLive()
-    {
-    	#$test = array('year' => 2011, 'month' => 5, 'day' => 17);
+	public function isLive()
+	{
+		#$test = array('year' => 2011, 'month' => 5, 'day' => 17);
 		$date = new Zend_Date();
 
 		if ( ( $date->isLater($this->_conference['start'], Zend_Date::ISO_8601)  ) &&
 		( $date->isEarlier($this->_conference['end'], Zend_Date::ISO_8601) )  ) {
-		    return $date;
+			return $date;
 		}
 		return false;
-    }
+	}
 
 	/**
 	 * Has the conference passed?
 	 *
 	 * @return	mixed	boolean on false or Zend_Date on true
 	 */
-    public function hasPassed()
-    {
+	public function hasPassed()
+	{
 		$date = new Zend_Date();
 
 		if ( $date->isLater($this->_conference['end'], Zend_Date::ISO_8601)  )  {
-		    return $date;
+			return $date;
 		}
 		return false;
-    }
+	}
 
  	/**
-	 * Is the submit live?
-	 *
-	 * @return	mixed	boolean on false or Zend_Date on true
-	 */
-    public function isSubmitLive()
-    {
+ 	 * Is the submit live?
+ 	 *
+ 	 * @return	mixed	boolean on false or Zend_Date on true
+ 	 */
+	public function isSubmitLive()
+	{
 		$date = new Zend_Date();
 
 		if ( (!isset($this->_conference['submit_start'])) ||
@@ -102,9 +102,9 @@ class Core_View_Helper_ConferenceInfo extends Zend_View_Helper_Abstract
 
 		if ( ( $date->isLater($this->_conference['submit_start'], Zend_Date::ISO_8601)  ) &&
 		( $date->isEarlier($this->_conference['submit_end'], Zend_Date::ISO_8601) )  ) {
-		    return $date;
+			return $date;
 		}
 		return false;
-    }
+	}
     
 }

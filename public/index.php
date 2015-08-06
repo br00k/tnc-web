@@ -21,7 +21,7 @@ $proto = $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://';
 
 // Define path to application directory
 defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
+	|| define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
 
 // Check for application.ini, which should have created by the installer.
 // Not found? Then assume we are not installed, and run the installer.
@@ -38,7 +38,7 @@ if(!isset($ini['zend.location'])) {
 
 // Define application environment
 defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+	|| define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
 
 $paths = array(
@@ -56,5 +56,5 @@ require_once $ini['zend.location'].'/Zend/Application.php';
 // Create application, bootstrap, and run
 $application = new Zend_Application(APPLICATION_ENV, $ini_file);
 $application->bootstrap()
-            ->run();
+			->run();
 ?>

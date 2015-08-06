@@ -35,7 +35,7 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 
 		// Set navigation to active for all actions within this controller
-		$page = $this->view->navigation()->findOneByController( $this->getRequest()->getControllerName() );
+		$page = $this->view->navigation()->findOneByController($this->getRequest()->getControllerName());
 		if ($page) {
 			$page->setActive();
 		}
@@ -100,7 +100,7 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 		$this->view->id = (int) $request->getParam('id');
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->presentationForm = $this->_presentationModel->getForm('presentationEdit');
 			// populate form with defaults
 			$this->view->presentationForm->setDefaults(
@@ -109,7 +109,7 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 			return $this->render('formEdit');
 		}
 		// try to persist item
-		if ( $this->_presentationModel->savePresentation($request->getPost(), 'edit') === false ) {
+		if ($this->_presentationModel->savePresentation($request->getPost(), 'edit') === false) {
 			$this->view->presentationForm = $this->_presentationModel->getForm('presentationEdit');
 			return $this->render('formEdit');
 		}
@@ -121,7 +121,7 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 
 	public function deleteAction()
 	{
-		if ( false === $this->_presentationModel->delete($this->_getParam('id')) ) {
+		if (false === $this->_presentationModel->delete($this->_getParam('id'))) {
 			throw new TA_Model_Exception('Something went wrong with deleting the user');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'presentation', 'action'=>'list'), 'grid');
@@ -142,12 +142,12 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 		$request = $this->getRequest();
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			return $this->displayForm();
 		}
 
 		// try to persist
-		if ( ($id = $this->_presentationModel->savePresentation($request->getPost())) === false ) {
+		if (($id = $this->_presentationModel->savePresentation($request->getPost())) === false) {
 			return $this->displayForm();
 		}
 
@@ -172,7 +172,7 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 		$this->view->id = (int) $request->getParam('id');
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$form = $this->view->presentationUserForm = $this->_presentationModel->getForm('presentationUser');
 			$form->setDefaults(array(
 			   	'presentation_id' => $id
@@ -184,7 +184,7 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 		}
 
 		// persist user/presentation mapping
-		if ( $this->_presentationModel->saveSpeakers($request->getPost()) === false ) {
+		if ($this->_presentationModel->saveSpeakers($request->getPost()) === false) {
 			$this->_helper->lastRequest();
 		}
 
@@ -203,12 +203,12 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 		$this->view->id = (int) $request->getParam('id');
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			return $this->_saveFiles();
 		}
 
 		// try to persist presentation/files
-		if ( $this->_presentationModel->saveFiles($request->getPost()) === false ) {
+		if ($this->_presentationModel->saveFiles($request->getPost()) === false) {
 			return $this->_saveFiles();
 		}
 
@@ -235,7 +235,7 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 		// set linked files to magic file elements
 		foreach ($files = $this->_presentationModel->getFiles($id) as $file) {
 		   	$form->files->{$file->core_filetype}->setTaFile(
-		    	$file
+				$file
 		   	);
 		}
 		return $this->render('files');
@@ -253,7 +253,7 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 		$conference = Zend_Registry::get('conference');
 
 		// No post; display form
-		if ( !$request->isPost() ) {
+		if (!$request->isPost()) {
 			$this->view->importForm =
 			$this->_presentationModel->getForm('submitImport')->setDefaults(
 				array(
@@ -271,8 +271,8 @@ class Core_PresentationController extends Zend_Controller_Action implements Zend
 				$this->_helper->flashMessenger('Succesfully imported '.count($import).' submissions');
 				$eventlogModel = new Core_Model_Eventlog();
 				$eventlogModel->saveEventlog(array(
-				    'event_type' => __METHOD__,
-				    'timestamp' => 'now()'
+					'event_type' => __METHOD__,
+					'timestamp' => 'now()'
 				));
 			} else {
 				$this->_helper->flashMessenger('No submissions to import');

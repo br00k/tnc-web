@@ -31,10 +31,10 @@ class Core_Form_Presentation_User extends TA_Form_Abstract
 
 		$this->setAction('/core/presentation/speakers');
 
-	    $id = new Zend_Form_Element_Hidden('presentation_id');
-	    $id->setRequired(true)
+		$id = new Zend_Form_Element_Hidden('presentation_id');
+		$id->setRequired(true)
 		   ->addValidators(
-		      array('Int')
+			  array('Int')
 		   )
 		   ->setDecorators(array('Composite'));
 
@@ -45,10 +45,10 @@ class Core_Form_Presentation_User extends TA_Form_Abstract
 			  ->populateElement('presenter')
 			  ->setAttrib('onchange', "this.form.submit()");
 
-	    $this->addElements(array(
-	    	$id,
-	    	$users
-	    ));
+		$this->addElements(array(
+			$id,
+			$users
+		));
 
 	}
 

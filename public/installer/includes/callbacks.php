@@ -6,16 +6,16 @@
 require_once('functions.php');
 class Callbacks extends Callbacks_Core
 {
-	function zend_check($params=array())
+	function zend_check($params = array())
 	{
 		//echo "asdfas"; var_dump($params);
-		if(isset($params['location'])) {
+		if (isset($params['location'])) {
 			if (!@include_once($params['location'].'/Zend/Version.php')) {
 				$this->error = 'Zend Framework not found in '.$params['location'];
 				return false;
 			}
 
-			if(Zend_Version::compareVersion($params['version']) == '1') {
+			if (Zend_Version::compareVersion($params['version']) == '1') {
 				$this->error = 'Zend Framework found, but version '.Zend_Version::VERSION.' is too old.<br />
 					Need at least version '.$params['version'].'.';
 				return false;
@@ -32,7 +32,7 @@ class Callbacks extends Callbacks_Core
 	function simplesamlphp_check($loc)
 	{
 		// No version checks here, because there is no way of determining the version of SimpleSAMLphp.
-		if(isset($loc)) {
+		if (isset($loc)) {
 			if (!is_readable($loc.'/lib/SimpleSAML/Utilities.php')) {
 				$this->error = 'SimpleSAMLphp not found in '.$loc;
 				return false;
@@ -56,14 +56,14 @@ class Callbacks extends Callbacks_Core
 	}
 */
 
-	function install($attributes=array())
+	function install($attributes = array())
 	{
 		// Initialise $conf items by putting a banner in first
 		$conf = array('banner'=> "This file was automagically created by the {$this->config['title']} installer wizard on ".date('c'));
 
 		// Put all non-empty session params into $conf
-		foreach($_SESSION['params'] as $key=>$val) {
-			if(!empty($val)) {
+		foreach ($_SESSION['params'] as $key=>$val) {
+			if (!empty($val)) {
 				$conf[$key] = $val;
 			}
 		}
@@ -81,14 +81,14 @@ class Callbacks extends Callbacks_Core
 				'db_pass' => $conf['db_password'],
 				'db_name' => $conf['db_name'],
 				);
-		if ( !$this->db_init($dbconf) ) {
+		if (!$this->db_init($dbconf)) {
 			return false;
 		}
 
 
 
 		// Import SQL skeleton and basic data
-		if ( !$this->db_import_file(BASE_PATH.'sql/data.sql')) {
+		if (!$this->db_import_file(BASE_PATH.'sql/data.sql')) {
 			return false;
 		}
 
@@ -96,22 +96,22 @@ class Callbacks extends Callbacks_Core
 		$conf_abbr = $this->db_escape($conf['conf_abbr']);
 		$conf_name = $this->db_escape($conf['conf_name']);
 		$conf_hostname = $this->db_escape($conf['conf_hostname']);
-		if(!$this->db_query("INSERT INTO conferences (abbreviation, name, hostname) VALUES ($conf_abbr, $conf_name, $conf_hostname)")) {
+		if (!$this->db_query("INSERT INTO conferences (abbreviation, name, hostname) VALUES ($conf_abbr, $conf_name, $conf_hostname)")) {
 			return false;
 		}
 
 echo "asfasf";
-       // Add administrative account
-        $admin_uid = $this->db_escape($attributes[$conf['ssp_uid_attribute']][0]);
-        $admin_fname = $this->db_escape($attributes[$conf['ssp_fname_attribute']][0]);
-        $admin_lname = $this->db_escape($attributes[$conf['ssp_lname_attribute']][0]);
-        $admin_email = $this->db_escape($attributes[$conf['ssp_email_attribute']][0]);
-        $admin_organisation = $this->db_escape($attributes[$conf['ssp_organisation_attribute']][0]);
-        $admin_country = $this->db_escape($attributes[$conf['ssp_country_attribute']][0]);
+	   // Add administrative account
+		$admin_uid = $this->db_escape($attributes[$conf['ssp_uid_attribute']][0]);
+		$admin_fname = $this->db_escape($attributes[$conf['ssp_fname_attribute']][0]);
+		$admin_lname = $this->db_escape($attributes[$conf['ssp_lname_attribute']][0]);
+		$admin_email = $this->db_escape($attributes[$conf['ssp_email_attribute']][0]);
+		$admin_organisation = $this->db_escape($attributes[$conf['ssp_organisation_attribute']][0]);
+		$admin_country = $this->db_escape($attributes[$conf['ssp_country_attribute']][0]);
 
 	echo "yes";
-        $admin_query = "INSERT INTO users (uid, fname, lname, email, organisation, country) VALUES ($admin_uid, $admin_fname, $admin_lname, $admin_email, $admin_organisation, $admin_country)";
-        if(!$this->db_query($admin_query)) {
+		$admin_query = "INSERT INTO users (uid, fname, lname, email, organisation, country) VALUES ($admin_uid, $admin_fname, $admin_lname, $admin_email, $admin_organisation, $admin_country)";
+		if(!$this->db_query($admin_query)) {
 			return false;
 		}
 
@@ -131,8 +131,8 @@ echo "asfasf";
 
 		//Generate application.ini config file
 		$config_template = './templates/application_ini.tpl';
-		if(!$new_config = @file_get_contents($config_template)) {
-			$this->error = "Could not load config template at ". realpath($config_template);
+		if (!$new_config = @file_get_contents($config_template)) {
+			$this->error = "Could not load config template at ".realpath($config_template);
 			return false;
 		}
 
@@ -140,7 +140,7 @@ echo "asfasf";
 		$new_config = preg_replace('/{(.*?)}/e', '$conf["$1"]', $new_config);
 
 		//		echo "<pre>";var_dump($new_config); $this->error = "hacked"; return false;
-		if(!@file_put_contents('../../application/configs/application.ini', $new_config)) {
+		if (!@file_put_contents('../../application/configs/application.ini', $new_config)) {
 			$e = error_get_last();
 			$this->error = $e['message'];
 			return false;
@@ -167,7 +167,7 @@ echo "asfasf";
 
 		// .htaccess
 		$htaccess_tpl = './templates/htaccess_tpl';
-		if(!$new_htaccess = @file_get_contents($htaccess_tpl)) {
+		if (!$new_htaccess = @file_get_contents($htaccess_tpl)) {
 			$this->error = "Could not load htaccess template from $htaccess_tpl";
 			return false;
 		}
@@ -175,7 +175,7 @@ echo "asfasf";
 		// Replace every instance of {blah} with the value of $conf['blah']
 		$new_htaccess = preg_replace('/{banner}/e', '$conf["banner"]', $new_htaccess);
 
-		if(!@file_put_contents('../.htaccess', $new_htaccess)) {
+		if (!@file_put_contents('../.htaccess', $new_htaccess)) {
 			$e = error_get_last();
 			$this->error = $e['message'];
 			return false;

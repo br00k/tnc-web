@@ -21,8 +21,8 @@ require_once APPLICATION_PATH.'/modules/webdemo/controllers/AbstractController.p
 class Webdemo_ScheduleController extends Webdemo_AbstractController
 {
 
-    public function indexAction()
-    {
+	public function indexAction()
+	{
 	}
 }
 

@@ -41,35 +41,35 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 * Initialize config object and store in global Registry
 	 *
 	 */
-    protected function _initConfig()
-    {
-        $config = new Zend_Config($this->getOptions());
+	protected function _initConfig()
+	{
+		$config = new Zend_Config($this->getOptions());
 
  		$frontendOptions = array(
 			'automatic_serialization' => true,
-		    'master_files' => array(
-		    	APPLICATION_PATH.'/configs/application.ini'
-		    )
+			'master_files' => array(
+				APPLICATION_PATH.'/configs/application.ini'
+			)
 		);
 
 		$backendOptions = array(
-		    'cache_dir' => APPLICATION_PATH.'/../cache'
+			'cache_dir' => APPLICATION_PATH.'/../cache'
 		);
 
 		$cache = Zend_Cache::factory('File',
-		                             'File',
-		                             $frontendOptions,
-		                             $backendOptions);
+									 'File',
+									 $frontendOptions,
+									 $backendOptions);
 		#$cache->save($config, 'config');
 
-        Zend_Registry::set('config', $config);
-        return $config;
-    }
+		Zend_Registry::set('config', $config);
+		return $config;
+	}
 
-    /**
-     * Initialize Logging
-     *
-     */
+	/**
+	 * Initialize Logging
+	 *
+	 */
 	protected function _initLogging()
 	{
 		$this->bootstrap('log');
@@ -98,26 +98,26 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$this->bootstrap('log');
 		$log = $this->getResource('log');
 
-        // Set application wide source Locale
-        $locale = new Zend_Locale('en_GB');
+		// Set application wide source Locale
+		$locale = new Zend_Locale('en_GB');
 
 	   	// Set up and load the translations
-        $translate = new Zend_Translate(
-        	array(
-        		'adapter' => 'gettext',
-        		'content' => APPLICATION_PATH . '/../languages/',
-            	'scan' => Zend_Translate::LOCALE_FILENAME,
-            	'log' => $this->getResource('log'),
-            	'disableNotices' => false, // Get rid of annoying 'not translated' notice
-            	'logUntranslated' => false, // Set to true if you debug
-            )
-        );
+		$translate = new Zend_Translate(
+			array(
+				'adapter' => 'gettext',
+				'content' => APPLICATION_PATH . '/../languages/',
+				'scan' => Zend_Translate::LOCALE_FILENAME,
+				'log' => $this->getResource('log'),
+				'disableNotices' => false, // Get rid of annoying 'not translated' notice
+				'logUntranslated' => false, // Set to true if you debug
+			)
+		);
 
 	   	// Add translation to all i18n compatible components
-        Zend_Registry::set('Zend_Locale', $locale);
-        Zend_Registry::set('Zend_Translate', $translate);
+		Zend_Registry::set('Zend_Locale', $locale);
+		Zend_Registry::set('Zend_Translate', $translate);
 
-        return $translate;
+		return $translate;
 	}
 
 	/**
@@ -182,26 +182,26 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 		$mainRoute = new Zend_Controller_Router_Route_Hostname(
 		   getenv('HTTP_HOST'),
-		   array (
+		   array(
 		   	'language' => ($userCountry) ? $userCountry : 'en'
 		   ),
-		   array (
+		   array(
 		   	'abbreviation' => '\w+'
 		   )
 		);
 
-      	$defaultRoute = new Zend_Controller_Router_Route_Static('',
-          	array(
-          		'module'	 => 'core',
-          		'controller' => 'index',
-          		'action' => 'index'
-          	)
-      	);
-      	$router->addRoute('main-default', $mainRoute->chain($defaultRoute));
+	  	$defaultRoute = new Zend_Controller_Router_Route_Static('',
+		  	array(
+		  		'module'	 => 'core',
+		  		'controller' => 'index',
+		  		'action' => 'index'
+		  	)
+	  	);
+	  	$router->addRoute('main-default', $mainRoute->chain($defaultRoute));
 
 		$moduleRoute = new Zend_Controller_Router_Route(
 			':module/:controller/:action/*',
-			array (
+			array(
 				'module'  => 'core',
 				'controller'=>'index',
 				'action'	=> 'index'
@@ -212,12 +212,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 		$languageRoute = new Zend_Controller_Router_Route(
 			':language/:module/:controller/:action/*',
-			array (
+			array(
 				'module'  => 'core',
 				'controller'=>'index',
 				'action'	=> 'index',
 			),
-			array (
+			array(
 				'language' => '[a-z]{2}'
 			)
 		);
@@ -226,7 +226,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		// @todo: removed language, so that no longer works!
 		$gridRoute = new Zend_Controller_Router_Route(
 			':module/:controller/list/:order/:dir/:page',
-			array (
+			array(
 				'module' => 'core',
 				'controller' => 'index',
 				'order' => '',
@@ -234,7 +234,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				'page' => 1,
 				'action' => 'list'
 			),
-			array (
+			array(
 				'page' => '\d+'
 			)
 		);
@@ -242,7 +242,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 		$scheduleRoute = new Zend_Controller_Router_Route(
 			'/core/schedule/list/*',
-			array (
+			array(
 				'module' => 'core',
 				'controller' => 'schedule',
 				'action' => 'list'
@@ -253,8 +253,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		// @todo: this doesn't allow for languages!
 		// added optional format parameter: (?:/(\d+))?
 		// link can now be: /core/submit/mail/1/json
-    	$gridActionsRoute = new Zend_Controller_Router_Route_Regex(
-    		'(\S+)/(\S+)/(edit|delete|reviewers|deletereviewer|chairs|deletechair|deletepresentation|mail|subscribe|unsubscribe)/(\d+)(?:/(\S+))?',
+		$gridActionsRoute = new Zend_Controller_Router_Route_Regex(
+			'(\S+)/(\S+)/(edit|delete|reviewers|deletereviewer|chairs|deletechair|deletepresentation|mail|subscribe|unsubscribe)/(\d+)(?:/(\S+))?',
 			array(
 				'language'		=> 'en',
 				'module'        => 'core',
@@ -264,11 +264,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			),
 			array(1 => 'module', 2 => 'controller', 3 => 'action', 4 => 'id', 5 => 'format'),
 			'%s/%s/%s/%d/%s'
-    	);
-    	$router->addRoute('gridactions', $mainRoute->chain($gridActionsRoute));
+		);
+		$router->addRoute('gridactions', $mainRoute->chain($gridActionsRoute));
 
-      	$route = new Zend_Controller_Router_Route_Regex(
-        	'core/review/list/(\d+)',
+	  	$route = new Zend_Controller_Router_Route_Regex(
+			'core/review/list/(\d+)',
 			array(
 				'lang'		=> ':lang',
 				'module'	=> 'core',
@@ -279,11 +279,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				1 => 'id'
 			),
 			'core/review/list/%d'
-    	);
-    	$router->addRoute('reviewlist', $mainRoute->chain($route));
+		);
+		$router->addRoute('reviewlist', $mainRoute->chain($route));
 
-      	$route = new Zend_Controller_Router_Route_Regex(
-        	'core/review/listpersonal/(\d+)',
+	  	$route = new Zend_Controller_Router_Route_Regex(
+			'core/review/listpersonal/(\d+)',
 			array(
 				'lang'		=> ':lang',
 				'module'	=> 'core',
@@ -294,11 +294,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				1 => 'id'
 			),
 			'core/review/listpersonal/%d'
-    	);
-    	$router->addRoute('reviewlistpersonal', $mainRoute->chain($route));
+		);
+		$router->addRoute('reviewlistpersonal', $mainRoute->chain($route));
 
 	   	$route = new Zend_Controller_Router_Route(
-        	'/core/review/new/:id',
+			'/core/review/new/:id',
 			array(
 				'lang'		=> ':lang',
 				'module'	=> 'core',
@@ -306,11 +306,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				'action'	=> 'new',
 				'id'		=> ':id'
 			)
-    	);
-    	$router->addRoute('reviewnew', $mainRoute->chain($route));
+		);
+		$router->addRoute('reviewnew', $mainRoute->chain($route));
 
-    	$route = new Zend_Controller_Router_Route(
-        	'/core/conference/timeslots/:id',
+		$route = new Zend_Controller_Router_Route(
+			'/core/conference/timeslots/:id',
 			array(
 				'lang'		=> ':lang',
 				'module'	=> 'core',
@@ -321,11 +321,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			array(
 				'id' => '\d+'
 			)
-    	);
-    	$router->addRoute('timeslots', $mainRoute->chain($route));
+		);
+		$router->addRoute('timeslots', $mainRoute->chain($route));
 
-     	$route = new Zend_Controller_Router_Route(
-        	'/getfile/:id',
+	 	$route = new Zend_Controller_Router_Route(
+			'/getfile/:id',
 			array(
 				'module'	=> 'core',
 				'controller'=> 'file',
@@ -334,11 +334,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			array(
 				'id' => '\d+'
 			)
-    	);
-    	$router->addRoute('getfile', $mainRoute->chain($route));
+		);
+		$router->addRoute('getfile', $mainRoute->chain($route));
 
-      	$route = new Zend_Controller_Router_Route_Regex(
-        	'core/(file|session|presentation|user|event|poster)/(\d+)',
+	  	$route = new Zend_Controller_Router_Route_Regex(
+			'core/(file|session|presentation|user|event|poster)/(\d+)',
 			array(
 				'module'	=> 'core',
 				'action'	=> 'show'
@@ -348,11 +348,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				2 => 'id'
 			),
 			'core/%s/%d'
-    	);
-    	$router->addRoute('oneitem', $mainRoute->chain($route));
+		);
+		$router->addRoute('oneitem', $mainRoute->chain($route));
 
-     	$route = new Zend_Controller_Router_Route(
-        	'core/feedback/:uuid',
+	 	$route = new Zend_Controller_Router_Route(
+			'core/feedback/:uuid',
 			array(
 				'module'	=> 'core',
 				'controller'=> 'feedback',
@@ -361,12 +361,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			array(
 				'uuid' => '[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89AB][0-9a-f]{3}-[0-9a-f]{12}'
 			)
-    	);
-    	$router->addRoute('feedback', $mainRoute->chain($route));
+		);
+		$router->addRoute('feedback', $mainRoute->chain($route));
 
 		// route all feedback section requests to to same action controller
-      	$route = new Zend_Controller_Router_Route_Regex(
-        	'core/feedback/(general|participant|logistics|programme)',
+	  	$route = new Zend_Controller_Router_Route_Regex(
+			'core/feedback/(general|participant|logistics|programme)',
 			array(
 				'module'	=> 'core',
 				'controller'=> 'feedback',
@@ -376,12 +376,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				1 => 'section'
 			),
 			'core/feedback/%s'
-    	);
-    	$router->addRoute('feedbacksection', $mainRoute->chain($route));
+		);
+		$router->addRoute('feedbacksection', $mainRoute->chain($route));
 
 		// feedback download results
-      	$route = new Zend_Controller_Router_Route_Regex(
-        	'core/feedback/getresults/(general|participant|logistics|programme)',
+	  	$route = new Zend_Controller_Router_Route_Regex(
+			'core/feedback/getresults/(general|participant|logistics|programme)',
 			array(
 				'module'	=> 'core',
 				'controller'=> 'feedback',
@@ -391,8 +391,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				1 => 'section'
 			),
 			'core/feedback/getresults/%s'
-    	);
-    	$router->addRoute('feedbackgetresults', $mainRoute->chain($route));
+		);
+		$router->addRoute('feedbackgetresults', $mainRoute->chain($route));
 
 	}
 
@@ -414,14 +414,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$config = Zend_Registry::get('config');
 		if ($config->diagnostic->log) {
 			$front = $this->bootstrap('frontcontroller')
-    		              ->getResource('frontcontroller');
+						  ->getResource('frontcontroller');
 
-        	$front->registerPlugin(new Application_Plugin_Diagnostic(
-        		$config->diagnostic->log,
-        		$config->diagnostic->mode,
-        		$config->diagnostic->switch->toArray()
-        	));
-        }
+			$front->registerPlugin(new Application_Plugin_Diagnostic(
+				$config->diagnostic->log,
+				$config->diagnostic->mode,
+				$config->diagnostic->switch->toArray()
+			));
+		}
 	}
 
 
@@ -437,8 +437,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 */
 	protected function _initNavigation()
 	{
-    	$this->bootstrap('frontController');
-    	$frontController = $this->getResource('frontController');
+		$this->bootstrap('frontController');
+		$frontController = $this->getResource('frontController');
 
 		$navigationPlugin = $frontController->getPlugin('TA_Controller_Plugin_NavigationSelector');
 

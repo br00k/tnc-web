@@ -35,7 +35,7 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 
 		// Set navigation to active for all actions within this controller
-		$page = $this->view->navigation()->findOneByController( $this->getRequest()->getControllerName() );
+		$page = $this->view->navigation()->findOneByController($this->getRequest()->getControllerName());
 		if ($page) {
 			$page->setActive();
 		}
@@ -112,7 +112,7 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 		$this->view->id = (int) ($request->getParam('id')) ? $request->getParam('id') : $request->getParam('conference_id');
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->_includeJquery();
 			$this->view->headScript()->appendFile('/js/conference.js');
 			$this->view->conferenceForm = $this->_conferenceModel->getForm('conferenceEdit');
@@ -124,7 +124,7 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 		}
 
 		// try to persist item
-		if ( $this->_conferenceModel->saveConference($request->getPost(), 'edit') === false ) {
+		if ($this->_conferenceModel->saveConference($request->getPost(), 'edit') === false) {
 			$this->view->conferenceForm = $this->_conferenceModel->getForm('conferenceEdit');
 			return $this->render('formEdit');
 		}
@@ -137,7 +137,7 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 
 	public function deleteAction()
 	{
-		if ( false === $this->_conferenceModel->delete($this->_getParam('id')) ) {
+		if (false === $this->_conferenceModel->delete($this->_getParam('id'))) {
 			throw new TA_Model_Exception('Something went wrong with deleting the user');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'conference', 'action'=>'list'), 'grid');
@@ -148,12 +148,12 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 		$request = $this->getRequest();
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			return $this->displayForm();
 		}
 
 		// try to persist user
-		if ( $this->_conferenceModel->saveConference($request->getPost()) === false ) {
+		if ($this->_conferenceModel->saveConference($request->getPost()) === false) {
 			return $this->displayForm();
 		}
 
@@ -176,7 +176,7 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 		// @todo if no $id is supplied throw Exception. maybe require this in Routing
 
 		// No post
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			// no timeslots have been defined yet, include smart timeslots form
 			if ($this->_conferenceModel->getTimeslots(null, $id)->count() === 0) {
 				$this->view->smartslotsForm = $this->_conferenceModel->getForm('conferenceSmartslots');
@@ -190,7 +190,7 @@ class Core_ConferenceController extends Zend_Controller_Action implements Zend_A
 		}
 
 		// persist timeslots
-		if ( $this->_conferenceModel->saveTimeslots($request->getPost()) === false ) {
+		if ($this->_conferenceModel->saveTimeslots($request->getPost()) === false) {
 			$this->view->timeslotsForm = $this->_conferenceModel->getForm('conferenceTimeslots');
 			return $this->render('timeslots');
 		}
