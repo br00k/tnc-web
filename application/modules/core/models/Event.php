@@ -33,7 +33,7 @@ class Core_Model_Event extends TA_Model_Acl_Abstract
 	 */
 	public function getEventById($id)
 	{
-		$row = $this->getResource('events')->getEventById( (int) $id );
+		$row = $this->getResource('events')->getEventById((int) $id);
 		if ($row === null) {
 			throw new TA_Model_Exception('id not found');
 		}
@@ -48,7 +48,7 @@ class Core_Model_Event extends TA_Model_Acl_Abstract
 	 */
 	public function getAllEventDataById($id)
 	{
-		$row = $this->getResource('eventsview')->getEventById( (int) $id );
+		$row = $this->getResource('eventsview')->getEventById((int) $id);
 		if ($row === null) {
 			throw new TA_Model_Exception('id not found');
 		}
@@ -124,7 +124,7 @@ class Core_Model_Event extends TA_Model_Acl_Abstract
 		}
 
 		// get different form based on action parameter
-		$formName = ($action) ? 'event' . ucfirst($action) : 'event';
+		$formName = ($action) ? 'event'.ucfirst($action) : 'event';
 		$form = $this->getForm($formName);
 
 		// perform validation

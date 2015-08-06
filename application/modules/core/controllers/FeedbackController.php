@@ -288,9 +288,9 @@ class Core_FeedbackController extends Zend_Controller_Action
 			'dummy' => false,
 			'template' => 'feedback/codes',
 			'html' => true,
-			'subject' => $conference['abbreviation'] . ' Feedback',
+			'subject' => $conference['abbreviation'].' Feedback',
 			'to_email' => $form->getValue('email')
-		), array('uuid' => $this->_feedbackModel->createFeedbackCode()) );
+		), array('uuid' => $this->_feedbackModel->createFeedbackCode()));
 
 		$this->view->email = $form->getValue('email');
 	}

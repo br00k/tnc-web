@@ -33,7 +33,7 @@ class Core_Model_Topic extends TA_Model_Acl_Abstract
 	 */
 	public function getTopicById($id)
 	{
-		$row = $this->getResource('topics')->getTopicById( (int) $id );
+		$row = $this->getResource('topics')->getTopicById((int) $id);
 		if ($row === null) {
 			throw new TA_Model_Exception('id not found');
 		}
@@ -94,7 +94,7 @@ class Core_Model_Topic extends TA_Model_Acl_Abstract
 		}
 
 		// get different form based on action parameter
-		$formName = ($action) ? 'topic' . ucfirst($action) : 'topic';
+		$formName = ($action) ? 'topic'.ucfirst($action) : 'topic';
 		$form = $this->getForm($formName);
 
 		// perform validation

@@ -80,11 +80,9 @@ class phpSetupWizard_Core
 		// load core language file
 		if (@is_file(BASE_PATH.'languages/core/'.$_SESSION['language'].'.php')) {
 			$filename = $_SESSION['language'];
-		}
-		elseif (@is_file(BASE_PATH.'languages/core/'.$this->config['language'].'.php')) {
+		} elseif (@is_file(BASE_PATH.'languages/core/'.$this->config['language'].'.php')) {
 			$filename = $this->config['language'];
-		}
-		else {
+		} else {
 			die('"includes/core/'.$_SESSION['language'].'.php" file was not found.');
 		}
 
@@ -102,8 +100,7 @@ class phpSetupWizard_Core
 		$filename = '';
 		if (@is_file(BASE_PATH.'languages/'.$_SESSION['language'].'.php')) {
 			$filename = $_SESSION['language'];
-		}
-		elseif (@is_file(BASE_PATH.'languages/'.$this->config['language'].'.php')) {
+		} elseif (@is_file(BASE_PATH.'languages/'.$this->config['language'].'.php')) {
 			$filename = $this->config['language'];
 		}
 
@@ -144,14 +141,14 @@ class phpSetupWizard_Core
 	 */
 	function get_languages()
 	{
-		if ( $handle = @opendir(BASE_PATH . 'languages/core/') ) {
-			while ( ($filename = @readdir($handle)) !== false ) {
-				if ( @is_file(BASE_PATH . 'languages/core/' . $filename)  &&  $filename != '.'  &&  $filename != '..' && strtolower(substr($filename, -4)) == '.php' )
+		if ($handle = @opendir(BASE_PATH.'languages/core/')) {
+			while (($filename = @readdir($handle)) !== false) {
+				if (@is_file(BASE_PATH.'languages/core/'.$filename) && $filename != '.' && $filename != '..' && strtolower(substr($filename, -4)) == '.php')
 				{
-					include BASE_PATH . 'languages/core/' . $filename;
+					include BASE_PATH.'languages/core/'.$filename;
 
-					if ( !isset($language) || !is_array($language) || !isset($language['language_name']) ) {
-						die('languages/core/' . $filename . ' file is not formatted properly.');
+					if (!isset($language) || !is_array($language) || !isset($language['language_name'])) {
+						die('languages/core/'.$filename.' file is not formatted properly.');
 					}
 
 					$this->languages[substr($filename, 0, -4)] = $language['language_name'];
@@ -162,17 +159,17 @@ class phpSetupWizard_Core
 			@closedir($handle);
 		}
 
-		if ( $handle = @opendir(BASE_PATH . 'languages/') ) {
-			while ( ($filename = @readdir($handle)) !== false ) {
-				if ( @is_file(BASE_PATH . 'languages/' . $filename)  &&  $filename != '.'  &&  $filename != '..' && strtolower(substr($filename, -4)) == '.php' )
+		if ($handle = @opendir(BASE_PATH.'languages/')) {
+			while (($filename = @readdir($handle)) !== false) {
+				if (@is_file(BASE_PATH.'languages/'.$filename) && $filename != '.' && $filename != '..' && strtolower(substr($filename, -4)) == '.php')
 				{
-					include BASE_PATH . 'languages/' . $filename;
+					include BASE_PATH.'languages/'.$filename;
 
-					if ( !isset($language) || !is_array($language) ) {
-						die('languages/' . $filename . ' file is not formatted properly.');
+					if (!isset($language) || !is_array($language)) {
+						die('languages/'.$filename.' file is not formatted properly.');
 					}
 
-					if ( isset($language['language_name']) && !isset($this->languages[substr($filename, 0, -4)]) ) {
+					if (isset($language['language_name']) && !isset($this->languages[substr($filename, 0, -4)])) {
 						$this->languages[substr($filename, 0, -4)] = $language['language_name'];
 					}
 
@@ -201,8 +198,7 @@ class phpSetupWizard_Core
 		if ($status && isset($_POST['button_next']) && $_POST['button_next'] && ($this->vars['step_num'] + 1) <= $this->vars['total_steps']) {
 			$_SESSION['last_step']++;
 			$this->redirect($this->config['wizard_file'].'?s='.($this->vars['step_num'] + 1));
-		}
-		elseif (isset($_POST['button_back']) && $_POST['button_back']) {
+		} elseif (isset($_POST['button_back']) && $_POST['button_back']) {
 			$this->redirect($this->config['wizard_file'].'?s='.($this->vars['step_num'] - 1));
 		}
 
@@ -280,8 +276,7 @@ class phpSetupWizard_Core
 						'items' => $this->languages,
 						'value' => $_SESSION['language'] = $_SESSION['language'] = $value,
 					);
-				}
-				elseif ($field['type'] == 'php-config') {
+				} elseif ($field['type'] == 'php-config') {
 
 					$values = array();
 					foreach ($field['items'] as $key => $value) {
@@ -305,8 +300,7 @@ class phpSetupWizard_Core
 					if (!$status) {
 						$this->vars['error'] = $this->language['config_php_error'];
 					}
-				}
-				elseif ($field['type'] == 'php-modules') {
+				} elseif ($field['type'] == 'php-modules') {
 
 					$modules = get_loaded_extensions();
 					$values = array();
@@ -339,8 +333,7 @@ class phpSetupWizard_Core
 					if (!$status) {
 						$this->vars['error'] = $this->language['config_php_error'];
 					}
-				}
-				elseif ($field['type'] == 'file-permissions') {
+				} elseif ($field['type'] == 'file-permissions') {
 
 					$values = array();
 					foreach ($field['items'] as $key => $value) {
@@ -352,8 +345,7 @@ class phpSetupWizard_Core
 								'error' => 1,
 								'message' => @substr($key, -1) == '/' ? $this->language['config_folder_none'] : $this->language['config_file_none'],
 							);
-						}
-						else {
+						} else {
 							if ($value == 'write') {
 								$is_write = @is_writable($key);
 								$values[$key] = array(
@@ -374,8 +366,7 @@ class phpSetupWizard_Core
 						$values[$key]['path'] = $key;
 						if (strpos($key, './../') === 0) {
 							$values[$key]['path'] = substr($key, 5);
-						}
-						elseif (strpos($key, '../') === 0) {
+						} elseif (strpos($key, '../') === 0) {
 							$values[$key]['path'] = substr($key, 3);
 						}
 
@@ -389,35 +380,28 @@ class phpSetupWizard_Core
 					if (!$status) {
 						$this->vars['error'] = $this->language['config_file_error'];
 					}
-				}
-				elseif ($field['type'] == 'checkbox') {
+				} elseif ($field['type'] == 'checkbox') {
 
 					// set field's value
 					if (isset($_POST[$field['name']]) || isset($_POST['button_next']) && $_POST['button_next']) {
 						$values = isset($_POST[$field['name']]) ? $_POST[$field['name']] : array();
-					}
-					elseif (isset($_SESSION['params'][$field['name']])) {
+					} elseif (isset($_SESSION['params'][$field['name']])) {
 						$values = $_SESSION['params'][$field['name']];
-					}
-					else {
+					} else {
 						if (isset($field['default'])) {
 							$values = is_array($field['default']) ? $field['default'] : array($field['default']);
-						}
-						else {
+						} else {
 							$values = array();
 						}
 					}
 					$this->step['fields'][$field['index']]['value'] = $_SESSION['params'][$field['name']] = $field['value'] = $values;
-				}
-				elseif ($field['type'] != 'header' && $field['type'] != 'info') {
+				} elseif ($field['type'] != 'header' && $field['type'] != 'info') {
 					// set field's value
 					if (isset($_POST[$field['name']])) {
 						$value = $_POST[$field['name']];
-					}
-					elseif (isset($_SESSION['params'][$field['name']])) {
+					} elseif (isset($_SESSION['params'][$field['name']])) {
 						$value = $_SESSION['params'][$field['name']];
-					}
-					else {
+					} else {
 						$value = isset($field['default']) ? $field['default'] : '';
 					}
 					$this->step['fields'][$field['index']]['value'] = $_SESSION['params'][$field['name']] = $field['value'] = $value;
@@ -498,8 +482,7 @@ class phpSetupWizard_Core
 			$params['function'] = $rule['rule'];
 			$params['params'] = array_merge(array($field['value']), isset($params['params']) ? (is_array($params['params']) ? $params['params'] : array($params['params'])) : array());
 			$status = call_user_func(array($validate, 'php_function'), $params);
-		}
-		else {
+		} else {
 			$validate->error = 'Validation rule '.$rule['rule'].' does not seem to be valid.';
 		}
 
@@ -527,8 +510,11 @@ class phpSetupWizard_Core
 
 		$config = $key == 'php_version' ? phpversion() : ini_get($key);
 
-		if ($config == 'On') $config = true;
-		elseif ($config == 'Off' || $config == '') $config = false;
+		if ($config == 'On') {
+			$config = true;
+		} elseif ($config == 'Off' || $config == '') {
+			$config = false;
+		}
 
 		if (is_null($value)) {
 			$values = array(
@@ -536,30 +522,26 @@ class phpSetupWizard_Core
 				'error' => 0,
 				'message' => $this->language['config_pass'],
 			);
-		}
-		elseif (is_bool($value)) {
+		} elseif (is_bool($value)) {
 			if ($value) {
 				$values = array(
 					'value' => $config ? $this->language['config_yes'] : $this->language['config_no'],
 					'error' => $config ? 0 : 1,
 					'message' => $config ? $this->language['config_pass'] : $this->language['config_fail'],
 				);
-			}
-			else {
+			} else {
 				$values = array(
 					'value' => !$config ? $this->language['config_no'] : $this->language['config_yes'],
 					'error' => !$config ? 0 : 1,
 					'message' => !$config ? $this->language['config_pass'] : $this->language['config_fail'],
 				);
 			}
-		}
-		else {
+		} else {
 			$comparison = '=';
 			if (substr($value, 0, 2) == '>=' || substr($value, 0, 2) == '<=') {
 				$comparison = substr($value, 0, 2);
 				$value = substr($value, 2);
-			}
-			elseif (substr($value, 0, 1) == '>' || substr($value, 0, 1) == '<' || substr($value, 0, 1) == '=') {
+			} elseif (substr($value, 0, 1) == '>' || substr($value, 0, 1) == '<' || substr($value, 0, 1) == '=') {
 				$comparison = substr($value, 0, 1);
 				$value = substr($value, 1);
 			}
@@ -616,6 +598,7 @@ class phpSetupWizard_Core
 	 * @param	array
 	 * @param	array
 	 * @param	array
+	 * @param Validation $validate
 	 */
 	function set_validate_error($validate, $field, $rule, $params)
 	{
@@ -677,8 +660,7 @@ class phpSetupWizard_Core
 			if (isset($default[$name])) {
 				$attr .= ' '.$name.'="'.$default[$name].' '.$value.'"';
 				unset($default[$name]);
-			}
-			else {
+			} else {
 				$attr = ' '.$name.'="'.$value.'"';
 			}
 		}
@@ -707,15 +689,13 @@ class phpSetupWizard_Core
 		// set parameters
 		if (isset($callback['params'])) {
 			$params = is_array($callback['params']) ? $callback['params'] : array($callback['params']);
-		}
-		else {
+		} else {
 			$params = array();
 		}
 
 		if (method_exists($callbacks, $callback['name'])) {
 			$status = call_user_func_array(array($callbacks, $callback['name']), $params);
-		}
-		else {
+		} else {
 			$callbacks->error = $callback['name'].' callback does not exist.';
 		}
 
@@ -728,8 +708,7 @@ class phpSetupWizard_Core
 			// is error message already set
 			elseif ($callbacks->error) {
 				$this->vars['error'] = $callbacks->error;
-			}
-			else {
+			} else {
 				$this->vars['error'] = $callbacks->error = $callback['name'].' callback did not return a successful result.';
 			}
 
@@ -768,11 +747,11 @@ class phpSetupWizard_Core
 	function return_bytes($val)
 	{
 		$val = strtolower(trim($val));
-		if ( substr($val, -1) == 'b' ) {
+		if (substr($val, -1) == 'b') {
 			$val = substr($val, 0, -1);
 		}
 		$last = substr($val, -1);
-		switch ( $last ) {
+		switch ($last) {
 			case 'g':
 			case 'gb':
 				$val *= 1024;

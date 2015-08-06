@@ -41,7 +41,7 @@ class Application_Plugin_Conditionals extends Zend_Controller_Plugin_Abstract
 		}
 
 		// check if ACL resource exists
-		if (!$acl->has(ucfirst($request->getControllerName()) )) {
+		if (!$acl->has(ucfirst($request->getControllerName()))) {
 		   return;
 		}
 

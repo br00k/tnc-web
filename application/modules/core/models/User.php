@@ -1,21 +1,21 @@
 <?php
 /**
-	 * CORE Conference Manager
-	 *
-	 * LICENSE
-	 *
-	 * This source file is subject to the new BSD license that is bundled
-	 * with this package in the file LICENSE.txt.
-	 * It is also available through the world-wide-web at this URL:
-	 * http://www.terena.org/license/new-bsd
-	 * If you did not receive a copy of the license and are unable to
-	 * obtain it through the world-wide-web, please send an email
-	 * to webmaster@terena.org so we can send you a copy immediately.
-	 *
-	 * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
-	 * @license    http://www.terena.org/license/new-bsd     New BSD License
-	 * @revision   $Id: User.php 88 2012-12-10 11:54:14Z gijtenbeek@terena.org $
-	 */
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: User.php 88 2012-12-10 11:54:14Z gijtenbeek@terena.org $
+ */
 
 /**
  *
@@ -41,7 +41,7 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 	 */
 	public function getUserById($id)
 	{
-		$row = $this->getResource('users')->getUserById( (int) $id );
+		$row = $this->getResource('users')->getUserById((int) $id);
 		if ($row === null) {
 			throw new TA_Model_Exception('id not found');
 		}
@@ -147,10 +147,10 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 	public function getRolesOfUser($id)
 	{
 		if (!$this->checkAcl('showRoles')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        return $this->getResource('users')->getRolesOfUser($id);
+		return $this->getResource('users')->getRolesOfUser($id);
 	}
 
 	/**
@@ -159,10 +159,10 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 	public function getRolesForSelect($addEmpty = null)
 	{
 		if (!$this->checkAcl('showRoles')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        return $this->getResource('roles')->getRolesForSelect($addEmpty);
+		return $this->getResource('roles')->getRolesForSelect($addEmpty);
 	}
 
 	/**
@@ -198,7 +198,7 @@ class Core_Model_User extends TA_Model_Acl_Abstract
 		}
 
 		// get different form (needed to validate values against) based on action parameter
-		$formName = ($action) ? 'user' . ucfirst($action) : 'userInvite';
+		$formName = ($action) ? 'user'.ucfirst($action) : 'userInvite';
 		$form = $this->getForm($formName);
 
 		// perform validation

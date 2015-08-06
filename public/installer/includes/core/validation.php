@@ -58,18 +58,15 @@ class Validation_Core
 
 		if ($this->config['db_type'] == 'mysql') {
 			$link = @mysql_connect($db_host, $db_user, $db_pass);
-		}
-		elseif ($this->config['db_type'] == 'mysqli') {
+		} elseif ($this->config['db_type'] == 'mysqli') {
 			$link = @mysqli_connect($db_host, $db_user, $db_pass);
-		}
-		elseif ($this->config['db_type'] == 'pgsql') {
+		} elseif ($this->config['db_type'] == 'pgsql') {
 			#echo "<pre>".print_r($this->config, 1)."</pre>";
 			if ($db_name) {
 				#$link = pg_connect("host=$db_host dbname=$db_name user=$db_user password=$db_pass");
 				try {
 					$dbh = new PDO("pgsql:dbname=$db_name;host=$db_host", $db_user, $db_pass);
-				}
-				catch (PDOException $e) {
+				} catch (PDOException $e) {
 					$this->error = $e->getMessage();
 					return false;
 				}
@@ -88,8 +85,7 @@ class Validation_Core
 		if ($db_name) {
 			if ($this->config['db_type'] == 'mysql') {
 				$db = @mysql_select_db($db_name, $link);
-			}
-			elseif ($this->config['db_type'] == 'mysqli') {
+			} elseif ($this->config['db_type'] == 'mysqli') {
 				$db = @mysqli_select_db($link, $db_name);
 			}
 

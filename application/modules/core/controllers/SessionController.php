@@ -174,13 +174,13 @@ class Core_SessionController extends Zend_Controller_Action implements Zend_Acl_
 		$this->view->session = $session = $this->_sessionModel->getAllSessionDataById($id);
 
 		$conference = Zend_Registry::get('conference');
-		if ( $this->_sessionModel->checkAcl('evaluate') ) {
+		if ($this->_sessionModel->checkAcl('evaluate')) {
 			// add evaluate action to the stack!
 			$this->_helper->actionStack('evaluate');
 		}
 
 		// No post;
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			// populate form with defaults
 			$this->view->presentationForm->setDefaults(array(
 			   	'session_id' => $id

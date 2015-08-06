@@ -204,15 +204,15 @@ class Core_Resource_Users extends TA_Model_Resource_Db_Table_Abstract
 			$order = 'lower(lname) ASC';
 		}
 		$select->order($order)
-			   ->from( $this->_name, array_keys($this->getGridColumns()) );
+			   ->from($this->_name, array_keys($this->getGridColumns()));
 
 		// apply filters to grid
 		if ($filter) {
 			foreach ($filter as $field => $value) {
 				if (is_array($value)) {
-					$select->where( $field.' IN (?)', $value);
+					$select->where($field.' IN (?)', $value);
 				} else {
-					$select->where( $field.' = ?', $value);
+					$select->where($field.' = ?', $value);
 				}
 			}
 		}

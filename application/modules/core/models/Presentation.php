@@ -33,7 +33,7 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 	 */
 	public function getPresentationById($id)
 	{
-		$row = $this->getResource('presentations')->getPresentationById( (int) $id );
+		$row = $this->getResource('presentations')->getPresentationById((int) $id);
 		if ($row === null) {
 			throw new TA_Model_Exception('id not found');
 		}
@@ -291,7 +291,7 @@ class Core_Model_Presentation extends TA_Model_Acl_Abstract
 		}
 
 		// get different form based on action parameter
-		$formName = ($action) ? 'presentation' . ucfirst($action) : 'presentation';
+		$formName = ($action) ? 'presentation'.ucfirst($action) : 'presentation';
 		$form = $this->getForm($formName);
 
 		// perform validation

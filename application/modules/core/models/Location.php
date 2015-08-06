@@ -34,10 +34,10 @@ class Core_Model_Location extends TA_Model_Acl_Abstract
 	public function getLocationById($id)
 	{
 		$row = $this->getResource('locations')->getLocationById((int) $id);
-    	if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	/**
@@ -46,9 +46,9 @@ class Core_Model_Location extends TA_Model_Acl_Abstract
 	public function getLocationsForSelect($type = null)
 	{
 		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
-        return $this->getResource('locations')->getLocationsForSelect($type);
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
+		return $this->getResource('locations')->getLocationsForSelect($type);
 	}
 
 	/**
@@ -101,7 +101,7 @@ class Core_Model_Location extends TA_Model_Acl_Abstract
 		}
 
 		// get different form based on action parameter
-		$formName = ($action) ? 'location' . ucfirst($action) : 'location';
+		$formName = ($action) ? 'location'.ucfirst($action) : 'location';
 		$form = $this->getForm($formName);
 
 		// perform validation
