@@ -42,12 +42,11 @@ class Core_FileController extends Zend_Controller_Action
     /**
 	 * Get file details from the database and return the file as a download
 	 *
-	 * @param	integer	$id	The file to retrieve
 	 * @return	void
      */
     public function getfileAction()
     {
-    	$file = $this->_fileModel->getFileById( $this->getRequest()->getParam('id') );
+    	$file = $this->_fileModel->getFileById($this->getRequest()->getParam('id'));
 
 		// not necessary but more pretty
 		#$filter = new Zend_Filter_RealPath();
@@ -55,15 +54,13 @@ class Core_FileController extends Zend_Controller_Action
 
 		$filePath = Zend_Registry::get('config')->directories->uploads.$file->filename;
 
-    	$this->_helper->SendFile($filePath, $file->mimetype, array('filename' => $file->getNormalizedName() ));
+    	$this->_helper->SendFile($filePath, $file->mimetype, array('filename' => $file->getNormalizedName()));
     	exit();
     }
 
     /**
      * Get a file from the filesystem and return it as a download
      *
-     * @param	string	$file	The file to retrieve
-     * @param	string	$type	The type of file you are retrieving
      * @return	void
      */
     public function getstaticfileAction()
@@ -77,7 +74,7 @@ class Core_FileController extends Zend_Controller_Action
 
     	switch ($type) {
     		case 'mail':
-    			$file = APPLICATION_PATH . '/../data/mails/'.$file;
+    			$file = APPLICATION_PATH.'/../data/mails/'.$file;
     			$mimetype = 'message/rfc822';
     		break;
     		case 'zip':
@@ -93,12 +90,11 @@ class Core_FileController extends Zend_Controller_Action
     /**
      * Display a file inline. If there is a thumbnail it picks this over the normal file
      *
-	 * @param	integer	$id	The file to retrieve
      * @return	void
      */
 	public function showAction()
 	{
-    	$file = $this->_fileModel->getFileById( $this->getRequest()->getParam('id') );
+    	$file = $this->_fileModel->getFileById($this->getRequest()->getParam('id'));
 
     	$filename = $file->filename;
 

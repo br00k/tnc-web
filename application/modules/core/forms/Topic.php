@@ -26,17 +26,17 @@ class Core_Form_Topic extends TA_Form_Abstract
 
 	public function init()
 	{
-	    $this->setAction('/core/topic/new');
+		$this->setAction('/core/topic/new');
 
-	    $title = new Zend_Form_Element_Text('title');
-	    $title->setLabel('Title')
+		$title = new Zend_Form_Element_Text('title');
+		$title->setLabel('Title')
 			  ->setRequired(true)
 			  ->setAttrib('class', 'medium')
 			  ->setDescription('Must be between 2 and 100 characters, only letters, numbers and spaces allowed')
 			  ->setDecorators(array('Composite'));
 
-	    $description = new Zend_Form_Element_Textarea('description');
-	    $description->setLabel('Description')
+		$description = new Zend_Form_Element_Textarea('description');
+		$description->setLabel('Description')
 			  	 ->setRequired(true)
 				 ->setAttrib('class', 'medium')
 				 ->setDecorators(array('Composite'));
@@ -53,10 +53,10 @@ class Core_Form_Topic extends TA_Form_Abstract
 			$this->addElements(array($submission, $logo));
 		}
 
-	    $this->addElement('submit', 'submit', array(
+		$this->addElement('submit', 'submit', array(
 			'label' => 'Submit',
 			'decorators' => $this->_buttonElementDecorator
-	    ));
+		));
 	}
 
 }

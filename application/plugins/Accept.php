@@ -27,15 +27,15 @@ class Application_Plugin_Accept extends Zend_Controller_Plugin_Abstract
 {
 
 	public function dispatchLoopStartup(Zend_Controller_Request_Abstract $request)
-    {
-    	$header = $request->getHeader('Accept');
-    	if (strstr($header,'application/json')) {
-    		$request->setParam('format','json');
-    	} elseif (strstr($header,'application/xml')) {
-    		$request->setParam('format','xml');
-    	} else {
-    		$request->setParam('format','html');
-    	}
-    }
+	{
+		$header = $request->getHeader('Accept');
+		if (strstr($header,'application/json')) {
+			$request->setParam('format','json');
+		} elseif (strstr($header,'application/xml')) {
+			$request->setParam('format','xml');
+		} else {
+			$request->setParam('format','html');
+		}
+	}
 
 }

@@ -56,6 +56,6 @@ class Core_Resource_Submissionstatus extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getSessionById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 }

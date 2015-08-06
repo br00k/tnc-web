@@ -37,7 +37,7 @@ class Core_Resource_Sessionsevaluation extends TA_Model_Resource_Db_Table_Abstra
 	 */
 	public function getItemById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	public function getEvaluationBySessionId($sessionId)

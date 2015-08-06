@@ -3,7 +3,7 @@
 require_once('functions.php');
 
 
-$steps=array(
+$steps = array(
 		array(
 			// Step name
 			'name' => 'Server requirements',
@@ -130,18 +130,18 @@ $steps=array(
 								'fields' => array(
 									array(
 										   'type' =>    'info',
-                                        'value'=>   '<p>Select the SimpleSAMLphp authentication source that will be used for CORE.</p><p>The next step will try to authenticate you. If this succeeds, the installer will make you the first administrative user.</p><p>Please make sure that the selected authsource actually <strong>WORKS</strong>, otherwise you will be <strong>lost</strong> after the redirect with no way back, and you have to restart your browser to try again...</p>',
-                                        ),
+										'value'=>   '<p>Select the SimpleSAMLphp authentication source that will be used for CORE.</p><p>The next step will try to authenticate you. If this succeeds, the installer will make you the first administrative user.</p><p>Please make sure that the selected authsource actually <strong>WORKS</strong>, otherwise you will be <strong>lost</strong> after the redirect with no way back, and you have to restart your browser to try again...</p>',
+										),
 
-                                    array(
-                                        'label' =>  'authsource',
-                                        'type' =>   'select',
-                                        'name' =>   'ssp_authsource',
-                                        'items' => get_authsources(),
-                                        'validate' => array(
-                                            array('rule' => 'required'),
-                                            ),
-                                        ),
+									array(
+										'label' =>  'authsource',
+										'type' =>   'select',
+										'name' =>   'ssp_authsource',
+										'items' => get_authsources(),
+										'validate' => array(
+											array('rule' => 'required'),
+											),
+										),
 
 								),
 							),

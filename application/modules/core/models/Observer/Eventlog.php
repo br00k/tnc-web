@@ -38,8 +38,8 @@ class Core_Model_Observer_Eventlog implements TA_Model_Observer_Interface
 	{
 		$eventlogModel = new Core_Model_Eventlog();
 		$eventlogModel->saveEventlog(array(
-		    'event_type' => $this->_type,
-		    'timestamp' => 'now()'
+			'event_type' => $this->_type,
+			'timestamp' => 'now()'
 		));
 	}
 }

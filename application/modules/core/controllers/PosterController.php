@@ -36,7 +36,7 @@ class Core_PosterController extends Zend_Controller_Action implements Zend_Acl_R
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 
 		// Set navigation to active for all actions within this controller
-		$page = $this->view->navigation()->findOneByController( $this->getRequest()->getControllerName() );
+		$page = $this->view->navigation()->findOneByController($this->getRequest()->getControllerName());
 		if ($page) {
 			$page->setActive();
 		}
@@ -91,7 +91,7 @@ class Core_PosterController extends Zend_Controller_Action implements Zend_Acl_R
 	{
 		Zend_Controller_Action_HelperBroker::addHelper(new TA_Controller_Action_Helper_ConferenceInfo());
 		// if feedback codes have been sent
-		if ($this->_helper->conferenceInfo()->isFeedbackOpen() ) {
+		if ($this->_helper->conferenceInfo()->isFeedbackOpen()) {
 			$feedbackModel = new Core_Model_Feedback();			
 			if ($id = $feedbackModel->getFeedbackId()) {			
 				$this->view->feedback_defaults = $feedbackModel->getPosterVote($id);
@@ -128,7 +128,7 @@ class Core_PosterController extends Zend_Controller_Action implements Zend_Acl_R
 		$this->view->id = (int) $request->getParam('id');
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->posterForm = $this->_posterModel->getForm('posterEdit');
 			// populate form with defaults
 			$this->view->posterForm->setDefaults(
@@ -147,7 +147,7 @@ class Core_PosterController extends Zend_Controller_Action implements Zend_Acl_R
 		}
 
 		// try to persist item
-		if ( $this->_posterModel->savePoster($request->getPost(), 'edit') === false ) {
+		if ($this->_posterModel->savePoster($request->getPost(), 'edit') === false) {
 			$this->view->posterForm = $this->_posterModel->getForm('posterEdit');
 			return $this->render('formEdit');
 		}
@@ -159,7 +159,7 @@ class Core_PosterController extends Zend_Controller_Action implements Zend_Acl_R
 
 	public function deleteAction()
 	{
-		if ( false === $this->_posterModel->delete($this->_getParam('id')) ) {
+		if (false === $this->_posterModel->delete($this->_getParam('id'))) {
 			throw new TA_Model_Exception('Something went wrong with deleting the poster');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'poster', 'action'=>'list'), 'grid');
@@ -170,7 +170,7 @@ class Core_PosterController extends Zend_Controller_Action implements Zend_Acl_R
 		$request = $this->getRequest();
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->posterForm = $this->_posterModel->getForm('poster');
 			// set default values from request parameters
 			$this->view->posterForm->setDefaults(
@@ -180,7 +180,7 @@ class Core_PosterController extends Zend_Controller_Action implements Zend_Acl_R
 		}
 
 		// try to persist user
-		if ( $this->_posterModel->savePoster($request->getPost()) === false ) {
+		if ($this->_posterModel->savePoster($request->getPost()) === false) {
 			return $this->displayForm();
 		}
 

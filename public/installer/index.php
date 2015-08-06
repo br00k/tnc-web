@@ -20,28 +20,28 @@ $proto = $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://';
 
 
 $base_path = str_replace('\\', '/', realpath(dirname(__FILE__))).'/';
-$virtual_path = str_replace('\\', '/', $proto . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'])).'/';
+$virtual_path = str_replace('\\', '/', $proto.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])).'/';
 define('BASE_PATH', $base_path);
 define('VIRTUAL_PATH', $virtual_path);
 define('CORE_DIR', dirname(dirname(BASE_PATH)));
 
 // Need an empty config file to start with (created manually by touching is - see docs)
 $ini_file = '../../application/configs/application.ini';
-if(!is_file($ini_file)) {
-	echo $ini_file. ' does not exist';
+if (!is_file($ini_file)) {
+	echo $ini_file.' does not exist';
 	exit;
 }
 
 $ini = @parse_ini_file($ini_file);
 // If zend.location in found, assume we're installed, and redirect to app
-if(isset($ini['zend.location'])) {
+if (isset($ini['zend.location'])) {
 	header('Location: '.$proto.$_SERVER['SERVER_NAME']);
 	exit;
 }
 	
 
-include BASE_PATH . 'includes/core/wizard.php';
-include BASE_PATH . 'includes/wizard.php';
+include BASE_PATH.'includes/core/wizard.php';
+include BASE_PATH.'includes/wizard.php';
 
 //var_dump(BASE_PATH); var_dump(VIRTUAL_PATH);
 

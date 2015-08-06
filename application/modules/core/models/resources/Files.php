@@ -51,7 +51,7 @@ class Core_Resource_Files extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getFileById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -60,13 +60,13 @@ class Core_Resource_Files extends TA_Model_Resource_Db_Table_Abstract
 	 * @param	boolean	$object	Return Rowset object instead of array
 	 * @return	array/object
 	 */
-	public function getFilesByIds(array $ids, $object=false)
+	public function getFilesByIds(array $ids, $object = false)
 	{
 		if (empty($ids)) {
 			return null;
 		}
 		if ($object) {
-			return $this->find( $ids );
+			return $this->find($ids);
 		}
 		$file_ids = implode(",", $ids);
 		$query = "select * from files where file_id in ($file_ids)";
@@ -82,7 +82,7 @@ class Core_Resource_Files extends TA_Model_Resource_Db_Table_Abstract
 		);
 	}
 
-	public function getFiles($paged=null, $order=array())
+	public function getFiles($paged = null, $order = array())
 	{
 
 		$select = $this->select();
@@ -96,7 +96,7 @@ class Core_Resource_Files extends TA_Model_Resource_Db_Table_Abstract
 			$adapter = new Zend_Paginator_Adapter_DbTableSelect($select);
 
 			$paginator = new Zend_Paginator($adapter);
-			$paginator->setCurrentPageNumber( (int)$paged )
+			$paginator->setCurrentPageNumber((int) $paged)
 					  ->setItemCountPerPage(5);
 
 			return $paginator;
@@ -107,9 +107,9 @@ class Core_Resource_Files extends TA_Model_Resource_Db_Table_Abstract
 	}
 
 	/**
-	*
-	* @todo: replace the hardcoded mapping with a db query to filetypes!
-	*/
+	 *
+	 * @todo: replace the hardcoded mapping with a db query to filetypes!
+	 */
 	public function saveRow(array $data, $row = null)
 	{
 		$data = current($data);
@@ -130,7 +130,7 @@ class Core_Resource_Files extends TA_Model_Resource_Db_Table_Abstract
 
 		return $this->insert(array(
 			'filename_orig' => $data['_filename_original'],
-			'filename' => substr(strrchr($data['tmp_name'], '/'), 1 ), // strip path from filename
+			'filename' => substr(strrchr($data['tmp_name'], '/'), 1), // strip path from filename
 			'filesize' => $data['size'],
 			'mimetype' => $data['type'],
 			'filehash' => $data['_filehash'],

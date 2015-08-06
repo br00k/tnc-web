@@ -47,9 +47,9 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		$roles = $this->select()->getAdapter()->fetchCol($query, array(':user_id' => $this->user_id));
 		// logged in users automatically get user role
 		if (empty($roles)) {
-		    $this->_data['role'] = array('user');
+			$this->_data['role'] = array('user');
 		} else {
-		    $this->_data['role'] = $roles;
+			$this->_data['role'] = $roles;
 		}
 
 		// sessions to chair
@@ -104,7 +104,7 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 	 */
 	public function getFullName()
 	{
-		return $this->fname .' '. $this->lname;
+		return $this->fname.' '.$this->lname;
 	}
 
 	/**
@@ -120,37 +120,37 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 	 */
 	public function getOneliner()
 	{
-		if(preg_match('/^([a-z]+)_targetedID:http/', $this->uid, $matches)) {
+		if (preg_match('/^([a-z]+)_targetedID:http/', $this->uid, $matches)) {
 			$idp = ucfirst($matches[1]);
 		} elseif (preg_match('/.*!(.*)$/', $this->uid, $matches)) {
 			$idp = $matches[1];
 		} else {
 			$idp = $this->uid;
 		}
-		return $this->fname . ' ' . $this->lname . ' (' . $this->email . ', ' . $idp . ')';
+		return $this->fname.' '.$this->lname.' ('.$this->email.', '.$idp.')';
 	}
 
 	/**
 	 * Check if user has a certain role
 	 *
 	 * @param	$requiredRole	string/array
-	 * @return	boolean
+	 * @return	boolean|null
 	 */
 	public function hasRole($requiredRole)
 	{
 		// normalize $requiredRole to array
-        if (!is_array($requiredRole)) {
-            $requiredRole = array($requiredRole);
-        } else if (0 === count($requiredRole)) {
-            $requiredRole = array(null);
-        }
+		if (!is_array($requiredRole)) {
+			$requiredRole = array($requiredRole);
+		} else if (0 === count($requiredRole)) {
+			$requiredRole = array(null);
+		}
 
 		$roles = $this->getRoles(true);
 
 		foreach ($requiredRole as $rrole) {
-		    if (in_array($rrole, $roles)) {
-		    	return true;
-		    }
+			if (in_array($rrole, $roles)) {
+				return true;
+			}
 		}
 
 	}
@@ -160,40 +160,40 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 	 *
 	 * @return string
 	 */
-    public function getRoleId()
-    {
-    	// role is not set, so user is a guest
-    	if (!isset($this->role)) {
-            return 'guest';
-        }
+	public function getRoleId()
+	{
+		// role is not set, so user is a guest
+		if (!isset($this->role)) {
+			return 'guest';
+		}
 
 		// user has multiple roles, create dummy role and apply inheritance
-        if (count($this->role) > 1) {
+		if (count($this->role) > 1) {
 			$acl = Zend_Registry::get('acl');
 			if (!$acl->hasRole('current')) {
 				$acl->addRole(new Zend_Acl_Role('current'), $this->role);
 			}
 			return 'current';
-        }
+		}
 
 		// user has only one role
 		return $this->role[0];
-    }
+	}
 
-    /**
-     * Get submissions that the user is assigned reviewer of
-     *
-     * @param	boolean		$full	Return full live dataset or minimal cached set?
-     * @param	boolean		$excludeReviewed		Exclude submissions that user reviewed
-     *
-     * @return array in format (int) submission_id => (boolean) tiebreaker
-     */
-    public function getSubmissionsToReview($full = false, $excludeReviewed = false)
-    {
-    	if ($full) {
+	/**
+	 * Get submissions that the user is assigned reviewer of
+	 *
+	 * @param	boolean		$full	Return full live dataset or minimal cached set?
+	 * @param	boolean		$excludeReviewed		Exclude submissions that user reviewed
+	 *
+	 * @return array in format (int) submission_id => (boolean) tiebreaker
+	 */
+	public function getSubmissionsToReview($full = false, $excludeReviewed = false)
+	{
+		if ($full) {
 			$where = ($excludeReviewed)
 				? "where rs.user_id=$this->user_id and r.user_id!=$this->user_id"
-				: "where rs.user_id=$this->user_id" ;
+				: "where rs.user_id=$this->user_id";
 
 			$query = "select rs.submission_id, rs.tiebreaker, rb.evalue, count(
 			CASE WHEN r.self_assessment=1 THEN 1 ELSE NULL END
@@ -207,69 +207,69 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 			order by rs.submission_id";
 
 			return $this->select()->getAdapter()->fetchAssoc($query);
-    	}
+		}
 		return $this->submissions_to_review;
-    }
+	}
 
-    /**
-     * Get sessions that the user chairs
-     *
-     * @return array
-     */
-    public function getSessionsToChair()
-    {
-    	return $this->sessions_to_chair;
-    }
+	/**
+	 * Get sessions that the user chairs
+	 *
+	 * @return array
+	 */
+	public function getSessionsToChair()
+	{
+		return $this->sessions_to_chair;
+	}
 
-    /**
-     * Get submissions of the user
-     *
-     * @return array
-     */
-    public function getMySubmissions()
-    {
+	/**
+	 * Get submissions of the user
+	 *
+	 * @return array
+	 */
+	public function getMySubmissions()
+	{
 		return $this->my_submissions;
-    }
+	}
 
-    /**
-     * Get presentations of the user
-     *
-     * @return array
-     */
-    public function getMyPresentations()
-    {
+	/**
+	 * Get presentations of the user
+	 *
+	 * @return array
+	 */
+	public function getMyPresentations()
+	{
 		return $this->my_presentations;
-    }
+	}
 
 	/**
 	 * Is user admin?
 	 * @return boolean
 	 */
-    public function isAdmin()
-    {
-    	return in_array('admin', $this->role, true);
-    }
+	public function isAdmin()
+	{
+		return in_array('admin', $this->role, true);
+	}
 
  	/**
-	 * Get role of user
-	 *
-	 * @param		boolean	$nameOnly	Return only the role name
-	 * @return		array				Array of roles
-	 */
-    public function getRoles($nameOnly = false)
-    {
-    	$db = $this->select()->getAdapter();
+ 	 * Get role of user
+ 	 *
+ 	 * @param		boolean	$nameOnly	Return only the role name
+ 	 * @return		array				Array of roles
+ 	 */
+	public function getRoles($nameOnly = false)
+	{
+		$db = $this->select()->getAdapter();
 		$query = "select r.name, ur.user_role_id from user_role ur right join roles r on (ur.role_id = r.role_id) where ur.user_id=:user_id";
 		if ($nameOnly) {
 			return $db->fetchCol($query, array(':user_id' => $this->user_id));
 		}
 		return $db->fetchAll($query, array(':user_id' => $this->user_id));
-    }
+	}
 
-    public function getAuditData()
-    {
-    	return $this->select()->getAdapter()->fetchRow("select fname, lname, email from useraudit where user_id=".$this->user_id);
-    }
+	public function getAuditData()
+	{
+		return $this->select()->getAdapter()->fetchRow("select fname, lname, email from useraudit where user_id=".$this->user_id);
+	}
 
 	/**
 	 * Adds a role to a user
@@ -282,14 +282,14 @@ class Core_Resource_User_Item extends TA_Model_Resource_Db_Table_Row_Abstract im
 		$adapter = $this->select()->getAdapter();
 
 		$query = "select role_id from roles where name=:rolename";
-		if (!$roleId = $adapter->fetchOne($query, array('rolename' => $role)) ) {
+		if (!$roleId = $adapter->fetchOne($query, array('rolename' => $role))) {
 			throw new Exception("role ($role) not found - make sure this role is in the roles table.");
 		}
 
 		$values = array('user_id' => $this->user_id, 'role_id' => $roleId);
 
 		$query = "select * from user_role where user_id=:user_id and role_id=:role_id";
-		if ( $adapter->fetchOne($query, $values) ) {
+		if ($adapter->fetchOne($query, $values)) {
 			return;
 		}
 

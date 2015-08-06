@@ -53,7 +53,7 @@ class Core_Service_GoogleTest {
 	 */
 	protected function _getAuthSubUrl()
 	{
-		$next = 'https://'. $this->_request->getHttpHost() . $this->_request->getRequestUri();
+		$next = 'https://'.$this->_request->getHttpHost().$this->_request->getRequestUri();
 		$scope = 'https://www.google.com/calendar/feeds/';
 		$secure = true;
 		$session = true;
@@ -90,10 +90,10 @@ class Core_Service_GoogleTest {
 		$this->_sessionNs = new Zend_Session_Namespace('GoogleAuthSub');
 		$token = $this->_request->getParam('token');
 
-		if ( !$this->_sessionNs->sessionToken ) {
+		if (!$this->_sessionNs->sessionToken) {
 			if (!$token) {
 				$redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('Redirector');
-				$redirector->gotoUrl( $this->_getAuthSubUrl() );
+				$redirector->gotoUrl($this->_getAuthSubUrl());
 			} elseif ($token) {
 				$this->_client = $this->_getAuthSubHttpClient();
 				$this->_sessionNs->sessionToken = Zend_Gdata_AuthSub::getAuthSubSessionToken(

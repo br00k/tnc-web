@@ -54,7 +54,7 @@ class Core_Resource_Eventlogs extends TA_Model_Resource_Db_Table_Abstract
 	public function getTimestampByType($type)
 	{
 		return $this->getAdapter()->fetchOne(
-			"select timestamp from " . $this->_name . " where event_type=:type and conference_id=:conference_id",
+			"select timestamp from ".$this->_name." where event_type=:type and conference_id=:conference_id",
 			array(
 				'type' => $type,
 				'conference_id' => $this->getConferenceId()
@@ -69,7 +69,7 @@ class Core_Resource_Eventlogs extends TA_Model_Resource_Db_Table_Abstract
 	public function getAllTimestamps()
 	{
 		return $this->getAdapter()->fetchAssoc(
-			"select * from " . $this->_name . " where conference_id=:conference_id",
+			"select * from ".$this->_name." where conference_id=:conference_id",
 			array(
 				'conference_id' => $this->getConferenceId()
 			)

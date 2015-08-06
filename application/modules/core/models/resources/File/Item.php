@@ -31,12 +31,12 @@ class Core_Resource_File_Item extends TA_Model_Resource_Db_Table_Row_Abstract
 		// strip filename_orig from weird characters and transform underscores to camelcase
 		$pattern = '/(.*[\\\\\/])?(.*)$/';
 		preg_match($pattern, $this->filename_orig, $matches);
-		$sanatized = str_replace(array(' ', ':','*','?','"', '<', '>', '|'),'_',$matches[2]);
+		$sanatized = str_replace(array(' ', ':', '*', '?', '"', '<', '>', '|'), '_', $matches[2]);
 
 		$inflector = new Zend_Filter_Inflector(':name');
 
 		$inflector->setRules(array(
-		    ':name'  => array('Word_UnderscoreToCamelCase')
+			':name'  => array('Word_UnderscoreToCamelCase')
 		));
 
 		$filtered = $inflector->filter(array('name' => $sanatized));
@@ -74,12 +74,12 @@ class Core_Resource_File_Item extends TA_Model_Resource_Db_Table_Row_Abstract
 	 * Get filename prefixed with file id
 	 * @return string
 	 */
-	public function getIndexedName($submissionId=null)
+	public function getIndexedName($submissionId = null)
 	{
 		if ($submissionId) {
-			return $submissionId . '_' . $this->filename_orig; 
+			return $submissionId.'_'.$this->filename_orig; 
 		}
-		return $this->file_id . '_' . $this->filename_orig;
+		return $this->file_id.'_'.$this->filename_orig;
 	}
 	
 	/**

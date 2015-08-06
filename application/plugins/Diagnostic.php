@@ -50,67 +50,67 @@ class Application_Plugin_Diagnostic extends Zend_Controller_Plugin_Abstract
 		$this->_hooks = $hooks;
 	}
 	public function routeStartup(Zend_Controller_Request_Abstract $request)
-    {
-    	if ($this->_hooks[0]) {
-	    	$message = 'ROUTE STARTUP:' . ' ' . date('Y-m-d H:i:s',time()) . PHP_EOL .
-	    				var_export($this->getResponse(),TRUE) . PHP_EOL;
-	    	fputs($this->_fh,$message);
-    	}
-    }
+	{
+		if ($this->_hooks[0]) {
+			$message = 'ROUTE STARTUP:' . ' ' . date('Y-m-d H:i:s',time()) . PHP_EOL .
+						var_export($this->getResponse(),TRUE) . PHP_EOL;
+			fputs($this->_fh,$message);
+		}
+	}
 	public function routeShutdown(Zend_Controller_Request_Abstract $request)
-    {
-    	if ($this->_hooks[1]) {
-	    	$message = 'ROUTE SHUTDOWN:' . ' ' . date('Y-m-d H:i:s',time()) . PHP_EOL .
-	    				var_export($this->getResponse(),TRUE) . PHP_EOL;
-	    	fputs($this->_fh,$message);
-    	}
-    }
-    public function dispatchLoopStartup(Zend_Controller_Request_Abstract $request)
-    {
-    	if ($this->_hooks[2]) {
-	    	$message = 'LOOP STARTUP:' . ' ' . date('Y-m-d H:i:s',time()) . PHP_EOL .
-	    				var_export($this->getResponse(),TRUE) . PHP_EOL;
-	    	fputs($this->_fh,$message);
-    	}
-    }
+	{
+		if ($this->_hooks[1]) {
+			$message = 'ROUTE SHUTDOWN:' . ' ' . date('Y-m-d H:i:s',time()) . PHP_EOL .
+						var_export($this->getResponse(),TRUE) . PHP_EOL;
+			fputs($this->_fh,$message);
+		}
+	}
+	public function dispatchLoopStartup(Zend_Controller_Request_Abstract $request)
+	{
+		if ($this->_hooks[2]) {
+			$message = 'LOOP STARTUP:' . ' ' . date('Y-m-d H:i:s',time()) . PHP_EOL .
+						var_export($this->getResponse(),TRUE) . PHP_EOL;
+			fputs($this->_fh,$message);
+		}
+	}
 	public function dispatchLoopShutdown()
-    {
-    	if ($this->_hooks[3]) {
-	    	$message = 'LOOP SHUTDOWN:' . ' ' . date('Y-m-d H:i:s',time()) . PHP_EOL .
-	    				var_export($this->getResponse(),TRUE) . PHP_EOL;
-	    	fputs($this->_fh,$message);
-    	}
-    }
-    public function preDispatch(Zend_Controller_Request_Abstract $request)
-    {
-    	if ($this->_hooks[4]) {
-	    	$message = 'PRE DISPATCH:' . ' ' . date('Y-m-d H:i:s',time()) . PHP_EOL .
-	    				var_export($this->getResponse(),TRUE) . PHP_EOL;
-	    	fputs($this->_fh,$message);
+	{
+		if ($this->_hooks[3]) {
+			$message = 'LOOP SHUTDOWN:' . ' ' . date('Y-m-d H:i:s',time()) . PHP_EOL .
+						var_export($this->getResponse(),TRUE) . PHP_EOL;
+			fputs($this->_fh,$message);
+		}
+	}
+	public function preDispatch(Zend_Controller_Request_Abstract $request)
+	{
+		if ($this->_hooks[4]) {
+			$message = 'PRE DISPATCH:' . ' ' . date('Y-m-d H:i:s',time()) . PHP_EOL .
+						var_export($this->getResponse(),TRUE) . PHP_EOL;
+			fputs($this->_fh,$message);
 
-	    	$router = Zend_Controller_Front::getInstance()->getRouter();
+			$router = Zend_Controller_Front::getInstance()->getRouter();
 
-	    	$output =
-            "Used Route: <b>". $router->getCurrentRouteName()."</b><br>\n".
-            "Abbreviation: ".$request->getParam('abbreviation')."<br>\n".
-            "Language: ".$request->getParam('language')."<br>\n".
-            "Module: ".$request->getModuleName()."<br>\n".
-            "Controller: ".$request->getControllerName()."<br>\n".
-            "Action: ".$request->getActionName()."<br>\n".
-            "----------<br>\n";
-           	foreach ($request->getParams() as $param => $value) {
-	    		$output .= '&nbsp;&nbsp;&nbsp;'.$param .':'. $value."<br>\n";
-	    	}
-	    	echo $output;
-    	}
-    }
+			$output =
+			"Used Route: <b>". $router->getCurrentRouteName()."</b><br>\n".
+			"Abbreviation: ".$request->getParam('abbreviation')."<br>\n".
+			"Language: ".$request->getParam('language')."<br>\n".
+			"Module: ".$request->getModuleName()."<br>\n".
+			"Controller: ".$request->getControllerName()."<br>\n".
+			"Action: ".$request->getActionName()."<br>\n".
+			"----------<br>\n";
+		   	foreach ($request->getParams() as $param => $value) {
+				$output .= '&nbsp;&nbsp;&nbsp;'.$param .':'. $value."<br>\n";
+			}
+			echo $output;
+		}
+	}
 	public function postDispatch(Zend_Controller_Request_Abstract $request)
-    {
-    	if ($this->_hooks[5]) {
-	    	$message = 'POST DISPATCH:' . ' ' . date('Y-m-d H:i:s',time()) . PHP_EOL .
-	    				var_export($this->getResponse(),TRUE) . PHP_EOL;
-	    	fputs($this->_fh,$message);
-    	}
-    }
+	{
+		if ($this->_hooks[5]) {
+			$message = 'POST DISPATCH:' . ' ' . date('Y-m-d H:i:s',time()) . PHP_EOL .
+						var_export($this->getResponse(),TRUE) . PHP_EOL;
+			fputs($this->_fh,$message);
+		}
+	}
 
 }

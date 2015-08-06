@@ -47,7 +47,7 @@ class Core_Resource_Reviews extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getReviewById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -70,7 +70,7 @@ class Core_Resource_Reviews extends TA_Model_Resource_Db_Table_Abstract
 	 * Get all reviews
 	 *
 	 */
-	public function getReviews($paged=null, $order=array(), $filter=null)
+	public function getReviews($paged = null, $order = array(), $filter = null)
 	{
 		$grid = array();
 		$grid['cols'] = $this->getGridColumns();
@@ -85,9 +85,9 @@ class Core_Resource_Reviews extends TA_Model_Resource_Db_Table_Abstract
 		}
 		$select->order($order);
 
-		$select->from( 'reviews', array_keys($this->getGridColumns()) );
+		$select->from('reviews', array_keys($this->getGridColumns()));
 		if ($filter) {
-			$select->where( 'submission_id = ?', (int) $filter);
+			$select->where('submission_id = ?', (int) $filter);
 		}
 
 		if ($paged) {
@@ -95,7 +95,7 @@ class Core_Resource_Reviews extends TA_Model_Resource_Db_Table_Abstract
 			$adapter = new Zend_Paginator_Adapter_DbTableSelect($select);
 
 			$paginator = new Zend_Paginator($adapter);
-			$paginator->setCurrentPageNumber( (int)$paged )
+			$paginator->setCurrentPageNumber((int) $paged)
 					  ->setItemCountPerPage(20);
 
 			$grid['rows'] = $paginator;

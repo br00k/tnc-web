@@ -37,7 +37,7 @@ class Core_Resource_Roles extends TA_Model_Resource_Db_Table_Abstract
 
 	public function getRoleById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -47,14 +47,14 @@ class Core_Resource_Roles extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getRoleIdByName($name)
 	{
-        $role = $this->fetchRow(
+		$role = $this->fetchRow(
 			$this->select()
 				 ->where('name = ?', $name)
-        );
-        if ($role) {
-        	return $role->role_id;
-        }
-        return false;
+		);
+		if ($role) {
+			return $role->role_id;
+		}
+		return false;
 	}
 	
 	/**

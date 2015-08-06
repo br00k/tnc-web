@@ -44,11 +44,11 @@ class Core_Model_Observer_Sessionsubscriber extends TA_Model_Acl_Abstract implem
 		if (!empty($subscriptions)) {
 		   $mailer = new TA_Controller_Action_Helper_SendEmail();
 		   $mailer->sendEmail(array(
-		      'to_email' => $conference['email'],
-		      'html' => true,
-		      'bcc' => $subs,
-		      'subject' => $conference['name']. ': Session updated',
-		      'template' => 'session/subscriber'
+			  'to_email' => $conference['email'],
+			  'html' => true,
+			  'bcc' => $subs,
+			  'subject' => $conference['name']. ': Session updated',
+			  'template' => 'session/subscriber'
 		   ), $subject->toArray());
 		   
 			$flash->addMessage('Successfully emailed '. count($subs) . ' subscriber(s)');		

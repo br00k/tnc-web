@@ -48,7 +48,7 @@ class Core_Resource_Submissions extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getSubmissionById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -105,7 +105,7 @@ class Core_Resource_Submissions extends TA_Model_Resource_Db_Table_Abstract
 
 		if (!$identity->isAdmin()) {
 			// if user is not admin, only show their own submissions
-			$mySubmissions = implode(",", array_keys($identity->getMySubmissions()) );
+			$mySubmissions = implode(",", array_keys($identity->getMySubmissions()));
 			if (!empty($mySubmissions)) {
 				$query .= ' and st.submission_id IN ('.$mySubmissions.')';
 			} else {
@@ -129,8 +129,9 @@ class Core_Resource_Submissions extends TA_Model_Resource_Db_Table_Abstract
 	/**
 	 *
 	 *
+	 * @param integer $filter
 	 */
-	public function getSubmissions($paged=null, $order=array(), $filter=null)
+	public function getSubmissions($paged = null, $order = array(), $filter = null)
 	{
 		$grid = array();
 		$grid['cols'] = $this->getGridColumns();
@@ -146,11 +147,11 @@ class Core_Resource_Submissions extends TA_Model_Resource_Db_Table_Abstract
 		$select->order($order)
 			   ->setIntegrityCheck(false);
 
-		$select->from( 'vw_submissions', array_keys($this->getGridColumns()) )
-			   ->where( 'conference_id = ?', $this->getConferenceId());
+		$select->from('vw_submissions', array_keys($this->getGridColumns()))
+			   ->where('conference_id = ?', $this->getConferenceId());
 
 		if ($filter) {
-			$select->where( 'conference_id = ?', (int) $filter);
+			$select->where('conference_id = ?', (int) $filter);
 		}
 
 		if ($paged) {
@@ -158,7 +159,7 @@ class Core_Resource_Submissions extends TA_Model_Resource_Db_Table_Abstract
 			$adapter = new Zend_Paginator_Adapter_DbTableSelect($select);
 
 			$paginator = new Zend_Paginator($adapter);
-			$paginator->setCurrentPageNumber( (int)$paged )
+			$paginator->setCurrentPageNumber((int) $paged)
 					  ->setItemCountPerPage(20);
 
 			$grid['rows'] = $paginator;

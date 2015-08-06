@@ -7,8 +7,8 @@
 class Application_Plugin_Conditionals extends Zend_Controller_Plugin_Abstract
 {
 
-    public function preDispatch(Zend_Controller_Request_Abstract $request)
-    {
+	public function preDispatch(Zend_Controller_Request_Abstract $request)
+	{
 
 		#$bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
 		#$db = $bootstrap->getResource('db');
@@ -20,28 +20,28 @@ class Application_Plugin_Conditionals extends Zend_Controller_Plugin_Abstract
 		#   $request->getParam('abbreviation'))
 		#);
 
-    	#$navigation = $bootstrap->getResource('navigation');
+		#$navigation = $bootstrap->getResource('navigation');
 		#foreach ($result as $controller) {
 		#	//@todo: need to find one by multiple params, 'controller' and 'action'
 		#   $navigation->findOneBy('controller', $controller)->setVisible(false);
 		#}
 
-    	$acl = Zend_Registry::get('acl');
-    	$auth = Zend_Auth::getInstance();
-        if (!$auth->hasIdentity()) {
-       		$role = 'guest';
-        } else {
-        	//$role = $auth->getIdentity()->role;
-        	$role = $auth->getIdentity();
-        }
+		$acl = Zend_Registry::get('acl');
+		$auth = Zend_Auth::getInstance();
+		if (!$auth->hasIdentity()) {
+	   		$role = 'guest';
+		} else {
+			//$role = $auth->getIdentity()->role;
+			$role = $auth->getIdentity();
+		}
 
 		// whitelist web module
 		if ($request->getModuleName() == 'web') {
 			return;
 		}
 
-    	// check if ACL resource exists
-    	if (!$acl->has(ucfirst($request->getControllerName()) )) {
+		// check if ACL resource exists
+		if (!$acl->has(ucfirst($request->getControllerName()) )) {
 		   return;
 		}
 
@@ -62,6 +62,6 @@ class Application_Plugin_Conditionals extends Zend_Controller_Plugin_Abstract
 
 		}
 
-    }
+	}
 
 }

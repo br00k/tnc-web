@@ -29,13 +29,13 @@ class Core_Form_Topic_Edit extends Core_Form_Topic
 		parent::init();
 
 		$this->setAction('/core/topic/edit');
-	    $this->addElement('hidden', 'topic_id', array(
+		$this->addElement('hidden', 'topic_id', array(
 			'validators' => array(
 				array('Int')
 			),
 			'required' => true,
 			'decorators' => $this->_hiddenElementDecorator
-	    ));
+		));
 
 	}
 

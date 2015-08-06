@@ -27,9 +27,9 @@
 class Application_Plugin_ConferenceInit extends Zend_Controller_Plugin_Abstract
 {
 
-    public function preDispatch(Zend_Controller_Request_Abstract $request)
-    {
-    	$bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
+	public function preDispatch(Zend_Controller_Request_Abstract $request)
+	{
+		$bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
 		$cache = $bootstrap->getResource('cachemanager')
 						   ->getCache('apc');
 
@@ -37,7 +37,7 @@ class Application_Plugin_ConferenceInit extends Zend_Controller_Plugin_Abstract
 
 		#$cache->clean();
 
-		if( ($result = $cache->load('conference'.md5($hostname))) === false ) {
+		if (($result = $cache->load('conference'.md5($hostname))) === false) {
 			$db = $bootstrap->getResource('db');
 
 			$model = new Core_Model_Conference();

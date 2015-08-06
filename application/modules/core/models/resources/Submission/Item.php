@@ -35,7 +35,7 @@ class Core_Resource_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstr
 	 * @param	boolean		$tiebreaker		Return only tiebreaker users
 	 * @return	Zend_Db_Table_Rowset
 	 */
-	public function getUsers($tiebreaker=false)
+	public function getUsers($tiebreaker = false)
 	{
 		$sql = "select reviewer_submission_id, user_id from reviewers_submissions where submission_id=:submission_id";
 		if ($tiebreaker) {
@@ -101,7 +101,7 @@ class Core_Resource_Submission_Item extends TA_Model_Resource_Db_Table_Row_Abstr
 
 		$now = new Zend_Date();
 
-		if ( $now->isEarlier($conference['review_start']) ) {
+		if ($now->isEarlier($conference['review_start'])) {
 		   return true;
 		}
 

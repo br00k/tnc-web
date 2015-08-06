@@ -76,7 +76,7 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 		if ($sessions->count() !== 0) {
 			// get presentations or speakers based on view filter
 			if ($filter['view'] == 'titles') {
-				$presentations = $sessions->getAllPresentations(($mobile)?false:true);
+				$presentations = $sessions->getAllPresentations(($mobile) ? false : true);
 				if ($mobile) {
 					$speakers = $sessions->getAllSpeakers(false, true);
 				}
@@ -86,10 +86,10 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 		}
 
 		// group timeslots by day
-		foreach($timeslots->toArray() as $item) {
+		foreach ($timeslots->toArray() as $item) {
 			$start = new Zend_Date($item['tstart'],
-				    Zend_Date::ISO_8601,
-				    Zend_Registry::get('Zend_Locale'));
+					Zend_Date::ISO_8601,
+					Zend_Registry::get('Zend_Locale'));
 			$groupedTimeslots[$start->get('dd/MM/yyyy')][$item['timeslot_id']] = $item;
 		}
 
@@ -117,9 +117,9 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 					$schedule[$day][$location->location_id][$timeslot['timeslot_id']] = $session ? $session : null;
 
 					if ($mobile) {
-						$startZd = new Zend_Date($timeslot['tstart'], Zend_Date::ISO_8601,Zend_Registry::get('Zend_Locale'));
+						$startZd = new Zend_Date($timeslot['tstart'], Zend_Date::ISO_8601, Zend_Registry::get('Zend_Locale'));
 						$start = $startZd->get('HH:mm');
-						$endZd = new Zend_Date($timeslot['tend'], Zend_Date::ISO_8601,Zend_Registry::get('Zend_Locale'));
+						$endZd = new Zend_Date($timeslot['tend'], Zend_Date::ISO_8601, Zend_Registry::get('Zend_Locale'));
 						$end = $endZd->get('HH:mm');
 						if ($session) {
 							if (isset($presentations[$session['session_id']])) {			
@@ -133,7 +133,7 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 
 								$session['time_start'] = $startZd->get('EEEE H:mm');
 							}
-							$scheduleMobile[$day][$start .' - '. $end][] = $session;
+							$scheduleMobile[$day][$start.' - '.$end][] = $session;
 						}
 					} else {
 						if ($session) {
@@ -156,7 +156,7 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 
 		}
 
-		if ( ($filter['day'] != 'all') && (!empty($schedule)) ) {
+		if (($filter['day'] != 'all') && (!empty($schedule))) {
 			$scheduleDay[$filter['day']] = $schedule[$filter['day']];
 			return $scheduleDay;
 		}
@@ -174,7 +174,7 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 	 *
 	 *
 	 */
-	public function getStreamData(Zend_Date $date=null, $location=null)
+	public function getStreamData(Zend_Date $date = null, $location = null)
 	{
 		// get current and upcoming sessions
 		$sessions = $this->getResource('sessionsview')->getSessionsByDate($date);
@@ -200,14 +200,14 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 
 		if ($locations['rows']->count() === 0) {
 			if (isset($location)) {
-				throw new TA_Exception('Location '. $location .' not found, maybe use capital?');
+				throw new TA_Exception('Location '.$location.' not found, maybe use capital?');
 			} else {
 				throw new TA_Exception('no locations defined');
 			}
 		}
 
 		// build roomdata
-		$i=0;
+		$i = 0;
 		foreach ($locations['rows']->toArray() as $location) {
 			$roomdata[$i]['location_file_id'] = $location['file_id'];
 			$roomdata[$i]['date'] = $date; // this is usefull for testing dates other than now()
@@ -219,11 +219,11 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 			);
 			if ($roomdata[$i]['session']) {
 				$roomdata[$i]['speakers'] =
-					( isset($speakersCurrent[$roomdata[$i]['session']['session_id']]) )
+					(isset($speakersCurrent[$roomdata[$i]['session']['session_id']]))
 					? $speakersCurrent[$roomdata[$i]['session']['session_id']]
 					: null;
 				$roomdata[$i]['presentations'] =
-					( isset($presentationsCurrent[$roomdata[$i]['session']['session_id']]) )
+					(isset($presentationsCurrent[$roomdata[$i]['session']['session_id']]))
 					? $presentationsCurrent[$roomdata[$i]['session']['session_id']]
 					: null;
 
@@ -235,12 +235,12 @@ class Core_Model_Schedule extends TA_Model_Acl_Abstract
 				);
 				if ($roomdata[$i]['upcoming']['session']) {
 				   $roomdata[$i]['upcoming']['speakers'] =
-				   	( isset($speakersUpcoming[$roomdata[$i]['upcoming']['session']['session_id']]) )
+				   	(isset($speakersUpcoming[$roomdata[$i]['upcoming']['session']['session_id']]))
 					? $speakersUpcoming[$roomdata[$i]['upcoming']['session']['session_id']]
 					: null;					
 
 				   $roomdata[$i]['upcoming']['presentations'] =
-				   	( isset($presentationsUpcoming[$roomdata[$i]['upcoming']['session']['session_id']]) )
+				   	(isset($presentationsUpcoming[$roomdata[$i]['upcoming']['session']['session_id']]))
 					? $presentationsUpcoming[$roomdata[$i]['upcoming']['session']['session_id']]
 					: null;				
 				}

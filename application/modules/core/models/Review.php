@@ -33,27 +33,27 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 	public function getReviewById($id)
 	{
 		$row = $this->getResource('reviews')->getReviewById( (int) $id );
-    	if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	/**
 	 * Get a list of reviews
-	 * @param		integer		$page		Page number to show
+	 * @param		integer		$paged		Page number to show
 	 * @param		array		$order		Array with keys 'field' and 'direction'
 	 * @param		integer		$filter		filter to apply to grid
 	 * @param		boolean		$aclSkip	Skip ACL check (needed if called from observer)
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
 	 */
-	public function getReviews($paged=null, $order=array(), $filter=null, $aclSkip=false)
+	public function getReviews($paged = null, $order = array(), $filter = null, $aclSkip = false)
 	{
 		if (!$aclSkip) {
 			if (!$this->checkAcl('list')) {
-        	    throw new TA_Model_Acl_Exception("Insufficient rights");
-        	}
-        }
+				throw new TA_Model_Acl_Exception("Insufficient rights");
+			}
+		}
 
 		$conference = Zend_Registry::getInstance()->conference;
 
@@ -70,8 +70,8 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 	public function delete($id = null)
 	{
 		if (!$this->checkAcl('delete')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;
@@ -92,7 +92,7 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 	{
 		if (!$this->checkAcl('mail')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+		}
 
 		$submissions = $this->getResource('submissions')->getSubmissions();
 
@@ -108,7 +108,7 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 		$tiebreakers = $this->getAllTiebreakers();
 
 		foreach ($this->getResource('reviewerssubmissions')->getAllReviewers() as $reviewer) {
-			if ( !isset($list[$reviewer['user_id']]) ) {
+			if (!isset($list[$reviewer['user_id']])) {
 				$list[$reviewer['user_id']] = $reviewer;
 			}
 
@@ -119,7 +119,7 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 			);
 
 			// remove non-tiebreaker submissions from list, only if user is a tiebreaker for the submission
-			if ( ($reviewer['tiebreaker']) && ($tiebreakers) ) {
+			if (($reviewer['tiebreaker']) && ($tiebreakers)) {
 				if (isset($tiebreakers[$reviewer['submission_id']])) {
 					if (!isset($tiebreakers[$reviewer['submission_id']]['tiebreak_required'])) {					
 						$submission = null;
@@ -133,7 +133,7 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 				if ($todo) {
 					// if there is a review for this submission by this reviewer
 					if (!isset($reviews[$submission['submission_id']][$reviewer['user_id']])) {
-					    $list[$reviewer['user_id']]['submission'][] = $submission;
+						$list[$reviewer['user_id']]['submission'][] = $submission;
 					}
 				} else {
 					$list[$reviewer['user_id']]['submission'][] = $submission;
@@ -165,7 +165,7 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 
 		foreach ($this->getResource('reviews')->getReviewsIndexedBySubmission($userId) as $review) {
 			$submission = current(array_filter($submissions->toArray(), function($val) use($review) {
-			     return ($val['submission_id'] == $review['submission_id']);
+				 return ($val['submission_id'] == $review['submission_id']);
 			}));
 			if ($groupUserId) {
 				$list[$review['submission_id']][$review['user_id']] = $review;
@@ -188,10 +188,10 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 	{
 		// perform ACL check
 		if (!$this->checkAcl('save')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        // get different form based on action parameter
+		// get different form based on action parameter
 		$formName = ($action) ? 'review' . ucfirst($action) : 'review';
 		$form = $this->getForm($formName);
 
@@ -202,7 +202,7 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 
 		$values = $form->getValues();
 		// only set user_id if user is not admin or if the review is new
-		if ( (!$this->getIdentity()->isAdmin()) || ($action != 'edit') ) {
+		if ((!$this->getIdentity()->isAdmin()) || ($action != 'edit')) {
 			$values['user_id'] = $this->getIdentity()->user_id;
 		}
 
@@ -252,11 +252,11 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 			$e = (isset($val['evalue'])) ? $val['evalue'] : 0;
 
 			if ( ($val['wrong_reviewer_count'] >= 1) && ($val['review_count'] <= 2) ) {
-		    	$submissions[$key]['tiebreak_required'] = true;
+				$submissions[$key]['tiebreak_required'] = true;
 			} elseif ($e > $config->core->review->tiebreaker) {
-		    	$submissions[$key]['tiebreak_required'] = true;
-		    	$submissions[$key]['_lod'] = round($e - $config->core->review->tiebreaker, 2);
-		    } elseif ( isset($val['tiebreaker']) && ($excludeNoTiebreakNeeded) ) {
+				$submissions[$key]['tiebreak_required'] = true;
+				$submissions[$key]['_lod'] = round($e - $config->core->review->tiebreaker, 2);
+			} elseif ( isset($val['tiebreaker']) && ($excludeNoTiebreakNeeded) ) {
 				if ($val['tiebreaker']) {
 					unset($submissions[$key]);
 				}
@@ -300,7 +300,7 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 			: Zend_Auth::getInstance()->getIdentity()->user_id;
 
 		if (!$user = $this->getResource('users')->getUserById($userId)) {
-			throw new Exception('There is no user with id '. $userId );
+			throw new Exception('There is no user with id '.$userId);
 		}
 		
 		return $this->_calculateTiebreakers(

@@ -33,7 +33,7 @@ class Core_View_Helper_AclCheck extends Zend_View_Helper_Abstract
 	{
 		if (!$this->_acl) {
 			$this->_acl = Zend_Registry::get('acl');
-    		$this->_auth = Zend_Auth::getInstance();
+			$this->_auth = Zend_Auth::getInstance();
 		}
 
 		if (!$controller) {
@@ -42,15 +42,15 @@ class Core_View_Helper_AclCheck extends Zend_View_Helper_Abstract
 			$action = $request->getActionName();
 		}
 
-        if (!$this->_auth->hasIdentity()) {
-       		$role = 'guest';
-        } else {
-        	//$role = $auth->getIdentity()->role;
-        	$role = $this->_auth->getIdentity();
-        }
+		if (!$this->_auth->hasIdentity()) {
+	   		$role = 'guest';
+		} else {
+			//$role = $auth->getIdentity()->role;
+			$role = $this->_auth->getIdentity();
+		}
 
-    	// check if ACL resource exists
-    	if (!$this->_acl->has(ucfirst($controller))) {
+		// check if ACL resource exists
+		if (!$this->_acl->has(ucfirst($controller))) {
 		   return false;
 		}
 

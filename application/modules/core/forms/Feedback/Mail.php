@@ -31,16 +31,16 @@ class Core_Form_Feedback_Mail extends TA_Form_Abstract
 		$this->setAction('/core/feedback/mailall');
 		$this->setAttrib('id', 'mailform');
 		
-	    $status = new Zend_Form_Element_Hidden('id');
-	    $status->setRequired(true)
-	    	   ->setLabel('id')
-	    	   ->addValidators(
-	    	      array('Int')
-	    	   )
-	    	   ->setDecorators(array('Composite'));  
+		$status = new Zend_Form_Element_Hidden('id');
+		$status->setRequired(true)
+			   ->setLabel('id')
+			   ->addValidators(
+				  array('Int')
+			   )
+			   ->setDecorators(array('Composite'));  
 	    	     
-	    $dummy = new Zend_Form_Element_Checkbox('dummy');
-	    $dummy->setLabel('Do a test run (does not send emails)')
+		$dummy = new Zend_Form_Element_Checkbox('dummy');
+		$dummy->setLabel('Do a test run (does not send emails)')
 			  ->setChecked(true)
 			  ->setDecorators(array('Composite'));  	    	   	      
 
@@ -50,10 +50,10 @@ class Core_Form_Feedback_Mail extends TA_Form_Abstract
 			$dummy
 		));
 
-	    $this->addElement('submit', 'submit', array(
+		$this->addElement('submit', 'submit', array(
 			'label' => 'Send emails (this may take a while)',
 			'decorators' => $this->_buttonElementDecorator
-	    ));
+		));
 
 	}
 

@@ -1,21 +1,21 @@
 <?php
 /**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Conference.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
- */
+	 * CORE Conference Manager
+	 *
+	 * LICENSE
+	 *
+	 * This source file is subject to the new BSD license that is bundled
+	 * with this package in the file LICENSE.txt.
+	 * It is also available through the world-wide-web at this URL:
+	 * http://www.terena.org/license/new-bsd
+	 * If you did not receive a copy of the license and are unable to
+	 * obtain it through the world-wide-web, please send an email
+	 * to webmaster@terena.org so we can send you a copy immediately.
+	 *
+	 * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+	 * @license    http://www.terena.org/license/new-bsd     New BSD License
+	 * @revision   $Id: Conference.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
+	 */
 
 /**
  * Conference Model
@@ -35,10 +35,10 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 	public function getConferenceById($id)
 	{
 		$row = $this->getResource('conferences')->getConferenceById( (int) $id );
-    	if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	/**
@@ -50,25 +50,25 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 	public function getConferenceByHostname($hostname)
 	{
 		$row = $this->getResource('conferences')->getConferenceByHostname($hostname);
-    	if ($row === null) {
-    		throw new TA_Model_Exception('hostname not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('hostname not found');
+		}
+		return $row;
 
 	}
 
 	/**
 	 * Get a list of conferences
 	 *
-	 * @param		integer		$page	Page number to show
+	 * @param		integer		$paged	Page number to show
 	 * @param		array		$order	Array with keys 'field' and 'direction'
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
 	 */
 	public function getConferences($paged, $order)
 	{
 		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		return $this->getResource('conferences')->getConferences($paged, $order);
 	}
@@ -94,8 +94,8 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 	public function delete($id = null)
 	{
 		if (!$this->checkAcl('delete')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;
@@ -116,10 +116,10 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 	{
 		// perform ACL check
 		if (!$this->checkAcl('save')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        // get different form based on action parameter
+		// get different form based on action parameter
 		$formName = ($action) ? 'conference' . ucfirst($action) : 'conference';
 		$form = $this->getForm($formName);
 
@@ -145,7 +145,7 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 	/**
 	 * Get timeslots of certain type belonging to a conference
 	 *
-	 * @param	mixed		$type			integer for specific type or false for all
+	 * @param	false|null		$type			integer for specific type or false for all
 	 * @param	integer		$conferenceId	conference_id
 	 */
 	public function getTimeslots($type = false, $conferenceId = null)
@@ -163,10 +163,10 @@ class Core_Model_Conference extends TA_Model_Acl_Abstract
 	public function saveTimeslots(array $post, $action = null)
 	{
 		if (!$this->checkAcl('savetimeslots')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-		$formName = ($action) ? 'conferenceTimeslots' . ucfirst($action) : 'conferenceTimeslots';
+		$formName = ($action) ? 'conferenceTimeslots'.ucfirst($action) : 'conferenceTimeslots';
 		$form = $this->getForm($formName);
 
 		if (!$form->isValid($post)) {

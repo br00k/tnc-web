@@ -1,21 +1,21 @@
 <?php
 /**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Presentations.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
- */
+	 * CORE Conference Manager
+	 *
+	 * LICENSE
+	 *
+	 * This source file is subject to the new BSD license that is bundled
+	 * with this package in the file LICENSE.txt.
+	 * It is also available through the world-wide-web at this URL:
+	 * http://www.terena.org/license/new-bsd
+	 * If you did not receive a copy of the license and are unable to
+	 * obtain it through the world-wide-web, please send an email
+	 * to webmaster@terena.org so we can send you a copy immediately.
+	 *
+	 * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+	 * @license    http://www.terena.org/license/new-bsd     New BSD License
+	 * @revision   $Id: Presentations.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
+	 */
 
 /** 
  *
@@ -43,7 +43,7 @@ class Core_Resource_Presentations extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getPresentationById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -105,7 +105,7 @@ class Core_Resource_Presentations extends TA_Model_Resource_Db_Table_Abstract
 				);
 			}
 
-			$query = "INSERT INTO " . $this->_name . "(conference_id, submission_id, abstract, title) VALUES ".$values;
+			$query = "INSERT INTO ".$this->_name."(conference_id, submission_id, abstract, title) VALUES ".$values;
 			$query = $db->query($query);
 
 			// get newly inserted presentations
@@ -156,7 +156,7 @@ class Core_Resource_Presentations extends TA_Model_Resource_Db_Table_Abstract
 	 * List all presentations
 	 *
 	 */
-	public function getPresentations($paged=null, $order=array())
+	public function getPresentations($paged = null, $order = array())
 	{
 		$grid = array();
 		$grid['cols'] = $this->getGridColumns();
@@ -171,15 +171,15 @@ class Core_Resource_Presentations extends TA_Model_Resource_Db_Table_Abstract
 		}
 		$select->order($order);
 
-		$select->from( 'presentations', array_keys($this->getGridColumns()) )
-			   ->where( 'conference_id = ?', $this->getConferenceId());
+		$select->from('presentations', array_keys($this->getGridColumns()))
+			   ->where('conference_id = ?', $this->getConferenceId());
 
 		if ($paged) {
 
 			$adapter = new Zend_Paginator_Adapter_DbTableSelect($select);
 
 			$paginator = new Zend_Paginator($adapter);
-			$paginator->setCurrentPageNumber( (int)$paged )
+			$paginator->setCurrentPageNumber((int) $paged)
 					  ->setItemCountPerPage(20);
 
 			$grid['rows'] = $paginator;
@@ -202,7 +202,7 @@ class Core_Resource_Presentations extends TA_Model_Resource_Db_Table_Abstract
 			// presentation_id is hidden so I don't have to provide a label
 			'presentation_id' => array('field' => 'presentation_id', 'sortable' => true, 'hidden' => true),
 			'title' => array('field' => 'title', 'label' => 'Title', 'sortable' => true),
-			'inserted' => array('field' => 'inserted', 'label' => 'Inserted', 'sortable' => true, 'modifier' => 'formatDate' )
+			'inserted' => array('field' => 'inserted', 'label' => 'Inserted', 'sortable' => true, 'modifier' => 'formatDate')
 		);
 
 	}

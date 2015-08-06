@@ -34,7 +34,7 @@ class Core_Resource_Review_Submission_Item extends TA_Model_Resource_Db_Table_Ro
 	public function setTiebreaker($value)
 	{
 		// notice the typecast!
-		$this->tiebreaker = (int)(bool) $value;
+		$this->tiebreaker = (int) (bool) $value;
 		$this->save();
 	}
 

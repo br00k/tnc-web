@@ -21,9 +21,9 @@ require_once APPLICATION_PATH.'/modules/webdemo/controllers/AbstractController.p
 class Webdemo_MediaController extends Webdemo_AbstractController
 {
 
-    public function indexAction()
-    {
-    	$this->_forward('announcements');
+	public function indexAction()
+	{
+		$this->_forward('announcements');
  		$this->_helper->getHelper('AjaxContext')
 					  ->addActionContext('coverage', 'json')
 					  ->initContext();
@@ -59,7 +59,7 @@ class Webdemo_MediaController extends Webdemo_AbstractController
 			'hour' => 11,
 			'minute' => 1,
 			'second' => 10);
-    	$zd = new Zend_Date($datearray);
+		$zd = new Zend_Date($datearray);
 
 		$schedule = new Core_Model_Schedule();
 		$this->view->roomsessions = $schedule->getStreamData();
@@ -93,7 +93,7 @@ class Webdemo_MediaController extends Webdemo_AbstractController
 			'hour' => 16,
 			'minute' => 1,
 			'second' => 10);
-    	$zd = new Zend_Date($datearray);
+		$zd = new Zend_Date($datearray);
 
 		$sessionModel = new Core_Model_Session();
 		$this->view->archive = $sessionModel->getResource('sessionsview')->getSessionsBeforeDate()->group();
@@ -206,11 +206,11 @@ class Webdemo_MediaController extends Webdemo_AbstractController
 		$diterator = new DirectoryFilterDots($path);
 		$photos = array();
 		try {
-		    // loop through directory and build photo array
-		    foreach ($diterator as $item ){
-		    	$photos[$item->key()]['location'] = $relpath.$item->getFilename();
-		    	$photos[$item->key()]['href'] = $relpath.str_replace('_thumb', '', $item->getFilename());
-		    }
+			// loop through directory and build photo array
+			foreach ($diterator as $item ){
+				$photos[$item->key()]['location'] = $relpath.$item->getFilename();
+				$photos[$item->key()]['href'] = $relpath.str_replace('_thumb', '', $item->getFilename());
+			}
 		} catch(Exception $e){
 			exit();
 		}
@@ -282,7 +282,7 @@ class htmlMarkup {
 	public function blog()
 	{
 		$html = '<ul id="blog">';
-		for($i = 0; $i < sizeof($this->_results['blog']); ++$i) {
+		for ($i = 0; $i < sizeof($this->_results['blog']); ++$i) {
 			$r = $this->_results['blog'][$i];
 			if (isset($r->creator)) {
 				$author = $r->creator;
@@ -290,7 +290,7 @@ class htmlMarkup {
 			if (isset($r->author)) {
 				$author = $r->author;
 			}
-			if ($i+1 == sizeof($this->_results['blog'])) {
+			if ($i + 1 == sizeof($this->_results['blog'])) {
 				$html .= '<li class="last">';
 			} else {
 				$html .= '<li>';
@@ -323,7 +323,7 @@ class htmlMarkup {
 						}
 					   $created_at[]= $value . ' ' .$unit;
 					   ++$units;
-				    }
+					}
 				}
 				$created_at = implode(', ',$created_at);
 				$created_at .= ' ago';
@@ -350,10 +350,10 @@ class htmlMarkup {
 		$spammers = array('96324065', '120871936');
 		$html = '<ul id="tweets">';
 		if (property_exists($this->_results['twitter'], 'results')) {
-			for($i = 0; $i < sizeof($this->_results['twitter']->results); ++$i) {
+			for ($i = 0; $i < sizeof($this->_results['twitter']->results); ++$i) {
 				$r = $this->_results['twitter']->results[$i];
 				if (!in_array($r->from_user_id, $spammers)) {
-					if ($i+1 == sizeof($this->_results['twitter']->results)) {
+					if ($i + 1 == sizeof($this->_results['twitter']->results)) {
 						$html .= '<li class="last">';
 					} else {
 						$html .= '<li>';
@@ -375,7 +375,7 @@ class htmlMarkup {
 							}
 						   $created_at[]= $value . ' ' .$unit;
 						   ++$units;
-					    }
+						}
 					}
 					$created_at = implode(', ',$created_at);
 					$created_at .= ' ago';
@@ -471,7 +471,7 @@ class htmlMarkup {
 				}
 			   $created_at[]= $value . ' ' .$unit;
 			   ++$units;
-		    }
+			}
 		}
 		$created_at = implode(', ',$created_at);
 		$created_at .= ' ago';
@@ -481,8 +481,12 @@ class htmlMarkup {
 		return $html;
 	}
 
+	/**
+	 * @param integer $t1
+	 * @param integer $t2
+	 */
 	private function _time_passed($t1, $t2) {
-		if($t1 > $t2) {
+		if ($t1 > $t2) {
 		  $time1 = $t2;
 		  $time2 = $t1;
 		} else {
@@ -501,35 +505,35 @@ class htmlMarkup {
 		$units = array('years','months','weeks','days','hours','minutes','seconds');
 		foreach($units as $unit) {
 		  while(true) {
-		     $next = strtotime("+1 $unit", $time1);
-		     if($next < $time2) {
-		        $time1 = $next;
-		        $diff[$unit]++;
-		     } else {
-		        break;
-		     }
+			 $next = strtotime("+1 $unit", $time1);
+			 if($next < $time2) {
+				$time1 = $next;
+				$diff[$unit]++;
+			 } else {
+				break;
+			 }
 		  }
 		}
 		return($diff);
 	}
 
-	private function _createNormalYoutubeMarkup($str){
+	private function _createNormalYoutubeMarkup($str) {
 		$dom = new domDocument;
-	    $dom->loadHTML($str);
-	    $dom->preserveWhiteSpace = false;
-	    $tables = $dom->getElementsByTagName('table');
+		$dom->loadHTML($str);
+		$dom->preserveWhiteSpace = false;
+		$tables = $dom->getElementsByTagName('table');
 
-	    $rows = $tables->item(0)->getElementsByTagName('tr');
+		$rows = $tables->item(0)->getElementsByTagName('tr');
 
 		// get all columns
-	    $cols = $rows->item(0)->getElementsByTagName('td');
-	    $anchor = $cols->item(0)->getElementsByTagName('a');
-	    $a = $anchor->item(0);
+		$cols = $rows->item(0)->getElementsByTagName('td');
+		$anchor = $cols->item(0)->getElementsByTagName('a');
+		$a = $anchor->item(0);
 
-	    $link = $a->getAttribute('href');
-	    $image = $a->firstChild->getAttribute('src');
+		$link = $a->getAttribute('href');
+		$image = $a->firstChild->getAttribute('src');
 
-	    $divs = $cols->item(1)->getElementsByTagName('div');
+		$divs = $cols->item(1)->getElementsByTagName('div');
 		$title = $divs->item(0)->nodeValue;
 		$description = $divs->item(1)->nodeValue;
 
@@ -568,8 +572,9 @@ class YQL {
 
 	/**
 	 * Logger convenience method
+	 * @param string $msg
 	 */
-	private function _logger($msg, $extra=null)
+	private function _logger($msg, $extra = null)
 	{
 		if (self::DEBUG) {
 			$this->_logger->info($msg);
@@ -610,15 +615,15 @@ class YQL {
 		if (!$results = $cache->load('yqlresult')) {
 
 			if (!$cache2->load('yql_in_progress')) {
-			    // set 'cookie'
-			    $cache2->save('1', 'yql_in_progress');
+				// set 'cookie'
+				$cache2->save('1', 'yql_in_progress');
 				$this->_logger('Cache miss > performing query');
-			    $results = $this->performQueryMultiple();
+				$results = $this->performQueryMultiple();
 				if ($results) {
-			    	// only proceed if results returns something
+					// only proceed if results returns something
 					$results = $this->_buildResultsArray($results);
-			    	$cache->save($results, 'yqlresult');
-			    	#$cachePerm->save($results, 'yqlresultperm');
+					$cache->save($results, 'yqlresult');
+					#$cachePerm->save($results, 'yqlresultperm');
 					$this->_logger('Cache miss > saving YQL result cache');
 					$this->_cached = false;
 					// unset 'cookie' - do this ONLY when there query was successfull!
@@ -634,9 +639,9 @@ class YQL {
 			}
 
 		} else {
-		    // cache hit
+			// cache hit
 			$this->_logger('Cache hit > reading from cache');
-		    $this->_cached = true;
+			$this->_cached = true;
 		}
 
 		return $results;
@@ -750,11 +755,11 @@ class YQL {
 			break;
 			case 'blog':
 				$page = substr(strrchr($params, "="), 1);
-				$page = 10 * (int)$page;
+				$page = 10 * (int) $page;
 				$query = 'select * from rss where url in ("http://blog.ecampus.no/feed/",
 				"http://lpfischer.wordpress.com/feed/","http://tnc2010.wordpress.com/feed/",
 				"http://blog.archred.com/feeds/posts/default?alt=rss")
-				| sort(field="pubDate", descending="true") | truncate(count='.$page .') | tail(count=10)';
+				| sort(field="pubDate", descending="true") | truncate(count='.$page.') | tail(count=10)';
 			break;
 		}
 		return $query;
@@ -782,6 +787,9 @@ class YQL {
 // get files with SPL
 class DirectoryFilterDots extends FilterIterator
 {
+    /**
+     * @param string $path
+     */
     public function __construct($path)
     {
     	parent::__construct(new DirectoryIterator($path));
@@ -790,7 +798,7 @@ class DirectoryFilterDots extends FilterIterator
     public function accept()
     {
     	$inner = $this->getInnerIterator();
-    	$fn = explode('.',$inner->getFilename());
+    	$fn = explode('.', $inner->getFilename());
     	if (substr($fn[0], -6) == '_thumb') {
     		return !$this->getInnerIterator()->isDir();
     	}

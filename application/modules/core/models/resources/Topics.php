@@ -44,7 +44,7 @@ class Core_Resource_Topics extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getTopicById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -80,7 +80,7 @@ class Core_Resource_Topics extends TA_Model_Resource_Db_Table_Abstract
 		$select = $this->select()
 					   ->where('conference_id = ?', $this->getConferenceId());
 		if ($topics) {
-			$select->where('topic_id IN (?)', $topics );
+			$select->where('topic_id IN (?)', $topics);
 		}
 
 		return $this->fetchAll($select);
@@ -90,7 +90,7 @@ class Core_Resource_Topics extends TA_Model_Resource_Db_Table_Abstract
 	 *
 	 *
 	 */
-	public function getTopics($paged=null, $order=array())
+	public function getTopics($paged = null, $order = array())
 	{
 		$grid = array();
 		$grid['cols'] = $this->getGridColumns();
@@ -100,7 +100,7 @@ class Core_Resource_Topics extends TA_Model_Resource_Db_Table_Abstract
 
 		if (!empty($order[0])) {
 			if ($order[0] == 'updated') {
-				$order = $order[0] .' '. $order[1];
+				$order = $order[0].' '.$order[1];
 			} else {
 				$order = 'lower('.$order[0].') '.$order[1];
 			}
@@ -109,14 +109,14 @@ class Core_Resource_Topics extends TA_Model_Resource_Db_Table_Abstract
 		}
 		$select->order($order);
 
-		$select->from( $this->info('name'), array_keys($this->getGridColumns()) );	   
+		$select->from($this->info('name'), array_keys($this->getGridColumns()));	   
 
 		if ($paged) {
 
 			$adapter = new Zend_Paginator_Adapter_DbTableSelect($select);
 
 			$paginator = new Zend_Paginator($adapter);
-			$paginator->setCurrentPageNumber( (int)$paged )
+			$paginator->setCurrentPageNumber((int) $paged)
 					  ->setItemCountPerPage(20);
 
 			$grid['rows'] = $paginator;

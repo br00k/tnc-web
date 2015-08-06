@@ -35,12 +35,12 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
 
 		if (!Zend_Registry::isRegistered('formconfig')) {
-    		$formConfig = new Zend_Config(require APPLICATION_PATH.'/configs/formdefaults.php');
+			$formConfig = new Zend_Config(require APPLICATION_PATH.'/configs/formdefaults.php');
 			Zend_Registry::set('formconfig', $formConfig);
 		}
 
 		// Set navigation to active for all actions within this controller
-		$page = $this->view->navigation()->findOneByController( $this->getRequest()->getControllerName() );
+		$page = $this->view->navigation()->findOneByController($this->getRequest()->getControllerName());
 		if ($page) {
 			$page->setActive();
 		}
@@ -75,13 +75,13 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 		$request = $this->getRequest();
 		$this->view->reminder = $reminder = $request->getParam('reminder');
 
-		if (false == $reviewers = $this->_reviewModel->getReviewersForMail($reminder) ) {
+		if (false == $reviewers = $this->_reviewModel->getReviewersForMail($reminder)) {
 			return;
 		}
 
 		$this->view->reviewers = count($reviewers);
 		$this->view->dummy = $request->getParam('dummy');
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->mailForm = $this->_reviewModel->getForm('reviewMail');
 			if ($reminder) {
 				$this->view->mailForm->setAction('/core/review/mail/reminder/1');
@@ -103,7 +103,7 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 				'dummy' => $request->getParam('dummy'),
 				'template' => $template,
 				'html' => true,
-				'subject' => $conference['abbreviation'] . ' Review',
+				'subject' => $conference['abbreviation'].' Review',
 				'to_email' => $review['email'],
 				'to_name' => $review['fname'].' '.$review['lname']
 			), $review);
@@ -116,8 +116,8 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 		if ($this->view->dummy == 0) {
 			$eventlogModel = new Core_Model_Eventlog();
 			$eventlogModel->saveEventlog(array(
-			    'event_type' => ($reminder) ? 'mail_reviewers-reminder' : 'mail_reviewers',
-			    'timestamp' => 'now()'
+				'event_type' => ($reminder) ? 'mail_reviewers-reminder' : 'mail_reviewers',
+				'timestamp' => 'now()'
 			));
 		}
 
@@ -175,7 +175,7 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 		$this->view->submission = $submitModel->getAllSubmissionDataById($submissionId);
 
 		// No post; display 'status' form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->statusForm = $submitModel->getForm('submitStatus');
 			$submitStatus = $submitModel->getStatusBySubmissionId($submissionId);
 			// populate form with defaults
@@ -185,7 +185,7 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 			return $this->render('list');
 		}
 		// try to persist submission status
-		if ( $submitModel->saveStatus($request->getPost()) === false ) {
+		if ($submitModel->saveStatus($request->getPost()) === false) {
 			return $this->render('list');
 		}
 
@@ -215,18 +215,18 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 
 		$identity = Zend_Auth::getInstance()->getIdentity();
 
-		$reviewId = ( $request->getParam('id')) ? $request->getParam('id') : $request->getParam('review_id');
+		$reviewId = ($request->getParam('id')) ? $request->getParam('id') : $request->getParam('review_id');
 
 		// get user_id of person who did the review
 		$userId = $this->_reviewModel->getReviewById($reviewId)->user_id;
 
 		// users can only edit their own reviews
-		if ( ($userId !== $identity->user_id) && (!$identity->isAdmin()) ) {
+		if (($userId !== $identity->user_id) && (!$identity->isAdmin())) {
 			throw new TA_Model_Acl_Exception("Insufficient rights to edit this review");
 		}
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$this->view->reviewForm = $this->_reviewModel->getForm('reviewEdit');
 			$review = $this->_reviewModel->getReviewById($this->_getParam('id'));
 			// populate form with defaults
@@ -242,7 +242,7 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 		}
 
 		// try to save user to database
-		if ( $this->_reviewModel->saveReview($request->getPost(), 'edit') === false ) {
+		if ($this->_reviewModel->saveReview($request->getPost(), 'edit') === false) {
 			$this->view->reviewForm = $this->_reviewModel->getForm('reviewEdit');
 			return $this->render('formEdit');
 		}
@@ -258,7 +258,7 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 	 */
 	public function deleteAction()
 	{
-		if ( false === $this->_reviewModel->delete($this->_getParam('id')) ) {
+		if (false === $this->_reviewModel->delete($this->_getParam('id'))) {
 			throw new TA_Model_Exception('Something went wrong with deleting the review');
 		}
 		return $this->_helper->redirector->gotoRoute(array('controller'=>'submit', 'action'=>'list'), 'grid');
@@ -273,14 +273,14 @@ class Core_ReviewController extends Zend_Controller_Action implements Zend_Acl_R
 		$request = $this->getRequest();
 
 		// No post; display form
-		if ( !$request->isPost() )  {
+		if (!$request->isPost()) {
 			$submitModel = new Core_Model_Submit();
 			$this->view->submission = $submitModel->getAllSubmissionDataById($request->getParam('id'));
 			return $this->displayForm();
 		}
 
 		// try to persist data
-		if ( $this->_reviewModel->saveReview($request->getPost()) === false ) {
+		if ($this->_reviewModel->saveReview($request->getPost()) === false) {
 			return $this->displayForm();
 		}
 

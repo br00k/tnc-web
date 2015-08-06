@@ -97,10 +97,10 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 	public function getFeedbackByUuid($uuid)
 	{
 		$row = $this->getResource('feedbackcodes')->getFeedbackByUuid( $uuid );
-    	if ($row === null) {
-    		throw new TA_Model_Exception('Feedback code not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('Feedback code not found');
+		}
+		return $row;
 	}
 
 	/**
@@ -115,7 +115,7 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 	 	$section = 'feedback'.$section;
 
 		$row = $this->getResource($section)->getFeedbackById( $id );
-    	return $row;
+		return $row;
 	 }
 
 	/**
@@ -127,7 +127,7 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 	public function getFeedbackId()
 	{
 		if (!$this->_feedback_id) {
-    		$this->_feedback_id = $this->_init();
+			$this->_feedback_id = $this->_init();
 		}
 		return $this->_feedback_id;
 	}
@@ -150,8 +150,8 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 	public function getParticipants()
 	{
 		if (!$this->checkAcl('participants')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		// for debugging just use me
 		$participants = array(
@@ -201,10 +201,10 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 
 		// perform ACL check
 		if (!$this->checkAcl('save')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        // get different form based on section parameter
+		// get different form based on section parameter
 		$formName = 'feedback'.ucfirst($section);
 		$form = $this->getForm($formName);
 
@@ -298,8 +298,7 @@ class Core_Model_Feedback extends TA_Model_Acl_Abstract
 	 * Vote for a poster 
 	 *	 
 	 * @param	integer		$codeId		Feedback code id (pk from feedback.codes)
-	 * @param	integer		$id
-	 * @return	boolean
+	 * @return	false|null
 	 */
 	public function votePoster($codeId, $posterId = null)
 	{

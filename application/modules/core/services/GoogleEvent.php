@@ -86,7 +86,7 @@ class Core_Service_GoogleEvent {
 
 		$serviceName = Zend_Gdata_Calendar::AUTH_SERVICE_NAME;
 		$appName = 'CORE';
-		$loginToken   = (isset($_GET['token'])) ? $_GET['token'] : null;
+		$loginToken = (isset($_GET['token'])) ? $_GET['token'] : null;
 		$loginAnswer = (isset($_GET['answer'])) ? $_GET['answer'] : null;
 
 		try {
@@ -101,14 +101,14 @@ class Core_Service_GoogleEvent {
 		   	);
 
 		} catch (Zend_Gdata_App_CaptchaRequiredException $e) {
-      		echo 'Google requires you to enter this CAPTCHA image <br />';
-      		echo '<img src="'.$e->getCaptchaUrl().'" /><br />';
-      		echo '<form action="/core/session/captcha" method="GET">';
-      		echo 'Answer : <input type="text" name="answer" size="10" />';
-      		echo '<input type="hidden" name="token" value="'.$e->getCaptchaToken().'" />';
-      		echo '<input type="submit" />';
-      		echo '</form>';
-      		exit;
+	  		echo 'Google requires you to enter this CAPTCHA image <br />';
+	  		echo '<img src="'.$e->getCaptchaUrl().'" /><br />';
+	  		echo '<form action="/core/session/captcha" method="GET">';
+	  		echo 'Answer : <input type="text" name="answer" size="10" />';
+	  		echo '<input type="hidden" name="token" value="'.$e->getCaptchaToken().'" />';
+	  		echo '<input type="submit" />';
+	  		echo '</form>';
+	  		exit;
 
 		} catch (Zend_Gdata_App_AuthException $e) {
 			throw new Exception($e);
@@ -146,11 +146,11 @@ class Core_Service_GoogleEvent {
 		// address stuff
 		$event->where = array($this->_service->newWhere($this->_values['location_address']));
 
-	    # Event content
-	    $content = $this->_values['description'];
+		# Event content
+		$content = $this->_values['description'];
 
 		$link = 'http://'.$this->_config['hostname'].'/core/session/'.$this->_values['session_id'];
-        $content.=  "<br /><a href='$link'>More information about this event<a/>";
+		$content.=  "<br /><a href='$link'>More information about this event<a/>";
 
 		$event->content = $this->_service->newContent($content);
 
@@ -162,9 +162,9 @@ class Core_Service_GoogleEvent {
 
 		if( date_format($start, 'H:i:s') == '00:00:00' && date_format($end, 'H:i:s') == '00:00:00' ) {
 			# All day events (times set to 00:00:00)
-		    # See http://code.google.com/apis/calendar/faq.html#all_day_event
-            $when->startTime = date_format($start, 'Y-m-d');
-            $when->endTime   =   date_format($end, 'Y-m-d');
+			# See http://code.google.com/apis/calendar/faq.html#all_day_event
+			$when->startTime = date_format($start, 'Y-m-d');
+			$when->endTime   =   date_format($end, 'Y-m-d');
 
 		} else {
 			# regular events
@@ -191,9 +191,9 @@ class Core_Service_GoogleEvent {
 	private function _getOneEvent($url)
 	{
 		try {
-		    return $this->_service->getCalendarEventEntry($url);
+			return $this->_service->getCalendarEventEntry($url);
 		} catch (Zend_Gdata_App_Exception $e) {
-		    echo "Error: " . $e->getMessage();
+			echo "Error: " . $e->getMessage();
 		}
 	}
 
@@ -227,7 +227,7 @@ class Core_Service_GoogleEvent {
 			throw new Exception('gcal_event_id not found in record');
 		}
 		$event = $this->_transformValues(
-		    $this->_getOneEvent($this->_values['gcal_event_id'])
+			$this->_getOneEvent($this->_values['gcal_event_id'])
 		);
 		$event->save();
 		return $event->id->text;
@@ -250,7 +250,7 @@ class Core_Service_GoogleEvent {
 	 * Insert Google Events with batch request
 	 *
 	 * @param	array	$values
-	 * @return	array	Batch response data combined with general event information
+	 * @return	boolean	Batch response data combined with general event information
 	 */
 	public function insertBatch($values)
 	{
@@ -261,7 +261,7 @@ class Core_Service_GoogleEvent {
 			$event = $this->_transformValues(
 				$this->_service->newEventEntry()
 			);
-			$event = $this->_addBatchProperties($event, $k+1, 'insert');
+			$event = $this->_addBatchProperties($event, $k + 1, 'insert');
 			$entryArray[] = $event;
 		}
 
@@ -271,7 +271,7 @@ class Core_Service_GoogleEvent {
 		// deal with google response
 		$return = false;
 		foreach ($responseFeed as $responseEntry) {
-			$batchResponseData =  $this->_getBatchResponseData($responseEntry);
+			$batchResponseData = $this->_getBatchResponseData($responseEntry);
 
 			// get session_id extended property
 			foreach ($responseEntry->getExtendedProperty() as $extProp) {
@@ -300,7 +300,7 @@ class Core_Service_GoogleEvent {
 	 * @param  string           $value   The value of the extended property
 	 * @return Zend_Gdata_Calendar_EventEntry|null The updated entry
 	 */
-	private function _addExtendedProperty($eventId, $name='http://www.example.com/schemas/2005#mycal.id', $value='1234')
+	private function _addExtendedProperty($eventId, $name = 'http://www.example.com/schemas/2005#mycal.id', $value = '1234')
 	{
 		if ($event = $this->_getEvent($eventId)) {
 			$extProp = $gc->newExtendedProperty($name, $value);
@@ -316,14 +316,15 @@ class Core_Service_GoogleEvent {
 	/**
 	 * Helper method for batch requests
 	 *
+	 * @param string $operation
 	 */
 	private function _addBatchProperties($entry, $id, $operation)
 	{
-	    $extElementId1 = new Zend_Gdata_App_Extension_Element('id', 'batch', 'http://schemas.google.com/gdata/batch', $id);
-	    $extElementOp1 = new Zend_Gdata_App_Extension_Element('operation', 'batch', 'http://schemas.google.com/gdata/batch');
-	    $extElementOp1->setExtensionAttributes(array(array('namespaceUri' => 'http://schemas.google.com/gdata/batch', 'name' => 'type', 'value' => $operation)));
-	    $entry->setExtensionElements(array($extElementId1, $extElementOp1));
-	    return $entry;
+		$extElementId1 = new Zend_Gdata_App_Extension_Element('id', 'batch', 'http://schemas.google.com/gdata/batch', $id);
+		$extElementOp1 = new Zend_Gdata_App_Extension_Element('operation', 'batch', 'http://schemas.google.com/gdata/batch');
+		$extElementOp1->setExtensionAttributes(array(array('namespaceUri' => 'http://schemas.google.com/gdata/batch', 'name' => 'type', 'value' => $operation)));
+		$entry->setExtensionElements(array($extElementId1, $extElementOp1));
+		return $entry;
 	}
 
 	/**
@@ -332,19 +333,19 @@ class Core_Service_GoogleEvent {
 	 */
 	private function _performBatchRequest($entries, $feedUrl = 'http://www.google.com/calendar/feeds/default/private/full/batch')
 	{
-	    $eventFeed = new Zend_Gdata_Calendar_EventFeed();
-	    $eventFeed->setEntry($entries);
+		$eventFeed = new Zend_Gdata_Calendar_EventFeed();
+		$eventFeed->setEntry($entries);
 
-	    $response = $this->_service->post($eventFeed->saveXML(), $feedUrl);
-	    $responseString = $response->getBody();
+		$response = $this->_service->post($eventFeed->saveXML(), $feedUrl);
+		$responseString = $response->getBody();
 
-	    $responseFeed = new Zend_Gdata_Calendar_EventFeed($responseString);
+		$responseFeed = new Zend_Gdata_Calendar_EventFeed($responseString);
 
-	    foreach ($responseFeed as $responseEntry) {
-	        $responseEntry->setHttpClient($this->_service->getHttpClient());
-	    }
+		foreach ($responseFeed as $responseEntry) {
+			$responseEntry->setHttpClient($this->_service->getHttpClient());
+		}
 
-	    return $responseFeed;
+		return $responseFeed;
 	}
 
 	/**
@@ -353,48 +354,48 @@ class Core_Service_GoogleEvent {
 	 */
 	private function _getBatchResponseData($entry)
 	{
-	    $batchId = null;
-	    $batchOperation= null;
-	    $batchStatusCode = null;
-	    $batchStatusReason = null;
+		$batchId = null;
+		$batchOperation= null;
+		$batchStatusCode = null;
+		$batchStatusReason = null;
 	   	$batchUid = null;
 
-	    $batchNs = 'http://schemas.google.com/gdata/batch';
-	    $batchIdElement = $batchNs . ':' . 'id';
-	    $batchOperationElement = $batchNs . ':' . 'operation';
-	    $batchStatusElement = $batchNs . ':' . 'status';
-	    $batchUidElement = 'http://schemas.google.com/gCal/2005' . ':' . 'uid';
+		$batchNs = 'http://schemas.google.com/gdata/batch';
+		$batchIdElement = $batchNs . ':' . 'id';
+		$batchOperationElement = $batchNs . ':' . 'operation';
+		$batchStatusElement = $batchNs . ':' . 'status';
+		$batchUidElement = 'http://schemas.google.com/gCal/2005' . ':' . 'uid';
 
-	    $extensionElements = $entry->getExtensionElements();
+		$extensionElements = $entry->getExtensionElements();
 
-	    foreach ($extensionElements as $extensionElement) {
-	        $fullName = $extensionElement->rootNamespaceURI . ':' . $extensionElement->rootElement;
-	        switch ($fullName) {
-	            case $batchIdElement:
-	                $batchId = $extensionElement->getText();
-	                break;
-	            case $batchOperationElement:
-	                $extAttrs = $extensionElement->getExtensionAttributes();
-	                $batchOperation = $extAttrs['type']['value'];
-	                break;
-	            case $batchUidElement:
-	                $extAttrs = $extensionElement->getExtensionAttributes();
-	                $batchUid = $extAttrs['value']['value'];
-	                break;
-	            case $batchStatusElement:
-	                $extAttrs = $extensionElement->getExtensionAttributes();
-	                $batchStatusCode = $extAttrs['code']['value'];
-	                $batchStatusReason = $extAttrs['reason']['value'];
-	                break;
-	        }
-	    }
+		foreach ($extensionElements as $extensionElement) {
+			$fullName = $extensionElement->rootNamespaceURI . ':' . $extensionElement->rootElement;
+			switch ($fullName) {
+				case $batchIdElement:
+					$batchId = $extensionElement->getText();
+					break;
+				case $batchOperationElement:
+					$extAttrs = $extensionElement->getExtensionAttributes();
+					$batchOperation = $extAttrs['type']['value'];
+					break;
+				case $batchUidElement:
+					$extAttrs = $extensionElement->getExtensionAttributes();
+					$batchUid = $extAttrs['value']['value'];
+					break;
+				case $batchStatusElement:
+					$extAttrs = $extensionElement->getExtensionAttributes();
+					$batchStatusCode = $extAttrs['code']['value'];
+					$batchStatusReason = $extAttrs['reason']['value'];
+					break;
+			}
+		}
 
-	    return array(
-	    	'_operation' => $batchOperation,
-	    	'_statusCode' => $batchStatusCode,
-	    	'_statusReason' => $batchStatusReason,
-	    	'gcal_event_id' => $this->_url . '/' . strstr($batchUid, '@', true)
-	    );
+		return array(
+			'_operation' => $batchOperation,
+			'_statusCode' => $batchStatusCode,
+			'_statusReason' => $batchStatusReason,
+			'gcal_event_id' => $this->_url . '/' . strstr($batchUid, '@', true)
+		);
 	}
 
 }

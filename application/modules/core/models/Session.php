@@ -33,10 +33,10 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	public function getSessionById($id)
 	{
 		$row = $this->getResource('sessions')->getSessionById( (int) $id );
-    	if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	/**
@@ -47,23 +47,23 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	public function getAllSessionDataById($id)
 	{
 		$row = $this->getResource('sessionsview')->getSessionById( (int) $id );
-    	if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	/**
 	 * Get a list of sessions
-	 * @param		integer		$page	Page number to show
+	 * @param		integer		$paged	Page number to show
 	 * @param		array		$order	Array with keys 'field' and 'direction'
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
 	 */
 	public function getSessions($paged, $order)
 	{
 		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		return $this->getResource('sessions')->getSessions($paged, $order);
 	}
@@ -75,8 +75,8 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	public function getAllSessionData()
 	{
 		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		return $this->getResource('sessionsview')->getAllSessionData();
 	}
@@ -142,8 +142,8 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	{
 		// perform ACL check
 		if (!$this->checkAcl('evaluate')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		$form = $this->getForm('sessionEvaluation');
 
@@ -170,8 +170,8 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	public function delete($id = null)
 	{
 		if (!$this->checkAcl('delete')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;
@@ -189,8 +189,8 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	public function deletePresentation($id = null)
 	{
 		if (!$this->checkAcl('presentationDelete')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;
@@ -211,10 +211,10 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	{
 		// perform ACL check
 		if (!$this->checkAcl('save')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        // get different form based on action parameter
+		// get different form based on action parameter
 		$formName = ($action) ? 'session' . ucfirst($action) : 'session';
 		$form = $this->getForm($formName);
 
@@ -235,7 +235,7 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	/**
 	 * Save multiple sessions (only used by Sync for now)
 	 *
-	 * @param	array	$valuesMulti	multidim array of session value arrays
+	 * @param	boolean	$valuesMulti	multidim array of session value arrays
 	 * @return	void
 	 * @todo	add proper return value
 	 */
@@ -243,12 +243,12 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	{
 		// perform ACL check
 		if (!$this->checkAcl('save')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		$sessions = $this->getResource('sessions');
 
-        foreach ($valuesMulti as $values) {
+		foreach ($valuesMulti as $values) {
  			$session = array_key_exists('session_id', $values) ?
 				$sessions->getSessionById($values['session_id']) : null;
 
@@ -259,18 +259,18 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	}
 
 	/**
-     * Save files and user/files link
-     *
-     * @param	array	$post	Post variable
-     * @return	mixed	The primary key of the inserted record if insert went OK
-     *					false if user already belongs to this presentation
-     * @todo this code is very similar to saveFiles in the presentation model. Abstract it!
-     */
+	 * Save files and user/files link
+	 *
+	 * @param	array	$post	Post variable
+	 * @return	mixed	The primary key of the inserted record if insert went OK
+	 *					false if user already belongs to this presentation
+	 * @todo this code is very similar to saveFiles in the presentation model. Abstract it!
+	 */
 	public function saveFiles(array $post)
 	{
 		if (!$this->checkAcl('filesSave')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+		}
 
 		$form = $this->getForm('sessionFiles');
 		// perform validation
@@ -292,12 +292,12 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 					$hash = $element->getHash('sha1');
 
 					$element->addFilter('rename', array(
-		    		    'target' => Zend_Registry::get('config')->directories->uploads.$hash,
-		    		    'overwrite' => true
-		    		));
+						'target' => Zend_Registry::get('config')->directories->uploads.$hash,
+						'overwrite' => true
+					));
 
-		    		$originalName = $element->getFileName();
-		    		$element->receive();
+					$originalName = $element->getFileName();
+					$element->receive();
 					$fileInfo = $element->getFileInfo();
 					$fileInfo[$file]['_filename_original'] = $originalName;
 					$fileInfo[$file]['_filehash'] = $hash;
@@ -328,8 +328,8 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	public function deleteChair($id = null)
 	{
 		if (!$this->checkAcl('chairDelete')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;
@@ -340,17 +340,17 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	}
 
 	/**
-     * Save user/session link
-     *
-     * @param	array	$post	Post variable
-     * @return	mixed	The primary key of the inserted record if insert went OK
-     *					false if user already belongs to this session
-     */
+	 * Save user/session link
+	 *
+	 * @param	array	$post	Post variable
+	 * @return	mixed	The primary key of the inserted record if insert went OK
+	 *					false if user already belongs to this session
+	 */
 	public function saveChairs(array $post)
 	{
 		if (!$this->checkAcl('chairSave')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+		}
 
 		$form = $this->getForm('sessionUser');
 		// perform validation
@@ -384,7 +384,7 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	{
 		if (!$this->checkAcl('presentationOrder')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+		}
 
 		$resource = $this->getResource('sessionspresentations');
 		$oldOrder = $resource->getPresentationOrder($sessionId);
@@ -394,7 +394,7 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 			// Current session_presentation_id has different place in array
 			// so order has changed for this id.
 			if ($oldOrder[$order] != $id) {
-				$resource->updatePresentationOrder($id, $order+1);
+				$resource->updatePresentationOrder($id, $order + 1);
 			}
 		}
 
@@ -402,18 +402,18 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 
 
 	/**
-     * Save presentation/session link
-     *
-     * @param	array	$post	Post variable
-     * @return	mixed	Zend_Db_Table_Row if presentation belongs to another session
-     *					false if presentation already belongs to this session
-     *					The primary key of the inserted record if insert went OK
-     */
+	 * Save presentation/session link
+	 *
+	 * @param	array	$post	Post variable
+	 * @return	mixed	Zend_Db_Table_Row if presentation belongs to another session
+	 *					false if presentation already belongs to this session
+	 *					The primary key of the inserted record if insert went OK
+	 */
 	public function savePresentations(array $post)
 	{
 		if (!$this->checkAcl('presentationsSave')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+		}
 
 		$form = $this->getForm('sessionPresentation');
 		// perform validation
@@ -491,7 +491,7 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	 */
 	public function getSubscriptions($userId = null, $sessionId = null)
 	{
-		return $this->getResource('subscriberssessions')->getSubscriptions( $userId, $sessionId );
+		return $this->getResource('subscriberssessions')->getSubscriptions($userId, $sessionId);
 	}
 
 	/**
@@ -509,8 +509,8 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 		}
 
 		// cast data values to named variables
-		list($slots[0]['timeslot_id'], $slots[0]['location_id']) = array_map(function($v){ return intval($v); },explode("-", $data[0]));
-		list($slots[1]['timeslot_id'], $slots[1]['location_id']) = array_map(function($v){ return intval($v); },explode("-", $data[1]));
+		list($slots[0]['timeslot_id'], $slots[0]['location_id']) = array_map(function($v) { return intval($v); },explode("-", $data[0]));
+		list($slots[1]['timeslot_id'], $slots[1]['location_id']) = array_map(function($v) { return intval($v); },explode("-", $data[1]));
 
 		// get sessions and if they exist add them to an array
 		if ($session = $this->getSessionByTimeAndLocation($slots[0]['timeslot_id'], $slots[0]['location_id'])) {
@@ -522,30 +522,30 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 
 		switch (count($sessions)) {
 			case 0:
-			    throw new TA_Model_Exception('You have chosen two empty slots in the programme. Please select at least 1 occupied slot');
+				throw new TA_Model_Exception('You have chosen two empty slots in the programme. Please select at least 1 occupied slot');
 			break;
 			case 1:
-			    // updating one session
-			    return $this->getResource('sessions')->saveRow(
-			    	(key($sessions) == 0) ? $slots[1] : $slots[0],
-			    	reset($sessions)
-			    );
+				// updating one session
+				return $this->getResource('sessions')->saveRow(
+					(key($sessions) == 0) ? $slots[1] : $slots[0],
+					reset($sessions)
+				);
 			break;
 			case 2:
-		    	// swapping two sessions, to avoid db restriction first unset fields, then add them again
-		    	$sessionId = $this->getResource('sessions')->saveRow(
-		    	   array('timeslot_id' => null, 'location_id' => null),
-		    	   $sessions[0]
-		    	);
-		    	$this->getResource('sessions')->saveRow(
-		    		$slots[0],
-		    		$sessions[1]
-		    	);
-		    	$this->getResource('sessions')->saveRow(
-		    		$slots[1],
-		    		$this->getSessionById($sessionId)
-		    	);
-		    break;
+				// swapping two sessions, to avoid db restriction first unset fields, then add them again
+				$sessionId = $this->getResource('sessions')->saveRow(
+				   array('timeslot_id' => null, 'location_id' => null),
+				   $sessions[0]
+				);
+				$this->getResource('sessions')->saveRow(
+					$slots[0],
+					$sessions[1]
+				);
+				$this->getResource('sessions')->saveRow(
+					$slots[1],
+					$this->getSessionById($sessionId)
+				);
+			break;
 		}
 
 	}

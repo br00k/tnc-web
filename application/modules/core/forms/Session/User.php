@@ -31,22 +31,22 @@ class Core_Form_Session_User extends TA_Form_Abstract
 
 		$this->setAction('/core/session/chairs');
 
-	    $submissionId = new Zend_Form_Element_Hidden('session_id');
-	    $submissionId->setRequired(true)
-	    			 ->addValidators(
-	    			 	array('Int')
-	    			 )
-	    			 ->setDecorators(array('Composite'));
+		$submissionId = new Zend_Form_Element_Hidden('session_id');
+		$submissionId->setRequired(true)
+					 ->addValidators(
+					 	array('Int')
+					 )
+					 ->setDecorators(array('Composite'));
 
 		$users = new TA_Form_Element_User('user_id');
 		$users->setTaController('session')
 			  ->populateElement('chair')
 			  ->setAttrib('onchange', "this.form.submit()");
 
-	    $this->addElements(array(
-	    	$submissionId,
-	    	$users
-	    ));
+		$this->addElements(array(
+			$submissionId,
+			$users
+		));
 
 	}
 

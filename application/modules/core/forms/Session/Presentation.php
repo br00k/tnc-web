@@ -33,25 +33,25 @@ class Core_Form_Session_Presentation extends TA_Form_Abstract
 		
 		$conference = Zend_Registry::get('conference');
 
-	    $sessionId = new Zend_Form_Element_Hidden('session_id');
-	    $sessionId->setRequired(true)
-	    		  ->addValidators(
-				     array('Int')
+		$sessionId = new Zend_Form_Element_Hidden('session_id');
+		$sessionId->setRequired(true)
+				  ->addValidators(
+					 array('Int')
 				  )
 				  ->setDecorators(array('Composite'));
 
-	    $presentationModel = new Core_Model_Presentation();
+		$presentationModel = new Core_Model_Presentation();
 	    
-	    $select = new Zend_Form_Element_Select('presentation_id');
-	    $select->setAttrib('onchange', 'this.form.submit()')
-	    	   ->setMultiOptions($presentationModel->getPresentationsForSelect('--- attach presentation ---'))
+		$select = new Zend_Form_Element_Select('presentation_id');
+		$select->setAttrib('onchange', 'this.form.submit()')
+			   ->setMultiOptions($presentationModel->getPresentationsForSelect('--- attach presentation ---'))
 			   ->setRegisterInArrayValidator(false)
-	    	   ->setDecorators(array('Composite'));
+			   ->setDecorators(array('Composite'));
 
-	    $this->addElements(array(
-	    	$sessionId,
-	    	$select
-	    ));
+		$this->addElements(array(
+			$sessionId,
+			$select
+		));
 
 	}
 

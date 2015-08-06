@@ -31,8 +31,8 @@ class Core_Form_Review_Mail extends TA_Form_Abstract
 		$this->setAction('/core/review/mail');
 		$this->setAttrib('id', 'mailform');
 
-	    $dummy = new Zend_Form_Element_Checkbox('dummy');
-	    $dummy->setLabel('Do a test run (does not send emails)')
+		$dummy = new Zend_Form_Element_Checkbox('dummy');
+		$dummy->setLabel('Do a test run (does not send emails)')
 			  ->setChecked(true)
 			  ->setDecorators(array('Composite'));
 
@@ -40,10 +40,10 @@ class Core_Form_Review_Mail extends TA_Form_Abstract
 			$dummy
 		));
 
-	    $this->addElement('submit', 'submit', array(
+		$this->addElement('submit', 'submit', array(
 			'label' => 'Send emails (this may take a while)',
 			'decorators' => $this->_buttonElementDecorator
-	    ));
+		));
 
 	}
 

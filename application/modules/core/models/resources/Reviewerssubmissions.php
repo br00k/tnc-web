@@ -42,7 +42,7 @@ class Core_Resource_Reviewerssubmissions extends TA_Model_Resource_Db_Table_Abst
 	 */
 	public function getItemById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -83,11 +83,11 @@ class Core_Resource_Reviewerssubmissions extends TA_Model_Resource_Db_Table_Abst
 	public function getAllReviewers()
 	{
 		$query = "select u.fname, u.lname, u.email, u.user_id, rs.submission_id, rs.tiebreaker
-		from " .$this->_name. " rs
+		from " .$this->_name." rs
 		left join users u on (rs.user_id = u.user_id)
         left join submissions s on (rs.submission_id = s.submission_id)
         where s.conference_id=".$this->getConferenceId();
-        return $this->getAdapter()->fetchAll($query);
+		return $this->getAdapter()->fetchAll($query);
 	}
 
 }

@@ -37,10 +37,10 @@ class Core_Model_Eventlog extends TA_Model_Acl_Abstract
 	public function getItemByType($type)
 	{
 		$row = $this->getResource('eventlogs')->getItemByType($type);
-    	if ($row === null) {
-    		throw new TA_Model_Exception('event log type not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('event log type not found');
+		}
+		return $row;
 	}
 
 	/**
@@ -62,7 +62,7 @@ class Core_Model_Eventlog extends TA_Model_Acl_Abstract
 	 */
 	public function getTimestampByType($type)
 	{
-		if ($timestamp = $this->getResource('eventlogs')->getTimestampByType($type) ) {
+		if ($timestamp = $this->getResource('eventlogs')->getTimestampByType($type)) {
 			return new Zend_Date($timestamp, Zend_Date::ISO_8601);
 		}
 		return false;

@@ -53,7 +53,7 @@ class Core_Resource_Feedbackpresentations extends TA_Model_Resource_Db_Table_Abs
 	{
 		return $this->getAdapter()->fetchAssoc(
 			$this->select()
-				 ->where( 'id = ?', $codeId)
+				 ->where('id = ?', $codeId)
 				 ->from('feedback.presentations', array('presentation_id', 'rating'))
 		);
 	}

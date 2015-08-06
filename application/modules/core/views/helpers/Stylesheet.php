@@ -39,7 +39,7 @@ class Core_View_Helper_Stylesheet extends Zend_View_Helper_Abstract
 		$namespace = ($conference['layout']) 
 			? strtolower($conference['abbreviation'])
 			: 'core';
-		$this->view->headLink()->appendStylesheet('/includes/'. $namespace . '/css/'. $link);
+		$this->view->headLink()->appendStylesheet('/includes/'.$namespace.'/css/'.$link);
 	}
 
 

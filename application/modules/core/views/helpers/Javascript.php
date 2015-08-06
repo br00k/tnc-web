@@ -39,7 +39,7 @@ class Core_View_Helper_Javascript extends Zend_View_Helper_Abstract
 		$namespace = ($conference['layout']) 
 			? strtolower($conference['abbreviation'])
 			: 'core';
-		$this->view->headScript()->appendFile('/includes/'. $namespace . '/js/'. $link);
+		$this->view->headScript()->appendFile('/includes/'.$namespace.'/js/'.$link);
 	}
 
 

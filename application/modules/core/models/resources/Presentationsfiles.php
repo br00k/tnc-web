@@ -37,7 +37,7 @@ class Core_Resource_Presentationsfiles extends TA_Model_Resource_Db_Table_Abstra
 	 */
 	public function getItemById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -89,7 +89,7 @@ class Core_Resource_Presentationsfiles extends TA_Model_Resource_Db_Table_Abstra
 	{
 
 		$presentationId = (int) $values['presentation_id'];
-		if ($presentationId === 0 ) {
+		if ($presentationId === 0) {
 			throw new TA_Model_Resource_Db_Table_Exception('presentation_id not present');
 		}
 
@@ -110,15 +110,15 @@ class Core_Resource_Presentationsfiles extends TA_Model_Resource_Db_Table_Abstra
 			$value['file_id'] = $fileId;
 
 			// Update if core_filetype already has a file associated with it
-			if ( isset($currentValues[$fileType]) ) {
+			if (isset($currentValues[$fileType])) {
 				// do update
-				$query = "UPDATE " . $this->_name . " SET
+				$query = "UPDATE ".$this->_name." SET
 				file_id=:file_id, presentation_id=:presentation_id
 				WHERE file_id=:file_id_old";
 				$value['file_id_old'] = $currentValues[$fileType];
 			} else {
 				// do insert
-				$query = "INSERT INTO " . $this->_name . "(file_id, presentation_id)
+				$query = "INSERT INTO ".$this->_name."(file_id, presentation_id)
 				VALUES (:file_id, :presentation_id)";
 			}
 

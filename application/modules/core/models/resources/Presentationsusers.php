@@ -37,7 +37,7 @@ class Core_Resource_Presentationsusers extends TA_Model_Resource_Db_Table_Abstra
 	 */
 	public function getItemById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -97,13 +97,13 @@ class Core_Resource_Presentationsusers extends TA_Model_Resource_Db_Table_Abstra
 					continue;
 				}
 			}
-			$insertValues[] = "(".(int)$key .",". (int)$value.")";
+			$insertValues[] = "(".(int) $key.",".(int) $value.")";
 		}
 
 		$insertValues = implode(',', $insertValues);
 
 		if ($insertValues) {
-			$query = "INSERT INTO " . $this->_name . " (presentation_id, user_id) VALUES ".$insertValues;
+			$query = "INSERT INTO ".$this->_name." (presentation_id, user_id) VALUES ".$insertValues;
 			return $db->query($query);
 		}
 	}

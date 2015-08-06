@@ -106,7 +106,7 @@ class Core_Resource_Presentation_Item extends TA_Model_Resource_Db_Table_Row_Abs
 			$tStart = new Zend_Date($tStart, Zend_Date::ISO_8601);
 			$deadline = $tStart->sub($config->core->presentation->deadline, Zend_Date::SECOND);
 
-			if ( $now->isEarlier($deadline) ) {
+			if ($now->isEarlier($deadline)) {
 			   return true;
 			}
 		}

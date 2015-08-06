@@ -41,7 +41,7 @@ class Core_Resource_Sessionsview extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getSessionById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -56,9 +56,9 @@ class Core_Resource_Sessionsview extends TA_Model_Resource_Db_Table_Abstract
 		$zd = $date->get(Zend_Date::ISO_8601);
 
 		return $this->fetchAll(
-		    $this->select()
-		    	 ->where("tstart <= '".$zd."'")
-		    	 ->where("tend >= '".$zd."'")
+			$this->select()
+				 ->where("tstart <= '".$zd."'")
+				 ->where("tend >= '".$zd."'")
 		);
 	}
 
@@ -75,9 +75,9 @@ class Core_Resource_Sessionsview extends TA_Model_Resource_Db_Table_Abstract
 
 		return $this->fetchAll(
 			$this->select()
-			    ->where("tstart >= '".$zd."'")
-			    ->where("date_trunc('day', tstart) = (select DATE '".$zd."')")
-			    ->order('tstart')
+				->where("tstart >= '".$zd."'")
+				->where("date_trunc('day', tstart) = (select DATE '".$zd."')")
+				->order('tstart')
 			);
 	}
 
@@ -94,9 +94,9 @@ class Core_Resource_Sessionsview extends TA_Model_Resource_Db_Table_Abstract
 
 		return $this->fetchAll(
 			$this->select()
-			    ->where("tend <= '".$zd."'")
-			    ->order('tstart')
-			    ->order('location_abbreviation')
+				->where("tend <= '".$zd."'")
+				->order('tstart')
+				->order('location_abbreviation')
 			);
 	}
 

@@ -1,21 +1,21 @@
 <?php
 /**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Submissionsview.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
- */
+	 * CORE Conference Manager
+	 *
+	 * LICENSE
+	 *
+	 * This source file is subject to the new BSD license that is bundled
+	 * with this package in the file LICENSE.txt.
+	 * It is also available through the world-wide-web at this URL:
+	 * http://www.terena.org/license/new-bsd
+	 * If you did not receive a copy of the license and are unable to
+	 * obtain it through the world-wide-web, please send an email
+	 * to webmaster@terena.org so we can send you a copy immediately.
+	 *
+	 * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+	 * @license    http://www.terena.org/license/new-bsd     New BSD License
+	 * @revision   $Id: Submissionsview.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
+	 */
 
 /** 
  *
@@ -39,7 +39,7 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 	 */
 	public function getSubmissionById($id)
 	{
-		return $this->find( (int)$id )->current();
+		return $this->find((int) $id)->current();
 	}
 
 	/**
@@ -53,7 +53,7 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 				left join submissions s on (st.submission_id = s.submission_id)
 				left join users_submissions us on (us.submission_id = st.submission_id)
 				left join users u on (u.user_id = us.user_id) where st.status='
-				.(int) $statusId . ' and s.conference_id='.$this->getConferenceId();
+				.(int) $statusId.' and s.conference_id='.$this->getConferenceId();
 		return $this->getAdapter()->fetchAll($query);
 	}
 
@@ -96,10 +96,10 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 		if ($filter->filters) {
 			foreach ($filter->filters as $field => $value) {
 				if (is_array($value)) {
-			        $select->where( $field.' IN (?)', $value);
-			    } else {
-			        $select->where( $field.' = ?', $value);
-			    }
+					$select->where( $field.' IN (?)', $value);
+				} else {
+					$select->where( $field.' = ?', $value);
+				}
 			}
 		}
 		if ($object) {
@@ -119,7 +119,7 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 	 * @return	array
 	 *
 	 */
-	public function getSubmissions($paged=null, $order=array(), $filter=null)
+	public function getSubmissions($paged = null, $order = array(), $filter = null)
 	{
 		$grid = array();
 		$grid['cols'] = $this->getGridColumns();
@@ -140,11 +140,11 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 		// apply filters to grid
 		if ($filter->filters) {
 			foreach ($filter->filters as $field => $value) {
-			    if (is_array($value)) {
-			        $select->where( $field.' IN (?)', $value);
-			    } else {
-			        $select->where( $field.' = ?', $value);
-			    }
+				if (is_array($value)) {
+					$select->where( $field.' IN (?)', $value);
+				} else {
+					$select->where( $field.' = ?', $value);
+				}
 			}
 		}
 
@@ -153,7 +153,7 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 			$adapter = new Zend_Paginator_Adapter_DbTableSelect($select);
 
 			$paginator = new Zend_Paginator($adapter);
-			$paginator->setCurrentPageNumber( (int)$paged )
+			$paginator->setCurrentPageNumber((int) $paged)
 					  ->setItemCountPerPage(20);
 
 			$grid['rows'] = $paginator;

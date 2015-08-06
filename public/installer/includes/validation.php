@@ -10,7 +10,7 @@ class Validation extends Validation_Core
 
 	function validate_license($params = array())
 	{
-		if ( strcmp('1234-1234-1234-1234', $_SESSION['params']['license_number']) != 0 ) {
+		if (strcmp('1234-1234-1234-1234', $_SESSION['params']['license_number']) != 0) {
 			return false;
 		}
 		return true;
@@ -18,7 +18,7 @@ class Validation extends Validation_Core
 
 	function validate_system_path($params = array())
 	{
-		if ( !is_file(rtrim($_SESSION['params']['system_path'], '/').'/sample_config.php') || !is_writable(rtrim($_SESSION['params']['system_path'], '/').'/sample_config.php') ) {
+		if (!is_file(rtrim($_SESSION['params']['system_path'], '/').'/sample_config.php') || !is_writable(rtrim($_SESSION['params']['system_path'], '/').'/sample_config.php')) {
 			$this->error = rtrim($_SESSION['params']['system_path'], '/').'/sample_config.php file does not exist or is not writeable.';
 			return false;
 		}

@@ -60,9 +60,9 @@ class Core_Resource_Feedbackcodes extends TA_Model_Resource_Db_Table_Abstract
 
 		$return = array();
 
-		for ($j=0; $j<$i; $j++) {
+		for ($j = 0; $j < $i; $j++) {
 			$code = $uuid->get();
-			$id = $this->insert( array('uuid' => $code) );
+			$id = $this->insert(array('uuid' => $code));
 			$return[$id] = $code;
 		}
 

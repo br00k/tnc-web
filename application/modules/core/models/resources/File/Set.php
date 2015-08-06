@@ -27,7 +27,7 @@
 class Core_Resource_File_Set extends Zend_Db_Table_Rowset_Abstract
 {
 
-	public function getNormalizedFiles($fileIdsSubmissionIds=null)
+	public function getNormalizedFiles($fileIdsSubmissionIds = null)
 	{
 		foreach ($this as $row) {
 			$submissionId = $fileIdsSubmissionIds[$row->file_id];

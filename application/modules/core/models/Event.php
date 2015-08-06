@@ -34,10 +34,10 @@ class Core_Model_Event extends TA_Model_Acl_Abstract
 	public function getEventById($id)
 	{
 		$row = $this->getResource('events')->getEventById( (int) $id );
-    	if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	/**
@@ -49,26 +49,26 @@ class Core_Model_Event extends TA_Model_Acl_Abstract
 	public function getAllEventDataById($id)
 	{
 		$row = $this->getResource('eventsview')->getEventById( (int) $id );
-    	if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	/**
 	 * Get a list of events
-	 * @param		integer		$page	Page number to show
+	 * @param		integer		$paged	Page number to show
 	 * @param		array		$order	Array with keys 'field' and 'direction'
 	 * @param		boolean		$group	Group rows by 'day' or 'category'
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
 	 */
-	public function getEvents($paged=null, $order=array(), $group=false)
+	public function getEvents($paged = null, $order = array(), $group = false)
 	{
 		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        $items = $this->getResource('eventsview')->getEvents($paged, $order);
+		$items = $this->getResource('eventsview')->getEvents($paged, $order);
 
 		if ($group) {
 			$items['rows'] = $items['rows']->group($group);
@@ -84,8 +84,8 @@ class Core_Model_Event extends TA_Model_Acl_Abstract
 	public function getCategories()
 	{
 		if (!$this->checkAcl('category')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		return $this->getResource('eventcategories')->getCategories();
 	}
@@ -98,8 +98,8 @@ class Core_Model_Event extends TA_Model_Acl_Abstract
 	public function delete($id = null)
 	{
 		if (!$this->checkAcl('delete')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;
@@ -120,10 +120,10 @@ class Core_Model_Event extends TA_Model_Acl_Abstract
 	{
 		// perform ACL check
 		if (!$this->checkAcl('save')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        // get different form based on action parameter
+		// get different form based on action parameter
 		$formName = ($action) ? 'event' . ucfirst($action) : 'event';
 		$form = $this->getForm($formName);
 
@@ -132,20 +132,20 @@ class Core_Model_Event extends TA_Model_Acl_Abstract
 			return false;
 		}
 
-		if ( $form->file->isUploaded() ) {
+		if ($form->file->isUploaded()) {
 			// save file to filesystem
 			try {
 				$fileInfo = array();
 				$adapter = $form->file->getTransferAdapter();
-			    $hash = $adapter->getHash('sha1');
+				$hash = $adapter->getHash('sha1');
 
-			    $form->file->addFilter('rename', array(
-			        'target' => Zend_Registry::get('config')->directories->uploads.$hash,
-			        'overwrite' => true
-			    ));
+				$form->file->addFilter('rename', array(
+					'target' => Zend_Registry::get('config')->directories->uploads.$hash,
+					'overwrite' => true
+				));
 
-			    $origName = $adapter->getFileName();
-			    $adapter->receive();
+				$origName = $adapter->getFileName();
+				$adapter->receive();
 				$fileInfo = $adapter->getFileInfo();
 				$fileInfo['file']['_filename_original'] = $origName;
 				$fileInfo['file']['_filehash'] = $hash;
@@ -162,7 +162,7 @@ class Core_Model_Event extends TA_Model_Acl_Abstract
 			// get filtered values
 			$values = $form->getValues();
 
-			if ( $form->file->isUploaded() ) {
+			if ($form->file->isUploaded()) {
 				// persist file
 				$fileId = $this->getResource('files')->saveRow($fileInfo);
 				$values['file_id'] = $fileId;

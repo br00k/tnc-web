@@ -34,28 +34,28 @@ class Core_Model_Topic extends TA_Model_Acl_Abstract
 	public function getTopicById($id)
 	{
 		$row = $this->getResource('topics')->getTopicById( (int) $id );
-    	if ($row === null) {
-    		throw new TA_Model_Exception('id not found');
-    	}
-    	return $row;
+		if ($row === null) {
+			throw new TA_Model_Exception('id not found');
+		}
+		return $row;
 	}
 
 	public function getTopicsForSelect($type = null)
 	{
-        return $this->getResource('topics')->getTopicsForSelect($type);
+		return $this->getResource('topics')->getTopicsForSelect($type);
 	}
 
 	/**
 	 * Get a list of topics
-	 * @param		integer		$page	Page number to show
+	 * @param		integer		$paged	Page number to show
 	 * @param		array		$order	Array with keys 'field' and 'direction'
 	 * @return		array		Grid array with keys 'cols', 'primary', 'rows'
 	 */
-	public function getTopics($paged=null, $order=array())
+	public function getTopics($paged = null, $order = array())
 	{
 		if (!$this->checkAcl('list')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 		return $this->getResource('topics')->getTopics($paged, $order);
 	}
 
@@ -67,8 +67,8 @@ class Core_Model_Topic extends TA_Model_Acl_Abstract
 	public function delete($id = null)
 	{
 		if (!$this->checkAcl('delete')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
 		if (!$id) {
 			return false;
@@ -90,10 +90,10 @@ class Core_Model_Topic extends TA_Model_Acl_Abstract
 	{
 		// perform ACL check
 		if (!$this->checkAcl('save')) {
-            throw new TA_Model_Acl_Exception("Insufficient rights");
-        }
+			throw new TA_Model_Acl_Exception("Insufficient rights");
+		}
 
-        // get different form based on action parameter
+		// get different form based on action parameter
 		$formName = ($action) ? 'topic' . ucfirst($action) : 'topic';
 		$form = $this->getForm($formName);
 
