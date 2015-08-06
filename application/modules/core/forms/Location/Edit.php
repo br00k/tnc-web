@@ -48,7 +48,7 @@ class Core_Form_Location_Edit extends Core_Form_Location
 	{
 		$this->getElement('abbreviation')
 			 ->getValidator('Zend_Validate_Db_NoRecordExists')     
-			 ->setExclude('location_id !='.$data['location_id'] . ' and conference_id='.$this->_conference['conference_id']);
+			 ->setExclude('location_id !='.$data['location_id'].' and conference_id='.$this->_conference['conference_id']);
 
 		return parent::isValid($data);
 	}	

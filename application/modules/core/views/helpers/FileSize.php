@@ -112,7 +112,7 @@ class Core_View_Helper_FileSize
 			} else if ($fileSize >= $this->_getUnitSize('KILOBYTE_SI')) {
 				$m->setType(Zend_Measure_Binary::KILOBYTE_SI);
 			}
-		}  elseif ($norm === 'iec') {
+		} elseif ($norm === 'iec') {
 			if ($fileSize >= $this->_getUnitSize('TEBIBYTE')) {
 				$m->setType(Zend_Measure_Binary::TEBIBYTE);
 			} else if ($fileSize >= $this->_getUnitSize('GIBIBYTE')) {

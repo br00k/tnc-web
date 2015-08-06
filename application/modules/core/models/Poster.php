@@ -32,7 +32,7 @@ class Core_Model_Poster extends TA_Model_Acl_Abstract
 	 */
 	public function getPosterById($id)
 	{
-		$row = $this->getResource('posters')->getPosterById( (int) $id );
+		$row = $this->getResource('posters')->getPosterById((int) $id);
 		if ($row === null) {
 			throw new TA_Model_Exception('id not found');
 		}
@@ -111,7 +111,7 @@ class Core_Model_Poster extends TA_Model_Acl_Abstract
 		}
 
 		// get different form based on action parameter
-		$formName = ($action) ? 'poster' . ucfirst($action) : 'poster';
+		$formName = ($action) ? 'poster'.ucfirst($action) : 'poster';
 		$form = $this->getForm($formName);
 
 		// perform validation

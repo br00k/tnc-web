@@ -32,7 +32,7 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 	 */
 	public function getReviewById($id)
 	{
-		$row = $this->getResource('reviews')->getReviewById( (int) $id );
+		$row = $this->getResource('reviews')->getReviewById((int) $id);
 		if ($row === null) {
 			throw new TA_Model_Exception('id not found');
 		}
@@ -192,7 +192,7 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 		}
 
 		// get different form based on action parameter
-		$formName = ($action) ? 'review' . ucfirst($action) : 'review';
+		$formName = ($action) ? 'review'.ucfirst($action) : 'review';
 		$form = $this->getForm($formName);
 
 		// perform validation
@@ -251,12 +251,12 @@ class Core_Model_Review extends TA_Model_Acl_Abstract
 		foreach ($submissions as $key => $val) {
 			$e = (isset($val['evalue'])) ? $val['evalue'] : 0;
 
-			if ( ($val['wrong_reviewer_count'] >= 1) && ($val['review_count'] <= 2) ) {
+			if (($val['wrong_reviewer_count'] >= 1) && ($val['review_count'] <= 2)) {
 				$submissions[$key]['tiebreak_required'] = true;
 			} elseif ($e > $config->core->review->tiebreaker) {
 				$submissions[$key]['tiebreak_required'] = true;
 				$submissions[$key]['_lod'] = round($e - $config->core->review->tiebreaker, 2);
-			} elseif ( isset($val['tiebreaker']) && ($excludeNoTiebreakNeeded) ) {
+			} elseif (isset($val['tiebreaker']) && ($excludeNoTiebreakNeeded)) {
 				if ($val['tiebreaker']) {
 					unset($submissions[$key]);
 				}

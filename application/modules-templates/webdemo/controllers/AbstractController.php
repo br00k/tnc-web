@@ -47,12 +47,12 @@ abstract class Webdemo_AbstractController extends Zend_Controller_Action
 	{
 		$this->_conference = Zend_Registry::get('conference');
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();
-		$page = $this->view->navigation()->findBy('controller', $this->getRequest()->getControllerName() );
+		$page = $this->view->navigation()->findBy('controller', $this->getRequest()->getControllerName());
 
 		// add controller specific css
 		if ($page->css) {
 			$this->view->headLink()->appendStylesheet(
-				'/includes/'.strtolower($this->_conference['abbreviation']).'/css/' . $this->getRequest()->getControllerName() . '.css'
+				'/includes/'.strtolower($this->_conference['abbreviation']).'/css/'.$this->getRequest()->getControllerName().'.css'
 			);
 		}
 		

@@ -34,13 +34,13 @@ class Core_Model_File extends TA_Model_Acl_Abstract
 	 */
 	public function getFileById($id)
 	{
-		$row = $this->getResource('filesview')->getFileById( (int) $id );
+		$row = $this->getResource('filesview')->getFileById((int) $id);
 		if ($row === null) {
 			throw new TA_Model_Exception('id not found');
 		}
 		
 		// if file is submission and user is not allowed to get the specific type
-		if ( ($row->core_filetype == 'submission') && (!$this->checkAcl('getsubmission')) ) {
+		if (($row->core_filetype == 'submission') && (!$this->checkAcl('getsubmission'))) {
 			$identity = Zend_Auth::getInstance()->getIdentity();
 			
 			$temp = array_filter($identity->getMySubmissions(), function($val) use ($row) {

@@ -207,11 +207,11 @@ class Webdemo_MediaController extends Webdemo_AbstractController
 		$photos = array();
 		try {
 			// loop through directory and build photo array
-			foreach ($diterator as $item ){
+			foreach ($diterator as $item) {
 				$photos[$item->key()]['location'] = $relpath.$item->getFilename();
 				$photos[$item->key()]['href'] = $relpath.str_replace('_thumb', '', $item->getFilename());
 			}
-		} catch(Exception $e){
+		} catch (Exception $e) {
 			exit();
 		}
 		$this->view->photos = $photos;
@@ -299,33 +299,33 @@ class htmlMarkup {
 				// we are probably dealing with Wordpress
 				$html .= '<div class="blog-image">';
 
-				$url = ( is_array($r->content) ) ? $r->content[0]->url : $r->content->url ;
+				$url = (is_array($r->content)) ? $r->content[0]->url : $r->content->url;
 				$authorPicture = substr($url, 0, strpos($url, '?'));
 
-				$html .= '<img src="'. $authorPicture .'?s=48" alt="'. $r->creator .'" title="'. $r->creator .'" height="48" width="48" /></div>';
+				$html .= '<img src="'.$authorPicture.'?s=48" alt="'.$r->creator.'" title="'.$r->creator.'" height="48" width="48" /></div>';
 			} else {
 				// we are probably dealing with Blogger
 				$html .= '<div class="blog-image">';
-				$html .= '<img src="/includes/tnc2011/gfx/socialmedia/rss.png" alt="'. $r->author .'" title="'. $r->author .'" height="48" width="48" /></div>';
+				$html .= '<img src="/includes/tnc2011/gfx/socialmedia/rss.png" alt="'.$r->author.'" title="'.$r->author.'" height="48" width="48" /></div>';
 			}
 			$html .= '<div class="blog-text">';
-			$html .= $author . ' > ' . '<a href="'. $r->link .'">'.$r->title.'</a>';
+			$html .= $author.' > '.'<a href="'.$r->link.'">'.$r->title.'</a>';
 			$html .= '<div class="metadata">';
 
 				$diff = $this->_time_passed(strtotime($r->pubDate), strtotime('now'));
 				$units = 0;
 				$created_at = array();
-				foreach($diff as $unit => $value) {
-				   if($value != 0 && $units < 2) {
-						if($value === 1) {
+				foreach ($diff as $unit => $value) {
+				   if ($value != 0 && $units < 2) {
+						if ($value === 1) {
 							#let's remove the plural "s"
 							$unit = substr($unit, 0, -1);
 						}
-					   $created_at[]= $value . ' ' .$unit;
+					   $created_at[] = $value.' '.$unit;
 					   ++$units;
 					}
 				}
-				$created_at = implode(', ',$created_at);
+				$created_at = implode(', ', $created_at);
 				$created_at .= ' ago';
 				$html .= $created_at;
 			$html .= '</div></div>';
@@ -367,17 +367,17 @@ class htmlMarkup {
 					$diff = $this->_time_passed(strtotime($r->created_at), strtotime('now'));
 					$units = 0;
 					$created_at = array();
-					foreach($diff as $unit => $value) {
-					   if($value != 0 && $units < 2) {
-							if($value === 1) {
+					foreach ($diff as $unit => $value) {
+					   if ($value != 0 && $units < 2) {
+							if ($value === 1) {
 								#let's remove the plural "s"
 								$unit = substr($unit, 0, -1);
 							}
-						   $created_at[]= $value . ' ' .$unit;
+						   $created_at[] = $value.' '.$unit;
 						   ++$units;
 						}
 					}
-					$created_at = implode(', ',$created_at);
+					$created_at = implode(', ', $created_at);
 					$created_at .= ' ago';
 					$html .= $created_at;
 					$html .= '<span class="viewlink"><a href="http://twitter.com/'.$r->from_user.'/status/'.$r->id.'">View Tweet</a></span></div>';
@@ -456,24 +456,24 @@ class htmlMarkup {
 			'published' => $r->published
 		);
 		$html = '<li>';
-		$html .= '<div class="youtube-image"><img src="'. $r->group->thumbnail[0]->url .'" alt="" height="90" width="120" /></div>';
+		$html .= '<div class="youtube-image"><img src="'.$r->group->thumbnail[0]->url.'" alt="" height="90" width="120" /></div>';
 		$html .= '<div class="youtube-text">';
-		$html .= $r->author->name . ' > '. '<a href="'. htmlentities($r->link[0]->href) .'" rel="prettyPhoto">'.$r->title->content .'</a>';
+		$html .= $r->author->name.' > '.'<a href="'.htmlentities($r->link[0]->href).'" rel="prettyPhoto">'.$r->title->content.'</a>';
 		#$html .= '<p>'.$r->content->content.'</p>';
 		$diff = $this->_time_passed(strtotime($r->published), strtotime('now'));
 		$units = 0;
 		$created_at = array();
-		foreach($diff as $unit => $value) {
-		   if($value != 0 && $units < 2) {
-				if($value === 1) {
+		foreach ($diff as $unit => $value) {
+		   if ($value != 0 && $units < 2) {
+				if ($value === 1) {
 					#let's remove the plural "s"
 					$unit = substr($unit, 0, -1);
 				}
-			   $created_at[]= $value . ' ' .$unit;
+			   $created_at[] = $value.' '.$unit;
 			   ++$units;
 			}
 		}
-		$created_at = implode(', ',$created_at);
+		$created_at = implode(', ', $created_at);
 		$created_at .= ' ago';
 		$html .= '<div class="metadata">'.$created_at.'</div>';
 		$html .= '</div><div class="clearer"></div>';
@@ -502,11 +502,11 @@ class htmlMarkup {
 		  'minutes' => 0,
 		  'seconds' =>0
 		);
-		$units = array('years','months','weeks','days','hours','minutes','seconds');
-		foreach($units as $unit) {
-		  while(true) {
+		$units = array('years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds');
+		foreach ($units as $unit) {
+		  while (true) {
 			 $next = strtotime("+1 $unit", $time1);
-			 if($next < $time2) {
+			 if ($next < $time2) {
 				$time1 = $next;
 				$diff[$unit]++;
 			 } else {
@@ -787,21 +787,21 @@ class YQL {
 // get files with SPL
 class DirectoryFilterDots extends FilterIterator
 {
-    /**
-     * @param string $path
-     */
-    public function __construct($path)
-    {
-    	parent::__construct(new DirectoryIterator($path));
-    }
+	/**
+	 * @param string $path
+	 */
+	public function __construct($path)
+	{
+		parent::__construct(new DirectoryIterator($path));
+	}
 
-    public function accept()
-    {
-    	$inner = $this->getInnerIterator();
-    	$fn = explode('.', $inner->getFilename());
-    	if (substr($fn[0], -6) == '_thumb') {
-    		return !$this->getInnerIterator()->isDir();
-    	}
+	public function accept()
+	{
+		$inner = $this->getInnerIterator();
+		$fn = explode('.', $inner->getFilename());
+		if (substr($fn[0], -6) == '_thumb') {
+			return !$this->getInnerIterator()->isDir();
+		}
 
-    }
+	}
 }

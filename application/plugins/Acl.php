@@ -42,8 +42,8 @@ class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
 
 		if ($role != 'guest') {
 			// prevent redirect loop by excluding 'user' controller actions
-			if ( ($auth->getIdentity()->email == 'invalid_email_needs_updating')
-				&& ($request->getControllerName() != 'user') ) {
+			if (($auth->getIdentity()->email == 'invalid_email_needs_updating')
+				&& ($request->getControllerName() != 'user')) {
 
 				$flash = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
 				$lastRequest = Zend_Controller_Action_HelperBroker::getStaticHelper('lastRequest');
@@ -63,7 +63,7 @@ class Application_Plugin_Acl extends Zend_Controller_Plugin_Abstract
 		}
 
 		// check if ACL resource exists
-		if (!$acl->has(ucfirst($request->getControllerName()) )) {
+		if (!$acl->has(ucfirst($request->getControllerName()))) {
 			return;
 		}
 

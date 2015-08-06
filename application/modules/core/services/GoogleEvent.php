@@ -150,7 +150,7 @@ class Core_Service_GoogleEvent {
 		$content = $this->_values['description'];
 
 		$link = 'http://'.$this->_config['hostname'].'/core/session/'.$this->_values['session_id'];
-		$content.=  "<br /><a href='$link'>More information about this event<a/>";
+		$content .= "<br /><a href='$link'>More information about this event<a/>";
 
 		$event->content = $this->_service->newContent($content);
 
@@ -160,16 +160,16 @@ class Core_Service_GoogleEvent {
 		$start = date_create($this->_values['tstart']);
 		$end   = date_create($this->_values['tend']);
 
-		if( date_format($start, 'H:i:s') == '00:00:00' && date_format($end, 'H:i:s') == '00:00:00' ) {
+		if (date_format($start, 'H:i:s') == '00:00:00' && date_format($end, 'H:i:s') == '00:00:00') {
 			# All day events (times set to 00:00:00)
 			# See http://code.google.com/apis/calendar/faq.html#all_day_event
 			$when->startTime = date_format($start, 'Y-m-d');
-			$when->endTime   =   date_format($end, 'Y-m-d');
+			$when->endTime   = date_format($end, 'Y-m-d');
 
 		} else {
 			# regular events
 			$when->startTime = date_format($start, 'Y-m-d\\TH:i:s.000P');
-			$when->endTime   =   date_format($end, 'Y-m-d\\TH:i:s.000P');
+			$when->endTime   = date_format($end, 'Y-m-d\\TH:i:s.000P');
 		}
 		$event->when = array($when);
 
@@ -193,7 +193,7 @@ class Core_Service_GoogleEvent {
 		try {
 			return $this->_service->getCalendarEventEntry($url);
 		} catch (Zend_Gdata_App_Exception $e) {
-			echo "Error: " . $e->getMessage();
+			echo "Error: ".$e->getMessage();
 		}
 	}
 
@@ -355,21 +355,21 @@ class Core_Service_GoogleEvent {
 	private function _getBatchResponseData($entry)
 	{
 		$batchId = null;
-		$batchOperation= null;
+		$batchOperation = null;
 		$batchStatusCode = null;
 		$batchStatusReason = null;
 	   	$batchUid = null;
 
 		$batchNs = 'http://schemas.google.com/gdata/batch';
-		$batchIdElement = $batchNs . ':' . 'id';
-		$batchOperationElement = $batchNs . ':' . 'operation';
-		$batchStatusElement = $batchNs . ':' . 'status';
-		$batchUidElement = 'http://schemas.google.com/gCal/2005' . ':' . 'uid';
+		$batchIdElement = $batchNs.':'.'id';
+		$batchOperationElement = $batchNs.':'.'operation';
+		$batchStatusElement = $batchNs.':'.'status';
+		$batchUidElement = 'http://schemas.google.com/gCal/2005'.':'.'uid';
 
 		$extensionElements = $entry->getExtensionElements();
 
 		foreach ($extensionElements as $extensionElement) {
-			$fullName = $extensionElement->rootNamespaceURI . ':' . $extensionElement->rootElement;
+			$fullName = $extensionElement->rootNamespaceURI.':'.$extensionElement->rootElement;
 			switch ($fullName) {
 				case $batchIdElement:
 					$batchId = $extensionElement->getText();
@@ -394,7 +394,7 @@ class Core_Service_GoogleEvent {
 			'_operation' => $batchOperation,
 			'_statusCode' => $batchStatusCode,
 			'_statusReason' => $batchStatusReason,
-			'gcal_event_id' => $this->_url . '/' . strstr($batchUid, '@', true)
+			'gcal_event_id' => $this->_url.'/'.strstr($batchUid, '@', true)
 		);
 	}
 

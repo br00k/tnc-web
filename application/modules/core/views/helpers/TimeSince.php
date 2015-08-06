@@ -73,7 +73,7 @@ class Zend_View_Helper_TimeSince extends Zend_View_Helper_Abstract
 			// Compute chunks
 			if (isset($chunk) && $chunk != 0 && !isset($largestChunk)) {
 				$largestChunk = $chunk;
-				$largestChunkName = ($chunk == 1) ? $name : $name . 's';
+				$largestChunkName = ($chunk == 1) ? $name : $name.'s';
 				$largestChunkSeconds = $seconds;
 			} else if (isset($chunk) && $chunk == 0 && !isset($largestChunk)) {
 				// Handle if it 0 seconds
@@ -84,7 +84,7 @@ class Zend_View_Helper_TimeSince extends Zend_View_Helper_Abstract
 
 				if ($chunk != 0) {
 					$secondChunk = $chunk;
-					$secondChunkName = ($chunk == 1) ? $name : $name . 's';
+					$secondChunkName = ($chunk == 1) ? $name : $name.'s';
 				}
 
 				break;

@@ -105,7 +105,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$translate = new Zend_Translate(
 			array(
 				'adapter' => 'gettext',
-				'content' => APPLICATION_PATH . '/../languages/',
+				'content' => APPLICATION_PATH.'/../languages/',
 				'scan' => Zend_Translate::LOCALE_FILENAME,
 				'log' => $this->getResource('log'),
 				'disableNotices' => false, // Get rid of annoying 'not translated' notice

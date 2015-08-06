@@ -32,7 +32,7 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	 */
 	public function getSessionById($id)
 	{
-		$row = $this->getResource('sessions')->getSessionById( (int) $id );
+		$row = $this->getResource('sessions')->getSessionById((int) $id);
 		if ($row === null) {
 			throw new TA_Model_Exception('id not found');
 		}
@@ -46,7 +46,7 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 	 */
 	public function getAllSessionDataById($id)
 	{
-		$row = $this->getResource('sessionsview')->getSessionById( (int) $id );
+		$row = $this->getResource('sessionsview')->getSessionById((int) $id);
 		if ($row === null) {
 			throw new TA_Model_Exception('id not found');
 		}
@@ -215,7 +215,7 @@ class Core_Model_Session extends TA_Model_Acl_Abstract
 		}
 
 		// get different form based on action parameter
-		$formName = ($action) ? 'session' . ucfirst($action) : 'session';
+		$formName = ($action) ? 'session'.ucfirst($action) : 'session';
 		$form = $this->getForm($formName);
 
 		// perform validation

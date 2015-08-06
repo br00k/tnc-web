@@ -1,21 +1,21 @@
 <?php
 /**
-	 * CORE Conference Manager
-	 *
-	 * LICENSE
-	 *
-	 * This source file is subject to the new BSD license that is bundled
-	 * with this package in the file LICENSE.txt.
-	 * It is also available through the world-wide-web at this URL:
-	 * http://www.terena.org/license/new-bsd
-	 * If you did not receive a copy of the license and are unable to
-	 * obtain it through the world-wide-web, please send an email
-	 * to webmaster@terena.org so we can send you a copy immediately.
-	 *
-	 * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
-	 * @license    http://www.terena.org/license/new-bsd     New BSD License
-	 * @revision   $Id: Submissionsview.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
-	 */
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: Submissionsview.php 28 2011-10-05 12:12:04Z gijtenbeek@terena.org $
+ */
 
 /** 
  *
@@ -82,23 +82,23 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 	 * @param	boolean $submissionId	Include submission id
 	 * @return	mixed
 	 */
-	public function getFileIds($filter, $object=false, $submissionId=false)
+	public function getFileIds($filter, $object = false, $submissionId = false)
 	{
 		$select = $this->select()
-			   		   ->from( $this->info('name'), array('file_id', 'title'));
+			   		   ->from($this->info('name'), array('file_id', 'title'));
 			   		   
 		if ($submissionId) {
 			$select = $this->select()
-			   		   	   ->from( $this->info('name'), array('file_id', 'submission_id'));			
+			   		   	   ->from($this->info('name'), array('file_id', 'submission_id'));			
 		}
 
 		// apply filters to grid
 		if ($filter->filters) {
 			foreach ($filter->filters as $field => $value) {
 				if (is_array($value)) {
-					$select->where( $field.' IN (?)', $value);
+					$select->where($field.' IN (?)', $value);
 				} else {
-					$select->where( $field.' = ?', $value);
+					$select->where($field.' = ?', $value);
 				}
 			}
 		}
@@ -130,20 +130,20 @@ class Core_Resource_Submissionsview extends TA_Model_Resource_Db_Table_Abstract
 		$select = $this->select();
 
 		if (!empty($order[0])) {
-			$order = $order[0] . ' ' . $order[1];
+			$order = $order[0].' '.$order[1];
 		} else {
 			$order = 'lower(title) ASC';
 		}
 		$select->order($order)
-			   ->from( $this->info('name'), array_keys($this->getGridColumns()) );
+			   ->from($this->info('name'), array_keys($this->getGridColumns()));
 
 		// apply filters to grid
 		if ($filter->filters) {
 			foreach ($filter->filters as $field => $value) {
 				if (is_array($value)) {
-					$select->where( $field.' IN (?)', $value);
+					$select->where($field.' IN (?)', $value);
 				} else {
-					$select->where( $field.' = ?', $value);
+					$select->where($field.' = ?', $value);
 				}
 			}
 		}

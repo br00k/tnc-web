@@ -137,7 +137,7 @@ class Core_Resource_Conferences extends TA_Model_Resource_Db_Table_Abstract
 			$stmt->execute(array(
 				':tstart' => $dt->get(Zend_Date::ISO_8601),
 				':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
-				':number' => $n+1,
+				':number' => $n + 1,
 				':type' => 1
 			));
 
@@ -151,7 +151,7 @@ class Core_Resource_Conferences extends TA_Model_Resource_Db_Table_Abstract
 			$stmt->execute(array(
 				':tstart' => $dt->get(Zend_Date::ISO_8601),
 				':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
-				':number' => $n+2,
+				':number' => $n + 2,
 				':type' => 1
 			));
 
@@ -165,7 +165,7 @@ class Core_Resource_Conferences extends TA_Model_Resource_Db_Table_Abstract
 			$stmt->execute(array(
 				':tstart' => $dt->get(Zend_Date::ISO_8601),
 				':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
-				':number' => $n+3,
+				':number' => $n + 3,
 				':type' => 1
 			));
 
@@ -179,7 +179,7 @@ class Core_Resource_Conferences extends TA_Model_Resource_Db_Table_Abstract
 			$stmt->execute(array(
 				':tstart' => $dt->get(Zend_Date::ISO_8601),
 				':tend' => $dt->add('90', 'mm')->get(Zend_Date::ISO_8601),
-				':number' => $n = $n+4,
+				':number' => $n = $n + 4,
 				':type' => 1
 			));
 

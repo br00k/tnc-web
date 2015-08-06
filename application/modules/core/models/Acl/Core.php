@@ -1,21 +1,21 @@
 <?php
 /**
- * CORE Conference Manager
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.terena.org/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to webmaster@terena.org so we can send you a copy immediately.
- *
- * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
- * @license    http://www.terena.org/license/new-bsd     New BSD License
- * @revision   $Id: Core.php 104 2013-04-08 11:58:49Z gijtenbeek@terena.org $
- */
+	 * CORE Conference Manager
+	 *
+	 * LICENSE
+	 *
+	 * This source file is subject to the new BSD license that is bundled
+	 * with this package in the file LICENSE.txt.
+	 * It is also available through the world-wide-web at this URL:
+	 * http://www.terena.org/license/new-bsd
+	 * If you did not receive a copy of the license and are unable to
+	 * obtain it through the world-wide-web, please send an email
+	 * to webmaster@terena.org so we can send you a copy immediately.
+	 *
+	 * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+	 * @license    http://www.terena.org/license/new-bsd     New BSD License
+	 * @revision   $Id: Core.php 104 2013-04-08 11:58:49Z gijtenbeek@terena.org $
+	 */
 
 /**
  * Defines ACL rules
@@ -60,7 +60,7 @@ class Core_Model_Acl_Core extends Zend_Acl {
 		if (!$this->has('Session')) {
 			$this->add(new Core_Model_Session())
 				 ->allow('guest', 'Session', array('list', 'export'))
-				 ->allow(array('presenter', 'chair', 'guest'), 'Session', array('show','subscribe', 'unsubscribe'))
+				 ->allow(array('presenter', 'chair', 'guest'), 'Session', array('show', 'subscribe', 'unsubscribe'))
 				 ->allow('chair', 'Session', array('edit', 'save'), new Core_Model_Acl_UserCanUpdateSessionAssertion())
 				 ->allow('chair', 'Session', array('order', 'presentationOrder'), new Core_Model_Acl_UserCanUpdateSessionAssertion())
 				 ->allow('chair', 'Session', array('evaluate'));

@@ -68,7 +68,10 @@
 										<div class="<?php echo !$idx ? 'first ' : ''; echo ($idx++) % 2 ? 'even' : 'odd'; ?>">
 											<label><?php echo $field['value'][$key]['path']; ?></label>
 											<div class="value">
-												<?php if (!$field['value'][$key]['error']) echo $field['value'][$key]['value']; ?>
+												<?php if (!$field['value'][$key]['error']) {
+	echo $field['value'][$key]['value'];
+}
+?>
 												<span class="<?php echo $field['value'][$key]['error'] ? "fail" : "pass"; ?>">
 													<?php echo $field['value'][$key]['message']; ?>
 												</span>
@@ -77,9 +80,12 @@
 										</div>
 									<?php endforeach; ?>
 								</div>
-							<?php else: ?>
+							<?php else {
+	: ?>
 								<div class="row">
-									<label for="field_<?php echo $field['name']; ?>" <?php if (isset($field['error']) && $field['error'] && (!isset($field['highlight_on_error']) || $field['highlight_on_error'])): ?>class="error"<?php endif; ?>>
+									<label for="field_<?php echo $field['name'];
+}
+?>" <?php if (isset($field['error']) && $field['error'] && (!isset($field['highlight_on_error']) || $field['highlight_on_error'])): ?>class="error"<?php endif; ?>>
 										<?php echo $field['label']; ?>
 										<?php if (isset($field['required']) && $field['required']): ?><i>*</i><?php endif; ?>
 									</label>

@@ -114,7 +114,7 @@ class Core_Form_Conference_Timeslots extends TA_Form_Abstract
 	 * Override method to add form elements that were dynamically added
 	 * Every row in the dynamic value array adds the form element
 	 *
-     * @return Zend_Form
+	 * @return Zend_Form
 	 */
 	public function setDefaults(array $values)
 	{

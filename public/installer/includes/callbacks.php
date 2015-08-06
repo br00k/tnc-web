@@ -111,11 +111,11 @@ echo "asfasf";
 
 	echo "yes";
 		$admin_query = "INSERT INTO users (uid, fname, lname, email, organisation, country) VALUES ($admin_uid, $admin_fname, $admin_lname, $admin_email, $admin_organisation, $admin_country)";
-		if(!$this->db_query($admin_query)) {
+		if (!$this->db_query($admin_query)) {
 			return false;
 		}
 
-		if(!$this->db_query("INSERT INTO user_role (user_id, role_id) VALUES (1, 999)")) {
+		if (!$this->db_query("INSERT INTO user_role (user_id, role_id) VALUES (1, 999)")) {
 			return false;
 		}
 

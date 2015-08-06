@@ -1,21 +1,21 @@
 <?php
 /**
-	 * CORE Conference Manager
-	 *
-	 * LICENSE
-	 *
-	 * This source file is subject to the new BSD license that is bundled
-	 * with this package in the file LICENSE.txt.
-	 * It is also available through the world-wide-web at this URL:
-	 * http://www.terena.org/license/new-bsd
-	 * If you did not receive a copy of the license and are unable to
-	 * obtain it through the world-wide-web, please send an email
-	 * to webmaster@terena.org so we can send you a copy immediately.
-	 *
-	 * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
-	 * @license    http://www.terena.org/license/new-bsd     New BSD License
-	 * @revision   $Id: Submit.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
-	 */
+ * CORE Conference Manager
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.terena.org/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to webmaster@terena.org so we can send you a copy immediately.
+ *
+ * @copyright  Copyright (c) 2011 TERENA (http://www.terena.org)
+ * @license    http://www.terena.org/license/new-bsd     New BSD License
+ * @revision   $Id: Submit.php 41 2011-11-30 11:06:22Z gijtenbeek@terena.org $
+ */
 
 /**
  *
@@ -32,7 +32,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	 */
 	public function getSubmissionById($id)
 	{
-		$row = $this->getResource('submissions')->getSubmissionById( (int) $id );
+		$row = $this->getResource('submissions')->getSubmissionById((int) $id);
 		if ($row === null) {
 			throw new TA_Model_Exception('id not found');
 		}
@@ -48,7 +48,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	public function getStatusBySubmissionId($id)
 	{
 		$return = array('submission_id'=>$id);
-		$row = $this->getResource('submissionstatus')->getStatusBySubmissionId( (int) $id );
+		$row = $this->getResource('submissionstatus')->getStatusBySubmissionId((int) $id);
 		if ($row === null) {
 			return $return;
 		}
@@ -148,7 +148,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	 */
 	public function getAllSubmissionDataById($id)
 	{
-		$row = $this->getResource('submissionsview')->getSubmissionById( (int) $id );
+		$row = $this->getResource('submissionsview')->getSubmissionById((int) $id);
 		if ($row === null) {
 			throw new TA_Model_Exception('id not found');
 		}
@@ -263,7 +263,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 		if (!$this->checkAcl('reviewerSave')) {
 			throw new TA_Model_Acl_Exception("Insufficient rights");
 		}
-		if ( ($id === null) || ($value === null) ) {
+		if (($id === null) || ($value === null)) {
 			return false;
 		}
 		$id = (int) $id;
@@ -342,7 +342,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 	public function saveSubmissionOnly(array $post, $action = null)
 	{
 		// get different form based on action parameter
-		$formName = ($action) ? 'submit' . ucfirst($action) : 'submit';
+		$formName = ($action) ? 'submit'.ucfirst($action) : 'submit';
 		$form = $this->getForm($formName);
 
 		// perform validation
@@ -382,7 +382,7 @@ class Core_Model_Submit extends TA_Model_Acl_Abstract
 		}
 
 		// get different form based on action parameter
-		$formName = ($action) ? 'submit' . ucfirst($action) : 'submit';
+		$formName = ($action) ? 'submit'.ucfirst($action) : 'submit';
 		$form = $this->getForm($formName);
 
 		// perform validation
