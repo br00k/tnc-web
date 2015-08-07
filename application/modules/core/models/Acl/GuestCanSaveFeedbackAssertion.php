@@ -46,7 +46,7 @@ class Core_Model_Acl_GuestCanSaveFeedbackAssertion implements Zend_Acl_Assert_In
 		$param = $post['id'];
 
 		// check if posted feedbackId is the same as feedbackId retrieved from cookie
-		if ($param !== null && $param == $feedbackId ) {
+		if ($param !== null && $param == $feedbackId) {
 			return true;
 		} else {
 			return false;
